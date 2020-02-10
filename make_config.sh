@@ -18,21 +18,21 @@ fi
 
 # Check for installed commands
 check_cmds=("corefreq-cli" "pyenv" "go" "virsh" "virt-install" "go-motd" "dotnet" "cargo")
-avail_cmds=""
+avail_list=""
 for cmd in "${check_cmds[@]}"; do
     if command -v "$cmd" &> /dev/null; then
-        if [[ -z $avail_cmds ]]; then
-            avail_cmds+="$cmd"
+        if [[ -z $avail_list ]]; then
+            avail_list+="$cmd"
         else
-            avail_cmds+=" $cmd"
+            avail_list+=" $cmd"
         fi
     fi
 done
 
 # Don't add empty string
-if [[ -n $avail_cmds ]]; then
-    avail_cmds="    avail_cmds = \"${avail_cmds}\""
-    sed -i -e "s|\s\+avail_cmds\s*=.*|${avail_cmds}|" "$cfg_path"
+if [[ -n $avail_list ]]; then
+    avail_list="    avail_list = \"${avail_list}\""
+    sed -i -e "s|\s\+avail_list\s*=.*|${avail_list}|" "$cfg_path"
 fi
 
 src_list=""
