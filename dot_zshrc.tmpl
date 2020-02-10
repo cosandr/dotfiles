@@ -60,10 +60,10 @@ fi
 export PATH="$HOME/go/bin:$PATH"
 {{- end }}
 {{- if has "virsh" $avail_list }}
-{{- if ne .chezmoi.username "root" -}}
+{{- if ne .chezmoi.username "root" }}
 alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'
-{{- end -}}
+{{- end }}
 {{- end }}
 {{- if ne .chezmoi.hostname "DreSRV" }}
 alias mntsrv='sshfs andrei@{{ .srv_ip }}:/ /mnt/sshfs'
