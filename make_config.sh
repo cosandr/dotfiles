@@ -37,7 +37,7 @@ fi
 
 src_list=""
 # Check for files to source
-source_files=("$HOME/.keychain/$(uname -n)-sh" "/usr/share/zsh/site-functions/_podman" "/usr/share/zsh/site-functions/fzf")
+source_files=("$HOME/.zprezto/init.zsh" "$HOME/.keychain/$(uname -n)-sh" "/usr/share/zsh/site-functions/_podman" "/usr/share/zsh/site-functions/fzf")
 for src in "${source_files[@]}"; do
     if [[ -f $src ]]; then
         if [[ -z $src_list ]]; then
