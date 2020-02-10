@@ -1,0 +1,36 @@
+{
+    "editor.fontFamily": "'Cascadia Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "explorer.confirmDelete": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Community Material Theme Darker High Contrast",
+    "workbench.startupEditor": "newUntitledFile",
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.currentLine.enabled": false,
+    "gitlens.codeLens.enabled": false,
+    "editor.minimap.enabled": false,
+    "remote.extensionKind": {
+        "peterjausovec.vscode-docker": "workspace"
+    },
+    "workbench.colorCustomizations": {},
+    "extensions.ignoreRecommendations": false,
+    "window.newWindowDimensions": "inherit",
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "editor.renderWhitespace": "selection",
+    "explorer.confirmDragAndDrop": false,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.configuration.checkProjectSettingsExclusions": false,
+    "python.pythonPath": "/bin/python",
+    "python.jediEnabled": false,
+    "problems.showCurrentInStatus": true,
+    "shellcheck.disableVersionCheck": true,
+    "cSpell.userWords": [
+        "cosandr",
+        "distro",
+        "systemd",
+        "unconfigured"
+    ]
+    // "terminal.integrated.rendererType": "experimentalWebgl"
+}

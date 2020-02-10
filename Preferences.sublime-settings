@@ -1,0 +1,26 @@
+{
+	"auto_complete": false,
+	"bold_folder_labels": true,
+	"caret_style": "smooth",
+	"theme": "ayu-mirage.sublime-theme",
+	"color_scheme": "Packages/ayu/ayu-mirage.sublime-color-scheme",
+	"default_line_ending": "unix",
+	"drag_text": false,
+	"draw_white_space": "selection",
+	"fade_fold_buttons": false,
+	"font_face": "Cascadia Code",
+	"font_size": 11,
+	"highlight_line": false,
+	"hot_exit": false,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"line_padding_bottom": 0,
+	"line_padding_top": 0,
+	"remember_open_files": true,
+	"shift_tab_unindent": true,
+	"show_encoding": true,
+	"show_line_endings": true,
+	"translate_tabs_to_spaces": true
+}
