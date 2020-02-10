@@ -1,4 +1,6 @@
 [data]
+    avail_list = ""
+    src_list = ""
 {{- range (bitwarden "item" "chezmoi").fields -}}
     {{- if eq .type 1.0 }}
     {{ .name }} = "{{ .value }}"

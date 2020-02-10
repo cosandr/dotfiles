@@ -1,16 +1,20 @@
 #!/bin/bash
 
-# Ensure bitwarden is OK
-bw_test=$(bw get item chezmoi)
-if [[ $? -ne 0 ]]; then
-    echo "$bw_test"
-    echo "Bitwarden failed."
-    exit 1
-fi
 cfg_path="$HOME/.config/chezmoi/chezmoi.toml"
-# Make config
-mkdir -p ~/.config/chezmoi
-chezmoi cat ~/make_chezmoi_cfg > "$cfg_path"
+status="Config updated"
+if [[ ! -f "$cfg_path" ]]; then
+    # Ensure bitwarden is OK
+    bw_test=$(bw get item chezmoi)
+    if [[ $? -ne 0 ]]; then
+        echo "$bw_test"
+        echo "Bitwarden failed."
+        exit 1
+    fi
+    # Make config
+    mkdir -p ~/.config/chezmoi
+    chezmoi cat ~/make_chezmoi_cfg > "$cfg_path"
+    status="Config created"
+fi
 
 # Check for installed commands
 check_cmds=("corefreq-cli" "pyenv" "go" "virsh" "virt-install" "go-motd" "dotnet" "cargo")
@@ -28,7 +32,7 @@ done
 # Don't add empty string
 if [[ -n $avail_cmds ]]; then
     avail_cmds="    avail_cmds = \"${avail_cmds}\""
-    echo -e "\n$avail_cmds" >> "$cfg_path"
+    sed -i -e "s|\s\+avail_cmds\s*=.*|${avail_cmds}|" "$cfg_path"
 fi
 
 src_list=""
@@ -46,11 +50,7 @@ done
 # Don't add empty string
 if [[ -n $src_list ]]; then
     src_list="    src_list = \"${src_list}\""
-    if [[ -n $avail_cmds ]]; then
-        echo "$src_list" >> "$cfg_path"
-    else
-        echo -e "\n$src_list" >> "$cfg_path"
-    fi
+    sed -i -e "s|\s\+src_list\s*=.*|${src_list}|" "$cfg_path"
 fi
 
-echo -e "Config created\n$(<"$cfg_path")"
+echo -e "${status}\n$(<"$cfg_path")"
