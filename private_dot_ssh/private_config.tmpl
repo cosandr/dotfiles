@@ -1,4 +1,4 @@
-AddKeysToAgent  yes
+AddKeysToAgent yes
 
 Host dresrv.com
 	HostName {{ .ssh_domain }}
@@ -19,12 +19,12 @@ Host srvsim-boot
 	User root
 {{else}}
 Host srvsim
-	HostName 10.1.0.2
+	HostName {{ .srv_ip }}
 	Port 226
 	User root
 
 Host srvsim-boot
-	HostName 10.1.0.2
+	HostName {{ .srv_ip }}
 	Port 2226
 	User root
 {{end}}

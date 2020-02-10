@@ -2,7 +2,7 @@
 
 cfg_path="$HOME/.config/chezmoi/chezmoi.toml"
 status="Config updated"
-if [[ ! -f "$cfg_path" ]]; then
+if [[ ! -f "$cfg_path" ]] || [[ $1 = '-f' ]]; then
     # Ensure bitwarden is OK
     bw_test=$(bw get item chezmoi)
     if [[ $? -ne 0 ]]; then
