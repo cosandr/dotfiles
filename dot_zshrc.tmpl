@@ -42,6 +42,7 @@ alias cpp='rsync -avh --no-compress --progress'
 alias mvp='rsync -avh --no-compress --progress --remove-source-files'
 alias git-cosandr='git config user.email "{{ .private_email }}" && git config user.name "{{ .private_name }}"'
 alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
+export PATH="$HOME/.local/bin:$PATH"
 {{- $avail_list := splitList " " .avail_list -}}
 {{- if has "corefreq-cli" $avail_list }}
 alias tmux-mon='tmux new -s mon  "htop -d10" \; split-window "corefreq-cli" \; select-layout even-vertical'
