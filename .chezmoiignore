@@ -1,13 +1,14 @@
-chezmoi_test
 make_*
 settings.json
 plasma-org.kde.plasma.desktop-appletsrc
 Preferences.sublime-settings
-{{- if eq .chezmoi.hostname "DreSRV" }}
+{{- $is_srv := eq .chezmoi.hostname "DreSRV" -}}
+{{- $is_root := eq .chezmoi.username "root" -}}
+{{- if or $is_srv $is_root }}
 .config/Code
 .config/kitty
 .config/sublime-text-3
 {{- end }}
-{{- if ne .chezmoi.hostname "DreSRV" }}
+{{- if not $is_srv }}
 .ssh/authorized_keys
 {{- end }}
