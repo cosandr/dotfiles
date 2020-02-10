@@ -1,0 +1,30 @@
+AddKeysToAgent  yes
+
+Host dresrv.com
+	HostName {{ .ssh_domain }}
+	Port {{ .ssh_port }} 
+
+Host github.com-pub
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/cosandr_rsa
+{{ if eq .chezmoi.hostname "DreSRV"}}
+Host srvsim
+	HostName 192.168.122.6
+	User root
+
+Host srvsim-boot
+	HostName 192.168.122.6
+	Port 2222
+	User root
+{{else}}
+Host srvsim
+	HostName 10.1.0.2
+	Port 226
+	User root
+
+Host srvsim-boot
+	HostName 10.1.0.2
+	Port 2226
+	User root
+{{end}}
