@@ -88,7 +88,11 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export GPG_TTY=$(tty)
 {{- end }}
 {{- if has "go-motd" $avail_list }}
+{{- if ne .chezmoi.username "root" -}}
 go-motd -cfg ~/go/src/github.com/cosandr/go-motd/config.yaml
+{{- else -}}
+/home/andrei/go/bin/go-motd -cfg /home/andrei/go/src/github.com/cosandr/go-motd/config.yaml                                                                           
+{{- end -}}
 {{- end }}
 {{- if contains "Microsoft" .chezmoi.osRelease.id}}
 [ -n ${WSL_AUTH_SOCK} ] && export SSH_AUTH_SOCK=${WSL_AUTH_SOCK}
