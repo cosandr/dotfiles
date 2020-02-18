@@ -7,7 +7,7 @@ Host dresrv.com
 Host github.com-pub
 	HostName github.com
 	User git
-	IdentityFile ~/.ssh/cosandr_rsa
+	IdentityFile {{if eq .chezmoi.username "root"}}/home/andrei{{ else }}~{{ end }}/.ssh/cosandr_ed25519
 {{ if eq .chezmoi.hostname "DreSRV"}}
 Host srvsim
 	HostName 192.168.122.6
