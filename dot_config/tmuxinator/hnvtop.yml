@@ -1,0 +1,11 @@
+# /home/andrei/.config/tmuxinator/hnvtop.yml
+
+name: hnvtop
+root: ~/
+
+windows:
+  - hnvtop:
+      layout: even-vertical
+      panes:
+        - htop -d10
+        - nvtop

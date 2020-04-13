@@ -1,0 +1,12 @@
+# /home/andrei/.config/tmuxinator/monitoring.yml
+
+name: monitoring
+root: ~/
+
+windows:
+  - top:
+      layout: even-vertical
+      panes:
+        - htop -d10
+        - corefreq-cli
+  - logs: journalctl -f

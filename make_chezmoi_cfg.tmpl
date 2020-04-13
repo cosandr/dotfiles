@@ -2,6 +2,11 @@
     srv_ip = "10.1.0.2"
     avail_list = ""
     src_list = ""
+{{- if eq .chezmoi.hostname "DreSRV" -}}
+    discord_log = "/srv/containers/discord/src/discord.log"
+{{- else -}}
+    discord_log = ""
+{{- end -}}
 {{- range (bitwarden "item" "chezmoi").fields -}}
     {{- if eq .type 1.0 }}
     {{ .name }} = "{{ .value }}"

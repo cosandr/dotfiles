@@ -4,11 +4,20 @@ plasma-org.kde.plasma.desktop-appletsrc
 Preferences.sublime-settings
 {{- $is_srv := eq .chezmoi.hostname "DreSRV" -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
+# Ignore GUI app config files on server/root
 {{- if or $is_srv $is_root }}
 .config/Code
 .config/kitty
 .config/sublime-text-3
 {{- end }}
+# Ignore SSH keys when not running on server
 {{- if not $is_srv }}
 .ssh/authorized_keys
+# Ignore hnvtop config on server (no nvidia GPU)
+{{- else }}
+.config/tmuxinator/hnvtop.yml
+{{- end }}
+# Ignore htop-journal-discord log if we don't know where log is
+{{- if eq .discord_log "" }}
+.config/tmuxinator/hjd.yml
 {{- end }}
