@@ -56,7 +56,13 @@ alias cpp='rsync -avh --no-compress --progress'
 alias mvp='rsync -avh --no-compress --progress --remove-source-files'
 alias git-cosandr='git config user.email "{{ .private_email }}" && git config user.name "{{ .private_name }}"'
 alias dls='docker container ls -a --sort names --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
+alias dlog='docker logs -f'
+alias dex='docker exec -t'
+alias dsti='docker container start -i'
 alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}" }}  {{ "{{.Status}}" }}  {{ "{{.Created}}" }}"'
+alias podlog='podman logs -f'
+alias podex='podman exec -t'
+alias podsti='podman container start -i'
 export PATH="$HOME/.local/bin:$PATH"
 {{- $avail_list := splitList " " .avail_list -}}
 {{- if has "corefreq-cli" $avail_list }}
