@@ -8,6 +8,17 @@ setopt hist_ignore_dups
 setopt hist_expire_dups_first
 unsetopt correct
 
+# Confirm function
+confirm () {
+	echo -n "Confirm $1 on ${HOST}? "
+    read reply
+
+    case $reply in
+        [Yy]* ) $1 "${@:2}";;
+        * ) echo "$* cancelled";;
+    esac
+}
+
 dirbg='white'
 dirfg='black'
 
@@ -38,6 +49,9 @@ POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=$dirfg
 POWERLEVEL9K_DIR_ETC_FOREGROUND=$dirfg
 POWERLEVEL9K_DIR_WRITABLE_FORBIDDEN_FOREGROUND=$dirfg
 
+alias reboot='confirm reboot'
+alias poweroff='confirm poweroff'
+alias shutdown='confirm shutdown'
 alias cpp='rsync -avh --no-compress --progress'
 alias mvp='rsync -avh --no-compress --progress --remove-source-files'
 alias git-cosandr='git config user.email "{{ .private_email }}" && git config user.name "{{ .private_name }}"'
