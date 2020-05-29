@@ -105,7 +105,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export GPG_TTY=$(tty)
 {{- end }}
 {{- if has "go-motd" $avail_list }}
-go-motd -cfg /opt/go-motd.yaml
+go-motd
 {{- end }}
 {{- if contains "Microsoft" .chezmoi.osRelease.id}}
 [ -n ${WSL_AUTH_SOCK} ] && export SSH_AUTH_SOCK=${WSL_AUTH_SOCK}

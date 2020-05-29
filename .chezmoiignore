@@ -16,6 +16,7 @@ Preferences.sublime-settings
 # Ignore hnvtop config on server (no nvidia GPU)
 {{- else }}
 .config/tmuxinator/hnvtop.yml
+.config/tmuxinator/hjn.yml
 {{- end }}
 # Ignore htop-journal-discord log if we don't know where log is
 {{- if eq .discord_log "" }}

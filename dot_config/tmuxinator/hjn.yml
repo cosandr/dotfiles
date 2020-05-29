@@ -1,0 +1,12 @@
+# /home/andrei/.config/tmuxinator/hjn.yml
+
+name: hjn
+root: ~/
+
+windows:
+  - main:
+      layout: 76f1,147x37,0,0[147x16,0,0,0,147x12,0,17,2,147x7,0,30,1]
+      panes:
+        - htop -d10
+        - journalctl -f
+        - nvtop
