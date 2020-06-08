@@ -28,5 +28,6 @@
     "terminal.integrated.env.windows": {
         "LESSCHARSET": "utf-8",
         "LC_ALL": "C.UTF-8"
-    }
+    },
+    "python.jediEnabled": false
 }

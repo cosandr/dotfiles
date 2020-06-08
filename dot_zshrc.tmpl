@@ -19,52 +19,30 @@ confirm () {
     esac
 }
 
-dirbg='white'
-dirfg='black'
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-#
-# P9K
-#
-
-DEFAULT_USER=andrei
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir_writable dir vcs pyenv)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status history context)
-POWERLEVEL9K_DIR_SHOW_WRITABLE=false
-POWERLEVEL9K_ALWAYS_SHOW_CONTEXT=true
-POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='white'
-POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND='red'
-POWERLEVEL9K_CONTEXT_SUDO_FOREGROUND='orange'
-POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND='wheat1'
-POWERLEVEL9K_CONTEXT_REMOTE_SUDO_FOREGROUND='yellow1'
-# Backgrounds
-POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=$dirbg
-POWERLEVEL9K_DIR_HOME_BACKGROUND=$dirbg
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=$dirbg
-POWERLEVEL9K_DIR_ETC_BACKGROUND=$dirbg
-POWERLEVEL9K_DIR_WRITABLE_FORBIDDEN_BACKGROUND=$dirbg
-# Foregrounds
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=$dirfg
-POWERLEVEL9K_DIR_HOME_FOREGROUND=$dirfg
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=$dirfg
-POWERLEVEL9K_DIR_ETC_FOREGROUND=$dirfg
-POWERLEVEL9K_DIR_WRITABLE_FORBIDDEN_FOREGROUND=$dirfg
-
+# Aliases
 alias reboot='confirm reboot'
 alias poweroff='confirm poweroff'
 alias shutdown='confirm shutdown'
 alias cpp='rsync -avh --no-compress --progress'
 alias mvp='rsync -avh --no-compress --progress --remove-source-files'
 alias git-cosandr='git config user.email "{{ .private_email }}" && git config user.name "{{ .private_name }}"'
+{{- $avail_list := splitList " " .avail_list -}}
+{{- if has "docker" $avail_list }}
 alias dls='docker container ls -a --sort names --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
 alias dlog='docker logs -f'
 alias dex='docker exec -t'
 alias dsti='docker container start -i'
+{{- end }}
+{{- if has "podman" $avail_list }}
 alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}" }}  {{ "{{.Status}}" }}  {{ "{{.Created}}" }}"'
 alias podlog='podman logs -f'
 alias podex='podman exec -t'
 alias podsti='podman container start -i'
+{{- end }}
 export PATH="$HOME/.local/bin:$PATH"
-{{- $avail_list := splitList " " .avail_list -}}
 {{- if has "corefreq-cli" $avail_list }}
 alias tmux-mon='tmux new -s mon  "htop -d10" \; split-window "corefreq-cli" \; select-layout even-vertical'
 {{- end }}

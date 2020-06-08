@@ -17,7 +17,7 @@ if [[ ! -f "$cfg_path" ]] || [[ $1 = '-f' ]]; then
 fi
 
 # Check for installed commands
-check_cmds=("corefreq-cli" "pyenv" "go" "virsh" "virt-install" "go-motd" "dotnet" "cargo")
+check_cmds=("corefreq-cli" "pyenv" "go" "virsh" "virt-install" "go-motd" "dotnet" "cargo" "docker" "podman")
 avail_list=""
 for cmd in "${check_cmds[@]}"; do
     if command -v "$cmd" &> /dev/null; then

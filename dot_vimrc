@@ -70,6 +70,9 @@ set showcmd
 set scrolloff=3
 " Dark background, more visible on dark terminals
 set background=dark
+" Indent with spaces by default
+set tabstop=4
+set expandtab
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
 	let save_cursor = getpos(".")
