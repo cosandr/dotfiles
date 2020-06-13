@@ -8,6 +8,7 @@ SublimeLinter.sublime-settings
 {{- $is_root := eq .chezmoi.username "root" -}}
 # Ignore GUI app config files on server/root
 {{- if or $is_srv $is_root }}
+.config/alacritty
 .config/Code
 .config/dunst
 .config/i3

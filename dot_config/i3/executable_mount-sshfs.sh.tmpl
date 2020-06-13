@@ -1,3 +1,4 @@
+{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 #!/bin/bash
 
 # Wait for SSH agent
@@ -10,6 +11,6 @@ if grep -q "$mountpoint" /proc/mounts
 then
     notify-send "$mountpoint already mounted"
 else
-    sshfs andrei@DreSRV:/ "$mountpoint"
+    sshfs andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}:/ "$mountpoint"
     notify-send "$mountpoint mounted"
 fi

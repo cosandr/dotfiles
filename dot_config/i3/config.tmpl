@@ -57,6 +57,10 @@ bindsym $alt+F4 kill
 
 # start a terminal
 bindsym $super+Return exec kitty
+bindsym $super+Shift+Return exec alacritty
+# Alacritty shortcuts
+bindsym $super+Shift+1 exec alacritty -e ssh -X andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
+bindsym $super+Shift+2 exec alacritty -e ssh -X root@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
 
 # start dmenu (a program launcher)
 bindsym $super+d exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Noto Sans 16'
@@ -127,14 +131,6 @@ bindsym $super+3 workspace 3
 bindsym $super+4 workspace 4
 bindsym $super+5 workspace 5
 bindsym $super+6 workspace 6
-
-# move focused container to workspace
-bindsym $super+Shift+1 move container to workspace 1
-bindsym $super+Shift+2 move container to workspace 2
-bindsym $super+Shift+3 move container to workspace 3
-bindsym $super+Shift+4 move container to workspace 4
-bindsym $super+Shift+5 move container to workspace 5
-bindsym $super+Shift+6 move container to workspace 6
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $super+Shift+r restart
