@@ -1,0 +1,37 @@
+{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+{{- $lock_cmd := "betterlockscreen -l dim & sleep 30 && xset dpms force off" -}}
+#!/usr/bin/env bash
+
+{{- if $is_desktop }}
+xidlehook \
+    `# Don't lock when there's a fullscreen application` \
+    --not-when-fullscreen \
+    `# Don't lock when there's audio playing` \
+    --not-when-audio \
+    `# Lock after 10 minutes` \
+    --timer 600 \
+    '{{ $lock_cmd }}' \
+    ''
+{{- else }}
+# Only exported variables can be used within the timer's command.
+export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
+
+# Run xidlehook
+xidlehook \
+    `# Don't lock when there's a fullscreen application` \
+    --not-when-fullscreen \
+    `# Don't lock when there's audio playing` \
+    --not-when-audio \
+    `# Dim the screen after 4m50s, undim if user becomes active` \
+    --timer 290 \
+    'xrandr --output "$PRIMARY_DISPLAY" --brightness .1' \
+    'xrandr --output "$PRIMARY_DISPLAY" --brightness 1' \
+    `# Undim & lock after 10 more seconds` \
+    --timer 10 \
+    'xrandr --output "$PRIMARY_DISPLAY" --brightness 1; {{ $lock_cmd }}' \
+    '' \
+    `# Finally, suspend 5 minutes after it locks` \
+    --timer 300 \
+    'systemctl suspend' \
+    ''
+{{- end }}

@@ -11,40 +11,46 @@ floating_modifier $alt
 
 focus_follows_mouse no
 
+default_border pixel 2
+
+# No borders for monitoring windows
+for_window [class="kitty"] border normal 2
+for_window [class="kitty" title="self-monitoring"] border none
+for_window [class="kitty" title="server-monitoring"] border none
+
+for_window [class="Alacritty"] border normal 2
+for_window [class="Alacritty" title="self-monitoring"] border none
+for_window [class="Alacritty" title="server-monitoring"] border none
+
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
 {{- if $is_desktop }}
 # assignments
 assign [class="Spotify"] 2
 assign [class="discord"] 2
 
-default_border pixel 2
-for_window [class="kitty"] border normal 2
-for_window [class="Alacritty"] border normal 2
-
-# No borders for monitoring windows
-for_window [class="kitty" title="self-monitoring"] border none
-for_window [class="kitty" title="server-monitoring"] border none
-{{- end }}
 #autostart
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
-{{- if $is_desktop }}
-exec --no-startup-id xrandr --output DP-4 --mode 3840x2160 --rate 120
-exec --no-startup-id picom --backend xrender --refresh-rate 120 -b
+exec --no-startup-id xrandr --output DP-4 --mode 3840x2160 --rate 120 --primary
+exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --right-of DP-4
 {{- end }}
+exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
+exec --no-startup-id picom {{ if $is_desktop }}--backend xrender --refresh-rate 120{{- end }} -b
 exec --no-startup-id redshift
 exec --no-startup-id dunst
 exec --no-startup-id ~/.fehbg
+exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 
 {{- if $is_desktop }}
 # Start stuff
-exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 exec --no-startup-id "spotify --force-device-scale-factor=1.5 &"
 exec --no-startup-id discord &
 exec --no-startup-id kitty --title self-monitoring tmuxinator start hjn &
 exec --no-startup-id $HOME/.config/i3/ssh-monitoring.sh &
 exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-2.json'"
+{{- end }}
 exec --no-startup-id firefox &
 exec --no-startup-id kitty &
+{{- if $is_desktop }}
 exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/andrei/.config/i3/workspace-1.json'"
 
 # Nvidia OC
