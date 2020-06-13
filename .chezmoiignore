@@ -9,13 +9,17 @@ SublimeLinter.sublime-settings
 # Ignore GUI app config files on server/root
 {{- if or $is_srv $is_root }}
 .config/Code
-.config/kitty
-.config/sublime-text-3
-.config/i3
-.config/polybar
 .config/dunst
+.config/i3
+.config/kitty
+.config/polybar
+.config/sublime-text-3
+.fonts
+.xprofile
 {{- if not $is_desktop }}
 .config/i3/workspace-*
+.config/polybar/scripts/nvidia*
+.config/polybar/scripts/aquaero*
 {{- end }}
 {{- end }}
 # Ignore SSH keys when not running on server
