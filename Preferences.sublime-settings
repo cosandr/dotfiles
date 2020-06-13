@@ -8,6 +8,12 @@
 	"draw_white_space": "selection",
 	"fade_fold_buttons": false,
 	"font_face": "Cascadia Code",
+	"font_options":
+	[
+		"no_liga",
+		"no_clig",
+		"no_calt"
+	],
 	"font_size": 11,
 	"highlight_line": false,
 	"hot_exit": false,

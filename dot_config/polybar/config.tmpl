@@ -1,0 +1,200 @@
+{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+[bar/main]
+include-file = ~/.config/polybar/baropts
+tray-position = right
+modules-left = i3  
+modules-center = title
+{{- if $is_desktop }}
+modules-right = cpuusage nvusage sep cputemp nvtemp aquaero sep updates sep volume switchaudio network sep date sep xkeyboard powermenu
+{{- else }}
+modules-right = cpuusage cputemp sep updates sep volume sep network sep date sep xkeyboard powermenu
+{{- end }}
+wm-restack = i3
+
+{{- if $is_desktop }}
+[bar/secondary]
+include-file = ~/.config/polybar/baropts
+modules-left = i3
+modules-center = title
+modules-right = cpuclk nvclk sep networkfull sep date
+{{ end }}
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+{{ if $is_desktop }}
+[module/switchaudio]
+type = custom/script
+format = <label>
+exec = ~/.config/polybar/scripts/toggle-input.py
+click-left = pavucontrol &
+click-right = ~/.config/polybar/scripts/toggle-input.py --switch
+; interval = 10
+tail = true
+
+[module/nvtemp]
+type = custom/script
+format =  <label>
+exec = ~/.config/polybar/scripts/nvidia-temp.sh
+interval = 3
+
+[module/nvusage]
+type = custom/script
+format =  <label>
+exec = ~/.config/polybar/scripts/nvidia-usage.sh
+interval = 3
+
+[module/aquaero]
+type = custom/script
+exec = ~/.config/polybar/scripts/aquaero.py
+interval = 60
+
+[module/nvclk]
+type = custom/script
+format =  <label>
+exec = ~/.config/polybar/scripts/nvidia-clock.sh
+interval = 10
+{{ end }}
+[module/polywins]
+type = custom/script
+exec = ~/.config/polybar/scripts/polywins.sh
+format = <label>
+label = %output%
+label-padding = 1
+interval = .5
+
+[module/cpuusage]
+type = internal/cpu
+internal = 1
+format =   <label>%
+label = %percentage%
+
+[module/cputemp]
+type = internal/temperature
+label =  %temperature-c%
+interval = 3
+thermal-zone = 0
+; CPU Package
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input
+base-temperature = 20
+warn-temperature = 60
+
+[module/date]
+type = internal/date
+interval = 60
+date = %a %d %b
+time = %H:%M
+label =  %date%   %time%
+format-padding = 1
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+format = <label-layout> <label-indicator>
+format-spacing = 0
+label-layout = %layout%
+
+[module/volume]
+type = internal/pulseaudio
+format-volume =   <ramp-volume>  <label-volume>
+format-muted =   Muted
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+click-right = pavucontrol &
+
+{{ if $is_desktop }}
+[module/networkfull]
+type = internal/network
+interface = enp0s31f6
+interval = 3.0
+format-connected = <label-connected>
+format-connected-prefix = 
+label-connected = %ifname%: %local_ip% 
+format-disconnected = <label-disconnected>
+label-disconnected = not connected
+format-padding = 0
+{{- end }}
+
+[module/network]
+type = internal/network
+{{- if $is_desktop }}
+interface = enp0s31f6
+{{- else }}
+interface = wlan0
+{{- end }}
+interval = 3.0
+format-connected = <label-connected>
+format-connected-prefix = ""
+{{- if $is_desktop }}
+label-connected = %downspeed:9%
+{{- else }}
+label-connected = %essid% %local_ip% %downspeed:9%
+{{- end }}
+format-disconnected = <label-disconnected>
+label-disconnected = not connected
+format-padding = 0
+
+[module/i3]
+type = internal/i3
+pin-workspace = true
+index-sort = true
+enable-click = true
+enable-scroll = false
+wrapping-scroll = false
+reverse-scroll = false
+format = <label-state> <label-mode>
+label-focused = %name%
+label-focused-padding = 3
+label-focused-background = "#82aaff"
+label-focused-foreground = "#212121"
+label-unfocused = %name%
+label-unfocused-padding = 3
+label-visible = %name%
+label-visible-padding = 2
+label-mode = %mode%
+label-mode-background = "#f07178"
+label-mode-foreground = "#212121"
+label-mode-padding = 2
+label-urgent = %name%
+label-urgent-padding = 3
+
+[module/title]
+type = internal/xwindow
+format = <label>
+label = %title%
+label-maxlen = 60
+
+[module/updates]
+type = custom/script
+format =  <label>
+exec = ~/.config/polybar/scripts/go-check-updates.py --refresh
+click-left = ~/.config/polybar/scripts/go-check-updates.py --notify
+interval = 3600
+
+[module/cpuclk]
+type = custom/script
+format =   <label>
+exec = ~/.config/polybar/scripts/cpu-clock.sh
+interval = 10
+
+[module/sep]
+type = custom/text
+content = | 
+content-padding = 0
+content-foreground = "#424242"
+
+[module/powermenu]
+type = custom/menu
+expand-left = true
+menu-0-0 = Logout
+menu-0-0-exec = i3-msg exit
+menu-0-1 = Lock
+menu-0-1-exec = mantablockscreen
+menu-0-2 =  Poweroff
+menu-0-2-exec = i3-nagbar -t warning -m 'Shut down?' -b 'Yes' 'poweroff'
+menu-0-3 =   Reboot
+menu-0-3-exec = i3-nagbar -t warning -m 'Reboot?' -b 'Yes' 'reboot'
+format-spacing = 2 
+format-padding = 4
+label-open = 
+label-close = 
+label-sep = |

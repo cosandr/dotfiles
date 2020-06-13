@@ -2,13 +2,21 @@ make_*
 settings.json
 plasma-org.kde.plasma.desktop-appletsrc
 Preferences.sublime-settings
+SublimeLinter.sublime-settings
 {{- $is_srv := eq .chezmoi.hostname "DreSRV" -}}
+{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
 # Ignore GUI app config files on server/root
 {{- if or $is_srv $is_root }}
 .config/Code
 .config/kitty
 .config/sublime-text-3
+.config/i3
+.config/polybar
+.config/dunst
+{{- if not $is_desktop }}
+.config/i3/workspace-*
+{{- end }}
 {{- end }}
 # Ignore SSH keys when not running on server
 {{- if not $is_srv }}
