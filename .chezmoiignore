@@ -17,6 +17,7 @@ SublimeLinter.sublime-settings
 .config/sublime-text-3
 .fonts
 .xprofile
+.Xresources
 {{- end }}
 {{- if not $is_desktop }}
 .config/i3/workspace-*
