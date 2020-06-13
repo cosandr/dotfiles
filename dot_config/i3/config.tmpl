@@ -29,9 +29,11 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 assign [class="Spotify"] 2
 assign [class="discord"] 2
 
-#autostart
+# Display stuff
 exec --no-startup-id xrandr --output DP-4 --mode 3840x2160 --rate 120 --primary
 exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --right-of DP-4
+# Lower mouse sensitivity
+exec --no-startup-id xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' -0.5
 {{- end }}
 exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
 exec --no-startup-id picom {{ if $is_desktop }}--backend xrender --refresh-rate 120{{- end }} -b
@@ -62,8 +64,8 @@ bindsym $super+q kill
 bindsym $alt+F4 kill
 
 # start a terminal
-bindsym $super+Return exec kitty
-bindsym $super+Shift+Return exec alacritty
+bindsym $super+Shift+Return exec kitty
+bindsym $super+Return exec alacritty
 # Alacritty shortcuts
 bindsym $super+Shift+1 exec alacritty -e ssh -X andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
 bindsym $super+Shift+2 exec alacritty -e ssh -X root@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
@@ -142,7 +144,7 @@ bindsym $super+6 workspace 6
 bindsym $super+Shift+r restart
 
 # exit i3
-bindsym $super+Shift+e exec "i3-nagbar -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
+bindsym $super+Shift+e exec "i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
