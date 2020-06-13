@@ -16,11 +16,11 @@ SublimeLinter.sublime-settings
 .config/sublime-text-3
 .fonts
 .xprofile
+{{- end }}
 {{- if not $is_desktop }}
 .config/i3/workspace-*
 .config/polybar/scripts/nvidia*
 .config/polybar/scripts/aquaero*
-{{- end }}
 {{- end }}
 # Ignore SSH keys when not running on server
 {{- if not $is_srv }}
