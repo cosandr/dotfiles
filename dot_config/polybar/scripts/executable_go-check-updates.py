@@ -1,13 +1,52 @@
 #!/usr/bin/env python3
 
-import subprocess
+import argparse
 import json
-import sys
+import subprocess
+import signal
+import time
 
 
 SOCK_PATH   = "/run/go-check-updates.sock"
-RUN_QUERY   = "http://localhost/api?updates"
+RUN_QUERY   = "http://localhost/api?updates&refresh"
 SERVER_PATH = "/mnt/sshfs/tmp/go-check-updates.json"
+DATA        = {}
+
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--server', action='store_true', help=f'Read updates from server file at {SERVER_PATH}')
+parser.add_argument('--minutes', type=int, required=False, help='Only refresh if enough minutes have passed')
+args = parser.parse_args()
+
+
+def update_data():
+    global DATA
+    if args.server:
+        with open(SERVER_PATH, 'r') as f:
+            DATA = json.load(f)
+    else:
+        s = subprocess.run(["curl", "--unix-socket", SOCK_PATH, RUN_QUERY], check=True, capture_output=True, text=True)
+        tmp = json.loads(s.stdout)
+        if not tmp.get('data'):
+            raise Exception('Empty response')
+        DATA = tmp['data']
+
+
+def print_numupdates():
+    if not DATA.get('updates'):
+        print('0')
+    else:
+        print(len(DATA['updates']))
+
+
+def handler_notify(signum, frame):
+    subprocess.run(["notify-send", "-u", "critical", updates_str(DATA)])
+
+
+def handler_refresh(signum, frame):
+    update_data()
+    print_numupdates()
 
 
 def updates_str(data: dict) -> str:
@@ -19,31 +58,16 @@ def updates_str(data: dict) -> str:
     return ret_str.strip()
 
 
-def main():
-    if '--server' in sys.argv:
-        with open(SERVER_PATH, 'r') as f:
-            data = json.load(f)
-    else:
-        s = subprocess.run(["curl", "--unix-socket", SOCK_PATH, RUN_QUERY], check=True, capture_output=True, text=True)
-        tmp = json.loads(s.stdout)
-        if not tmp.get('data'):
-            raise Exception('Empty response')
-        data = tmp['data']
-    if '--show' in sys.argv:
-        print(updates_str(data))
-    elif '--notify' in sys.argv:
-        subprocess.run(["notify-send", "-u", "critical", updates_str(data)])
-    else:
-        if not data.get('updates'):
-            print('0')
-        else:
-            print(len(data['updates']))
-
-
 if __name__ == '__main__':
-    if '--refresh' in sys.argv:
-        RUN_QUERY += '&refresh'
-    try:
-        main()
-    except:
-        print('N/A')
+    signal.signal(signal.SIGUSR1, handler_notify)
+    signal.signal(signal.SIGHUP, handler_refresh)
+    last_update = 0
+    wait_time = 0
+    while True:
+        # print(f'Seconds passed: {time.time() - last_update}')
+        if args.minutes and time.time() - last_update >= args.minutes * 60:
+            # print('updating data')
+            update_data()
+            last_update = time.time()
+            print_numupdates()
+        time.sleep(60)

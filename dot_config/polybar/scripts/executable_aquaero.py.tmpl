@@ -1,10 +1,18 @@
+{{- $font := "icomoon-feather" -}}
 #!/usr/bin/env python3
 
 
+{{- if eq $font "icomoon-feather" }}
 SHOW_DICT = {
     "sensor1": " ",   # feather droplet
     "sensor2": " ",   # feather house
 }
+{{- else if eq $font "nerd-font" }}
+SHOW_DICT = {
+    "sensor1": " ",   # nerd drop
+    "sensor2": "ﮟ ",    # nerd home outline
+}
+{{- end }}
 
 DEGREES_SYM = "°C"
 SEP = " "

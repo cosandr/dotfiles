@@ -9,7 +9,8 @@ border-bottom-size       = 1
 border-color             = "#313131"
 
 font-0                   = "Noto Sans:size=16"
-font-1                   = "icomoon\-feather:size=20"
+font-1                   = "Symbols Nerd Font:size=20"
+font-2                   = "icomoon\-feather:size=20"
 
 override-redirect        = false
 screenchange-reload      = true
@@ -23,3 +24,4 @@ module-margin-right      = 1
 
 background = #bb212121
 foreground = #eeffff
+
