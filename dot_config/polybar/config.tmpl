@@ -24,11 +24,11 @@ modules-right = cpuclk nvclk sep networkfull sep date
 [module/switchaudio]
 type = custom/script
 format = <label>
-exec = ~/.config/polybar/scripts/toggle-input.py
-click-left = pavucontrol &
-click-right = ~/.config/polybar/scripts/toggle-input.py --switch
-; interval = 10
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-input.py
+click-left = kill -HUP %pid%
+click-right = pavucontrol &
 tail = true
+interval = 0
 
 [module/nvtemp]
 type = custom/script
