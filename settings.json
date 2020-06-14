@@ -29,5 +29,7 @@
         "LESSCHARSET": "utf-8",
         "LC_ALL": "C.UTF-8"
     },
-    "python.jediEnabled": false
+    "python.jediEnabled": false,
+    "go.formatTool": "goimports",
+    "go.useLanguageServer": true
 }

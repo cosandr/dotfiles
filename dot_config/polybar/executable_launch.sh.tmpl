@@ -14,5 +14,5 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 MONITOR=DP-4 polybar main &
 MONITOR=HDMI-0 polybar secondary &
 {{- else }}
-MONITOR=eDP1 polybar main &
+MONITOR=eDP-1 polybar main &
 {{- end }}

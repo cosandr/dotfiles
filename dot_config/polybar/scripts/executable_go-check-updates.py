@@ -34,7 +34,11 @@ def main():
     elif '--notify' in sys.argv:
         subprocess.run(["notify-send", "-u", "critical", updates_str(data)])
     else:
-        print(len(data.get('updates', [])))
+        if not data.get('updates'):
+            print('0')
+        else:
+            print(len(data['updates']))
+
 
 if __name__ == '__main__':
     if '--refresh' in sys.argv:
