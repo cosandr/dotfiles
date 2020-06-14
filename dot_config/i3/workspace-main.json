@@ -1,0 +1,62 @@
+// vim:ts=4:sw=4:et
+{
+    // splitv split container with 1 children
+    "border": "pixel",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 3,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 2112,
+               "width": 1914,
+               "x": 0,
+               "y": 0
+            },
+            "name": "Browser",
+            "percent": null,
+            "swallows": [
+               {
+               "class": "^firefox$",
+               "instance": "^Navigator$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
+{
+    // tabbed split container with 1 children
+    "border": "pixel",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "normal",
+            "current_border_width": 3,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1351,
+               "width": 1561,
+               "x": 0,
+               "y": 0
+            },
+            "name": "Terminal",
+            "percent": 1,
+            "swallows": [
+               {
+                   "class": "^Alacritty$",
+                   "instance": "^Alacritty$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}

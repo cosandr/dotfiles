@@ -48,12 +48,12 @@ exec --no-startup-id "spotify --force-device-scale-factor=1.5 &"
 exec --no-startup-id discord &
 exec --no-startup-id kitty --title self-monitoring tmuxinator start hjn &
 exec --no-startup-id $HOME/.config/i3/ssh-monitoring.sh &
-exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-2.json'"
+exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-secondary.json'"
 {{- end }}
 exec --no-startup-id firefox &
-exec --no-startup-id kitty &
+exec --no-startup-id alacritty &
 {{- if $is_desktop }}
-exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/andrei/.config/i3/workspace-1.json'"
+exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/andrei/.config/i3/workspace-main.json'"
 
 # Nvidia OC
 exec --no-startup-id nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=50" -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=1000"
