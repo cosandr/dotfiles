@@ -189,16 +189,17 @@ label-layout = %layout%
 
 [module/volume]
 type = internal/pulseaudio
+use-ui-max = true
 format-volume =   <ramp-volume>  <label-volume>
 {{- if eq $font "icomoon-feather" }}
-format-muted =   Muted
+format-muted = 
 ramp-volume-0 = 
-ramp-volume-1 = 奔
+ramp-volume-1 = 
 ramp-volume-2 = 
 {{- else if eq $font "nerd-font" }}
-format-muted = ﱝ  Muted
+format-muted = ﱝ
 ramp-volume-0 = 奄
-ramp-volume-1 = 
+ramp-volume-1 = 
 ramp-volume-2 = 墳
 {{- end }}
 click-right = pavucontrol &

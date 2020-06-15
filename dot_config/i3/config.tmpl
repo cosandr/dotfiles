@@ -70,8 +70,8 @@ bindsym $alt+F4 kill
 bindsym $super+Shift+Return exec kitty
 bindsym $super+Return exec alacritty
 # Alacritty shortcuts
-bindsym $super+Shift+1 exec alacritty -e ssh -X andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
-bindsym $super+Shift+2 exec alacritty -e ssh -X root@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
+bindsym Control+$alt+1 exec alacritty -e ssh -X andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
+bindsym Control+$alt+2 exec alacritty -e ssh -X root@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
 
 # start dmenu (a program launcher)
 bindsym $super+d exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Noto Sans 16'
@@ -129,6 +129,8 @@ bindsym $super+minus scratchpad show
 
 # Screenshots
 bindsym $super+Shift+s exec spectacle --region
+bindsym Print exec spectacle --background --fullscreen
+bindsym Shift+Print exec spectacle --activewindow
 
 # Lock screen and turn monitors off after 30 seconds
 bindsym Control+$alt+l exec "betterlockscreen -l dim & sleep 30 && xset dpms force off"
@@ -144,6 +146,12 @@ bindsym $super+3 workspace 3
 bindsym $super+4 workspace 4
 bindsym $super+5 workspace 5
 bindsym $super+6 workspace 6
+bindsym $super+Shift+1 move container to workspace 1
+bindsym $super+Shift+2 move container to workspace 2
+bindsym $super+Shift+3 move container to workspace 3
+bindsym $super+Shift+4 move container to workspace 4
+bindsym $super+Shift+5 move container to workspace 5
+bindsym $super+Shift+6 move container to workspace 6
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $super+Shift+r restart
