@@ -49,6 +49,9 @@ exec --no-startup-id discord &
 exec --no-startup-id kitty --title self-monitoring tmuxinator start hjn &
 exec --no-startup-id $HOME/.config/i3/ssh-monitoring.sh &
 exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-secondary.json'"
+{{- else }}
+# Brightness and power buttons on laptop, install xfce4-power-manager
+exec --no-startup-id xfce4-power-manager
 {{- end }}
 exec --no-startup-id firefox &
 exec --no-startup-id alacritty &
@@ -169,7 +172,6 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioPlay exec "playerctl --ignore-player=chromium,firefox play-pause"
 bindsym XF86AudioNext exec "playerctl --ignore-player=chromium,firefox next"
 bindsym XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
-
 
 for_window [class="Pavucontrol"] floating enable; border normal
 for_window [class="firefox" title="Picture-in-Picture"] border none

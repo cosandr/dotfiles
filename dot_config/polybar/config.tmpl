@@ -3,12 +3,14 @@
 [bar/main]
 include-file = ~/.config/polybar/baropts
 tray-position = right
+{{- if $is_desktop }}
 modules-left = i3  
 modules-center = title
-{{- if $is_desktop }}
 modules-right = cpuusage nvusage sep cputemp nvtemp aquaero sep updates srvupdates sep volume switchaudio sep network sep date sep xkeyboard powermenu
 {{- else }}
-modules-right = cpuusage cputemp sep updates sep volume sep network sep date sep xkeyboard powermenu
+modules-left = i3 title  
+modules-center =
+modules-right = cpuusage cputemp sep updates srvupdates sep network sep volume sep battablet batbase sep date sep xkeyboard powermenu
 {{- end }}
 wm-restack = i3
 
@@ -93,9 +95,73 @@ label =  %temperature-c%
 interval = 3
 thermal-zone = 0
 ; CPU Package
+{{- if $is_desktop }}
 hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input
 base-temperature = 20
 warn-temperature = 60
+{{- else }}
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input
+base-temperature = 40
+warn-temperature = 80
+{{- end }}
+
+{{- if not $is_desktop }}
+[module/battablet]
+type = internal/battery
+full-at = 100
+battery = BAT1
+adapter = ADP1
+poll-interval = 0
+time-format = %H:%M
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+;format-full = <ramp-capacity> <label-full>
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full =  %percentage%%
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+[module/batbase]
+type = internal/battery
+full-at = 100
+battery = BAT2
+adapter = ADP1
+poll-interval = 0
+time-format = %H:%M
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+;format-full = <ramp-capacity> <label-full>
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full =  %percentage%%
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+{{- end }}
 
 [module/date]
 type = internal/date
@@ -150,28 +216,32 @@ format-padding = 0
 type = internal/network
 {{- if $is_desktop }}
 interface = enp0s31f6
+format-connected = <label-connected>
+label-connected = %downspeed:9%
 {{- if eq $font "icomoon-feather" }}
 format-connected-prefix = ""
+label-disconnected = "N/A"
 {{- else if eq $font "nerd-font" }}
 format-connected-prefix = ""
+label-disconnected = 
 {{- end }}
 {{- else }}
 interface = wlan0
+format-connected = <ramp-signal> <label-connected>
+label-connected = %essid%
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
 {{- if eq $font "icomoon-feather" }}
-format-connected-prefix = ""
+label-disconnected = 
 {{- else if eq $font "nerd-font" }}
-format-connected-prefix = ""
+label-disconnected = 睊
 {{- end }}
 {{- end }}
 interval = 3.0
-format-connected = <label-connected>
-{{- if $is_desktop }}
-label-connected = %downspeed:9%
-{{- else }}
-label-connected = %essid% %local_ip% %downspeed:9%
-{{- end }}
 format-disconnected = <label-disconnected>
-label-disconnected = not connected
 format-padding = 0
 
 [module/i3]
