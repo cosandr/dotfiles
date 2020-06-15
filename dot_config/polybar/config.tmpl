@@ -87,10 +87,14 @@ label = %percentage%
 
 [module/cputemp]
 type = internal/temperature
+{{- if $is_desktop }}
 {{- if eq $font "icomoon-feather" }}
 label =  %temperature-c%
 {{- else if eq $font "nerd-font" }}
 label =  %temperature-c%
+{{- end }}
+{{- else }}
+label = %temperature-c%
 {{- end }}
 interval = 3
 thermal-zone = 0
