@@ -12,6 +12,11 @@ SHOW_DICT = {
     "sensor1": " ",   # nerd drop
     "sensor2": "ﮟ ",    # nerd home outline
 }
+{{- else if eq $font "siji" }}
+SHOW_DICT = {
+    "sensor1": " ",
+    "sensor2": " ",
+}
 {{- end }}
 
 DEGREES_SYM = "°C"

@@ -33,20 +33,21 @@ def update_data():
         DATA = tmp['data']
 
 
-def print_numupdates():
+def get_numupdates() -> int:
     if not DATA.get('updates'):
-        print('0')
+        return 0
     else:
-        print(len(DATA['updates']))
+        return len(DATA['updates'])
 
 
 def handler_notify(signum, frame):
-    subprocess.run(["notify-send", "-u", "critical", updates_str(DATA)])
+    subprocess.run(["notify-send", "-u", "critical", "-a", "go-check-updates",
+                    f'{get_numupdates()} pending updates', updates_str(DATA)])
 
 
 def handler_refresh(signum, frame):
     update_data()
-    print_numupdates()
+    print(get_numupdates())
 
 
 def updates_str(data: dict) -> str:
@@ -69,5 +70,5 @@ if __name__ == '__main__':
             # print('updating data')
             update_data()
             last_update = time.time()
-            print_numupdates()
+            print(get_numupdates())
         time.sleep(60)

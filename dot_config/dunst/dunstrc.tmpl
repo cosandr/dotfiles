@@ -1,4 +1,5 @@
 {{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+{{- $icons := "Papirus" -}}
 # Dunst Config - Dark
 # --------------------
 
@@ -6,16 +7,16 @@
 monitor = 0
 follow = none
 {{- if $is_desktop }}
-geometry = "350x20-50+50"
+geometry = "0x20-50-50"
 {{- else }}
-geometry = "500x200-50+50"
+geometry = "0x10-50+50"
 {{- end }}
 indicate_hidden = yes
 shrink = no
 transparency = 30
 separator_height = 1
 padding = 8
-horizontal_padding = 13
+horizontal_padding = 10
 frame_width = 0
 frame_color = "#e8e8e8"
 separator_color = "#e8e8e8"
@@ -24,7 +25,7 @@ idle_threshold = 120
 font = Noto Sans 9
 line_height = 0
 markup = full
-format = "<b>%s</b>\n%b"
+format = "<b>%a</b>\n<i>%s</i>\n%b"
 alignment = center
 show_age_threshold = 60
 word_wrap = yes
@@ -36,12 +37,16 @@ icon_position = left
 sticky_history = no
 history_length = 20
 browser = firefox
-always_run_script = true
+always_run_script = false
 title = Dunst
 class = Dunst
 corner_radius = 10
-icon_path = /usr/share/icons/breeze-dark/32x32/actions/:/usr/share/icons/breeze-dark/32x32/apps/:/usr/share/icons/breeze-dark/32x32/devices/:/usr/share/icons/breeze-dark/32x32/emblems/:/usr/share/icons/breeze-dark/32x32/emotes/:/usr/share/icons/breeze-dark/32x32/mimetypes/:/usr/share/icons/breeze-dark/32x32/places/:/usr/share/icons/breeze-dark/32x32/status/
-max_icon_size = 70
+{{- if eq $icons "Adwaita" }}
+icon_path = /usr/share/icons/Adwaita/32x32/actions/:/usr/share/icons/Adwaita/32x32/apps/:/usr/share/icons/Adwaita/32x32/categories/:/usr/share/icons/Adwaita/32x32/devices/:/usr/share/icons/Adwaita/32x32/emblems/:/usr/share/icons/Adwaita/32x32/emotes/:/usr/share/icons/Adwaita/32x32/legacy/:/usr/share/icons/Adwaita/32x32/mimetypes/:/usr/share/icons/Adwaita/32x32/places/:/usr/share/icons/Adwaita/32x32/status/:/usr/share/icons/Adwaita/32x32/ui/
+{{- else if eq $icons "Papirus" }}
+icon_path = /usr/share/icons/Papirus/32x32/actions/:/usr/share/icons/Papirus/32x32/apps/:/usr/share/icons/Papirus/32x32/devices/:/usr/share/icons/Papirus/32x32/emblems/:/usr/share/icons/Papirus/32x32/emotes/:/usr/share/icons/Papirus/32x32/mimetypes/:/usr/share/icons/Papirus/32x32/places/:/usr/share/icons/Papirus/32x32/status/
+{{- end }}
+max_icon_size = 50
 mouse_left_click = do_action
 mouse_middle_click = close_all
 mouse_right_click = close_current

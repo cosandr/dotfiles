@@ -12,7 +12,6 @@ modules-left = i3 title
 modules-center =
 modules-right = cpuusage cputemp sep updates srvupdates sep network sep volume sep battablet batbase sep date sep xkeyboard powermenu
 {{- end }}
-wm-restack = i3
 
 {{- if $is_desktop }}
 [bar/secondary]
@@ -38,6 +37,8 @@ type = custom/script
 format =  <label>
 {{- else if eq $font "nerd-font" }}
 format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
 {{- end }}
 exec = ~/.config/polybar/scripts/nvidia-temp.sh
 interval = 3
@@ -48,6 +49,8 @@ type = custom/script
 format =  <label>
 {{- else if eq $font "nerd-font" }}
 format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
 {{- end }}
 exec = ~/.config/polybar/scripts/nvidia-usage.sh
 interval = 3
@@ -63,6 +66,8 @@ type = custom/script
 format =  <label>
 {{- else if eq $font "nerd-font" }}
 format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
 {{- end }}
 exec = ~/.config/polybar/scripts/nvidia-clock.sh
 interval = 10
@@ -82,6 +87,8 @@ internal = 1
 format =   <label>%
 {{- else if eq $font "nerd-font" }}
 format =   <label>%
+{{- else if eq $font "siji" }}
+format =  <label>%
 {{- end }}
 label = %percentage%
 
@@ -92,6 +99,8 @@ type = internal/temperature
 label =  %temperature-c%
 {{- else if eq $font "nerd-font" }}
 label =  %temperature-c%
+{{- else if eq $font "siji" }}
+label =  %temperature-c%
 {{- end }}
 {{- else }}
 label = %temperature-c%
@@ -176,6 +185,8 @@ time = %H:%M
 label =  %date%   %time%
 {{- else if eq $font "nerd-font" }}
 label =  %date%   %time%
+{{- else if eq $font "siji" }}
+label =  %date%   %time%
 {{- end }}
 format-padding = 1
 
@@ -201,6 +212,11 @@ format-muted = ﱝ
 ramp-volume-0 = 奄
 ramp-volume-1 = 
 ramp-volume-2 = 墳
+{{- else if eq $font "siji" }}
+format-muted = 
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
 {{- end }}
 click-right = pavucontrol &
 
@@ -229,6 +245,9 @@ label-disconnected = "N/A"
 {{- else if eq $font "nerd-font" }}
 format-connected-prefix = ""
 label-disconnected = 
+{{- else if eq $font "siji" }}
+format-connected-prefix = ""
+label-disconnected = 
 {{- end }}
 {{- else }}
 interface = wlan0
@@ -285,6 +304,8 @@ type = custom/script
 format =  <label>
 {{- else if eq $font "nerd-font" }}
 format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
 {{- end }}
 exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --minutes 60
 click-left = kill -USR1 %pid%
@@ -298,6 +319,8 @@ type = custom/script
 format =  <label>
 {{- else if eq $font "nerd-font" }}
 format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
 {{- end }}
 exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --server --minutes 60
 click-left = kill -USR1 %pid%
@@ -311,6 +334,8 @@ type = custom/script
 format =   <label>
 {{- else if eq $font "nerd-font" }}
 format =   <label>
+{{- else if eq $font "siji" }}
+format =  <label>
 {{- end }}
 exec = ~/.config/polybar/scripts/cpu-clock.sh
 interval = 10
@@ -336,8 +361,15 @@ menu-0-0 = "   Logout  "
 menu-0-1 = "   Lock  "
 menu-0-2 = "   Poweroff  "
 menu-0-3 =  "ﰇ   Reboot  "
-label-open = 
+label-open = 
 label-close = 
+{{- else if eq $font "siji" }}
+menu-0-0 = "   Logout  "
+menu-0-1 = "   Lock  "
+menu-0-2 = "   Poweroff  "
+menu-0-3 =  "   Reboot  "
+label-open = 
+label-close = 
 {{- end }}
 menu-0-0-exec = i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'
 menu-0-1-exec = betterlockscreen -l dim & sleep 30 && xset dpms force off
