@@ -74,7 +74,10 @@ bindsym Control+$alt+1 exec alacritty -e ssh -X andrei@{{- if $is_desktop }}DreS
 bindsym Control+$alt+2 exec alacritty -e ssh -X root@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}
 
 # start dmenu (a program launcher)
-bindsym $super+d exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Noto Sans 16'
+bindsym $super+d exec rofi -show drun
+
+# alt-tab
+bindsym $alt+Tab exec rofi -show window 
 
 
 set $up Up
