@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=mount-sshfs
+GenericName=Mount /mnt/sshfs
+Comment=Mount server using SSHFS
+Exec=/home/andrei/.config/i3/mount-sshfs.sh
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true

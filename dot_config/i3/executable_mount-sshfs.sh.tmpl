@@ -4,6 +4,8 @@
 # Wait for SSH agent
 while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
 
+# Wait for network, ping dresrv.com?
+while ! ping -c 1 -W 1 1.1.1.1; do sleep 1; done
 
 mountpoint="/mnt/sshfs"
 
@@ -11,6 +13,10 @@ if grep -q "$mountpoint" /proc/mounts
 then
     notify-send "$mountpoint already mounted"
 else
-    sshfs andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}:/ "$mountpoint"
-    notify-send "$mountpoint mounted"
+    mountcmd=$(sshfs andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}:/ "$mountpoint")
+    if [[ $? -eq 0  ]]; then
+        notify-send "$mountpoint mounted"
+    else
+        notify-send "$mountpoint mount failed" "$mountcmd"
+    fi
 fi
