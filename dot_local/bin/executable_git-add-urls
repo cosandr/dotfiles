@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import subprocess
+import re
+
+
+MAIN_REMOTE = 'origin'
+
+
+def main():
+    s = subprocess.run(["git", "remote", "-v"], capture_output=True, text=True)
+    if s.returncode != 0:
+        print(s.stderr, end='')
+        exit(s.returncode)
+    data = {}
+    for m in re.finditer(r'(?P<name>\w+)\s+(?P<url>\S+)\s+\((?P<dir>\w+)\)', s.stdout):
+        name, url, fetch_pull = m.group(1, 2, 3)
+        if fetch_pull != 'push':
+            continue
+        if name not in data:
+            data[name] = [url]
+        else:
+            data[name].append(url)
+
+    if MAIN_REMOTE not in data:
+        print('No remote {} found'.format(MAIN_REMOTE))
+        exit(1)
+
+    for k, v in data.items():
+        if k in (MAIN_REMOTE, 'upstream'):
+            continue
+        for url in v:
+            if url in data[MAIN_REMOTE]:
+                continue
+            print("Adding {} to {} (push)".format(url, MAIN_REMOTE))
+            subprocess.run(["git", "remote", "set-url", "--add", "--push", MAIN_REMOTE, url], check=True)
+
+
+if __name__ == '__main__':
+    main()

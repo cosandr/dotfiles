@@ -10,7 +10,7 @@ unsetopt correct
 
 # Confirm function
 confirm () {
-	echo -n "Confirm $1 on ${HOST}? "
+    echo -n "Confirm $1 on ${HOST}? "
     read reply
 
     case $reply in
@@ -52,8 +52,8 @@ export PYENV_ROOT={{ if eq .chezmoi.hostname "DreSRV" }}"/opt/pyenv"{{else}}"$HO
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if command -v pyenv 1>/dev/null 2>&1; then
-	eval "$(pyenv init -)"
-	eval "$(pyenv virtualenv-init -)"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
 fi
 {{- end }}
 {{- if has "go" $avail_list }}
@@ -75,9 +75,9 @@ alias autoremove='{{if ne .chezmoi.username "root"}}sudo {{ end }}pacman -Rcns $
 {{- if has "dotnet" $avail_list }}
 _dotnet_zsh_complete() 
 {
-  local completions=("$(dotnet complete "$words")")
+    local completions=("$(dotnet complete "$words")")
 
-  reply=( "${(ps:\n:)completions}" )
+    reply=( "${(ps:\n:)completions}" )
 }
 
 compctl -K _dotnet_zsh_complete dotnet
