@@ -26,8 +26,10 @@ def main():
         print('No remote {} found'.format(MAIN_REMOTE))
         exit(1)
 
+    subprocess.run(["git", "remote", "set-url", "--push", MAIN_REMOTE, data[MAIN_REMOTE][0]], check=True)
+
     for k, v in data.items():
-        if k in (MAIN_REMOTE, 'upstream'):
+        if k == 'upstream':
             continue
         for url in v:
             if url in data[MAIN_REMOTE]:

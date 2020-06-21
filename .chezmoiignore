@@ -9,11 +9,13 @@ SublimeLinter.sublime-settings
 # Ignore GUI app config files on server/root
 {{- if or $is_srv $is_root }}
 .config/alacritty
+.config/autostart
 .config/Code
 .config/dunst
 .config/i3
 .config/kitty
 .config/polybar
+.config/rofi
 .config/sublime-text-3
 .fonts
 .xprofile
