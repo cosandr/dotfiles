@@ -18,7 +18,7 @@ modules-right = cpuusage cputemp sep updates srvupdates sep network sep volume s
 include-file = ~/.config/polybar/baropts
 modules-left = i3
 modules-center = title
-modules-right = cpuclk nvclk sep networkfull sep date
+modules-right = cpuclk nvclk sep aquaerofans sep networkfull sep date
 {{ end }}
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 {{ if $is_desktop }}
@@ -58,6 +58,12 @@ interval = 3
 [module/aquaero]
 type = custom/script
 exec = ~/.config/polybar/scripts/aquaero.py
+interval = 60
+
+[module/aquaerofans]
+type = custom/script
+format = <label>
+exec = ~/.config/polybar/scripts/aquaero_fans.py
 interval = 60
 
 [module/nvclk]

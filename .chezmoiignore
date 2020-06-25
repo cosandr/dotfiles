@@ -6,8 +6,9 @@ SublimeLinter.sublime-settings
 {{- $is_srv := eq .chezmoi.hostname "DreSRV" -}}
 {{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
+{{- $is_wsl := contains "Microsoft" .chezmoi.kernel.osrelease -}}
 # Ignore GUI app config files on server/root
-{{- if or $is_srv $is_root }}
+{{- if or $is_srv $is_root $is_wsl }}
 .config/alacritty
 .config/autostart
 .config/Code
