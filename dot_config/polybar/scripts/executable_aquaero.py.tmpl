@@ -1,21 +1,22 @@
 {{- $font := "icomoon-feather" -}}
 #!/usr/bin/env python3
 
+import re
 
 {{- if eq $font "icomoon-feather" }}
 SHOW_DICT = {
-    "sensor1": " ",   # feather droplet
     "sensor2": " ",   # feather house
+    "sensor1": " ",   # feather droplet
 }
 {{- else if eq $font "nerd-font" }}
 SHOW_DICT = {
-    "sensor1": " ",   # nerd drop
     "sensor2": "ﮟ ",    # nerd home outline
+    "sensor1": " ",    # nerd drop
 }
 {{- else if eq $font "siji" }}
 SHOW_DICT = {
-    "sensor1": " ",
     "sensor2": " ",
+    "sensor1": " ",
 }
 {{- end }}
 
@@ -25,15 +26,14 @@ SEP = " "
 
 try:
     print_entries = []
+    re_fans = re.compile(r'\|?(?P<name>sensor\d+)\t(?P<val>\d+(\.\d+)?)\|?')
     with open(f'/tmp/aquaero.txt', 'r') as f:
-        lines = f.readlines()
-    for line in lines:
-        for entry in line.split('|'):
-            e_name, e_val = entry.split('\t')
-            name = SHOW_DICT.get(e_name)
-            if name:
-                temp = float(e_val)
-                print_entries.append(f'{name}{temp:.1f}{DEGREES_SYM}')
+        content = f.read()
+    avail_dict = {m.group('name'): float(m.group('val')) for m in re_fans.finditer(content)}
+    for key, name in SHOW_DICT.items():
+        val = avail_dict.get(key)
+        if val:
+            print_entries.append(f'{name}{val:.1f}{DEGREES_SYM}')
     if print_entries:
         print(SEP.join(print_entries))
 except:
