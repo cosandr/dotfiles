@@ -136,7 +136,7 @@ bindsym Print exec spectacle --background --fullscreen
 bindsym Shift+Print exec spectacle --activewindow
 
 # Lock screen and turn monitors off after 30 seconds
-bindsym Control+$alt+l exec "betterlockscreen -l dim & sleep 30 && xset dpms force off"
+bindsym $super+l exec "betterlockscreen -l dim & sleep 30 && xset dpms force off"
 
 # switch to workspace
 bindsym $alt+Control+Right move window to workspace next
@@ -164,12 +164,12 @@ bindsym $super+Shift+e exec "i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Re
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        bindsym Left resize shrink width 5 px or 5 ppt
-        bindsym Down resize shrink height 5 px or 5 ppt
-        bindsym Up resize grow height 5 px or 5 ppt
-        bindsym Right resize grow width 5 px or 5 ppt
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    bindsym Left resize shrink width 5 px or 5 ppt
+    bindsym Down resize shrink height 5 px or 5 ppt
+    bindsym Up resize grow height 5 px or 5 ppt
+    bindsym Right resize grow width 5 px or 5 ppt
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 bindsym $super+r mode "resize"
 
