@@ -4,6 +4,10 @@ import re
 import signal
 import subprocess
 
+# Fix for inputs not switching
+# Change in /etc/pulse/default.pa
+# load-module module-stream-restore restore_device=false
+
 # <sink>: <friendly-name>
 # Should only be two entries that toggle when this script runs
 SWAP = {
