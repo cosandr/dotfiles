@@ -1,8 +1,8 @@
 AddKeysToAgent yes
 
 Host dresrv.com
-	HostName {{ .ssh_domain }}
-	Port {{ .ssh_port }} 
+	HostName {{ .dresrv.domain }}
+	Port {{ .dresrv.ssh_port }} 
 
 Host github.com-pub
 	HostName github.com
@@ -19,16 +19,16 @@ Host srvsim-boot
 	User root
 {{ else }}
 Host srvsim
-	HostName {{ .srv_ip }}
+	HostName {{ .dresrv.local_ip }}
 	Port 226
 	User root
 
 Host srvsim-boot
-	HostName {{ .srv_ip }}
+	HostName {{ .dresrv.local_ip }}
 	Port 2226
 	User root
 
 Host DreSRV
-    HostName {{ .srv_ip }}
+    HostName {{ .dresrv.local_ip }}
     User andrei
 {{ end }}

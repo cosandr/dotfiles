@@ -1,5 +1,5 @@
 [user]
-	email = {{ .public_email }}
-	name = {{ .public_name }}
+	email = {{ .git.private_email }}
+	name = {{ .git.private_name }}
 [alias]
     pushall = !git remote | xargs -L1 -I R git push R master

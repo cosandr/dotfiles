@@ -1,14 +1,17 @@
+{{- $not_server := ne .chezmoi.hostname "DreSRV" -}}
+{{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
+{{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
+README.md
+.secret*
+secret*
+update_config.*
 make_*
 settings.json
 plasma-org.kde.plasma.desktop-appletsrc
 Preferences.sublime-settings
 SublimeLinter.sublime-settings
-{{- $is_srv := eq .chezmoi.hostname "DreSRV" -}}
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
-{{- $is_root := eq .chezmoi.username "root" -}}
-{{- $is_wsl := contains "Microsoft" .chezmoi.kernel.osrelease -}}
-# Ignore GUI app config files on server/root
-{{- if or $is_srv $is_root $is_wsl }}
+{{- if and $not_desktop $not_laptop }}
+# Ignore GUI app config files when not desktop or laptop
 .config/alacritty
 .config/autostart
 .config/Code
@@ -21,21 +24,18 @@ SublimeLinter.sublime-settings
 .fonts
 .xprofile
 .Xresources
-{{- end }}
-{{- if not $is_desktop }}
+{{- else if $not_desktop }}
+# Ignore desktop config on laptop
 .config/i3/workspace-*
 .config/polybar/scripts/nvidia*
 .config/polybar/scripts/aquaero*
 {{- end }}
+{{- if $not_server }}
 # Ignore SSH keys when not running on server
-{{- if not $is_srv }}
 .ssh/authorized_keys
-# Ignore hnvtop config on server (no nvidia GPU)
+.config/tmuxinator/hjd.yml
 {{- else }}
+# Ignore hnvtop config on server (no nvidia GPU)
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
-{{- end }}
-# Ignore htop-journal-discord log if we don't know where log is
-{{- if eq .discord_log "" }}
-.config/tmuxinator/hjd.yml
 {{- end }}

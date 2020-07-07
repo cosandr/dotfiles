@@ -1,4 +1,9 @@
-{{- range splitList " " .src_list }}
+{{- $not_server := ne .chezmoi.hostname "DreSRV" -}}
+{{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
+{{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
+{{- $not_root := ne .chezmoi.username "root" -}}
+{{- $is_wsl := contains "Microsoft" .chezmoi.kernel.osrelease -}}
+{{- range .check.source }}
 {{ if . }}source {{ . }}{{ end }}
 {{- end }}
 
@@ -19,60 +24,7 @@ confirm () {
     esac
 }
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Aliases
-alias reboot='confirm reboot'
-alias poweroff='confirm poweroff'
-alias shutdown='confirm shutdown'
-alias cpp='rsync -avh --no-compress --progress'
-alias mvp='rsync -avh --no-compress --progress --remove-source-files'
-alias git-cosandr='git config user.email "{{ .private_email }}" && git config user.name "{{ .private_name }}"'
-{{- $avail_list := splitList " " .avail_list -}}
-{{- if has "docker" $avail_list }}
-alias dls='docker container ls -a --sort names --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
-alias dlog='docker logs -f'
-alias dex='docker exec -t'
-alias dsti='docker container start -i'
-{{- end }}
-{{- if has "podman" $avail_list }}
-alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}" }}  {{ "{{.Status}}" }}  {{ "{{.Created}}" }}"'
-alias podlog='podman logs -f'
-alias podex='podman exec -t'
-alias podsti='podman container start -i'
-{{- end }}
-export PATH="$HOME/.local/bin:$PATH"
-{{- if has "corefreq-cli" $avail_list }}
-alias tmux-mon='tmux new -s mon  "htop -d10" \; split-window "corefreq-cli" \; select-layout even-vertical'
-{{- end }}
-{{- if has "pyenv" $avail_list }}
-# pyenv
-export PYENV_ROOT={{ if eq .chezmoi.hostname "DreSRV" }}"/opt/pyenv"{{else}}"$HOME/.pyenv"{{end}}
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-fi
-{{- end }}
-{{- if has "go" $avail_list }}
-export PATH="$HOME/go/bin:$PATH"
-{{- end }}
-{{- if has "virsh" $avail_list }}
-{{- if ne .chezmoi.username "root" }}
-alias podman='sudo podman'
-alias virsh='virsh --connect qemu:///system'
-alias virt-install='virt-install --connect qemu:///system'
-{{- end }}
-{{- end }}
-{{- if ne .chezmoi.hostname "DreSRV" }}
-alias mntsrv='sshfs andrei@{{- if eq .chezmoi.hostname "desktop" }}DreSRV{{- else }}dresrv.com{{- end}}:/ /mnt/sshfs'
-{{- end }}
-{{- if eq .chezmoi.osRelease.id "arch" }}
-alias autoremove='{{if ne .chezmoi.username "root"}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
-{{- end }}
-{{- if has "dotnet" $avail_list }}
+{{- if has "dotnet" .check.exec }}
 _dotnet_zsh_complete() 
 {
     local completions=("$(dotnet complete "$words")")
@@ -82,16 +34,79 @@ _dotnet_zsh_complete()
 
 compctl -K _dotnet_zsh_complete dotnet
 {{- end }}
-{{- if has "cargo" $avail_list }}
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# PATH
+
+export PATH="$HOME/.local/bin:$PATH"
+{{- if has "cargo" .check.exec }}
 export PATH="$HOME/.cargo/bin:$PATH"
 {{- end }}
-{{- if eq .chezmoi.hostname "DreSRV" }}
+{{- if has "go" .check.exec }}
+export PATH="$HOME/go/bin:$PATH"
+{{- end }}
+{{- if has "pyenv" .check.exec }}
+# pyenv
+export PYENV_ROOT={{ if eq .chezmoi.hostname "DreSRV" }}"/opt/pyenv"{{else}}"$HOME/.pyenv"{{end}}
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+{{- end }}
+
+# Aliases
+
+alias reboot='confirm reboot'
+alias poweroff='confirm poweroff'
+alias shutdown='confirm shutdown'
+alias cpp='rsync -avh --no-compress --progress'
+alias mvp='rsync -avh --no-compress --progress --remove-source-files'
+alias git-atgb='git config user.email "{{ .git.public_email }}" && git config user.name "{{ .git.public_name }}"'
+alias git-cosandr='git config user.email "{{ .git.private_email }}" && git config user.name "{{ .git.private_name }}"'
+{{- range $k, $v := .log_files }}
+{{ if ne $v "" }}alias logs-{{ $k }}='{{ $v }}'{{ end }}
+{{- end }}
+{{- if has "docker" .check.exec }}
+alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
+alias dlog='docker logs -f'
+alias dex='docker exec -t'
+alias dsti='docker container start -i'
+{{- end }}
+{{- if has "podman" .check.exec }}
+{{- if $not_root }}
+alias podman='sudo podman'
+{{- end }}
+alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}" }}  {{ "{{.Status}}" }}  {{ "{{.Created}}" }}"'
+alias podlog='podman logs -f'
+alias podex='podman exec -t'
+alias podsti='podman container start -i'
+{{- end }}
+{{- if has "corefreq-cli" .check.exec }}
+alias tmux-mon='tmux new -s mon  "htop -d10" \; split-window "corefreq-cli" \; select-layout even-vertical'
+{{- end }}
+{{- if and (has "virsh" .check.exec) ($not_root) }}
+alias virsh='virsh --connect qemu:///system'
+alias virt-install='virt-install --connect qemu:///system'
+{{- end }}
+{{- if $not_server }}
+alias mntsrv='sshfs andrei@{{- if eq .chezmoi.hostname "desktop" }}DreSRV{{- else }}dresrv.com{{- end}}:/ /mnt/sshfs'
+{{- end }}
+{{- if eq .chezmoi.osRelease.id "arch" }}
+alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
+{{- end }}
+{{- if not $not_root }}
+alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'
+alias gita='sudo -u andrei git'
+{{- end }}
+
+{{- if and $not_desktop $not_laptop }}
 export GPG_TTY=$(tty)
 {{- end }}
-{{- if has "go-motd" $avail_list }}
-go-motd
-{{- end }}
-{{- if contains "Microsoft" .chezmoi.osRelease.id}}
+{{- if $is_wsl }}
 [ -n ${WSL_AUTH_SOCK} ] && export SSH_AUTH_SOCK=${WSL_AUTH_SOCK}
 export GDK_SCALE=2
 export QT_SCREEN_SCALE_FACTORS=2
@@ -99,7 +114,7 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export DISPLAY=localhost:0.0
 eval $(/mnt/c/Users/Andrei/Documents/ssh-agent-wsl/ssh-agent-wsl -r)
 {{- end }}
-{{- if eq .chezmoi.username "root" }}
-alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'
-alias gita='sudo -u andrei git'
-{{- end}}
+
+{{- if has "go-motd" .check.exec }}
+go-motd
+{{- end }}
