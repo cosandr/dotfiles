@@ -32,5 +32,7 @@
     "python.jediEnabled": false,
     "go.formatTool": "goimports",
     "go.useLanguageServer": true,
-    "python.languageServer": "Microsoft"
+    "python.languageServer": "Microsoft",
+    "discord.enabled": false,
+    "discord.workspaceElapsedTime": true
 }

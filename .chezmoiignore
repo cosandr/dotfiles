@@ -1,6 +1,7 @@
 {{- $not_server := ne .chezmoi.hostname "DreSRV" -}}
 {{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
+{{- $is_root := eq .chezmoi.username "root" -}}
 README.md
 .secret*
 secret*
@@ -10,7 +11,7 @@ settings.json
 plasma-org.kde.plasma.desktop-appletsrc
 Preferences.sublime-settings
 SublimeLinter.sublime-settings
-{{- if and $not_desktop $not_laptop }}
+{{- if or ($is_root) (and $not_desktop $not_laptop) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/alacritty
 .config/autostart

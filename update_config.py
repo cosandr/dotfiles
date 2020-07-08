@@ -10,7 +10,10 @@ if os.getenv('USER'):
     USER_HOME = os.path.expanduser("~{}".format(os.environ['USER']))
 else:
     USER_HOME = os.path.expanduser("~")
-CHEZMOI_HOME = os.path.join(USER_HOME, '.local/share/chezmoi')
+if os.getenv('CHEZMOI_HOME'):
+    CHEZMOI_HOME = os.environ['CHEZMOI_HOME']
+else:
+    CHEZMOI_HOME = os.path.join(USER_HOME, '.local/share/chezmoi')
 CHEZMOI_CONFIG = os.path.join(USER_HOME, '.config/chezmoi/chezmoi.toml')
 CHEZMOI_CONFIG_TMPL = os.path.join(CHEZMOI_HOME, '.chezmoi.toml.tmpl')
 HOSTNAME = gethostname()
@@ -125,9 +128,11 @@ def read_secrets():
     return secrets
 
 if __name__ == "__main__":
-    # Update config template
-    with open(CHEZMOI_CONFIG_TMPL, 'w') as f:
-        f.write(to_toml(CONFIG))
+    # Might not exist if we are using chezmoi --source
+    if os.path.exists(CHEZMOI_HOME):
+        # Update config template
+        with open(CHEZMOI_CONFIG_TMPL, 'w') as f:
+            f.write(to_toml(CONFIG))
     cfg = CONFIG.copy()
     secrets = read_secrets()
     cfg['data'] = {**cfg['data'], **secrets.get('data', {})}

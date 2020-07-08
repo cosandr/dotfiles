@@ -46,5 +46,7 @@ Same structure as config file.
 If we want to use another user's chezmoi, here `andrei`
 
 ```sh
+cd ~andrei/.local/share/chezmoi
+CHEZMOI_HOME=. ./update_config.py
 chezmoi --source ~andrei/.local/share/chezmoi apply
 ```
