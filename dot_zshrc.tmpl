@@ -101,6 +101,7 @@ alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
 {{- if not $not_root }}
 alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'
 alias gita='sudo -u andrei git'
+alias logs-nginx='tail $(find /var/log/nginx -type f -printf " -f %p")'
 {{- end }}
 
 {{- if and $not_desktop $not_laptop }}

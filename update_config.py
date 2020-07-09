@@ -175,4 +175,4 @@ if __name__ == "__main__":
         f.write(to_toml(cfg))
     
     # Display diff
-    subprocess.run(['diff', '--color=always', CHEZMOI_CONFIG + '.old', CHEZMOI_CONFIG])
+    subprocess.run(['diff', '--unified', '--color=always', CHEZMOI_CONFIG + '.old', CHEZMOI_CONFIG])
