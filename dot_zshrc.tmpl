@@ -68,7 +68,7 @@ alias mvp='rsync -avh --no-compress --progress --remove-source-files'
 alias git-atgb='git config user.email "{{ .git.public_email }}" && git config user.name "{{ .git.public_name }}"'
 alias git-cosandr='git config user.email "{{ .git.private_email }}" && git config user.name "{{ .git.private_name }}"'
 {{- range $k, $v := .log_files }}
-{{ if ne $v "" }}alias logs-{{ $k }}='{{ $v }}'{{ end }}
+{{ if ne $v "" }}alias logs-{{ $k }}='tail -f {{ $v }}'{{ end }}
 {{- end }}
 {{- if has "docker" .check.exec }}
 alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
