@@ -34,5 +34,6 @@
     "go.useLanguageServer": true,
     "python.languageServer": "Microsoft",
     "discord.enabled": false,
-    "discord.workspaceElapsedTime": true
+    "discord.workspaceElapsedTime": true,
+    "python.showStartPage": false
 }

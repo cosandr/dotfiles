@@ -13,7 +13,7 @@ if grep -q "$mountpoint" /proc/mounts
 then
     notify-send "$mountpoint already mounted"
 else
-    mountcmd=$(sshfs andrei@{{- if $is_desktop }}DreSRV{{- else }}dresrv.com{{- end}}:/ "$mountpoint")
+    mountcmd=$(sshfs andrei@{{- if .dresrv.ssh_use_domain }}dresrv.com{{- else }}DreSRV{{- end }}:/ "$mountpoint")
     if [[ $? -eq 0  ]]; then
         notify-send "$mountpoint mounted"
     else

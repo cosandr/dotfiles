@@ -68,7 +68,10 @@ if __name__ == '__main__':
         # print(f'Seconds passed: {time.time() - last_update}')
         if args.minutes and time.time() - last_update >= args.minutes * 60:
             # print('updating data')
-            update_data()
-            last_update = time.time()
-            print(get_numupdates())
+            try:
+                update_data()
+                last_update = time.time()
+                print(get_numupdates())
+            except:
+                print('N/A')
         time.sleep(60)

@@ -3,10 +3,8 @@
 import re
 
 SHOW_DICT = {
-    "fan1": "DDC",
-    "fan3": "D5",
-    "fan2": "Internal",
-    "fan4": "External",
+    "fan1": "Pump",
+    "fan3": "Fans",
 }
 RPM_SYM = ""
 SEP = " - "

@@ -34,6 +34,7 @@ CONFIG = dict(
             domain="",
             local_ip="",
             ssh_port="",
+            ssh_use_domain=False,
         ),
         git=dict(
             private_email="",
@@ -88,6 +89,10 @@ def to_toml(cfg, depth=0, parent=''):
             v = ['"{}"'.format(el) for el in v]
             toml_str += ", ".join(v)
             toml_str += "]"
+        elif isinstance(v, bool):
+            toml_str += '{}'.format(str(v).lower())
+        elif isinstance(v, (int, float)):
+            toml_str += '{}'.format(str(v))
         else:
             toml_str += '"{}"'.format(str(v))
         toml_str += "\n"
@@ -148,6 +153,8 @@ if __name__ == "__main__":
         if not os.path.exists(log_files[k]):
             log_files[k] = ""
     cfg["data"]['log_files'].update(log_files)
+
+    cfg["data"]["dresrv"]["ssh_use_domain"] = HOSTNAME != 'desktop'
 
     for c in CHECK_CMDS:
         if which(c):
