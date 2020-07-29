@@ -34,7 +34,7 @@ CONFIG = dict(
             domain="",
             local_ip="",
             ssh_port="",
-            ssh_use_domain=False,
+            use_domain=False,
         ),
         git=dict(
             private_email="",
@@ -154,7 +154,7 @@ if __name__ == "__main__":
             log_files[k] = ""
     cfg["data"]['log_files'].update(log_files)
 
-    cfg["data"]["dresrv"]["ssh_use_domain"] = HOSTNAME != 'desktop'
+    cfg["data"]["dresrv"]["use_domain"] = HOSTNAME != 'desktop'
 
     for c in CHECK_CMDS:
         if which(c):

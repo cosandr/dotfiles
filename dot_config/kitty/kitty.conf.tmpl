@@ -897,7 +897,7 @@ map kitty_mod+q      close_tab
 map kitty_mod+alt+t  set_tab_title
 
 # SSH tabs
-{{- if .dresrv.ssh_use_domain }}
+{{- if .dresrv.use_domain }}
 map kitty_mod+1 new_tab ssh -X andrei@dresrv.com
 map kitty_mod+2 new_tab ssh -t andrei@dresrv.com 'sudo -i'
 {{- else }}

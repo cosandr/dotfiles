@@ -29,6 +29,10 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 assign [class="Spotify"] 2
 assign [class="discord"] 2
 
+# Don't need borders either
+for_window [class="Spotify"] border none
+for_window [class="discord"] border none
+
 # Display stuff
 # Also edit /usr/share/sddm/scripts/Xsetup
 exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate right --pos 0x0 --output DP-4 --primary --mode 3840x2160 --rate 120 --pos 2160x1680
@@ -71,7 +75,7 @@ bindsym $alt+F4 kill
 bindsym $super+Shift+Return exec kitty
 bindsym $super+Return exec alacritty
 # Alacritty shortcuts
-{{- if .dresrv.ssh_use_domain }}
+{{- if .dresrv.use_domain }}
 bindsym Control+$alt+1 exec alacritty -e ssh -X andrei@dresrv.com
 bindsym Control+$alt+2 exec alacritty -e ssh -t andrei@dresrv.com 'sudo -i'
 {{- else }}

@@ -4,7 +4,7 @@
 while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
 
 # Start terminal
-{{- if .dresrv.ssh_use_domain }}
+{{- if .dresrv.use_domain }}
 kitty --title server-monitoring ssh -t andrei@dresrv.com 'tmuxinator hjd' &
 {{- else }}
 kitty --title server-monitoring ssh -t root@DreSRV 'tmuxinator hjd' &

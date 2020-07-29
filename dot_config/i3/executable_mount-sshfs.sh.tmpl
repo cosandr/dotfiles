@@ -1,22 +1,20 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 #!/bin/bash
+
+mountpoint="/mnt/sshfs"
+if grep -q "$mountpoint" /proc/mounts
+then
+    notify-send "$mountpoint already mounted"
+fi
 
 # Wait for SSH agent
 while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
 
-# Wait for network, ping dresrv.com?
-while ! ping -c 1 -W 1 1.1.1.1; do sleep 1; done
+# Wait for server
+while ! ping -c 1 -W 1 {{- if .dresrv.use_domain }}{{ .dresrv.domain }}{{- else }}{{ .dresrv.local_ip }}{{- end }}; do sleep 1; done
 
-mountpoint="/mnt/sshfs"
-
-if grep -q "$mountpoint" /proc/mounts
-then
-    notify-send "$mountpoint already mounted"
+mountcmd=$(sshfs andrei@{{- if .dresrv.use_domain }}dresrv.com{{- else }}DreSRV{{- end }}:/ "$mountpoint")
+if [[ $? -eq 0  ]]; then
+    notify-send "$mountpoint mounted"
 else
-    mountcmd=$(sshfs andrei@{{- if .dresrv.ssh_use_domain }}dresrv.com{{- else }}DreSRV{{- end }}:/ "$mountpoint")
-    if [[ $? -eq 0  ]]; then
-        notify-send "$mountpoint mounted"
-    else
-        notify-send "$mountpoint mount failed" "$mountcmd"
-    fi
+    notify-send "$mountpoint mount failed" "$mountcmd"
 fi
