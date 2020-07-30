@@ -1,34 +1,34 @@
-AddKeysToAgent yes
-
-Host dresrv.com
-	HostName {{ .dresrv.domain }}
-	Port {{ .dresrv.ssh_port }} 
-
-Host github.com-pub
-	HostName github.com
-	User git
-	IdentityFile {{if eq .chezmoi.username "root"}}/home/andrei{{ else }}~{{ end }}/.ssh/cosandr_ed25519
-{{ if eq .chezmoi.hostname "DreSRV"}}
-Host srvsim
-	HostName 192.168.122.6
-	User root
-
-Host srvsim-boot
-	HostName 192.168.122.6
-	Port 2222
-	User root
-{{ else }}
-Host srvsim
-	HostName {{ .dresrv.local_ip }}
-	Port 226
-	User root
-
-Host srvsim-boot
-	HostName {{ .dresrv.local_ip }}
-	Port 2226
-	User root
-
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
-    User andrei
-{{ end }}
+
+Host dresrv.com
+{{- if .dresrv.use_domain }}
+    HostName {{ .dresrv.domain }}
+    Port {{ .dresrv.ssh_port }}
+{{- else }}
+    HostName {{ .dresrv.local_ip }}
+{{- end }}
+
+Host github.com-pub
+    HostName github.com
+    User git
+    IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/cosandr_ed25519
+
+Host srvsim
+    HostName 192.168.122.6
+    User root
+{{- if ne .chezmoi.hostname "DreSRV" }}
+    ProxyJump DreSRV
+{{- end }}
+
+Host srvsim-boot
+    HostName 192.168.122.6
+    Port 2222
+    User root
+{{- if ne .chezmoi.hostname "DreSRV" }}
+    ProxyJump DreSRV
+{{- end }}
+
+Host romsto
+    HostName {{ .romsto.domain }}
+    Port {{ .romsto.ssh_port }}

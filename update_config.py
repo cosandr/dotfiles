@@ -30,6 +30,10 @@ CONFIG = dict(
             twitch_rec="",
             twitch_enc="",
         ),
+        romsto=dict(
+            domain="",
+            ssh_port="",
+        ),
         dresrv=dict(
             domain="",
             local_ip="",
