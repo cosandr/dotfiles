@@ -6,7 +6,7 @@ tray-position = right
 {{- if $is_desktop }}
 modules-left = i3  
 modules-center = title
-modules-right = cpuusage nvusage sep aquaero nvtemp cputemp sep updates srvupdates sep volume switchaudio sep network sep date sep xkeyboard powermenu
+modules-right = cpuusage nvusage sep aquaero nvtemp cputemp sep updates srvupdates sep volume switchaudio sep network sep monitor_brightness sep date sep xkeyboard powermenu
 {{- else }}
 modules-left = i3 title  
 modules-center =
@@ -22,6 +22,16 @@ modules-right = cpuclk nvclk sep aquaerofans sep networkfull sep date
 {{ end }}
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 {{ if $is_desktop }}
+[module/monitor_brightness]
+type = custom/script
+format = <label>
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-brightness.py
+click-right = kill -HUP %pid%
+scroll-up = kill -USR1 %pid%
+scroll-down = kill -USR2 %pid%
+tail = true
+interval = 0
+
 [module/switchaudio]
 type = custom/script
 format = <label>
