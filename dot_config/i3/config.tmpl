@@ -35,8 +35,8 @@ for_window [class="discord"] border none
 
 # Display stuff
 # Also edit /usr/share/sddm/scripts/Xsetup
-exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate right --pos 0x0 --output DP-0 --primary --mode 3840x2160 --rate 120 --pos 2160x1680
-# exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --right-of DP-0 --output DP-0 --primary --mode 3840x2160 --rate 120
+exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate right --pos 0x0 --output DP-0 --primary --mode 3840x2160 --rate 120 --pos 2160x1680 --output DP-2 --off
+# exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --right-of DP-0 --output DP-0 --primary --mode 3840x2160 --rate 120 --output DP-2 --off
 # Lower mouse sensitivity
 exec --no-startup-id xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' -0.5
 {{- end }}
