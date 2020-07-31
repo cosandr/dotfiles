@@ -3,6 +3,8 @@
 """
 Requires the following udev rule in /etc/udev/rules.d/45-ddcutil-i2c.rules
 KERNEL=="i2c-[0-9]*", GROUP="andrei", MODE="0660", PROGRAM="/usr/bin/ddcutil --bus=%n getvcp 0x10"
+Requires i2c-dev kernel module
+echo 'i2c-dev' > /etc/modules-load.d/i2c.conf
 """
 
 import re
@@ -116,7 +118,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGUSR1, handler_up_down)
     signal.signal(signal.SIGUSR2, handler_up_down)
     signal.signal(signal.SIGHUP, handler_toggle)
-    # get_current()
+    get_current()
     print_brightness()
     while True:
         signal.pause()
