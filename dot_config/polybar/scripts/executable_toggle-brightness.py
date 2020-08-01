@@ -119,6 +119,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGUSR2, handler_up_down)
     signal.signal(signal.SIGHUP, handler_toggle)
     get_current()
+    NEXT = Displays(*CURRENT)
     print_brightness()
     while True:
         signal.pause()

@@ -4,7 +4,7 @@ import re
 
 SHOW_DICT = {
     "fan1": "Pump",
-    "fan3": "Fans",
+    "fan2": "Fans",
 }
 RPM_SYM = ""
 SEP = " - "
