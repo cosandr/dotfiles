@@ -8,9 +8,9 @@ xidlehook \
     --not-when-fullscreen \
     `# Don't lock when there's audio playing` \
     --not-when-audio \
-    `# Lock after 10 minutes` \
+    `# Turn screens off after 10 minutes` \
     --timer 600 \
-    '{{ $lock_cmd }}' \
+    'xset dpms force off' \
     ''
 {{- else }}
 # Only exported variables can be used within the timer's command.

@@ -38,20 +38,7 @@ compctl -K _dotnet_zsh_complete dotnet
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# PATH
-
-export PATH="$HOME/.local/bin:$PATH"
-{{- if has "cargo" .check.exec }}
-export PATH="$HOME/.cargo/bin:$PATH"
-{{- end }}
-{{- if has "go" .check.exec }}
-export PATH="$HOME/go/bin:$PATH"
-{{- end }}
 {{- if has "pyenv" .check.exec }}
-# pyenv
-export PYENV_ROOT={{ if eq .chezmoi.hostname "DreSRV" }}"/opt/pyenv"{{else}}"$HOME/.pyenv"{{end}}
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
