@@ -45,9 +45,12 @@ exec --no-startup-id picom {{ if $is_desktop }}--backend xrender --refresh-rate 
 exec --no-startup-id redshift-gtk
 exec --no-startup-id dunst
 exec --no-startup-id ~/.fehbg
-exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 
 {{- if $is_desktop }}
+{{- if .dresrv.use_domain }}
+# Use sshfs if we're not in the local network, otherwise we are using NFS
+exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
+{{- end }}
 # Start stuff
 exec --no-startup-id "spotify --force-device-scale-factor=1.5 &"
 exec --no-startup-id discord &
@@ -58,6 +61,7 @@ exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3
 {{- else }}
 # Brightness and power buttons on laptop, install xfce4-power-manager
 exec --no-startup-id xfce4-power-manager
+exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 {{- end }}
 exec --no-startup-id firefox &
 exec --no-startup-id alacritty &

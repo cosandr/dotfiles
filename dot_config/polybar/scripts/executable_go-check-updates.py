@@ -9,7 +9,7 @@ import time
 
 SOCK_PATH   = "/run/go-check-updates.sock"
 RUN_QUERY   = "http://localhost/api?updates&refresh"
-SERVER_PATH = "/mnt/sshfs/tmp/go-check-updates.json"
+SERVER_PATH = "/dresrv/tmp/go-check-updates.json"
 DATA        = {}
 
 

@@ -80,7 +80,7 @@ alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'
 {{- end }}
 {{- if $not_server }}
-alias mntsrv='sshfs andrei@{{- if eq .chezmoi.hostname "desktop" }}DreSRV{{- else }}dresrv.com{{- end}}:/ /mnt/sshfs'
+alias mntsrv='sshfs andrei@{{- if eq .chezmoi.hostname "desktop" }}DreSRV{{- else }}dresrv.com{{- end}}:/ /dresrv'
 {{- end }}
 {{- if eq .chezmoi.osRelease.id "arch" }}
 alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'

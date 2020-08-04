@@ -152,7 +152,7 @@ if __name__ == "__main__":
         twitch_enc="/srv/containers/twitch/src/log/encoder.log",
     )
     if HOSTNAME != 'DreSRV':
-        log_files = {k: '/mnt/sshfs{}'.format(v) for k, v in log_files.items()}
+        log_files = {k: '/dresrv{}'.format(v) for k, v in log_files.items()}
     for k in log_files.keys():
         if not os.path.exists(log_files[k]):
             log_files[k] = ""

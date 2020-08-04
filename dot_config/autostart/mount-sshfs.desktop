@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=mount-sshfs
-GenericName=Mount /mnt/sshfs
+GenericName=Mount /dresrv
 Comment=Mount server using SSHFS
 Exec=/home/andrei/.config/i3/mount-sshfs.sh
 Terminal=false
