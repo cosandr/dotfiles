@@ -11,6 +11,9 @@ settings.json
 plasma-org.kde.plasma.desktop-appletsrc
 Preferences.sublime-settings
 SublimeLinter.sublime-settings
+{{- if or (not $is_root) ($not_desktop) }}
+.local/bin/run-borg*
+{{- end }}
 {{- if or ($is_root) (and $not_desktop $not_laptop) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/alacritty
