@@ -27,6 +27,7 @@ SublimeLinter.sublime-settings
 .config/sublime-text-3
 .fonts
 .xprofile
+.xinitrc
 .Xresources
 {{- else if $not_desktop }}
 # Ignore desktop config on laptop
