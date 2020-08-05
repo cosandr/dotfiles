@@ -113,25 +113,28 @@ type = internal/temperature
 {{- if $is_desktop }}
 {{- if eq $font "icomoon-feather" }}
 label =  %temperature-c%
+label-warn =  %temperature-c% !!
 {{- else if eq $font "nerd-font" }}
 label =  %temperature-c%
+label-warn =  %temperature-c% !!
 {{- else if eq $font "siji" }}
 label =  %temperature-c%
+label-warn =  %temperature-c% !!
 {{- end }}
 {{- else }}
 label = %temperature-c%
+label-warn = %temperature-c% !!
 {{- end }}
 interval = 3
 thermal-zone = 0
 ; CPU Package
+warn-temperature = 80
 {{- if $is_desktop }}
 hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input
 base-temperature = 20
-warn-temperature = 60
 {{- else }}
 hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input
 base-temperature = 40
-warn-temperature = 80
 {{- end }}
 
 {{- if not $is_desktop }}
