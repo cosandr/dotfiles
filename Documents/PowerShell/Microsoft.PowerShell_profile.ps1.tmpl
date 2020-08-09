@@ -19,8 +19,10 @@ function ssh-dresrv-x {
     Remove-Item env:DISPLAY
 }
 
+$HOSTS = "C:\Windows\System32\drivers\etc\hosts"
 $env:EDITOR="vim"
 
+# Aliases (and functions acting as aliases)
 {{- range $k, $v := .log_files }}
 {{ if ne $v "" }}function logs-{{ $k }} { Get-Content {{ $v }} -Wait -Tail 10 }{{ end }}
 {{- end }}
@@ -33,6 +35,8 @@ function dsti { docker container start -i $args }
 {{- end }}
 function touch ($file) { echo "" >> $file }
 function la { Get-ChildItem -Force $args }
+function sudoedit { Start-Process -Verb runAs vim $args }
+function sudo-wt { Start-Process -Verb runAs wt.exe }
 Set-Alias ll Get-ChildItem
 Set-Alias st "C:\Program Files\Sublime Text 3\sublime_text.exe"
 Set-Alias which where.exe

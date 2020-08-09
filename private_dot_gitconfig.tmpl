@@ -9,8 +9,10 @@
 [user]
 	email = {{ .git.private_email }}
 	name = {{ .git.private_name }}
-{{- if not $is_windows }}
 [alias]
+{{- if $is_windows }}
+    add-urls = !python '{{ .chezmoi.sourceDir | replace "\\" "\\\\" }}\\dot_local\\bin\\executable_git-add-urls'
+{{- else }}
     pushall = !git remote | xargs -L1 -I R git push R master
 {{- end }}
 [commit]
