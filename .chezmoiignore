@@ -2,6 +2,7 @@
 {{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
+{{- $is_windows := eq .chezmoi.os "windows" -}}
 README.md
 .secret*
 secret*
@@ -11,6 +12,18 @@ settings.json
 plasma-org.kde.plasma.desktop-appletsrc
 Preferences.sublime-settings
 SublimeLinter.sublime-settings
+powershell_profile.ps1
+{{- if $is_windows }}
+*
+!AppData
+!Documents
+!.ssh
+!.ssh/config
+!.gitconfig
+!.vimrc
+{{- else }}
+AppData/
+Documents/
 {{- if or (not $is_root) ($not_desktop) }}
 .local/bin/run-borg*
 {{- end }}
@@ -43,4 +56,5 @@ SublimeLinter.sublime-settings
 # Ignore hnvtop config on server (no nvidia GPU)
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
+{{- end }}
 {{- end }}

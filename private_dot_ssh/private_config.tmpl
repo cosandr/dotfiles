@@ -1,3 +1,8 @@
+{{- $is_windows := eq .chezmoi.os "windows" -}}
+{{ if $is_windows }}
+XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
+{{- end }}
+
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
 
@@ -32,3 +37,12 @@ Host srvsim-boot
 Host romsto
     HostName {{ .romsto.domain }}
     Port {{ .romsto.ssh_port }}
+
+Host DreSRV-X
+    HostName DreSRV
+    ForwardX11 yes
+{{- if $is_windows }}
+    ForwardX11Trusted yes
+    RequestTTY yes
+    RemoteCommand export GDK_SCALE=2; export QT_SCREEN_SCALE_FACTORS=2; export QT_AUTO_SCREEN_SCALE_FACTOR=0; export GDK_DPI_SCALE=0.75; zsh
+{{- end }}

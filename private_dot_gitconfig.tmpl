@@ -1,8 +1,18 @@
+{{- $is_windows := eq .chezmoi.os "windows" -}}
+{{- if $is_windows }}
+[core]
+    eol = lf
+    sshCommand = C:/Program\\ Files/OpenSSH/ssh.exe
+    autocrlf = false
+    symlinks = true
+{{- end }}
 [user]
 	email = {{ .git.private_email }}
 	name = {{ .git.private_name }}
+{{- if not $is_windows }}
 [alias]
     pushall = !git remote | xargs -L1 -I R git push R master
+{{- end }}
 [commit]
     verbose = true
 [pull]

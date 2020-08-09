@@ -3,6 +3,7 @@
 import json
 import os
 import subprocess
+import platform
 from shutil import which
 from socket import gethostname
 
@@ -21,7 +22,7 @@ INDENT_CHAR = '  '
 SECRETS_FILE = os.path.join(CHEZMOI_HOME, '.secrets.json')
 SECRETS_ENCRYPTED = os.path.join(CHEZMOI_HOME, 'secrets.json.gpg')
 SECRETS_PASS = os.path.join(CHEZMOI_HOME, '.secrets_pass')
-
+OS_NAME = platform.system()
 
 CONFIG = dict(
     data=dict(
@@ -147,12 +148,17 @@ if __name__ == "__main__":
     cfg['data'] = {**cfg['data'], **secrets.get('data', {})}
 
     log_files = dict(
-        discord="/srv/containers/discord/src/discord.log",
-        twitch_rec="/srv/containers/twitch/src/log/recorder.log",
-        twitch_enc="/srv/containers/twitch/src/log/encoder.log",
+        discord="containers/discord/src/discord.log",
+        twitch_rec="containers/twitch/src/log/recorder.log",
+        twitch_enc="containers/twitch/src/log/encoder.log",
     )
-    if HOSTNAME != 'DreSRV':
-        log_files = {k: '/dresrv{}'.format(v) for k, v in log_files.items()}
+    if OS_NAME == "Linux":
+        if HOSTNAME == 'DreSRV':
+            log_files = {k: '/srv/{}'.format(v) for k, v in log_files.items()}
+        else:
+            log_files = {k: '/dresrv/srv/{}'.format(v) for k, v in log_files.items()}
+    elif OS_NAME == "Windows":
+        log_files = {k: '//dresrv.local/srv/{}'.format(v) for k, v in log_files.items()}
     for k in log_files.keys():
         if not os.path.exists(log_files[k]):
             log_files[k] = ""
@@ -170,13 +176,17 @@ if __name__ == "__main__":
 
     new_config = to_toml(cfg)
     old_config = ''
+    backup_name = CHEZMOI_CONFIG + '.old'
     # Backup old file
     if os.path.exists(CHEZMOI_CONFIG):
         # Read old file
         with open(CHEZMOI_CONFIG, 'r') as f:
             old_config = f.read()
         if new_config != old_config:
-            os.rename(CHEZMOI_CONFIG, CHEZMOI_CONFIG + '.old')
+            # Cannot rename if it already exists on Windows
+            if OS_NAME == "Windows" and os.path.exists(backup_name):
+                os.unlink(backup_name)
+            os.rename(CHEZMOI_CONFIG, backup_name)
 
     if new_config == old_config:
         exit(0)
@@ -186,4 +196,7 @@ if __name__ == "__main__":
         f.write(to_toml(cfg))
     
     # Display diff
-    subprocess.run(['diff', '--unified', '--color=always', CHEZMOI_CONFIG + '.old', CHEZMOI_CONFIG])
+    if OS_NAME == "Windows":
+        subprocess.run(['diff', '--unified', backup_name, CHEZMOI_CONFIG])
+    else:
+        subprocess.run(['diff', '--unified', '--color=always', backup_name, CHEZMOI_CONFIG])

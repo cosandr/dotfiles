@@ -1,4 +1,4 @@
-
+{{- $is_windows := eq .chezmoi.os "windows" -}}
 " Make Vim more useful
 set nocompatible
 " Use the OS clipboard by default (on versions compiled with `+clipboard`)
@@ -18,19 +18,33 @@ set encoding=utf-8
 " Change mapleader
 let mapleader=","
 " Centralize backups, swapfiles and undo history
-if empty(glob('~/.vim/backups'))
-    silent !mkdir -p ~/.vim/backups
+{{- if $is_windows }}
+if !isdirectory($HOME . "/vimfiles/backups")
+    call mkdir($HOME . "/vimfiles/backups", "p", 0700)
+endif
+set backupdir=~/vimfiles/backups
+if !isdirectory($HOME . "/vimfiles/swaps")
+    call mkdir($HOME . "/vimfiles/swaps", "p", 0700)
+endif
+set directory=~/vimfiles/swaps
+if !isdirectory($HOME . "/vimfiles/undo")
+    call mkdir($HOME . "/vimfiles/undo", "p", 0700)
+endif
+set undodir=~/vimfiles/undo
+{{- else }}
+if !isdirectory($HOME . "/.vim/backups")
+    call mkdir($HOME . "/.vim/backups", "p", 0700)
 endif
 set backupdir=~/.vim/backups
-if empty(glob('~/.vim/swaps'))
-    silent !mkdir -p ~/.vim/swaps
+if !isdirectory($HOME . "/.vim/swaps")
+    call mkdir($HOME . "/.vim/swaps", "p", 0700)
 endif
 set directory=~/.vim/swaps
-if empty(glob('~/.vim/undo'))
-    silent !mkdir -p ~/.vim/undo
+if !isdirectory($HOME . "/.vim/undo")
+    call mkdir($HOME . "/.vim/undo", "p", 0700)
 endif
 set undodir=~/.vim/undo
-
+{{- end }}
 " Respect modeline in files
 set modeline
 " Enable per-directory .vimrc files and disable unsafe commands in them
