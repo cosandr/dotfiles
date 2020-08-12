@@ -51,6 +51,7 @@ Documents/
 {{- if $not_server }}
 # Ignore SSH keys when not running on server
 .ssh/authorized_keys
+.ssh/*.pub
 .config/tmuxinator/hjd.yml
 {{- else }}
 # Ignore hnvtop config on server (no nvidia GPU)

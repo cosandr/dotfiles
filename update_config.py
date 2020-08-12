@@ -69,7 +69,6 @@ CHECK_CMDS = [
 
 CHECK_SRC = [
     "{}/.zprezto/init.zsh".format(USER_HOME),
-    "{}/.keychain/{}-sh".format(USER_HOME, HOSTNAME),
     "/usr/share/zsh/site-functions/_podman",
     "/usr/share/zsh/site-functions/fzf",
     "/usr/share/fzf/shell/key-bindings.zsh",
@@ -164,7 +163,7 @@ if __name__ == "__main__":
             log_files[k] = ""
     cfg["data"]['log_files'].update(log_files)
 
-    cfg["data"]["dresrv"]["use_domain"] = HOSTNAME != 'desktop'
+    cfg["data"]["dresrv"]["use_domain"] = HOSTNAME not in ('desktop', 'DreSRV')
 
     for c in CHECK_CMDS:
         if which(c):

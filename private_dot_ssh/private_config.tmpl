@@ -1,10 +1,12 @@
 {{- $is_windows := eq .chezmoi.os "windows" -}}
+{{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
 {{- if $is_windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 {{- end }}
 
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
+    ForwardAgent yes
 
 Host dresrv.com
 {{- if .dresrv.use_domain }}
@@ -13,16 +15,25 @@ Host dresrv.com
 {{- else }}
     HostName {{ .dresrv.local_ip }}
 {{- end }}
-
-Host github.com-pub
+    ForwardAgent yes
+{{ if not $is_srv }}
+Host github.com
     HostName github.com
-    User git
-    IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/cosandr_ed25519
+    IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
+{{- end }}
+
+Host github.com-atgb
+    HostName github.com
+{{- if not $is_srv }}
+    IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
+{{- else }}
+    IdentityFile ~/.ssh/pc-linux_ed25519.atgb
+{{- end }}
 
 Host srvsim
     HostName 192.168.122.6
     User root
-{{- if ne .chezmoi.hostname "DreSRV" }}
+{{- if not $is_srv }}
     ProxyJump DreSRV
 {{- end }}
 
@@ -30,19 +41,19 @@ Host srvsim-boot
     HostName 192.168.122.6
     Port 2222
     User root
-{{- if ne .chezmoi.hostname "DreSRV" }}
+{{- if not $is_srv }}
     ProxyJump DreSRV
 {{- end }}
 
 Host romsto
     HostName {{ .romsto.domain }}
     Port {{ .romsto.ssh_port }}
-{{ if ne .chezmoi.hostname "DreSRV" }}
+{{ if not $is_srv }}
 Host DreSRV-X
     HostName DreSRV
     ForwardX11 yes
-{{- if $is_windows }}
     ForwardX11Trusted yes
+{{- if $is_windows }}
     RequestTTY yes
     RemoteCommand export GDK_SCALE=2; export QT_SCREEN_SCALE_FACTORS=2; export QT_AUTO_SCREEN_SCALE_FACTOR=0; export GDK_DPI_SCALE=0.75; zsh
 {{- end }}
