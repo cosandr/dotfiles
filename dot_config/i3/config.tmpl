@@ -58,6 +58,7 @@ exec --no-startup-id kitty --title self-monitoring tmuxinator start hjn &
 exec --no-startup-id $HOME/.config/i3/ssh-monitoring.sh &
 exec --no-startup-id $HOME/.config/i3/update-localip.sh &
 exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-secondary-rotated.json'"
+exec --no-startup-id numlockx on &
 {{- else }}
 # Brightness and power buttons on laptop, install xfce4-power-manager
 exec --no-startup-id xfce4-power-manager
@@ -81,10 +82,10 @@ bindsym $super+Shift+Return exec kitty
 bindsym $super+Return exec alacritty
 # Alacritty shortcuts
 {{- if .dresrv.use_domain }}
-bindsym Control+$alt+1 exec alacritty -e ssh -X andrei@dresrv.com
+bindsym Control+$alt+1 exec alacritty -e ssh andrei@dresrv.com
 bindsym Control+$alt+2 exec alacritty -e ssh -t andrei@dresrv.com 'sudo -i'
 {{- else }}
-bindsym Control+$alt+1 exec alacritty -e ssh -X andrei@DreSRV
+bindsym Control+$alt+1 exec alacritty -e ssh andrei@DreSRV
 bindsym Control+$alt+2 exec alacritty -e ssh root@DreSRV
 {{- end }}
 
