@@ -64,6 +64,7 @@ exec --no-startup-id numlockx on &
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 {{- end }}
+exec --no-startup-id setxkbmap -layout us,no
 exec --no-startup-id firefox &
 exec --no-startup-id alacritty &
 {{- if $is_desktop }}
@@ -93,8 +94,18 @@ bindsym Control+$alt+2 exec alacritty -e ssh root@DreSRV
 bindsym $super+d exec rofi -show drun
 
 # alt-tab
-bindsym $alt+Tab exec rofi -show window 
+bindsym $alt+Tab exec rofi -show window
 
+# Rofi run
+bindsym $super+$alt+r exec rofi -show run
+
+# Turn off displays, delay for button release
+bindsym $super+Pause exec sleep 1 && xset dpms force off
+
+# Common apps
+bindsym $super+$alt+f exec thunar
+bindsym $super+$alt+p exec pycharm
+bindsym $super+$alt+c exec code
 
 set $up Up
 set $down Down
