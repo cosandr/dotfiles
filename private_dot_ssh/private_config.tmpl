@@ -16,10 +16,13 @@ Host dresrv.com
     HostName {{ .dresrv.local_ip }}
 {{- end }}
     ForwardAgent yes
-{{ if not $is_srv }}
+
 Host github.com
     HostName github.com
+{{- if not $is_srv }}
     IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
+{{- else }}
+    IdentityFile ~/.ssh/pc-linux_ed25519.cosandr
 {{- end }}
 
 Host github.com-atgb

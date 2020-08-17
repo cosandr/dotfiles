@@ -16,8 +16,8 @@ modules-right = cpuusage cputemp sep updates srvupdates sep network sep volume s
 {{- if $is_desktop }}
 [bar/secondary]
 include-file = ~/.config/polybar/baropts
-modules-left = i3
-modules-center = title
+modules-left = i3 title
+modules-center =
 modules-right = cpuclk nvclk sep aquaerofans sep networkfull sep date
 {{ end }}
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -129,11 +129,10 @@ interval = 3
 thermal-zone = 0
 ; CPU Package
 warn-temperature = 80
+hwmon-path = ${env:HWMON_PATH}
 {{- if $is_desktop }}
-hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input
 base-temperature = 20
 {{- else }}
-hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input
 base-temperature = 40
 {{- end }}
 
