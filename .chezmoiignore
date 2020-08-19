@@ -19,6 +19,7 @@ powershell_profile.ps1
 !Documents
 !.ssh
 !.ssh/config
+.ssh/*.pub
 !.gitconfig
 !.vimrc
 {{- else }}

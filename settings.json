@@ -35,5 +35,8 @@
     "python.languageServer": "Microsoft",
     "discord.enabled": false,
     "discord.workspaceElapsedTime": true,
-    "python.showStartPage": false
+    "python.showStartPage": false,
+    "remote.SSH.remotePlatform": {
+      "dresrv": "linux"
+    }
 }
