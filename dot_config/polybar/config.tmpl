@@ -6,111 +6,35 @@ tray-position = right
 {{- if $is_desktop }}
 modules-left = i3  
 modules-center = title
-modules-right = cpuusage nvusage sep aquaero nvtemp cputemp sep updates srvupdates sep volume switchaudio sep network sep monitor_brightness sep date sep xkeyboard powermenu
-{{- else }}
-modules-left = i3 title  
-modules-center =
-modules-right = cpuusage cputemp sep updates srvupdates sep network sep volume sep battablet batbase sep date sep xkeyboard powermenu
-{{- end }}
+modules-right = cpuusage nvusage sep aquaero nvtemp cputemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume sep datetime
 
-{{- if $is_desktop }}
 [bar/secondary]
 include-file = ~/.config/polybar/baropts
 modules-left = i3 title
 modules-center =
-modules-right = cpuclk nvclk sep aquaerofans sep networkfull sep date
-{{ end }}
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-{{ if $is_desktop }}
-[module/monitor_brightness]
-type = custom/script
-format = <label>
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-brightness.py
-click-right = kill -HUP %pid%
-scroll-up = kill -USR1 %pid%
-scroll-down = kill -USR2 %pid%
-tail = true
-interval = 0
+modules-right = cpuclk nvclk sep aquaerofans sep ethernet sep time
+{{- else }}
+modules-left = i3 title  
+modules-center =
+modules-right = cpuusage cputemp sep updates srvupdates sep wifi sep volume sep battablet batbase sep datetime sep xkeyboard powermenu
+{{- end }}
 
-[module/switchaudio]
-type = custom/script
-format = <label>
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-input.py
-click-left = kill -HUP %pid%
-click-right = pavucontrol &
-tail = true
-interval = 0
+;;; COMMON MODULES ;;;
 
-[module/nvtemp]
+[module/cpuclk]
 type = custom/script
 {{- if eq $font "icomoon-feather" }}
-format =  <label>
+format =   <label>
 {{- else if eq $font "nerd-font" }}
-format =  <label>
+format =   <label>
 {{- else if eq $font "siji" }}
-format =  <label>
+format =  <label>
 {{- end }}
-exec = ~/.config/polybar/scripts/nvidia-temp.sh
-interval = 3
-
-[module/nvusage]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = ~/.config/polybar/scripts/nvidia-usage.sh
-interval = 3
-
-[module/aquaero]
-type = custom/script
-exec = ~/.config/polybar/scripts/aquaero.py
-interval = 60
-
-[module/aquaerofans]
-type = custom/script
-format = <label>
-exec = ~/.config/polybar/scripts/aquaero_fans.py
-interval = 60
-
-[module/nvclk]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = ~/.config/polybar/scripts/nvidia-clock.sh
+exec = ~/.config/polybar/scripts/cpu-clock.sh
 interval = 10
-{{ end }}
-[module/polywins]
-type = custom/script
-exec = ~/.config/polybar/scripts/polywins.sh
-format = <label>
-label = %output%
-label-padding = 1
-interval = .5
-
-[module/cpuusage]
-type = internal/cpu
-internal = 1
-{{- if eq $font "icomoon-feather" }}
-format =   <label>%
-{{- else if eq $font "nerd-font" }}
-format =   <label>%
-{{- else if eq $font "siji" }}
-format =  <label>%
-{{- end }}
-label = %percentage%
 
 [module/cputemp]
 type = internal/temperature
-{{- if $is_desktop }}
 {{- if eq $font "icomoon-feather" }}
 label =  %temperature-c%
 label-warn =  %temperature-c% !!
@@ -120,7 +44,6 @@ label-warn =  %temperature-c% !!
 {{- else if eq $font "siji" }}
 label =  %temperature-c%
 label-warn =  %temperature-c% !!
-{{- end }}
 {{- else }}
 label = %temperature-c%
 label-warn = %temperature-c% !!
@@ -136,65 +59,19 @@ base-temperature = 20
 base-temperature = 40
 {{- end }}
 
-{{- if not $is_desktop }}
-[module/battablet]
-type = internal/battery
-full-at = 100
-battery = BAT1
-adapter = ADP1
-poll-interval = 0
-time-format = %H:%M
-format-charging = <animation-charging> <label-charging>
-format-discharging = <ramp-capacity> <label-discharging>
-;format-full = <ramp-capacity> <label-full>
-label-charging = %percentage%%
-label-discharging = %percentage%%
-label-full =  %percentage%%
-; Only applies if <ramp-capacity> is used
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-; Only applies if <animation-charging> is used
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-; Framerate in milliseconds
-animation-charging-framerate = 750
-
-[module/batbase]
-type = internal/battery
-full-at = 100
-battery = BAT2
-adapter = ADP1
-poll-interval = 0
-time-format = %H:%M
-format-charging = <animation-charging> <label-charging>
-format-discharging = <ramp-capacity> <label-discharging>
-;format-full = <ramp-capacity> <label-full>
-label-charging = %percentage%%
-label-discharging = %percentage%%
-label-full =  %percentage%%
-; Only applies if <ramp-capacity> is used
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-; Only applies if <animation-charging> is used
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-; Framerate in milliseconds
-animation-charging-framerate = 750
+[module/cpuusage]
+type = internal/cpu
+internal = 1
+{{- if eq $font "icomoon-feather" }}
+format =   <label>%
+{{- else if eq $font "nerd-font" }}
+format =   <label>%
+{{- else if eq $font "siji" }}
+format =  <label>%
 {{- end }}
+label = %percentage%
 
-[module/date]
+[module/datetime]
 type = internal/date
 interval = 60
 date = %a %d %b
@@ -207,84 +84,6 @@ label =  %date%   %time%
 label =  %date%   %time%
 {{- end }}
 format-padding = 1
-
-[module/xkeyboard]
-type = internal/xkeyboard
-blacklist-0 = num lock
-blacklist-1 = scroll lock
-format = <label-layout> <label-indicator>
-format-spacing = 0
-label-layout = %layout%
-
-[module/volume]
-type = internal/pulseaudio
-use-ui-max = true
-format-volume =   <ramp-volume>  <label-volume>
-{{- if eq $font "icomoon-feather" }}
-format-muted = 
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-{{- else if eq $font "nerd-font" }}
-format-muted = ﱝ
-ramp-volume-0 = 奄
-ramp-volume-1 = 
-ramp-volume-2 = 墳
-{{- else if eq $font "siji" }}
-format-muted = 
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-{{- end }}
-click-right = pavucontrol &
-
-{{ if $is_desktop }}
-[module/networkfull]
-type = internal/network
-interface = enp0s31f6
-interval = 3.0
-format-connected = <label-connected>
-format-connected-prefix = 
-label-connected = %ifname%: %local_ip% 
-format-disconnected = <label-disconnected>
-label-disconnected = not connected
-format-padding = 0
-{{- end }}
-
-[module/network]
-type = internal/network
-{{- if $is_desktop }}
-interface = enp0s31f6
-format-connected = <label-connected>
-label-connected = %downspeed:9%
-{{- if eq $font "icomoon-feather" }}
-format-connected-prefix = ""
-label-disconnected = "N/A"
-{{- else if eq $font "nerd-font" }}
-format-connected-prefix = ""
-label-disconnected = 
-{{- else if eq $font "siji" }}
-format-connected-prefix = ""
-label-disconnected = 
-{{- end }}
-{{- else }}
-interface = wlan0
-format-connected = <ramp-signal> <label-connected>
-label-connected = %essid%
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-{{- if eq $font "icomoon-feather" }}
-label-disconnected = 
-{{- else if eq $font "nerd-font" }}
-label-disconnected = 睊
-{{- end }}
-{{- end }}
-interval = 3.0
-format-disconnected = <label-disconnected>
-format-padding = 0
 
 [module/i3]
 type = internal/i3
@@ -309,60 +108,6 @@ label-mode-foreground = "#212121"
 label-mode-padding = 2
 label-urgent = %name%
 label-urgent-padding = 3
-
-[module/title]
-type = internal/xwindow
-format = <label>
-label = %title%
-label-maxlen = 60
-
-[module/updates]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --minutes 60
-click-left = kill -USR1 %pid%
-click-right = kill -HUP %pid%
-tail = true
-interval = 0
-
-[module/srvupdates]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --server --minutes 60
-click-left = kill -USR1 %pid%
-click-right = kill -HUP %pid%
-tail = true
-interval = 0
-
-[module/cpuclk]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =   <label>
-{{- else if eq $font "nerd-font" }}
-format =   <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = ~/.config/polybar/scripts/cpu-clock.sh
-interval = 10
-
-[module/sep]
-type = custom/text
-content = | 
-content-padding = 0
-content-foreground = "#424242"
 
 [module/powermenu]
 type = custom/menu
@@ -396,3 +141,257 @@ menu-0-3-exec = i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Reboot?' -b 'Ye
 format-spacing = 2
 format-padding = 4
 label-sep = |
+
+[module/sep]
+type = custom/text
+content = | 
+content-padding = 0
+content-foreground = "#424242"
+
+[module/srvupdates]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --server --minutes 60
+click-left = kill -USR1 %pid%
+click-right = kill -HUP %pid%
+tail = true
+interval = 0
+
+[module/title]
+type = internal/xwindow
+format = <label>
+label = %title%
+label-maxlen = 60
+
+[module/updates]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --minutes 60
+click-left = kill -USR1 %pid%
+click-right = kill -HUP %pid%
+tail = true
+interval = 0
+
+[module/volume]
+type = internal/pulseaudio
+interval = 1
+use-ui-max = true
+format-volume =   <ramp-volume>  <label-volume>
+{{- if eq $font "icomoon-feather" }}
+format-muted = 
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+{{- else if eq $font "nerd-font" }}
+format-muted = ﱝ
+ramp-volume-0 = 奄
+ramp-volume-1 = 
+ramp-volume-2 = 墳
+{{- else if eq $font "siji" }}
+format-muted = 
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+{{- end }}
+click-right = pavucontrol &
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+label-indicator-on = %icon%
+; Icons are using nerd font
+indicator-icon-0 = caps lock;;
+indicator-icon-1 = scroll lock;;SL
+format = <label-layout> <label-indicator>
+format-spacing = 0
+label-layout =  %layout%
+
+;;; END COMMON MODULES ;;;
+{{ if $is_desktop }}
+;;; DESKTOP MODULES ;;;
+
+[module/aquaero]
+type = custom/script
+exec = ~/.config/polybar/scripts/aquaero.py
+interval = 60
+
+[module/aquaerofans]
+type = custom/script
+format =  <label>
+exec = ~/.config/polybar/scripts/aquaero_fans.py
+interval = 60
+
+[module/ethernet]
+type = internal/network
+interface = ${env:PRIMARY_INET}
+interval = 2.0
+format-connected = <label-connected>
+; Nerd Font
+format-connected-prefix = ""
+label-disconnected = 
+label-connected = %downspeed:9% [%local_ip%] 
+format-disconnected = <label-disconnected>
+format-padding = 0
+
+[module/monitor_brightness]
+type = custom/script
+format = <label>
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-brightness.py
+click-right = kill -HUP %pid%
+scroll-up = kill -USR1 %pid%
+scroll-down = kill -USR2 %pid%
+tail = true
+interval = 0
+
+[module/nvclk]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = ~/.config/polybar/scripts/nvidia-clock.sh
+interval = 10
+
+[module/nvtemp]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = ~/.config/polybar/scripts/nvidia-temp.sh
+interval = 3
+
+[module/nvusage]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = ~/.config/polybar/scripts/nvidia-usage.sh
+interval = 3
+
+[module/switchaudio]
+type = custom/script
+format = <label>
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-input.py
+click-left = kill -HUP %pid%
+click-right = pavucontrol &
+tail = true
+interval = 0
+
+[module/time]
+type = internal/date
+interval = 60
+date =
+time = %H:%M
+{{- if eq $font "icomoon-feather" }}
+label =  %time%
+{{- else if eq $font "nerd-font" }}
+label =  %time%
+{{- else if eq $font "siji" }}
+label =  %time%
+{{- end }}
+
+;;; END DESKTOP MODULES ;;;
+{{- end }}
+{{ if not $is_desktop }}
+;;; LAPTOP MODULES ;;;
+
+[module/batbase]
+type = internal/battery
+full-at = 100
+battery = BAT2
+adapter = ADP1
+poll-interval = 0
+time-format = %H:%M
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+;format-full = <ramp-capacity> <label-full>
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full =  %percentage%%
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+[module/battablet]
+type = internal/battery
+full-at = 100
+battery = BAT1
+adapter = ADP1
+poll-interval = 0
+time-format = %H:%M
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+;format-full = <ramp-capacity> <label-full>
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full =  %percentage%%
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+[module/wifi]
+type = internal/network
+interface = ${env:PRIMARY_INET}
+format-connected = <ramp-signal> <label-connected>
+label-connected = %essid%
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+{{- if eq $font "icomoon-feather" }}
+label-disconnected = 
+{{- else if eq $font "nerd-font" }}
+label-disconnected = 睊
+{{- end }}
+interval = 3.0
+format-disconnected = <label-disconnected>
+format-padding = 0
+
+;;; END LAPTOP MODULES ;;;
+{{- end }}
