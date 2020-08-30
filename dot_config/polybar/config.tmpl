@@ -135,7 +135,7 @@ label-open = 
 label-close = 
 {{- end }}
 menu-0-0-exec = i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'
-menu-0-1-exec = betterlockscreen -l dim & sleep 30 && xset dpms force off
+menu-0-1-exec = $HOME/.local/bin/my-screenlock
 menu-0-2-exec = i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Shut down?' -b 'Yes' 'poweroff'
 menu-0-3-exec = i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Reboot?' -b 'Yes' 'reboot'
 format-spacing = 2

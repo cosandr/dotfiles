@@ -2,6 +2,8 @@
 # set modifier
 set $super Mod4
 set $alt Mod1
+set $shift Shift
+set $ctrl Control
 
 # set font
 font pango: Noto Sans 10
@@ -79,15 +81,15 @@ bindsym $super+q kill
 bindsym $alt+F4 kill
 
 # start a terminal
-bindsym $super+Shift+Return exec kitty
+bindsym $super+$shift+Return exec kitty
 bindsym $super+Return exec alacritty
 # Alacritty shortcuts
 {{- if .dresrv.use_domain }}
-bindsym Control+$alt+1 exec alacritty -e ssh andrei@dresrv.com
-bindsym Control+$alt+2 exec alacritty -e ssh -t andrei@dresrv.com 'sudo -i'
+bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@dresrv.com
+bindsym $ctrl+$alt+2 exec alacritty -e ssh -t andrei@dresrv.com 'sudo -i'
 {{- else }}
-bindsym Control+$alt+1 exec alacritty -e ssh andrei@DreSRV
-bindsym Control+$alt+2 exec alacritty -e ssh root@DreSRV
+bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@DreSRV
+bindsym $ctrl+$alt+2 exec alacritty -e ssh root@DreSRV
 {{- end }}
 
 # start dmenu (a program launcher)
@@ -119,10 +121,10 @@ bindsym $super+$up focus up
 bindsym $super+$right focus right
 
 # move focused window
-bindsym $super+Shift+$left move left
-bindsym $super+Shift+$down move down
-bindsym $super+Shift+$up move up
-bindsym $super+Shift+$right move right
+bindsym $super+$shift+$left move left
+bindsym $super+$shift+$down move down
+bindsym $super+$shift+$up move up
+bindsym $super+$shift+$right move right
 
 # split in horizontal orientation
 bindsym $super+h split h
@@ -142,52 +144,60 @@ bindsym $super+e layout toggle split
 bindsym $super+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $super+Shift+space focus mode_toggle
+bindsym $super+$shift+space focus mode_toggle
 
 # focus the parent container
 bindsym $super+a focus parent
 
 # focus the child container
-bindsym $super+Shift+a focus child
+bindsym $super+$shift+a focus child
 
 # move the currently focused window to the scratchpad
-bindsym $super+Shift+minus move scratchpad
+bindsym $super+$shift+minus move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $super+minus scratchpad show
 
 # Screenshots
-bindsym $super+Shift+s exec spectacle --region
+bindsym $super+$shift+s exec spectacle --region
 bindsym Print exec spectacle --background --fullscreen
-bindsym Shift+Print exec spectacle --activewindow
+bindsym $shift+Print exec spectacle --activewindow
 
-# Lock screen and turn monitors off after 30 seconds
-bindsym $super+l exec "betterlockscreen -l dim & sleep 30 && xset dpms force off"
+# Lock screen and turn monitors off after 30 seconds, requires -git version
+bindsym $super+l exec "$HOME/.local/bin/my-screenlock"
 
 # switch to workspace
-bindsym $alt+Control+Right move window to workspace next
-bindsym $alt+Control+Left move window to workspace prev
-bindsym $super+Control+Right move container to workspace next
-bindsym $super+Control+Left move container to workspace prev
+bindsym $super+Tab workspace next
+bindsym $super+$shift+Tab workspace prev
+bindsym $super+$ctrl+Right move window to workspace next
+bindsym $super+$ctrl+Left move window to workspace prev
+bindsym $super+$alt+$ctrl+Right move container to workspace next
+bindsym $super+$alt+$ctrl+Left move container to workspace prev
 bindsym $super+1 workspace 1
 bindsym $super+2 workspace 2
 bindsym $super+3 workspace 3
 bindsym $super+4 workspace 4
 bindsym $super+5 workspace 5
 bindsym $super+6 workspace 6
-bindsym $super+Shift+1 move container to workspace 1
-bindsym $super+Shift+2 move container to workspace 2
-bindsym $super+Shift+3 move container to workspace 3
-bindsym $super+Shift+4 move container to workspace 4
-bindsym $super+Shift+5 move container to workspace 5
-bindsym $super+Shift+6 move container to workspace 6
+bindsym $super+7 workspace 7
+bindsym $super+8 workspace 8
+bindsym $super+9 workspace 9
+bindsym $super+$ctrl+1 move container to workspace 1
+bindsym $super+$ctrl+2 move container to workspace 2
+bindsym $super+$ctrl+3 move container to workspace 3
+bindsym $super+$ctrl+4 move container to workspace 4
+bindsym $super+$ctrl+5 move container to workspace 5
+bindsym $super+$ctrl+6 move container to workspace 6
+bindsym $super+$ctrl+7 move container to workspace 7
+bindsym $super+$ctrl+8 move container to workspace 8
+bindsym $super+$ctrl+9 move container to workspace 9
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $super+Shift+r restart
+bindsym $super+$shift+r restart
 
 # exit i3
-bindsym $super+Shift+e exec "i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
+bindsym $super+$shift+e exec "i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -212,7 +222,13 @@ bindsym XF86AudioNext exec "playerctl --ignore-player=chromium,firefox next"
 bindsym XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
 
 for_window [class="Pavucontrol"] floating enable; border normal
-for_window [class="firefox" title="Picture-in-Picture"] border none
+for_window [class="jetbrains-toolbox"] floating enable; border none
+# Jetbrains splash window
+for_window [class="jetbrains-\w+" title="^win0$"] floating enable; border none
+# Evaluation window
+for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
+# PiP
+for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
 
 ##### i3 with KDE stuff #####
 # for_window [title="Desktop — Plasma"] kill; floating enable; border none

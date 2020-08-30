@@ -1,0 +1,52 @@
+{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+#!/usr/bin/env bash
+
+# https://github.com/oakszyjrnrdy/betterlockscreen_rapid
+# https://github.com/pavanjadhaw/betterlockscreen/commit/643ea70aa77686ebe84889943a258b890dffe2fb
+
+default_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")
+lock_timeout="30"
+
+revert() {
+    xset dpms "$default_timeout"
+}
+trap revert HUP INT TERM
+xset dpms "$lock_timeout"
+
+radius=6
+time=3
+insidecolor='00000000'
+ringcolor='ffffffff'
+keyhlcolor='d23c3dff'
+bshlcolor='d23c3dff'
+separatorcolor='00000000'
+insidevercolor='00000000'
+insidewrongcolor='d23c3dff'
+ringvercolor='ffffffff'
+ringwrongcolor='ffffffff'
+verifcolor='ffffffff'
+timecolor='ffffffff'
+datecolor='ffffffff'
+font='Noto Sans'
+locktext='Type password to unlock...'
+# Adding width and height for multiple monitors
+xpos={{- if $is_desktop }}"w+x"{{- else }}"x"{{- end }}
+ypos={{- if $is_desktop }}"y+h"{{- else }}"h"{{- end }}
+
+i3lock-fancy-rapid "$radius" "$time" \
+    --composite \
+    --ignore-empty-password \
+	--tiling \
+	--timepos "$xpos+110:$ypos-70" \
+	--datepos "$xpos+43:$ypos-45" \
+	--clock --date-align 1 --datestr "$locktext" \
+	--insidecolor "$insidecolor" --ringcolor "$ringcolor" --line-uses-inside \
+	--keyhlcolor "$keyhlcolor" --bshlcolor "$bshlcolor" --separatorcolor "$separatorcolor" \
+	--insidevercolor "$insidevercolor" --insidewrongcolor "$insidewrongcolor" \
+	--ringvercolor "$ringvercolor" --ringwrongcolor "$ringwrongcolor" --indpos "$xpos+280:$ypos-70" \
+	--radius "20" --ring-width "4" --veriftext '' --wrongtext '' \
+	--verifcolor "$verifcolor" --timecolor "$timecolor" --datecolor "$datecolor" \
+	--time-font "$font" --date-font "$font" --layout-font "$font" --verif-font "$font" --wrong-font "$font" \
+	--noinputtext '' --force-clock --pass-media-keys --nofork
+
+revert
