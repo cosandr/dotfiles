@@ -34,19 +34,18 @@ xpos={{- if $is_desktop }}"w+x"{{- else }}"x"{{- end }}
 ypos={{- if $is_desktop }}"y+h"{{- else }}"h"{{- end }}
 
 i3lock-fancy-rapid "$radius" "$time" \
-    --composite \
     --ignore-empty-password \
-	--tiling \
-	--timepos "$xpos+110:$ypos-70" \
-	--datepos "$xpos+43:$ypos-45" \
-	--clock --date-align 1 --datestr "$locktext" \
-	--insidecolor "$insidecolor" --ringcolor "$ringcolor" --line-uses-inside \
-	--keyhlcolor "$keyhlcolor" --bshlcolor "$bshlcolor" --separatorcolor "$separatorcolor" \
-	--insidevercolor "$insidevercolor" --insidewrongcolor "$insidewrongcolor" \
-	--ringvercolor "$ringvercolor" --ringwrongcolor "$ringwrongcolor" --indpos "$xpos+280:$ypos-70" \
-	--radius "20" --ring-width "4" --veriftext '' --wrongtext '' \
-	--verifcolor "$verifcolor" --timecolor "$timecolor" --datecolor "$datecolor" \
-	--time-font "$font" --date-font "$font" --layout-font "$font" --verif-font "$font" --wrong-font "$font" \
-	--noinputtext '' --force-clock --pass-media-keys --nofork
+    --tiling \
+    --timepos "$xpos+110:$ypos-70" \
+    --datepos "$xpos+43:$ypos-45" \
+    --clock --date-align 1 --datestr "$locktext" \
+    --insidecolor "$insidecolor" --ringcolor "$ringcolor" --line-uses-inside \
+    --keyhlcolor "$keyhlcolor" --bshlcolor "$bshlcolor" --separatorcolor "$separatorcolor" \
+    --insidevercolor "$insidevercolor" --insidewrongcolor "$insidewrongcolor" \
+    --ringvercolor "$ringvercolor" --ringwrongcolor "$ringwrongcolor" --indpos "$xpos+280:$ypos-70" \
+    --radius "20" --ring-width "4" --veriftext '' --wrongtext '' \
+    --verifcolor "$verifcolor" --timecolor "$timecolor" --datecolor "$datecolor" \
+    --time-font "$font" --date-font "$font" --layout-font "$font" --verif-font "$font" --wrong-font "$font" \
+    --noinputtext '' --force-clock --pass-media-keys --nofork
 
 revert
