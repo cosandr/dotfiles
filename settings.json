@@ -29,7 +29,9 @@
         "LESSCHARSET": "utf-8",
         "LC_ALL": "C.UTF-8"
     },
-    "python.jediEnabled": false,
+    "python.linting.flake8Args": [
+        "--ignore=E121,E123,E126,E133,E226,E241,E242,E501,E704,W503,W504,W505,F403,F405,F541",
+    ],
     "go.formatTool": "goimports",
     "go.useLanguageServer": true,
     "python.languageServer": "Microsoft",
