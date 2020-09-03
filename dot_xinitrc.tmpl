@@ -1,17 +1,27 @@
+{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 #!/bin/bash
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-export XDG_SESSION_DESKTOP=i3
-export XDG_CONFIG_HOME={{ .chezmoi.homedir }}/.config
-export XDG_CACHE_HOME={{ .chezmoi.homedir }}/.cache
-export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export QT_SCALE_FACTOR=1.1
-export QT_QPA_PLATFORMTHEME=qt5ct
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-export SSH_AUTH_SOCK
-dbus-update-activation-environment --systemd DISPLAY
+
 export LANG=en_US.UTF-8
 export LC_TIME=en_GB.UTF-8
+export MOZ_X11_EGL=1
+{{- if $is_desktop }}
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+export QT_SCALE_FACTOR=1.1
+{{- else }}
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export GDK_SCALE=2
+export GDK_DPI_SCALE=0.5
+{{- end }}
+export QT_QPA_PLATFORMTHEME=qt5ct
+export SSH_AUTH_SOCK
+export XDG_CACHE_HOME={{ .chezmoi.homedir }}/.cache
+export XDG_CONFIG_HOME={{ .chezmoi.homedir }}/.config
+export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
+export XDG_SESSION_DESKTOP=i3
+
+dbus-update-activation-environment --systemd DISPLAY
 exec i3
