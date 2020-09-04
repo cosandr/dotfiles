@@ -79,18 +79,15 @@ exec --no-startup-id nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=50" -
 # kill focused window
 bindsym $super+q kill
 bindsym $alt+F4 kill
+bindsym --release button2 kill
 
 # start a terminal
 bindsym $super+$shift+Return exec kitty
 bindsym $super+Return exec alacritty
 # Alacritty shortcuts
-{{- if .dresrv.use_domain }}
-bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@dresrv.com
-bindsym $ctrl+$alt+2 exec alacritty -e ssh -t andrei@dresrv.com 'sudo -i'
-{{- else }}
 bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@DreSRV
 bindsym $ctrl+$alt+2 exec alacritty -e ssh root@DreSRV
-{{- end }}
+bindsym $ctrl+$alt+3 exec alacritty -e ssh andrei@dresrv.com
 
 # start dmenu (a program launcher)
 bindsym $super+d exec rofi -show drun
@@ -107,7 +104,8 @@ bindsym $super+Pause exec sleep 1 && xset dpms force off
 # Common apps
 bindsym $super+$alt+f exec thunar
 bindsym $super+$alt+p exec pycharm
-bindsym $super+$alt+c exec code
+bindsym $super+$alt+c exec code --new-window
+bindsym $super+$alt+b exec firefox
 
 set $up Up
 set $down Down
