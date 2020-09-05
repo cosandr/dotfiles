@@ -224,14 +224,14 @@ label-layout =  %layout%
 
 [module/aquaero]
 type = custom/script
-exec = ~/.config/polybar/scripts/aquaero.py
-interval = 60
+exec = PYTHONUNBUFFERED=1 FONT="{{$font}}" ~/.config/polybar/scripts/aquaero.py
+interval = 10
 
 [module/aquaerofans]
 type = custom/script
 format =  <label>
-exec = ~/.config/polybar/scripts/aquaero_fans.py
-interval = 60
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/aquaero_fans.py
+interval = 10
 
 [module/ethernet]
 type = internal/network
