@@ -106,6 +106,7 @@ bindsym $super+$alt+f exec thunar
 bindsym $super+$alt+p exec pycharm
 bindsym $super+$alt+c exec code --new-window
 bindsym $super+$alt+b exec firefox
+bindsym $super+$alt+$shift+b exec chromium
 
 set $up Up
 set $down Down
@@ -158,9 +159,9 @@ bindsym $super+$shift+minus move scratchpad
 bindsym $super+minus scratchpad show
 
 # Screenshots
-bindsym $super+$shift+s exec spectacle --region
-bindsym Print exec spectacle --background --fullscreen
-bindsym $shift+Print exec spectacle --activewindow
+bindsym $super+$shift+s --release exec "scrot -s $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
+bindsym Print exec "scrot $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
+bindsym $shift+Print exec "scrot -u $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
 
 # Lock screen and turn monitors off after 30 seconds, requires -git version
 bindsym $super+l exec "$HOME/.local/bin/my-screenlock"

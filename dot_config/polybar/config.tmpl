@@ -157,7 +157,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --server --minutes 60
+exec = PYTHONUNBUFFERED=1 SERVER="dresrv.local:8100" ~/.config/polybar/scripts/go-check-updates-ws.py
 click-left = kill -USR1 %pid%
 click-right = kill -HUP %pid%
 tail = true
@@ -178,7 +178,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --minutes 60
+exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock ~/.config/polybar/scripts/go-check-updates-ws.py
 click-left = kill -USR1 %pid%
 click-right = kill -HUP %pid%
 tail = true

@@ -3,25 +3,26 @@
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
 {{- $is_windows := eq .chezmoi.os "windows" -}}
-README.md
 .secret*
-secret*
-update_config.*
 make_*
-settings.json
+mimeapps.list
 plasma-org.kde.plasma.desktop-appletsrc
-Preferences.sublime-settings
-SublimeLinter.sublime-settings
 powershell_profile.ps1
+Preferences.sublime-settings
+README.md
+secret*
+settings.json
+SublimeLinter.sublime-settings
+update_config.*
 {{- if $is_windows }}
 *
-!AppData
-!Documents
+!.gitconfig
 !.ssh
 !.ssh/config
-.ssh/*.pub
-!.gitconfig
 !.vimrc
+!AppData
+!Documents
+.ssh/*.pub
 {{- else }}
 AppData/
 Documents/
@@ -34,8 +35,10 @@ Documents/
 .config/autostart
 .config/Code
 .config/dunst
+.config/feh
 .config/i3
 .config/kitty
+.config/mimeapps.list
 .config/picom.conf
 .config/polybar
 .config/redshift
@@ -49,8 +52,8 @@ Documents/
 {{- else if $not_desktop }}
 # Ignore desktop config on laptop
 .config/i3/workspace-*
-.config/polybar/scripts/nvidia*
 .config/polybar/scripts/aquaero*
+.config/polybar/scripts/nvidia*
 {{- end }}
 {{- if $not_server }}
 # Ignore SSH keys when not running on server
