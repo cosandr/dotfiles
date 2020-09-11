@@ -48,8 +48,10 @@ class UpdatesClient:
         await asyncio.wait(self.tasks)
 
     async def close(self):
-        await self.sess.close()
-        await self.ws.close()
+        if self.sess:
+            await self.sess.close()
+        if self.ws:
+            await self.ws.close()
 
     def updates_str(self) -> str:
         if not self.data.get('updates'):
@@ -96,6 +98,8 @@ def main():
     client = UpdatesClient(loop, server=os.getenv("SERVER", "localhost:8100"))
     try:
         loop.run_until_complete(client.run())
+    except Exception:
+        print('N/A')
     finally:
         loop.run_until_complete(client.close())
 
