@@ -159,7 +159,7 @@ format =  <label>
 {{- end }}
 exec = PYTHONUNBUFFERED=1 SERVER="dresrv.local:8100" ~/.config/polybar/scripts/go-check-updates-ws.py
 click-left = kill -USR1 %pid%
-click-right = kill -HUP %pid%
+click-right = kill -USR2 %pid%
 tail = true
 interval = 0
 
@@ -180,7 +180,7 @@ format =  <label>
 {{- end }}
 exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock ~/.config/polybar/scripts/go-check-updates-ws.py
 click-left = kill -USR1 %pid%
-click-right = kill -HUP %pid%
+click-right = kill -USR2 %pid%
 tail = true
 interval = 0
 
