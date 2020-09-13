@@ -198,12 +198,19 @@ bindsym $super+$shift+r restart
 # exit i3
 bindsym $super+$shift+e exec "i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
+# resize window
 mode "resize" {
-    bindsym Left resize shrink width 5 px or 5 ppt
-    bindsym Down resize shrink height 5 px or 5 ppt
-    bindsym Up resize grow height 5 px or 5 ppt
-    bindsym Right resize grow width 5 px or 5 ppt
+    # Big steps
+    bindsym $left resize shrink width 20 px or 5 ppt
+    bindsym $down resize shrink height 20 px or 5 ppt
+    bindsym $up resize grow height 20 px or 5 ppt
+    bindsym $right resize grow width 20 px or 5 ppt
+    # Fine adjustment
+    bindsym $shift+$left resize shrink width 5 px
+    bindsym $shift+$down resize shrink height 5 px
+    bindsym $shift+$up resize grow height 5 px
+    bindsym $shift+$right resize grow width 5 px
+
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
