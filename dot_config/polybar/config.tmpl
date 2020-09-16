@@ -6,7 +6,7 @@ tray-position = right
 {{- if $is_desktop }}
 modules-left = i3  
 modules-center = title
-modules-right = cpuusage nvusage sep aquaero nvtemp cputemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume sep datetime
+modules-right = cpuusage nvusage sep aquaero cputemp nvtemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume sep datetime
 
 [bar/secondary]
 include-file = ~/.config/polybar/baropts
@@ -157,9 +157,9 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --server --minutes 60
+exec = PYTHONUNBUFFERED=1 SERVER="dresrv.local:8100" ~/.config/polybar/scripts/go-check-updates-ws.py
 click-left = kill -USR1 %pid%
-click-right = kill -HUP %pid%
+click-right = kill -USR2 %pid%
 tail = true
 interval = 0
 
@@ -178,9 +178,9 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/go-check-updates.py --minutes 60
+exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock ~/.config/polybar/scripts/go-check-updates-ws.py
 click-left = kill -USR1 %pid%
-click-right = kill -HUP %pid%
+click-right = kill -USR2 %pid%
 tail = true
 interval = 0
 
@@ -224,14 +224,14 @@ label-layout =  %layout%
 
 [module/aquaero]
 type = custom/script
-exec = ~/.config/polybar/scripts/aquaero.py
-interval = 60
+exec = PYTHONUNBUFFERED=1 FONT="{{$font}}" ~/.config/polybar/scripts/aquaero.py
+interval = 10
 
 [module/aquaerofans]
 type = custom/script
 format =  <label>
-exec = ~/.config/polybar/scripts/aquaero_fans.py
-interval = 60
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/aquaero_fans.py
+interval = 10
 
 [module/ethernet]
 type = internal/network
@@ -247,7 +247,13 @@ format-padding = 0
 
 [module/monitor_brightness]
 type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else }}
 format = <label>
+{{- end }}
 exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-brightness.py
 click-right = kill -HUP %pid%
 scroll-up = kill -USR1 %pid%

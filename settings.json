@@ -40,5 +40,7 @@
     "python.showStartPage": false,
     "remote.SSH.remotePlatform": {
       "dresrv": "linux"
-    }
+    },
+    "git.autofetch": true,
+    "git.fetchOnPull": true
 }

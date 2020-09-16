@@ -43,7 +43,7 @@ exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate 
 exec --no-startup-id xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' -0.5
 {{- end }}
 exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
-exec --no-startup-id picom {{ if $is_desktop }}--backend xrender --refresh-rate 120{{- end }} -b
+exec --no-startup-id picom -b
 exec --no-startup-id redshift-gtk
 exec --no-startup-id dunst
 exec --no-startup-id ~/.fehbg
@@ -65,6 +65,8 @@ exec --no-startup-id numlockx on &
 # Brightness and power buttons on laptop, install xfce4-power-manager
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
+# Set layout to tabbed by default
+exec --no-startup-id i3-msg layout tabbed
 {{- end }}
 exec --no-startup-id setxkbmap -layout us,no
 exec --no-startup-id firefox &
@@ -79,18 +81,15 @@ exec --no-startup-id nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=50" -
 # kill focused window
 bindsym $super+q kill
 bindsym $alt+F4 kill
+bindsym --release button2 kill
 
 # start a terminal
 bindsym $super+$shift+Return exec kitty
 bindsym $super+Return exec alacritty
 # Alacritty shortcuts
-{{- if .dresrv.use_domain }}
-bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@dresrv.com
-bindsym $ctrl+$alt+2 exec alacritty -e ssh -t andrei@dresrv.com 'sudo -i'
-{{- else }}
 bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@DreSRV
 bindsym $ctrl+$alt+2 exec alacritty -e ssh root@DreSRV
-{{- end }}
+bindsym $ctrl+$alt+3 exec alacritty -e ssh andrei@dresrv.com
 
 # start dmenu (a program launcher)
 bindsym $super+d exec rofi -show drun
@@ -107,7 +106,9 @@ bindsym $super+Pause exec sleep 1 && xset dpms force off
 # Common apps
 bindsym $super+$alt+f exec thunar
 bindsym $super+$alt+p exec pycharm
-bindsym $super+$alt+c exec code
+bindsym $super+$alt+c exec code --new-window
+bindsym $super+$alt+b exec firefox
+bindsym $super+$alt+$shift+b exec chromium
 
 set $up Up
 set $down Down
@@ -160,9 +161,9 @@ bindsym $super+$shift+minus move scratchpad
 bindsym $super+minus scratchpad show
 
 # Screenshots
-bindsym $super+$shift+s exec spectacle --region
-bindsym Print exec spectacle --background --fullscreen
-bindsym $shift+Print exec spectacle --activewindow
+bindsym $super+$shift+s --release exec "scrot -s $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
+bindsym Print exec "scrot $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
+bindsym $shift+Print exec "scrot -u $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
 
 # Lock screen and turn monitors off after 30 seconds, requires -git version
 bindsym $super+l exec "$HOME/.local/bin/my-screenlock"
@@ -199,12 +200,19 @@ bindsym $super+$shift+r restart
 # exit i3
 bindsym $super+$shift+e exec "i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
+# resize window
 mode "resize" {
-    bindsym Left resize shrink width 5 px or 5 ppt
-    bindsym Down resize shrink height 5 px or 5 ppt
-    bindsym Up resize grow height 5 px or 5 ppt
-    bindsym Right resize grow width 5 px or 5 ppt
+    # Big steps
+    bindsym $left resize shrink width 20 px or 5 ppt
+    bindsym $down resize shrink height 20 px or 5 ppt
+    bindsym $up resize grow height 20 px or 5 ppt
+    bindsym $right resize grow width 20 px or 5 ppt
+    # Fine adjustment
+    bindsym $shift+$left resize shrink width 5 px
+    bindsym $shift+$down resize shrink height 5 px
+    bindsym $shift+$up resize grow height 5 px
+    bindsym $shift+$right resize grow width 5 px
+
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }

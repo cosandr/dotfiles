@@ -49,8 +49,9 @@ def get_current():
 def print_brightness(vals=None):
     if not vals:
         vals = CURRENT
-    tmp = ["{}: {}%".format(k[0].upper(), v) for k, v in vals._asdict().items()]
-    print(", ".join(tmp))
+    # tmp = ["{}: {}%".format(k[0].upper(), v) for k, v in vals._asdict().items()]
+    # print(", ".join(tmp))
+    print(f'{vals.secondary}%, {vals.main}%')
 
 def handler_up_down(signum, frame):
     global COUNTER, NEXT, THREAD
@@ -72,7 +73,7 @@ def handler_up_down(signum, frame):
         THREAD.start()
 
 def handler_toggle(signum, frame):
-    global CURRENT
+    global CURRENT, NEXT
     new_curr = []
     curr_total = sum(CURRENT)
     night_total = sum([p.night for p in PRESETS])
@@ -86,6 +87,7 @@ def handler_toggle(signum, frame):
             subprocess.run(DDC_SET.format(bus=bus, val=PRESETS[i].day).split(), check=True)
             new_curr.append(PRESETS[i].day)
     CURRENT = Displays(*new_curr)
+    NEXT = Displays(*new_curr)
     print_brightness()
 
 def timer_thread():
