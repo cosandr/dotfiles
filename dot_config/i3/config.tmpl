@@ -65,6 +65,8 @@ exec --no-startup-id numlockx on &
 # Brightness and power buttons on laptop, install xfce4-power-manager
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
+# Set layout to tabbed by default
+exec --no-startup-id i3-msg layout tabbed
 {{- end }}
 exec --no-startup-id setxkbmap -layout us,no
 exec --no-startup-id firefox &
