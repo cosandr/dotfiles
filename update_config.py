@@ -147,9 +147,9 @@ if __name__ == "__main__":
     cfg['data'] = {**cfg['data'], **secrets.get('data', {})}
 
     log_files = dict(
-        discord="containers_new/containers/mrbot/src/mrbot.log",
-        twitch_rec="containers/twitch/src/log/recorder.log",
-        twitch_enc="containers/twitch/src/log/encoder.log",
+        discord="containers/containers/mrbot/src/mrbot.log",
+        twitch_rec="containers/containers/twitch/src/log/recorder.log",
+        twitch_enc="containers/containers/twitch/src/log/encoder.log",
     )
     if OS_NAME == "Linux":
         if HOSTNAME == 'DreSRV':
