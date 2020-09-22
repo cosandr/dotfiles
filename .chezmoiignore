@@ -58,12 +58,10 @@ Documents/
 .config/polybar/scripts/aquaero*
 .config/polybar/scripts/nvidia*
 {{- end }}
-{{- if $not_server }}
-# Ignore SSH keys when not running on server
-.ssh/authorized_keys
 {{- if or $is_root $not_server }}
 .ssh/*.pub
 {{- end }}
+{{- if $not_server }}
 .config/tmuxinator/hjd.yml
 {{- else }}
 # Ignore hnvtop config on server (no nvidia GPU)
