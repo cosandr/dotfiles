@@ -33,6 +33,7 @@ Documents/
 # Ignore GUI app config files when not desktop or laptop
 .config/alacritty
 .config/autostart
+.config/chromium-flags.conf
 .config/Code
 .config/dunst
 .config/feh
@@ -49,8 +50,10 @@ Documents/
 .xinitrc
 .xprofile
 .Xresources
-{{- else if $not_desktop }}
+{{- end }}
+{{- if $not_desktop }}
 # Ignore desktop config on laptop
+.config/chromium-flags.conf
 .config/i3/workspace-*
 .config/polybar/scripts/aquaero*
 .config/polybar/scripts/nvidia*
