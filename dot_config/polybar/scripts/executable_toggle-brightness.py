@@ -7,121 +7,203 @@ Requires i2c-dev kernel module
 echo 'i2c-dev' > /etc/modules-load.d/i2c.conf
 """
 
-import re
 import signal
 import subprocess
 import time
-from threading import Thread
+import threading
+from typing import NamedTuple, List
 
-from collections import namedtuple
+
+class Preset(NamedTuple):
+    day: int
+    night: int
 
 
-Displays = namedtuple("Displays", ["main", "secondary"])
-Preset = namedtuple("Preset", ["day", "night"])
+class Display:
+    def __init__(self, name, bus, preset=None, selected=False, min_brightness=0, max_brigtness=100):
+        self.name: str = name
+        self.bus: int = bus
+        self.preset: Preset = preset
+        self.brightness: int = None
+        self.selected: bool = selected
+        self.min_brightness: int = min_brightness
+        self.max_brigtness: int = max_brigtness
+        self._next_brightness: int = None
 
-DDC_GET = "ddcutil --bus={bus} --terse getvcp 10"
-DDC_SET = "ddcutil --bus={bus} setvcp 10 {val}"
-BUS_NUM = Displays(main=4, secondary=5)
+    @property
+    def next_brightness(self):
+        return self._next_brightness
 
-PRESETS = Displays(
-    main=Preset(day=35, night=0),
-    secondary=Preset(day=25, night=5),
-)
+    @next_brightness.setter
+    def next_brightness(self, val: int):
+        if val is not None:
+            if val < self.min_brightness:
+                val = self.min_brightness
+            elif val > self.max_brigtness:
+                val = self.max_brigtness
+        self._next_brightness = val
 
-CURRENT = Displays(main=0, secondary=0)
-NEXT = Displays(main=0, secondary=0)
-
-# How many seconds to wait before changing brightness
-DELAY = 5
-COUNTER = 0
-THREAD = None
-
-def get_current():
-    global CURRENT
-    tmp = CURRENT._asdict()
-    for name, bus in BUS_NUM._asdict().items():
-        s = subprocess.run(DDC_GET.format(bus=bus).split(), text=True, capture_output=True)
+    def read_brightness(self):
+        s = subprocess.run(
+            ['ddcutil', '--bus', str(self.bus), '--terse', 'getvcp', '10'],
+            check=True, text=True, capture_output=True,
+        )
         # Output for 5% brightness
         # VCP 10 C 5 100
-        tmp[name] = int(s.stdout.split()[3])
-    CURRENT = Displays(**tmp)
+        self.brightness = int(s.stdout.split()[3])
+        self.next_brightness = self.brightness
 
-def print_brightness(vals=None):
-    if not vals:
-        vals = CURRENT
-    # tmp = ["{}: {}%".format(k[0].upper(), v) for k, v in vals._asdict().items()]
-    # print(", ".join(tmp))
-    print(f'{vals.secondary}%, {vals.main}%')
+    def set_brightness(self, val: int = None):
+        if val is None:
+            val = self.next_brightness
+        if self.brightness == val:
+            return
+        if val < 0:
+            val = 0
+        elif val > 100:
+            val = 100
+        subprocess.run(
+            ['ddcutil', '--bus', str(self.bus), 'setvcp', '10', str(val)],
+            check=True,
+        )
+        self.brightness = val
+        self.next_brightness = val
 
-def handler_up_down(signum, frame):
-    global COUNTER, NEXT, THREAD
-    COUNTER = 0
-    if signum == signal.SIGUSR1:
-        tmp = [v + 1 for v in NEXT]
-    else:
-        tmp = [v - 1 for v in NEXT]
-    # Bounds check
-    for i in range(len(tmp)):
-        if tmp[i] < 0:
-            tmp[i] = 0
-        elif tmp[i] > 100:
-            tmp[i] = 100
-    NEXT = Displays(*tmp)
-    print_brightness(NEXT)
-    if THREAD is None or not THREAD.is_alive():
-        THREAD = Thread(target=timer_thread, daemon=True)
-        THREAD.start()
+    def toggle_preset(self):
+        # Default to day
+        if not self.brightness or self.brightness < self.preset.day:
+            self.set_brightness(self.preset.day)
+        else:
+            self.set_brightness(self.preset.night)
 
-def handler_toggle(signum, frame):
-    global CURRENT, NEXT
-    new_curr = []
-    curr_total = sum(CURRENT)
-    night_total = sum([p.night for p in PRESETS])
-    # We are in day mode
-    if curr_total > night_total:
-        for i, bus in enumerate(BUS_NUM):
-            subprocess.run(DDC_SET.format(bus=bus, val=PRESETS[i].night).split(), check=True)
-            new_curr.append(PRESETS[i].night)
-    else:
-        for i, bus in enumerate(BUS_NUM):
-            subprocess.run(DDC_SET.format(bus=bus, val=PRESETS[i].day).split(), check=True)
-            new_curr.append(PRESETS[i].day)
-    CURRENT = Displays(*new_curr)
-    NEXT = Displays(*new_curr)
-    print_brightness()
 
-def timer_thread():
-    global CURRENT, COUNTER
-    # print('Thread started')
-    while COUNTER < DELAY:
-        time.sleep(1)
-        COUNTER += 1
-        # print('Waiting... {}/{}'.format(COUNTER, DELAY))
-    # print('Delay over')
-    if CURRENT == NEXT:
-        # print('No change')
-        return
+class MyDisplays:
+    def __init__(self, delay=5, increment=10):
+        self.displays: List[Display] = [
+            Display(name='Samsung', bus=5, preset=Preset(day=25, night=5), selected=True,
+                    min_brightness=5, max_brigtness=70),
+            Display(name='Acer', bus=4, preset=Preset(day=35, night=0), selected=True),
+        ]
+        self.delay: int = delay
+        self.increment: int = increment
+        self._counter = 0
+        self.event: threading.Event = threading.Event()
+        threading.Thread(target=self.thread_worker, daemon=True).start()
+        signal.signal(signal.SIGUSR1, self.handler_up)
+        signal.signal(signal.SIGUSR2, self.handler_down)
+        signal.signal(signal.SIGHUP, self.handler_toggle)
+        signal.signal(signal.SIGALRM, self.handler_cycle_selected)
 
-    new_curr = []
-    for i, bus in enumerate(BUS_NUM):
-        if CURRENT[i] == NEXT[i]:
-            # print('No change for bus {}'.format(bus))
-            continue
-        subprocess.run(DDC_SET.format(bus=bus, val=NEXT[i]).split(), check=True)
-        new_curr.append(NEXT[i])
-    CURRENT = Displays(*new_curr)
-    print_brightness()
+    def handler_up(self, _signum, _frame):
+        self._counter = 0
+        for d in self.displays:
+            if not d.selected:
+                continue
+            if d.next_brightness is None:
+                d.next_brightness = 0
+            else:
+                d.next_brightness += self.increment
+        self.event.set()
+        self.print(show_next=True)
+
+    def handler_down(self, _signum, _frame):
+        self._counter = 0
+        for d in self.displays:
+            if not d.selected:
+                continue
+            if d.next_brightness is None:
+                d.next_brightness = 100
+            else:
+                d.next_brightness -= self.increment
+        self.event.set()
+        self.print(show_next=True)
+
+    def handler_toggle(self, _signum, _frame):
+        self.toggle_preset()
+
+    def handler_cycle_selected(self, _signum, _frame):
+        # Select first if all or no displays are selected
+        sel_all = False
+        sel_list = [d.selected for d in self.displays]
+        if all(sel_list) or not any(sel_list):
+            next_sel = 0
+        else:
+            # Get currently selected
+            curr_sel = 0
+            for i, sel in enumerate(sel_list):
+                if sel:
+                    curr_sel = i
+                    break
+            # Select all
+            if curr_sel >= len(sel_list) - 1:
+                sel_all = True
+            else:
+                next_sel = curr_sel + 1
+        for i, d in enumerate(self.displays):
+            if sel_all or i == next_sel:
+                d.selected = True
+            else:
+                d.selected = False
+
+        def show_selected():
+            self.print_selected()
+            time.sleep(1)
+            self.print()
+        threading.Thread(target=show_selected).start()
+
+    def toggle_preset(self):
+        for d in self.displays:
+            d.toggle_preset()
+        self.print()
+
+    def read_all(self):
+        for d in self.displays:
+            d.read_brightness()
+        self.print()
+
+    def set_all(self):
+        for d in self.displays:
+            if not d.selected:
+                continue
+            d.set_brightness()
+        self.print()
+
+    def print(self, show_next=False):
+        attr = 'next_brightness' if show_next else 'brightness'
+        print(', '.join(
+            [f'{getattr(d, attr)}%' if getattr(d, attr) is not None else 'N/A' for d in self.displays]
+        ))
+
+    def print_selected(self, show_next=False):
+        attr = 'next_brightness' if show_next else 'brightness'
+        tmp = []
+        for d in self.displays:
+            if d.selected:
+                tmp.append(f'[{getattr(d, attr)}%]')
+            else:
+                tmp.append(f'{getattr(d, attr)}%')
+        print(', '.join(tmp))
+
+    def thread_worker(self):
+        """Waits for event and then sets all displays' brightness"""
+        while True:
+            self.event.wait()
+            while self._counter < self.delay:
+                time.sleep(1)
+                self._counter += 1
+            self.set_all()
+            self._counter = 0
+            # Do stuff
+            self.event.clear()
+
 
 if __name__ == "__main__":
     # # DEBUG
     # import os
     # print(os.getpid())
     # # DEBUG
-    signal.signal(signal.SIGUSR1, handler_up_down)
-    signal.signal(signal.SIGUSR2, handler_up_down)
-    signal.signal(signal.SIGHUP, handler_toggle)
-    get_current()
-    NEXT = Displays(*CURRENT)
-    print_brightness()
+    md = MyDisplays(delay=2, increment=5)
+    md.read_all()
+    md.print()
     while True:
         signal.pause()
