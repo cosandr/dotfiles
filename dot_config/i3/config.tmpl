@@ -37,7 +37,8 @@ for_window [class="discord"] border none
 
 # Display stuff
 # Also edit /usr/share/sddm/scripts/Xsetup
-exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate right --pos 0x0 --output DP-0 --primary --mode 3840x2160 --rate 120 --pos 2160x1680 --output DP-2 --off
+# Vertical lined up bottom 1680 offset, 1260 slightly higher, 840 middle lined up
+exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate right --pos 0x0 --output DP-0 --primary --mode 3840x2160 --rate 120 --pos 2160x1260 --output DP-2 --off
 # exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --right-of DP-0 --output DP-0 --primary --mode 3840x2160 --rate 120 --output DP-2 --off
 # Lower mouse sensitivity
 exec --no-startup-id xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' -0.5
@@ -231,6 +232,7 @@ bindsym XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
 
 for_window [class="Pavucontrol"] floating enable; border normal
 for_window [class="jetbrains-toolbox"] floating enable; border none
+for_window [class="gnome-calculator"] floating enable; border none
 # Jetbrains splash window
 for_window [class="jetbrains-\w+" title="^win0$"] floating enable; border none
 # Evaluation window

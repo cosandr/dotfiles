@@ -71,10 +71,12 @@ class Display:
 
     def toggle_preset(self):
         # Default to day
-        if not self.brightness or self.brightness < self.preset.day:
+        if self.brightness is None:
             self.set_brightness(self.preset.day)
-        else:
+        elif self.brightness > self.preset.night:
             self.set_brightness(self.preset.night)
+        else:
+            self.set_brightness(self.preset.day)
 
 
 class MyDisplays:
