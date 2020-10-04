@@ -7,11 +7,12 @@ Requires i2c-dev kernel module
 echo 'i2c-dev' > /etc/modules-load.d/i2c.conf
 """
 
+import os
 import signal
 import subprocess
-import time
 import threading
-from typing import NamedTuple, List
+import time
+from typing import List, NamedTuple
 
 
 class Preset(NamedTuple):
@@ -62,10 +63,7 @@ class Display:
             val = 0
         elif val > 100:
             val = 100
-        subprocess.run(
-            ['ddcutil', '--bus', str(self.bus), 'setvcp', '10', str(val)],
-            check=True,
-        )
+        subprocess.Popen(['ddcutil', '--bus', str(self.bus), 'setvcp', '10', str(val)])
         self.brightness = val
         self.next_brightness = val
 
@@ -89,8 +87,10 @@ class MyDisplays:
         self.delay: int = delay
         self.increment: int = increment
         self._counter = 0
-        self.event: threading.Event = threading.Event()
-        threading.Thread(target=self.thread_worker, daemon=True).start()
+        self.selected_event: threading.Event = threading.Event()
+        self.selected_thread: threading.Thread = None
+        self.delay_event: threading.Event = threading.Event()
+        threading.Thread(target=self.delay_worker, daemon=True).start()
         signal.signal(signal.SIGUSR1, self.handler_up)
         signal.signal(signal.SIGUSR2, self.handler_down)
         signal.signal(signal.SIGHUP, self.handler_toggle)
@@ -105,7 +105,7 @@ class MyDisplays:
                 d.next_brightness = 0
             else:
                 d.next_brightness += self.increment
-        self.event.set()
+        self.delay_event.set()
         self.print(show_next=True)
 
     def handler_down(self, _signum, _frame):
@@ -117,7 +117,7 @@ class MyDisplays:
                 d.next_brightness = 100
             else:
                 d.next_brightness -= self.increment
-        self.event.set()
+        self.delay_event.set()
         self.print(show_next=True)
 
     def handler_toggle(self, _signum, _frame):
@@ -148,10 +148,18 @@ class MyDisplays:
                 d.selected = False
 
         def show_selected():
-            self.print_selected()
+            self.print_selected(show_next=self.delay_event.is_set())
             time.sleep(1)
-            self.print()
-        threading.Thread(target=show_selected).start()
+            if self.selected_event.is_set():
+                self.selected_event.clear()
+                return
+            self.print(show_next=self.delay_event.is_set())
+
+        if self.selected_thread is not None and self.selected_thread.is_alive():
+            self.selected_event.set()
+
+        self.selected_thread = threading.Thread(target=show_selected)
+        self.selected_thread.start()
 
     def toggle_preset(self):
         for d in self.displays:
@@ -186,24 +194,23 @@ class MyDisplays:
                 tmp.append(f'{getattr(d, attr)}%')
         print(', '.join(tmp))
 
-    def thread_worker(self):
+    def delay_worker(self):
         """Waits for event and then sets all displays' brightness"""
         while True:
-            self.event.wait()
+            self.delay_event.wait()
             while self._counter < self.delay:
                 time.sleep(1)
                 self._counter += 1
             self.set_all()
             self._counter = 0
             # Do stuff
-            self.event.clear()
+            self.delay_event.clear()
 
 
 if __name__ == "__main__":
-    # # DEBUG
-    # import os
-    # print(os.getpid())
-    # # DEBUG
+    # DEBUG
+    if os.getenv('DEBUG', '0') == '1':
+        print(os.getpid())
     md = MyDisplays(delay=2, increment=5)
     md.read_all()
     md.print()

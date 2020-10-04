@@ -34,7 +34,9 @@ class UpdatesClient:
         self.loop.create_task(self.refresh())
 
     def handler_close(self):
-        self.loop.create_task(self.handler_close_async())
+        # takes too long to run
+        # self.loop.create_task(self.handler_close_async())
+        exit(0)
 
     async def handler_close_async(self):
         await self.close()
