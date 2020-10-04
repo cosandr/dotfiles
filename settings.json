@@ -42,5 +42,9 @@
       "dresrv": "linux"
     },
     "git.autofetch": true,
-    "git.fetchOnPull": true
+    "git.fetchOnPull": true,
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    },
+    "update.mode": "none"
 }
