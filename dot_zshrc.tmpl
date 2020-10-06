@@ -43,6 +43,17 @@ if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
+
+pyenv-replace () {
+    [[ $# -lt 2 ]] && echo "Usage: pyenv-replace <venv> <version>" && return
+    pyenv install -s "$2" || return
+    pyenv uninstall -f "$1" || return
+    pyenv virtualenv "$2" "$1" || return
+    pyenv activate "$1" || return
+    python3 -m pip install -U pip wheel setuptools || return
+    [[ -f "requirements.txt" ]] && python3 -m pip install -U -r requirements.txt
+    [[ -f "requirements_dev.txt" ]] && python3 -m pip install -U -r requirements_dev.txt
+}
 {{- end }}
 
 # Aliases
@@ -54,6 +65,8 @@ alias cpp='rsync -avh --no-compress --progress'
 alias mvp='rsync -avh --no-compress --progress --remove-source-files'
 alias git-atgb='git config user.email "{{ .git.public_email }}" && git config user.name "{{ .git.public_name }}"'
 alias git-cosandr='git config user.email "{{ .git.private_email }}" && git config user.name "{{ .git.private_name }}"'
+alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install -U -r requirements.txt'
+alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 {{- range $k, $v := .log_files }}
 {{ if ne $v "" }}alias logs-{{ $k }}='tail -f {{ $v }}'{{ end }}
 {{- end }}

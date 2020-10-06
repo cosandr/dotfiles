@@ -19,6 +19,11 @@ function ssh-dresrv-x {
     Remove-Item env:DISPLAY
 }
 
+function pip-req {
+    py -3 -m pip install -U pip wheel setuptools
+    py -3 -m pip install -U -r requirements.txt
+}
+
 $HOSTS = "C:\Windows\System32\drivers\etc\hosts"
 $env:EDITOR="vim"
 
@@ -37,6 +42,7 @@ function touch ($file) { echo "" >> $file }
 function la { Get-ChildItem -Force $args }
 function sudoedit { Start-Process -Verb runAs vim $args }
 function sudo-wt { Start-Process -Verb runAs wt.exe }
+function pip-req-dev { py -3 -m pip install -U -r requirements_dev.txt }
 Set-Alias ll Get-ChildItem
 Set-Alias st "C:\Program Files\Sublime Text 3\sublime_text.exe"
 Set-Alias which where.exe
