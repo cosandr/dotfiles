@@ -5,6 +5,11 @@ set $alt Mod1
 set $shift Shift
 set $ctrl Control
 
+set $up Up
+set $down Down
+set $left Left
+set $right Right
+
 # set font
 font pango: Noto Sans 10
 
@@ -92,29 +97,29 @@ bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@DreSRV
 bindsym $ctrl+$alt+2 exec alacritty -e ssh root@DreSRV
 bindsym $ctrl+$alt+3 exec alacritty -e ssh andrei@dresrv.com
 
-# start dmenu (a program launcher)
+# Rofi binds
 bindsym $super+d exec rofi -show drun
-
-# alt-tab
 bindsym $alt+Tab exec rofi -show window
-
-# Rofi run
-bindsym $super+$alt+r exec rofi -show run
 
 # Turn off displays, delay for button release
 bindsym $super+Pause exec sleep 1 && xset dpms force off
 
 # Common apps
-bindsym $super+$alt+f exec thunar
-bindsym $super+$alt+p exec pycharm
-bindsym $super+$alt+c exec code --new-window
-bindsym $super+$alt+b exec firefox
-bindsym $super+$alt+$shift+b exec chromium
+mode "launcher" {
+    # Primary bindings
+    bindsym b exec firefox, mode "default"
+    bindsym c exec code --new-window, mode "default"
+    bindsym f exec thunar, mode "default"
+    bindsym g exec goland, mode "default"
+    bindsym p exec pycharm, mode "default"
 
-set $up Up
-set $down Down
-set $left Left
-set $right Right
+    bindsym $shift+b exec chromium, mode "default"
+    bindsym $shift+c exec code, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $super+$alt+r mode "launcher"
 
 # change focus
 bindsym $super+$left focus left
@@ -176,24 +181,10 @@ bindsym $super+$ctrl+Right move window to workspace next
 bindsym $super+$ctrl+Left move window to workspace prev
 bindsym $super+$alt+$ctrl+Right move container to workspace next
 bindsym $super+$alt+$ctrl+Left move container to workspace prev
-bindsym $super+1 workspace 1
-bindsym $super+2 workspace 2
-bindsym $super+3 workspace 3
-bindsym $super+4 workspace 4
-bindsym $super+5 workspace 5
-bindsym $super+6 workspace 6
-bindsym $super+7 workspace 7
-bindsym $super+8 workspace 8
-bindsym $super+9 workspace 9
-bindsym $super+$ctrl+1 move container to workspace 1
-bindsym $super+$ctrl+2 move container to workspace 2
-bindsym $super+$ctrl+3 move container to workspace 3
-bindsym $super+$ctrl+4 move container to workspace 4
-bindsym $super+$ctrl+5 move container to workspace 5
-bindsym $super+$ctrl+6 move container to workspace 6
-bindsym $super+$ctrl+7 move container to workspace 7
-bindsym $super+$ctrl+8 move container to workspace 8
-bindsym $super+$ctrl+9 move container to workspace 9
+{{- range $i := (list 1 2 3 4 5 6 7 8 9) }}
+bindsym $super+{{ $i }} workspace {{ $i }}
+bindsym $super+$ctrl+{{ $i }} move container to workspace {{ $i }}; workspace {{ $i }}
+{{- end }}
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $super+$shift+r restart
