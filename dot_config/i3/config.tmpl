@@ -31,6 +31,13 @@ for_window [class="Alacritty" title="server-monitoring"] border none
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
+exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
+exec --no-startup-id picom -b
+exec --no-startup-id redshift-gtk
+exec --no-startup-id dunst
+exec --no-startup-id ~/.fehbg
+exec --no-startup-id setxkbmap -layout us,no
+
 {{- if $is_desktop }}
 # assignments
 assign [class="Spotify"] 2
@@ -47,14 +54,12 @@ exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate 
 # exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --right-of DP-0 --output DP-0 --primary --mode 3840x2160 --rate 120 --output DP-2 --off
 # Lower mouse sensitivity
 exec --no-startup-id xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' -0.5
-{{- end }}
-exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
-exec --no-startup-id picom -b
-exec --no-startup-id redshift-gtk
-exec --no-startup-id dunst
-exec --no-startup-id ~/.fehbg
+# Restore workspaces
+exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/andrei/.config/i3/workspace-main.json'"
+exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-secondary-rotated.json'"
+# Nvidia OC
+exec --no-startup-id nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=50" -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=1000"
 
-{{- if $is_desktop }}
 {{- if .dresrv.use_domain }}
 # Use sshfs if we're not in the local network, otherwise we are using NFS
 exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
@@ -65,7 +70,6 @@ exec --no-startup-id discord &
 exec --no-startup-id kitty --title self-monitoring tmuxinator start hjn &
 exec --no-startup-id $HOME/.config/i3/ssh-monitoring.sh &
 exec --no-startup-id $HOME/.config/i3/update-localip.sh &
-exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-secondary-rotated.json'"
 exec --no-startup-id numlockx on &
 {{- else }}
 # Brightness and power buttons on laptop, install xfce4-power-manager
@@ -74,15 +78,8 @@ exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 # Set layout to tabbed by default
 exec --no-startup-id i3-msg layout tabbed
 {{- end }}
-exec --no-startup-id setxkbmap -layout us,no
 exec --no-startup-id firefox &
 exec --no-startup-id alacritty &
-{{- if $is_desktop }}
-exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/andrei/.config/i3/workspace-main.json'"
-
-# Nvidia OC
-exec --no-startup-id nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=50" -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=1000"
-{{- end }}
 
 # kill focused window
 bindsym $super+q kill
@@ -105,16 +102,16 @@ bindsym $alt+Tab exec rofi -show window
 bindsym $super+Pause exec sleep 1 && xset dpms force off
 
 # Common apps
+bindsym $super+$alt+b exec firefox
+bindsym $super+$alt+c exec code --new-window
+bindsym $super+$alt+f exec thunar
+bindsym $super+$alt+g exec goland
+bindsym $super+$alt+p exec pycharm
+# Secondary bindings
 mode "launcher" {
-    # Primary bindings
-    bindsym b exec firefox, mode "default"
-    bindsym c exec code --new-window, mode "default"
-    bindsym f exec thunar, mode "default"
-    bindsym g exec goland, mode "default"
-    bindsym p exec pycharm, mode "default"
-
-    bindsym $shift+b exec chromium, mode "default"
-    bindsym $shift+c exec code, mode "default"
+    bindsym b exec chromium, mode "default"
+    bindsym c exec code, mode "default"
+    bindsym d exec discord, mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
