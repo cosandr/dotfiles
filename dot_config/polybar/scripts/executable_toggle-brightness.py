@@ -82,7 +82,7 @@ class MyDisplays:
         self.displays: List[Display] = [
             Display(name='Samsung', bus=5, preset=Preset(day=25, night=5), selected=True,
                     min_brightness=5, max_brigtness=70),
-            Display(name='Acer', bus=4, preset=Preset(day=35, night=0), selected=True),
+            Display(name='Acer', bus=6, preset=Preset(day=35, night=0), selected=True),
         ]
         self.delay: int = delay
         self.increment: int = increment

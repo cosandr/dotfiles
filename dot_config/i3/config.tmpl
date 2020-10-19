@@ -29,15 +29,6 @@ for_window [class="Alacritty"] border normal 2
 for_window [class="Alacritty" title="self-monitoring"] border none
 for_window [class="Alacritty" title="server-monitoring"] border none
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
-exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
-exec --no-startup-id picom -b
-exec --no-startup-id redshift-gtk
-exec --no-startup-id dunst
-exec --no-startup-id ~/.fehbg
-exec --no-startup-id setxkbmap -layout us,no
-
 {{- if $is_desktop }}
 # assignments
 assign [class="Spotify"] 2
@@ -47,23 +38,10 @@ assign [class="discord"] 2
 for_window [class="Spotify"] border none
 for_window [class="discord"] border none
 
-# Display stuff
-# Also edit /usr/share/sddm/scripts/Xsetup
-# Vertical lined up bottom 1680 offset, 1260 slightly higher, 840 middle lined up
-exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --rotate right --pos 0x0 --output DP-0 --primary --mode 3840x2160 --rate 120 --pos 2160x1260 --output DP-2 --off
-# exec --no-startup-id xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --right-of DP-0 --output DP-0 --primary --mode 3840x2160 --rate 120 --output DP-2 --off
-# Lower mouse sensitivity
-exec --no-startup-id xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' -0.5
 # Restore workspaces
 exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/andrei/.config/i3/workspace-main.json'"
 exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3/workspace-secondary-rotated.json'"
-# Nvidia OC
-exec --no-startup-id nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=50" -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=1000"
 
-{{- if .dresrv.use_domain }}
-# Use sshfs if we're not in the local network, otherwise we are using NFS
-exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
-{{- end }}
 # Start stuff
 exec --no-startup-id "spotify --force-device-scale-factor=1.5 &"
 exec --no-startup-id discord &
@@ -74,16 +52,27 @@ exec --no-startup-id numlockx on &
 {{- else }}
 # Brightness and power buttons on laptop, install xfce4-power-manager
 exec --no-startup-id xfce4-power-manager
-exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 # Set layout to tabbed by default
 exec --no-startup-id i3-msg layout tabbed
 {{- end }}
+
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
+exec --no-startup-id picom -b
+exec --no-startup-id redshift-gtk
+exec --no-startup-id dunst
+exec --no-startup-id ~/.fehbg
 exec --no-startup-id firefox &
 exec --no-startup-id alacritty &
 
+{{- if or .dresrv.use_domain (not $is_desktop)}}
+# Use sshfs if we're not in the local network, otherwise we are using NFS
+exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
+{{- end }}
+
 # kill focused window
 bindsym $super+q kill
-bindsym $alt+F4 kill
 bindsym --release button2 kill
 
 # start a terminal

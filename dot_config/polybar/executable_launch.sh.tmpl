@@ -22,8 +22,8 @@ export PRIMARY_INET=$(route | grep '^default' | grep -m 1 -o '[^ ]*$')
 
 # Launch bars
 {{- if $is_desktop  }}
-MONITOR=DP-0 polybar main &
-MONITOR=HDMI-0 polybar secondary &
+MONITOR=DP-4 polybar main &
+MONITOR=DP-2 polybar secondary &
 {{- else }}
 MONITOR=eDP-1 polybar main &
 {{- end }}
