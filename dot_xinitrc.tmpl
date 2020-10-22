@@ -31,5 +31,5 @@ export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
 export XDG_SESSION_DESKTOP=i3
 
 dbus-update-activation-environment --systemd DISPLAY
-setxkbmap -layout us,no
+setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
 exec i3

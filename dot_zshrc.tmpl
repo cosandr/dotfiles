@@ -67,6 +67,7 @@ alias git-atgb='git config user.email "{{ .git.public_email }}" && git config us
 alias git-cosandr='git config user.email "{{ .git.private_email }}" && git config user.name "{{ .git.private_name }}"'
 alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install -U -r requirements.txt'
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
+alias ssh-no-host='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 {{- range $k, $v := .log_files }}
 {{ if ne $v "" }}alias logs-{{ $k }}='tail -f {{ $v }}'{{ end }}
 {{- end }}
