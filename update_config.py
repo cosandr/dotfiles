@@ -2,9 +2,10 @@
 
 import json
 import os
-import subprocess
 import platform
-from shutil import which
+import shutil
+import subprocess
+from getpass import getpass
 from socket import gethostname
 
 if os.getenv('USER'):
@@ -106,9 +107,11 @@ def to_toml(cfg, depth=0, parent=''):
 def to_json(cfg):
     return json.dumps(cfg, indent=2)
 
+
 def update_secrets_pass():
     with open(SECRETS_PASS, 'w') as f:
-        f.write(input('Enter secrets password: '))
+        f.write(getpass('Enter secrets password: '))
+
 
 def decrypt_secrets():
     """Decrypts secrets file using gpg"""
@@ -117,13 +120,13 @@ def decrypt_secrets():
     try:
         subprocess.run(['gpg', '--batch', '--yes', '--passphrase-file', SECRETS_PASS,
                         '-o', SECRETS_FILE, '-d', SECRETS_ENCRYPTED], check=True)
-    except:
+    except Exception:
         os.unlink(SECRETS_PASS)
         exit(1)
 
+
 def read_secrets():
-    secrets = {}
-    if not os.path.exists(SECRETS_FILE):
+    def _decrypt():
         if os.path.exists(SECRETS_ENCRYPTED):
             print('Decrypting secrets file: {} -> {}'.format(
                 SECRETS_ENCRYPTED, SECRETS_FILE))
@@ -131,10 +134,17 @@ def read_secrets():
         else:
             print('Secrets file [{}] not found, encrypted file missing [{}]'.format(
                 SECRETS_FILE, SECRETS_ENCRYPTED))
+    secrets = {}
+    if not os.path.exists(SECRETS_FILE):
+        _decrypt()
     if os.path.exists(SECRETS_FILE):
+        # Update if encrypted file is newer
+        if os.path.getmtime(SECRETS_ENCRYPTED) > os.path.getmtime(SECRETS_FILE):
+            _decrypt()
         with open(SECRETS_FILE, 'r') as f:
             secrets = json.load(f)
     return secrets
+
 
 if __name__ == "__main__":
     # Might not exist if we are using chezmoi --source
@@ -166,7 +176,7 @@ if __name__ == "__main__":
     cfg["data"]["dresrv"]["use_domain"] = HOSTNAME not in ('desktop', 'DreSRV')
 
     for c in CHECK_CMDS:
-        if which(c):
+        if shutil.which(c):
             cfg["data"]["check"]["exec"].append(c)
 
     for c in CHECK_SRC:
@@ -182,20 +192,18 @@ if __name__ == "__main__":
         with open(CHEZMOI_CONFIG, 'r') as f:
             old_config = f.read()
         if new_config != old_config:
-            # Cannot rename if it already exists on Windows
-            if OS_NAME == "Windows" and os.path.exists(backup_name):
-                os.unlink(backup_name)
-            os.rename(CHEZMOI_CONFIG, backup_name)
+            shutil.move(CHEZMOI_CONFIG, backup_name)
 
     if new_config == old_config:
+        print('No config changes')
         exit(0)
 
     # Write file
     with open(CHEZMOI_CONFIG, 'w') as f:
         f.write(to_toml(cfg))
-    
+
     # Display diff
-    if OS_NAME == "Windows":
+    s = subprocess.run(['diff', '--unified', '--color=always', backup_name, CHEZMOI_CONFIG])
+    if s.returncode == 2:
+        # --color=always fails on Windows and Alpine (maybe more)
         subprocess.run(['diff', '--unified', backup_name, CHEZMOI_CONFIG])
-    else:
-        subprocess.run(['diff', '--unified', '--color=always', backup_name, CHEZMOI_CONFIG])
