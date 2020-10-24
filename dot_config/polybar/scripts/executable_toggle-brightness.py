@@ -207,12 +207,20 @@ class MyDisplays:
             self.delay_event.clear()
 
 
-if __name__ == "__main__":
-    # DEBUG
-    if os.getenv('DEBUG', '0') == '1':
-        print(os.getpid())
+def main():
     md = MyDisplays(delay=2, increment=5)
     md.read_all()
     md.print()
     while True:
         signal.pause()
+
+
+if __name__ == "__main__":
+    # DEBUG
+    if os.getenv('DEBUG', '0') == '1':
+        print(os.getpid())
+    try:
+        main()
+    except Exception:
+        print('N/A')
+        exit(1)

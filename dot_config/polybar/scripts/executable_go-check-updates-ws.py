@@ -127,4 +127,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        print('N/A')
+        exit(1)
