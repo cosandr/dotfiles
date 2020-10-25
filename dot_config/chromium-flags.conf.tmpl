@@ -1,0 +1,4 @@
+{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+--ignore-gpu-blacklist
+--use-gl={{ if $is_desktop }}desktop{{ else }}egl{{ end }}
+--enable-accelerated-video-decode
