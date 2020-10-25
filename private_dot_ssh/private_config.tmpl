@@ -22,8 +22,8 @@ Host github.com
 {{- if not $is_srv }}
     IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
 {{- else }}
-    IdentityFile ~/.ssh/pc-linux_ed25519.cosandr
-    IdentityFile ~/.ssh/pc-windows_ed25519.cosandr
+    IdentityFile ~/.ssh/desktop_ed25519.cosandr
+    IdentityFile ~/.ssh/laptop_ed25519.cosandr
 {{- end }}
 
 Host github.com-atgb
@@ -31,8 +31,8 @@ Host github.com-atgb
 {{- if not $is_srv }}
     IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
 {{- else }}
-    IdentityFile ~/.ssh/pc-linux_ed25519.atgb
-    IdentityFile ~/.ssh/pc-windows_ed25519.atgb
+    IdentityFile ~/.ssh/desktop_ed25519.atgb
+    IdentityFile ~/.ssh/laptop_ed25519.atgb
 {{- end }}
 
 Host srvsim
