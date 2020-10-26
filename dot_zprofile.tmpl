@@ -78,7 +78,13 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 {{- end }}
 {{- if or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop") }}
-if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+{{- if ne .chezmoi.username "root" }}
+if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $TTY = /dev/tty1 ]]; then
   exec startx
+fi
+{{- end }}
+if [[ -z $SSH_AUTH_SOCK ]]; then
+  eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+  export SSH_AUTH_SOCK
 fi
 {{- end }}

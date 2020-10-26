@@ -18,7 +18,12 @@ for i in /sys/class/hwmon/hwmon*/temp*_input; do
 done
 
 # Find and set default network adapter
-export PRIMARY_INET=$(route | grep '^default' | grep -m 1 -o '[^ ]*$')
+PRIMARY_INET=""
+while [ -z $PRIMARY_INET ]; do
+    PRIMARY_INET=$(route | grep '^default' | grep -m 1 -o '[^ ]*$')
+    sleep 1
+done
+export PRIMARY_INET
 
 # Launch bars
 {{- if $is_desktop  }}
