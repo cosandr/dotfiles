@@ -5,7 +5,7 @@ Description=Tunnel Ports to DreSRV
 Restart=always
 RestartSec=5
 ExecStartPre=bash -c "while ! ping -c 1 -W 1 dresrv.com; do sleep 1; done"
-ExecStart=ssh -N \
+ExecStart=ssh -N -q \
 {{- if eq .chezmoi.hostname "desktop" }}
 {{- /* Node Exporter */}}
     -R 65001:localhost:9100 \
