@@ -42,6 +42,7 @@ Documents/
 .config/mimeapps.list
 .config/picom.conf
 .config/polybar
+.config/systemd
 .config/redshift
 .config/rofi
 .config/sublime-text-3

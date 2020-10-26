@@ -6,12 +6,12 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Root requires SSH_AUTH_SOCK
-# Run with sudo -E or set it manually (/run/user/1000/ssh-agent.socket)
+# Run with sudo -E or set it manually (/run/user/1000/keyring/ssh)
 
 if [[ -z $SSH_AUTH_SOCK ]]; then
     # Found socket
-    if [[ -S /run/user/1000/ssh-agent.socket ]]; then
-            export SSH_AUTH_SOCK=/run/user/1000/ssh-agent.socket
+    if [[ -S /run/user/1000/keyring/ssh ]]; then
+            export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
     else
         echo "Set SSH_AUTH_SOCK variable"
         exit 1

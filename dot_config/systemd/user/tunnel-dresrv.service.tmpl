@@ -1,0 +1,24 @@
+[Unit]
+Description=Tunnel Ports to DreSRV
+ConditionPathExists=/run/user/1000/keyring/ssh
+
+[Service]
+Environment=SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+ExecStart=ssh -N \
+{{- if eq .chezmoi.hostname "desktop" }}
+{{- /* Node Exporter */}}
+    -R 65001:localhost:9100 \
+{{- /* Aquaero Exporter */}}
+    -R 65002:localhost:2782 \
+{{- /* Nvidia Exporter */}}
+    -R 65003:localhost:9401 \
+{{- /* FAH Exporter */}}
+    -R 65004:localhost:9659 \
+{{- else }}
+{{- /* Node Exporter */}}
+    -R 65101:localhost:9100 \
+{{- end }}
+    dresrv.com
+
+[Install]
+WantedBy=default.target
