@@ -1,9 +1,7 @@
 [Unit]
 Description=Tunnel Ports to DreSRV
-ConditionPathExists=/run/user/1000/keyring/ssh
 
 [Service]
-Environment=SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
 ExecStart=ssh -N \
 {{- if eq .chezmoi.hostname "desktop" }}
 {{- /* Node Exporter */}}
@@ -18,7 +16,8 @@ ExecStart=ssh -N \
 {{- /* Node Exporter */}}
     -R 65101:localhost:9100 \
 {{- end }}
-    dresrv.com
+    -i {{ .chezmoi.homedir }}/.ssh/id_ed25519.prom \
+    prom-tunnel@dresrv.com
 
 [Install]
 WantedBy=default.target
