@@ -1,13 +1,13 @@
 # Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 # if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
 
-function git-atgb {
+function git-alt {
     echo "Setting git to atgb"
     git config user.email "{{ .git.public_email }}"
     git config user.name "{{ .git.public_name }}"
 }
 
-function git-cosandr {
+function git-main {
     echo "Setting git to cosandr"
     git config user.email "{{ .git.private_email }}"
     git config user.name "{{ .git.private_name }}"
@@ -43,6 +43,7 @@ function la { Get-ChildItem -Force $args }
 function sudoedit { Start-Process -Verb runAs vim $args }
 function sudo-wt { Start-Process -Verb runAs wt.exe }
 function pip-req-dev { py -3 -m pip install --use-feature=2020-resolver -U -r requirements_dev.txt }
+function git-sign { git config commit.gpgsign true }
 Set-Alias ll Get-ChildItem
 Set-Alias st "C:\Program Files\Sublime Text 3\sublime_text.exe"
 Set-Alias which where.exe

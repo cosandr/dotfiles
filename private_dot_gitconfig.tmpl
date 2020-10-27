@@ -9,6 +9,7 @@
 [user]
 	email = {{ .git.private_email }}
 	name = {{ .git.private_name }}
+    signingkey = 273D94492E01567B
 [alias]
 {{- if $is_windows }}
     add-urls = !python '{{ .chezmoi.sourceDir | replace "\\" "\\\\" }}\\dot_local\\bin\\executable_git-add-urls'
