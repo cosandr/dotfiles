@@ -5,19 +5,9 @@
 
 ssh -N `
 {{- if eq .chezmoi.hostname "desktop" }}
-{{- /* Aquaero Exporter */}}
-    -R 65002:localhost:2782 `
-{{- /* Nvidia Exporter */}}
-    -R 65003:localhost:9401 `
-{{- /* FAH Exporter */}}
-    -R 65004:localhost:9659 `
-{{- /* WMI Exporter */}}
-    -R 65005:localhost:9182 `
-{{- /* HWiNFO Exporter */}}
-    -R 65006:localhost:10445 `
+    -R 17766:localhost:7766 `
 {{- else }}
-{{- /* WMI Exporter */}}
-    -R 65102:localhost:9182 `
+    -R 27766:localhost:7766 `
 {{- end }}
     -i {{ .chezmoi.homedir }}/.ssh/id_ed25519.prom `
     prom-tunnel@dresrv.com

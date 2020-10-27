@@ -33,6 +33,7 @@ Documents/
 # Ignore GUI app config files when not desktop or laptop
 .config/alacritty
 .config/autostart
+.config/caddy
 .config/chromium-flags.conf
 .config/Code
 .config/dunst
@@ -42,10 +43,10 @@ Documents/
 .config/mimeapps.list
 .config/picom.conf
 .config/polybar
-.config/systemd
 .config/redshift
 .config/rofi
 .config/sublime-text-3
+.config/systemd
 .fonts
 .local/bin/my-screenlock
 .xinitrc

@@ -1,0 +1,35 @@
+http://localhost:7766 {
+    respond "Not Found" 404
+    respond /hwinfo/* 503
+    respond /wmi/* 503
+
+    route /node/* {
+        uri strip_prefix /node
+        reverse_proxy localhost:9100
+    }
+{{- if eq .chezmoi.hostname "desktop" }}
+    route /aquaero/* {
+        uri strip_prefix /aquaero
+        reverse_proxy localhost:2782
+    }
+    route /nvidia/* {
+        uri strip_prefix /nvidia
+        reverse_proxy localhost:9401
+    }
+    route /fah/* {
+        uri strip_prefix /fah
+        reverse_proxy localhost:9659
+    }
+    handle_errors {
+        route /aquaero/* {
+            respond "Exporter Not Running" 503
+        }
+        route /fah/* {
+            respond "Exporter Not Running" 503
+        }
+        route /nvidia/* {
+            respond "Exporter Not Running" 503
+        }
+    }
+{{- end }}
+}

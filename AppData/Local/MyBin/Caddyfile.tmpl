@@ -1,0 +1,50 @@
+{{/* 
+Task Scheduler
+Program: caddy.exe
+Arguments: -config %LOCALAPPDATA%\MyBin\Caddyfile 
+*/}}
+http://localhost:7766 {
+    respond "Not Found" 404
+    respond /node/* 503
+{{- if eq .chezmoi.hostname "desktop" }}
+    route /aquaero/* {
+        uri strip_prefix /aquaero
+        reverse_proxy localhost:2782
+    }
+    route /hwinfo/* {
+        uri strip_prefix /hwinfo
+        reverse_proxy localhost:10445
+    }
+    route /fah/* {
+        uri strip_prefix /fah
+        reverse_proxy localhost:9659
+    }
+    route /nvidia/* {
+        uri strip_prefix /nvidia
+        reverse_proxy localhost:9401
+    }
+{{- end }}
+    route /wmi/* {
+        uri strip_prefix /wmi
+        reverse_proxy localhost:9182
+    }
+    handle_errors {
+{{- if eq .chezmoi.hostname "desktop" }}
+        route /aquaero/* {
+            respond "Exporter Not Running" 503
+        }
+        route /hwinfo/* {
+            respond "Exporter Not Running" 503
+        }
+        route /fah/* {
+            respond "Exporter Not Running" 503
+        }
+        route /nvidia/* {
+            respond "Exporter Not Running" 503
+        }
+{{- end }}
+        route /wmi/* {
+            respond "Exporter Not Running" 503
+        }
+    }
+}
