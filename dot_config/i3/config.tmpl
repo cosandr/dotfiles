@@ -100,6 +100,8 @@ mode "launcher" {
     bindsym b exec chromium, mode "default"
     bindsym c exec code, mode "default"
     bindsym d exec discord, mode "default"
+    bindsym g exec goland dontReopenProjects, mode "default"
+    bindsym p exec pycharm dontReopenProjects, mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -211,6 +213,7 @@ for_window [class="jetbrains-toolbox"] floating enable; border none
 for_window [class="gnome-calculator"] floating enable; border none
 # Jetbrains splash window
 for_window [class="jetbrains-\w+" title="^win0$"] floating enable; border none
+for_window [class="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enable; border none
 # Evaluation window
 for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
 # PiP
