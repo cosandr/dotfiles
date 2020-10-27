@@ -21,7 +21,7 @@ function ssh-dresrv-x {
 
 function pip-req {
     py -3 -m pip install -U pip wheel setuptools
-    py -3 -m pip install -U -r requirements.txt
+    py -3 -m pip install --use-feature=2020-resolver -U -r requirements.txt
 }
 
 $HOSTS = "C:\Windows\System32\drivers\etc\hosts"
