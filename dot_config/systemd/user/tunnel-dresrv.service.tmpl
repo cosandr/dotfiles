@@ -7,7 +7,7 @@ Requires=caddy.service
 Restart=always
 RestartSec=5
 ExecStartPre=bash -c "while ! ping -c 1 -W 1 dresrv.com; do sleep 1; done"
-ExecStart=ssh -N \
+ExecStart=ssh -N -o ExitOnForwardFailure=yes \
 {{- if eq .chezmoi.hostname "desktop" }}
     -R 17766:localhost:7766 \
 {{- else }}
