@@ -48,6 +48,7 @@ Documents/
 .config/sublime-text-3
 .config/systemd
 .fonts
+.local/bin/*mount-c
 .local/bin/my-screenlock
 .xinitrc
 .xprofile
@@ -55,6 +56,7 @@ Documents/
 {{- end }}
 {{- if $not_desktop }}
 # Ignore desktop config on laptop
+.local/bin/*mount-c
 .config/i3/workspace-*
 .config/polybar/scripts/aquaero*
 .config/polybar/scripts/nvidia*

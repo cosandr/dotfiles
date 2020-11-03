@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+# Put password in /root/.bitlk_c
+# /etc/crypttab
+# bitlk_c   PARTUUID=<uuid here>   /root/.bitlk_c   noauto,bitlk
+# /etc/fstab
+# /dev/mapper/bitlk_c   /win_c  ntfs-3g ro,nofail,uid=1000,gid=1000,umask=227,noatime 0 0
+
+echo "Open BitLocker"
+sudo systemctl start systemd-cryptsetup@bitlk_c.service
+echo "Mount"
+sudo mount /win_c

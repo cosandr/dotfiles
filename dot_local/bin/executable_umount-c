@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+echo "Unmount"
+sudo umount /win_c
+echo "Close BitLocker"
+sudo systemctl stop systemd-cryptsetup@bitlk_c.service
