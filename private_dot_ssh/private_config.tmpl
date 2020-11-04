@@ -7,6 +7,9 @@ XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
     ForwardAgent yes
+{{- if and (not $is_srv) (not $is_windows) }}
+    RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+{{- end }}
 
 Host dresrv.com
 {{- if .dresrv.use_domain }}
@@ -16,6 +19,9 @@ Host dresrv.com
     HostName {{ .dresrv.local_ip }}
 {{- end }}
     ForwardAgent yes
+{{- if and (not $is_srv) (not $is_windows) }}
+    RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+{{- end }}
 
 Host github.com
     HostName github.com

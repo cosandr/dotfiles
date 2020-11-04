@@ -50,3 +50,24 @@ cd ~andrei/.local/share/chezmoi
 CHEZMOI_HOME=. ./update_config.py
 chezmoi --source ~andrei/.local/share/chezmoi apply
 ```
+
+# gpg-agent forwarding
+
+See [this](https://superuser.com/a/1329299) post.
+
+- Export public key `gpg --export 273D94492E01567B > pub`
+- Copy to server
+- Import `gpg --import pub`
+- Set trust `gpg --edit-key 273D94492E01567B`, trust, 5, save
+- Edit `sshd_config` on server
+```
+Match User andrei
+    StreamLocalBindUnlink yes
+```
+- Ensure gpg-agent doesn't start on server
+```sh
+echo use-agent >> ~/.gnupg/gpg.conf
+echo no-autostart >> ~/.gnupg/gpg-agent.conf
+systemctl --global mask --now gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket
+```
+- Test with `echo test | gpg --clearsign`
