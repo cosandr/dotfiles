@@ -6,9 +6,24 @@ XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
+
+Host DreSRV-agent
+    HostName {{ .dresrv.local_ip }}
+    User andrei
     ForwardAgent yes
 {{- if and (not $is_srv) (not $is_windows) }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+{{- end }}
+
+{{- if not $is_srv }}
+Host DreSRV-X
+    HostName {{ .dresrv.local_ip }}
+    ForwardX11 yes
+    ForwardX11Trusted yes
+{{- if $is_windows }}
+    RequestTTY yes
+    RemoteCommand export GDK_SCALE=2; export QT_SCREEN_SCALE_FACTORS=2; export QT_AUTO_SCREEN_SCALE_FACTOR=0; export GDK_DPI_SCALE=0.75; zsh
+{{- end }}
 {{- end }}
 
 Host dresrv.com
@@ -18,6 +33,10 @@ Host dresrv.com
 {{- else }}
     HostName {{ .dresrv.local_ip }}
 {{- end }}
+
+Host dresrv.com-agent
+    HostName dresrv.com
+    User andrei
     ForwardAgent yes
 {{- if and (not $is_srv) (not $is_windows) }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
@@ -59,16 +78,6 @@ Host srvsim-boot
 Host romsto
     HostName {{ .romsto.domain }}
     Port {{ .romsto.ssh_port }}
-{{ if not $is_srv }}
-Host DreSRV-X
-    HostName DreSRV
-    ForwardX11 yes
-    ForwardX11Trusted yes
-{{- if $is_windows }}
-    RequestTTY yes
-    RemoteCommand export GDK_SCALE=2; export QT_SCREEN_SCALE_FACTORS=2; export QT_AUTO_SCREEN_SCALE_FACTOR=0; export GDK_DPI_SCALE=0.75; zsh
-{{- end }}
-{{- end }}
 
 Host romvm
     HostName 10.1.1.5

@@ -897,13 +897,9 @@ map kitty_mod+q      close_tab
 map kitty_mod+alt+t  set_tab_title
 
 # SSH tabs
-{{- if .dresrv.use_domain }}
-map kitty_mod+1 new_tab ssh -X andrei@dresrv.com
-map kitty_mod+2 new_tab ssh -t andrei@dresrv.com 'sudo -i'
-{{- else }}
-map kitty_mod+1 new_tab ssh -X andrei@DreSRV
+map kitty_mod+1 new_tab ssh andrei@DreSRV-agent
 map kitty_mod+2 new_tab ssh root@DreSRV
-{{- end }}
+map kitty_mod+3 new_tab andrei@dresrv.com-agent
 
 #: You can also create shortcuts to go to specific tabs, with 1 being
 #: the first tab, 2 the second tab and -1 being the previously active
