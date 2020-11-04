@@ -7,8 +7,8 @@
     symlinks = true
 {{- end }}
 [user]
-	email = {{ .git.private_email }}
-	name = {{ .git.private_name }}
+    email = {{ .git.private_email }}
+    name = {{ .git.private_name }}
     signingkey = 273D94492E01567B
 [alias]
 {{- if $is_windows }}
