@@ -121,26 +121,30 @@ def check_files(cfg):
 
 def check_ignore_config(cfg):
     check = {
-        "alacritty": ".config/alacritty",
-        "caddy": ".config/caddy",
-        "chromium": ".config/chromium-flags.conf",
-        "code": ".config/Code",
-        "dunst": ".config/dunst",
-        "feh": ".config/feh",
-        "htop": ".config/htop",
-        "i3": ".config/i3",
-        "kitty": ".config/kitty",
-        "nvim": ".config/nvim",
-        "picom": ".config/picom.conf",
-        "polybar": ".config/polybar",
-        "redshift": ".config/redshift",
-        "rofi": ".config/rofi",
-        "sublime_text": ".config/sublime-text-3",
-        "tmuxinator": ".config/tmuxinator",
+        "alacritty": dict(path=".config/alacritty"),
+        "caddy": dict(path=".config/caddy"),
+        "chromium": dict(path=".config/chromium-flags.conf"),
+        "code": dict(path=".config/Code"),
+        "dunst": dict(path=".config/dunst"),
+        "feh": dict(path=".config/feh"),
+        "htop": dict(path=".config/htop", skip_root=False),
+        "i3": dict(path=".config/i3"),
+        "kitty": dict(path=".config/kitty"),
+        "nvim": dict(path=".config/nvim", skip_root=False),
+        "picom": dict(path=".config/picom.conf"),
+        "polybar": dict(path=".config/polybar"),
+        "redshift": dict(path=".config/redshift"),
+        "rofi": dict(path=".config/rofi"),
+        "sublime_text": dict(path=".config/sublime-text-3"),
+        "tmuxinator": dict(path=".config/tmuxinator", skip_root=False),
     }
     cfg["data"]["check"]["ignore_config"] = {}
     for k, v in check.items():
-        cfg["data"]["check"]["ignore_config"][k] = {"cfg": v, "ok": bool(shutil.which(k))}
+        cfg["data"]["check"]["ignore_config"][k] = dict(
+            path=v['path'],
+            exists=bool(shutil.which(k)),
+            skip_root=v.get('skip_root', True),
+        )
     return cfg
 
 

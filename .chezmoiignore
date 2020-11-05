@@ -37,8 +37,10 @@ Documents/
 .Xresources
 {{- end }}
 {{- range $k, $v := .check.ignore_config }}
-{{- if or ($is_root) (not $v.ok) }}
-{{ $v.cfg }}
+{{- if not $v.exists }}
+{{ $v.path }}
+{{- else if and $is_root $v.skip_root }}
+{{ $v.path }}
 {{- end }}
 {{- end }}
 {{- if $not_desktop }}
