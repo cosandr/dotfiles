@@ -7,7 +7,6 @@
 make_*
 mimeapps.list
 plasma-org.kde.plasma.desktop-appletsrc
-powershell_profile.ps1
 Preferences.sublime-settings
 README.md
 secret*
@@ -31,21 +30,8 @@ Documents/
 {{- end }}
 {{- if or ($is_root) (and $not_desktop $not_laptop) }}
 # Ignore GUI app config files when not desktop or laptop
-.config/alacritty
 .config/autostart
-.config/caddy
-.config/chromium-flags.conf
-.config/Code
-.config/dunst
-.config/feh
-.config/i3
-.config/kitty
 .config/mimeapps.list
-.config/picom.conf
-.config/polybar
-.config/redshift
-.config/rofi
-.config/sublime-text-3
 .config/systemd
 .fonts
 .local/bin/*mount-c
@@ -54,21 +40,25 @@ Documents/
 .xprofile
 .Xresources
 {{- end }}
+{{- range $k, $v := .check.ignore_config }}
+{{- if or ($is_root) (not $v.ok) }}
+{{ $v.cfg }}
+{{- end }}
+{{- end }}
 {{- if $not_desktop }}
-# Ignore desktop config on laptop
+# Ignore desktop config on laptop and server
 .local/bin/*mount-c
 .config/i3/workspace-*
 .config/polybar/scripts/aquaero*
 .config/polybar/scripts/nvidia*
+# No Nvidia GPUs
+.config/tmuxinator/hnvtop.yml
+.config/tmuxinator/hjn.yml
 {{- end }}
 {{- if or $is_root $not_server }}
 .ssh/*.pub
 {{- end }}
-{{- if $not_server }}
+{{- if eq (get .check.files "mrbot") "" }}
 .config/tmuxinator/hjd.yml
-{{- else }}
-# Ignore hnvtop config on server (no nvidia GPU)
-.config/tmuxinator/hnvtop.yml
-.config/tmuxinator/hjn.yml
 {{- end }}
 {{- end }}

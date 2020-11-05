@@ -78,15 +78,20 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 {{- end }}
 {{- if or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop") }}
+{{- if ne .chezmoi.username "root" }}
 # Ensure tunnel is active
 systemctl --user -q is-active tunnel-dresrv.service || systemctl --user start tunnel-dresrv.service &
-{{- if ne .chezmoi.username "root" }}
+# Start X server
 if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $TTY = /dev/tty1 ]]; then
   exec startx
 fi
-{{- end }}
 if [[ -z $SSH_AUTH_SOCK ]]; then
   eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
   export SSH_AUTH_SOCK
 fi
+{{- else }}
+if [[ -z $SSH_AUTH_SOCK ]]; then
+    export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+fi
+{{- end }}
 {{- end }}

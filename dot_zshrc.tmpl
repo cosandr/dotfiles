@@ -69,7 +69,7 @@ alias git-sign='git config commit.gpgsign true'
 alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install --use-feature=2020-resolver -U -r requirements.txt'
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-no-host='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-{{- range $k, $v := .log_files }}
+{{- range $k, $v := .check.files }}
 {{ if ne $v "" }}alias logs-{{ $k }}='tail -f {{ $v }}'{{ end }}
 {{- end }}
 {{- if has "docker" .check.exec }}

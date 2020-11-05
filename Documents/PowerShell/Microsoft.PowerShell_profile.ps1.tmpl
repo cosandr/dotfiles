@@ -28,7 +28,7 @@ $HOSTS = "C:\Windows\System32\drivers\etc\hosts"
 $env:EDITOR="vim"
 
 # Aliases (and functions acting as aliases)
-{{- range $k, $v := .log_files }}
+{{- range $k, $v := .check.files }}
 {{ if ne $v "" }}function logs-{{ $k }} { Get-Content {{ $v }} -Wait -Tail 10 }{{ end }}
 {{- end }}
 

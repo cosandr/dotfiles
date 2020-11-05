@@ -9,4 +9,4 @@ windows:
       panes:
         - htop -d10
         - journalctl -f
-        - tail -f {{ .log_files.discord }}
+        - tail -f {{ .check.files.mrbot }}

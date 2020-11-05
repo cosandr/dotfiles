@@ -34,7 +34,7 @@
     ],
     "go.formatTool": "goimports",
     "go.useLanguageServer": true,
-    "python.languageServer": "Microsoft",
+    "python.languageServer": "Pylance",
     "discord.enabled": false,
     "discord.workspaceElapsedTime": true,
     "python.showStartPage": false,

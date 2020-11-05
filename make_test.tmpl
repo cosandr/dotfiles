@@ -1,3 +1,0 @@
-{{- range $k, $v := .log_files }}
-{{ if ne $v "" }}alias logs-{{ $k }}='{{ $v }}'{{ end }}
-{{- end }}
