@@ -127,6 +127,7 @@ def check_ignore_config(cfg):
         "code": ".config/Code",
         "dunst": ".config/dunst",
         "feh": ".config/feh",
+        "htop": ".config/htop",
         "i3": ".config/i3",
         "kitty": ".config/kitty",
         "nvim": ".config/nvim",

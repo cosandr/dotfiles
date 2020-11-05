@@ -3,15 +3,11 @@
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
 {{- $is_windows := eq .chezmoi.os "windows" -}}
+secret*
 .secret*
 make_*
-mimeapps.list
-plasma-org.kde.plasma.desktop-appletsrc
-Preferences.sublime-settings
+symlinks
 README.md
-secret*
-settings.json
-SublimeLinter.sublime-settings
 update_config.*
 {{- if $is_windows }}
 *
