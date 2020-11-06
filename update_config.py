@@ -49,9 +49,9 @@ CONFIG = dict(
         ),
         check=dict(
             exec=[],
-            source=[],
             files={},
-            ignore_config={},
+            ignore_config=[],
+            source=[],
         ),
     ),
 )
@@ -138,12 +138,14 @@ def check_ignore_config(cfg):
         "sublime_text": dict(path=".config/sublime-text-3"),
         "tmuxinator": dict(path=".config/tmuxinator", skip_root=False),
     }
-    cfg["data"]["check"]["ignore_config"] = {}
+    cfg["data"]["check"]["ignore_config"] = []
     for k, v in check.items():
-        cfg["data"]["check"]["ignore_config"][k] = dict(
-            path=v['path'],
-            exists=bool(shutil.which(k)),
-            skip_root=v.get('skip_root', True),
+        cfg["data"]["check"]["ignore_config"].append(
+            dict(
+                path=v['path'],
+                missing=not bool(shutil.which(k)),
+                skip_root=v.get('skip_root', True),
+            )
         )
     return cfg
 

@@ -37,8 +37,8 @@ Documents/
 .xprofile
 .Xresources
 {{- end }}
-{{- range $k, $v := .check.ignore_config }}
-{{- if not $v.exists }}
+{{- range $v := .check.ignore_config }}
+{{- if $v.missing }}
 {{ $v.path }}
 {{- else if and $is_root $v.skip_root }}
 {{ $v.path }}
