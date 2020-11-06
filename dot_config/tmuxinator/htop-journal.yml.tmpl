@@ -1,0 +1,16 @@
+# /home/andrei/.config/tmuxinator/htop-journal.yml
+
+name: htop-journal
+root: ~/
+
+windows:
+  - htop:
+      layout: even-vertical
+      panes:
+        - htop -d10
+        - ssh {{ if .dresrv.use_domain }}andrei@dresrv.com{{ else }}root@DreSRV{{ end }} -t htop -d10
+  - journal:
+      layout: even-vertical
+      panes:
+        - journalctl -f
+        - ssh andrei@{{ if .dresrv.use_domain }}dresrv.com{{ else }}DreSRV{{ end }} -t journalctl -f

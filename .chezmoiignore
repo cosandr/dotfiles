@@ -29,6 +29,7 @@ Documents/
 .config/autostart
 .config/mimeapps.list
 .config/systemd
+.config/tmuxinator/htop-journal.yml
 .fonts
 .local/bin/*mount-c
 .local/bin/my-screenlock

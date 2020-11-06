@@ -18,16 +18,13 @@ floating_modifier $alt
 
 focus_follows_mouse no
 
+# No titlebars
 default_border pixel 2
 
+# Titlebars for terminals
+for_window [class="(k|Alacr)itty"] border normal 2
 # No borders for monitoring windows
-for_window [class="kitty"] border normal 2
-for_window [class="kitty" title="self-monitoring"] border none
-for_window [class="kitty" title="server-monitoring"] border none
-
-for_window [class="Alacritty"] border normal 2
-for_window [class="Alacritty" title="self-monitoring"] border none
-for_window [class="Alacritty" title="server-monitoring"] border none
+for_window [class="(k|Alacr)itty" title="\w+-monitoring"] border none
 
 {{- if $is_desktop }}
 # assignments
@@ -69,6 +66,9 @@ exec --no-startup-id alacritty &
 # Use sshfs if we're not in the local network, otherwise we are using NFS
 exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
 {{- end }}
+
+# toggle border
+bindsym $super+b border toggle 2
 
 # kill focused window
 bindsym $super+q kill
