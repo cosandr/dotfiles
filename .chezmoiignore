@@ -19,12 +19,13 @@ update_config.*
 !Documents
 .ssh/*.pub
 {{- else }}
+{{- $is_wsl := contains "Microsoft" .chezmoi.kernel.osrelease -}}
 AppData/
 Documents/
 {{- if or (not $is_root) ($not_desktop) }}
 .local/bin/run-borg*
 {{- end }}
-{{- if or ($is_root) (and $not_desktop $not_laptop) }}
+{{- if or ($is_root) (and $not_desktop $not_laptop) ($is_wsl) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
 .config/mimeapps.list
@@ -44,7 +45,7 @@ Documents/
 {{ $v.path }}
 {{- end }}
 {{- end }}
-{{- if $not_desktop }}
+{{- if or $not_desktop $is_wsl }}
 # Ignore desktop config on laptop and server
 .local/bin/*mount-c
 .config/i3/workspace-*
@@ -54,7 +55,7 @@ Documents/
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }}
-{{- if or $is_root $not_server }}
+{{- if or $is_root $not_server $is_wsl }}
 .ssh/*.pub
 {{- end }}
 {{- if eq (get .check.files "mrbot") "" }}

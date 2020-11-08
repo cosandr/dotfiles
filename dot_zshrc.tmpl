@@ -2,7 +2,6 @@
 {{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
 {{- $not_root := ne .chezmoi.username "root" -}}
-{{- $is_wsl := contains "Microsoft" .chezmoi.kernel.osrelease -}}
 {{- range .check.source }}
 {{ if . }}source {{ . }}{{ end }}
 {{- end }}
@@ -108,13 +107,6 @@ alias logs-nginx='tail $(find /var/log/nginx -type f -printf " -f %p")'
 
 {{- if and $not_desktop $not_laptop }}
 export GPG_TTY=$(tty)
-{{- end }}
-{{- if $is_wsl }}
-[ -n ${WSL_AUTH_SOCK} ] && export SSH_AUTH_SOCK=${WSL_AUTH_SOCK}
-export GDK_SCALE=2
-export QT_SCREEN_SCALE_FACTORS=2
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export DISPLAY=localhost:0.0
 {{- end }}
 
 {{- if has "go-motd" .check.exec }}

@@ -118,8 +118,7 @@ def check_files(cfg):
         check = {k: "{}{}".format(path_prefix, v) for k, v in check.items() if not k.startswith('/')}
     cfg["data"]["check"]["files"] = {}
     for k, v in check.items():
-        if os.path.exists(v):
-            cfg["data"]["check"]["files"][k] = v
+        cfg["data"]["check"]["files"][k] = v if os.path.exists(v) else ""
     return cfg
 
 
