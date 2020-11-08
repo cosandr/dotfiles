@@ -110,8 +110,12 @@ def check_files(cfg):
             path_prefix = '/dresrv/'
     elif OS_NAME == "Windows":
         path_prefix = '//dresrv.local/'
-    # join takes care of paths which were already absolute
-    check = {k: os.path.join(path_prefix, v) for k, v in check.items()}
+    if OS_NAME != "Windows":
+        # join takes care of paths which were already absolute
+        check = {k: os.path.join(path_prefix, v) for k, v in check.items()}
+    else:
+        # Join strings, ignore absolute paths
+        check = {k: "{}{}".format(path_prefix, v) for k, v in check.items() if not k.startswith('/')}
     cfg["data"]["check"]["files"] = {}
     for k, v in check.items():
         if os.path.exists(v):
@@ -155,7 +159,7 @@ def json_str(cfg):
 
 
 def write_json_file(obj, path):
-    with open(path, 'w', encoding='utf-8') as f:
+    with open(path, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(obj, f, indent=1)
 
 
@@ -206,10 +210,7 @@ def show_diff():
     if not os.path.exists(CHEZMOI_CONFIG_OLD):
         print(json_str(read_json_file(CHEZMOI_CONFIG)))
         return
-    s = subprocess.run(['diff', '--unified', '--color=always', CHEZMOI_CONFIG_OLD, CHEZMOI_CONFIG])
-    if s.returncode == 2:
-        # --color=always fails on Windows and Alpine (maybe more)
-        subprocess.run(['diff', '--unified', CHEZMOI_CONFIG_OLD, CHEZMOI_CONFIG])
+    subprocess.run(['git', 'diff', '--unified', '--color=always', CHEZMOI_CONFIG_OLD, CHEZMOI_CONFIG])
 
 
 def main():
