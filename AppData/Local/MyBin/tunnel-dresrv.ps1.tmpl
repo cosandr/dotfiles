@@ -11,3 +11,12 @@ ssh -N `
 {{- end }}
     -i {{ .chezmoi.homedir }}/.ssh/id_ed25519.prom `
     prom-tunnel@dresrv.com
+
+ssh -N -O cancel `
+{{- if eq .chezmoi.hostname "desktop" }}
+    -R 17766:localhost:7766 `
+{{- else }}
+    -R 27766:localhost:7766 `
+{{- end }}
+    -i {{ .chezmoi.homedir }}/.ssh/id_ed25519.prom `
+    prom-tunnel@dresrv.com

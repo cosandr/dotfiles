@@ -6,9 +6,15 @@ XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
 
-Host DreSRV-agent
+Host DreSRV-A
     HostName {{ .dresrv.local_ip }}
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
     User andrei
     ForwardAgent yes
 {{- if and (not $is_srv) (not $is_windows) }}
@@ -18,6 +24,9 @@ Host DreSRV-agent
 {{- if not $is_srv }}
 Host DreSRV-X
     HostName {{ .dresrv.local_ip }}
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
     ForwardX11 yes
     ForwardX11Trusted yes
 {{- if $is_windows }}
@@ -33,9 +42,20 @@ Host dresrv.com
 {{- else }}
     HostName {{ .dresrv.local_ip }}
 {{- end }}
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
 
-Host dresrv.com-agent
-    HostName dresrv.com
+Host dresrv.com-A
+{{- if .dresrv.use_domain }}
+    HostName {{ .dresrv.domain }}
+    Port {{ .dresrv.ssh_port }}
+{{- else }}
+    HostName {{ .dresrv.local_ip }}
+{{- end }}
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
     User andrei
     ForwardAgent yes
 {{- if and (not $is_srv) (not $is_windows) }}
@@ -78,7 +98,11 @@ Host srvsim-boot
 Host romsto
     HostName {{ .romsto.domain }}
     Port {{ .romsto.ssh_port }}
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
 
 Host romvm
     HostName 10.1.1.33
     ProxyJump romsto
+    ForwardAgent yes
