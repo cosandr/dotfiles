@@ -1,5 +1,6 @@
 {{- $is_windows := eq .chezmoi.os "windows" -}}
 {{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
+{{- $is_root := eq .chezmoi.username "root" }}
 {{- if $is_windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 {{- end }}
@@ -12,21 +13,15 @@ Host DreSRV
 
 Host DreSRV-A
     HostName {{ .dresrv.local_ip }}
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
-    ControlPersist 10m
     User andrei
     ForwardAgent yes
 {{- if and (not $is_srv) (not $is_windows) }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
 
-{{- if not $is_srv }}
+{{ if not $is_srv -}}
 Host DreSRV-X
     HostName {{ .dresrv.local_ip }}
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
-    ControlPersist 10m
     ForwardX11 yes
     ForwardX11Trusted yes
 {{- if $is_windows }}
@@ -53,9 +48,6 @@ Host dresrv.com-A
 {{- else }}
     HostName {{ .dresrv.local_ip }}
 {{- end }}
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
-    ControlPersist 10m
     User andrei
     ForwardAgent yes
 {{- if and (not $is_srv) (not $is_windows) }}
@@ -65,7 +57,7 @@ Host dresrv.com-A
 Host github.com
     HostName github.com
 {{- if not $is_srv }}
-    IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
+    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
 {{- else }}
     IdentityFile ~/.ssh/desktop_ed25519.cosandr
     IdentityFile ~/.ssh/laptop_ed25519.cosandr
@@ -74,7 +66,7 @@ Host github.com
 Host github.com-atgb
     HostName github.com
 {{- if not $is_srv }}
-    IdentityFile {{ if eq .chezmoi.username "root" }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
+    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
 {{- else }}
     IdentityFile ~/.ssh/desktop_ed25519.atgb
     IdentityFile ~/.ssh/laptop_ed25519.atgb
@@ -98,11 +90,28 @@ Host srvsim-boot
 Host romsto
     HostName {{ .romsto.domain }}
     Port {{ .romsto.ssh_port }}
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
-    ControlPersist 10m
 
 Host romvm
     HostName 10.1.1.33
     ProxyJump romsto
     ForwardAgent yes
+
+{{ if and (not $is_root) (or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop")) -}}
+Host prom-tunnel
+{{- if .dresrv.use_domain }}
+    HostName {{ .dresrv.domain }}
+    Port {{ .dresrv.ssh_port }}
+{{- else }}
+    HostName {{ .dresrv.local_ip }}
+{{- end }}
+    User prom-tunnel
+    IdentityFile ~/.ssh/id_ed25519.prom
+    ExitOnForwardFailure yes
+    ControlMaster no
+    TCPKeepAlive yes
+{{- if eq .chezmoi.hostname "desktop" }}
+    RemoteForward localhost:17766 localhost:7766
+{{- else }}
+    RemoteForward localhost:27766 localhost:7766
+{{- end }}
+{{- end }}

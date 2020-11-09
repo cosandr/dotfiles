@@ -6,22 +6,8 @@ Requires=caddy.service
 [Service]
 Restart=always
 RestartSec=5
-ExecStartPre=bash -c "while ! ping -c 1 -W 1 dresrv.com; do sleep 1; done"
-ExecStart=ssh -N -o ExitOnForwardFailure=yes \
-{{- if eq .chezmoi.hostname "desktop" }}
-    -R 17766:localhost:7766 \
-{{- else }}
-    -R 27766:localhost:7766 \
-{{- end }}
-    -i {{ .chezmoi.homedir }}/.ssh/id_ed25519.prom \
-    prom-tunnel@dresrv.com
-ExecStartPost=-ssh -N -O cancel \
-{{- if eq .chezmoi.hostname "desktop" }}
-    -R 17766:localhost:7766 \
-{{- else }}
-    -R 27766:localhost:7766 \
-{{- end }}
-    -i {{ .chezmoi.homedir }}/.ssh/id_ed25519.prom \
-    prom-tunnel@dresrv.com
+ExecStartPre=bash -c "while ! ping -q -c 1 -W 1 {{ .dresrv.domain }} > /dev/null; do sleep 1; done"
+ExecStart=ssh -N prom-tunnel
+
 [Install]
 WantedBy=default.target
