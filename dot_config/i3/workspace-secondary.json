@@ -4,112 +4,101 @@
     "border": "pixel",
     "floating": "auto_off",
     "layout": "splitv",
-    "percent": 1,
+    "percent": 0.5,
     "type": "con",
     "nodes": [
         {
-            // splith split container with 2 children
-            "border": "pixel",
+            "border": "none",
+            "current_border_width": 0,
             "floating": "auto_off",
-            "layout": "splith",
+            "geometry": {
+               "height": 600,
+               "width": 800,
+               "x": 0,
+               "y": 0
+            },
+            "name": "self-monitoring",
             "percent": 0.5,
-            "type": "con",
-            "nodes": [
-                {
-                    "border": "none",
-                    "current_border_width": 0,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 1351,
-                       "width": 1561,
-                       "x": 0,
-                       "y": 0
-                    },
-                    "name": "self-monitoring",
-                    "percent": 0.5,
-                    "swallows": [
-                       {
-                       "class": "^kitty$",
-                       "instance": "^kitty$",
-                       "title": "^self\\-monitoring$"
-                       }
-                    ],
-                    "type": "con"
-                },
-                {
-                    "border": "none",
-                    "current_border_width": 0,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 1351,
-                       "width": 1561,
-                       "x": 0,
-                       "y": 0
-                    },
-                    "name": "server-monitoring",
-                    "percent": 0.5,
-                    "swallows": [
-                       {
-                       "class": "^kitty$",
-                       "instance": "^kitty$",
-                       "title": "^server\\-monitoring$"
-                       }
-                    ],
-                    "type": "con"
-                }
-            ]
+            "swallows": [
+               {
+               "class": "^kitty$",
+               "instance": "^kitty$",
+               "title": "^self\\-monitoring$"
+               }
+            ],
+            "type": "con"
         },
         {
-            // splith split container with 2 children
-            "border": "pixel",
+            "border": "none",
+            "current_border_width": 0,
             "floating": "auto_off",
-            "layout": "splith",
+            "geometry": {
+               "height": 600,
+               "width": 800,
+               "x": 0,
+               "y": 0
+            },
+            "name": "Spotify",
             "percent": 0.5,
-            "type": "con",
-            "nodes": [
-                {
-                    "border": "pixel",
-                    "current_border_width": 3,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 1055,
-                       "width": 1914,
-                       "x": 3843,
-                       "y": 1062
-                    },
-                    "name": "Discord",
-                    "percent": 0.5,
-                    "swallows": [
-                       {
-                       "class": "^discord$",
-                       "instance": "^discord$",
-                       "title": "^Discord$",
-                       "window_role": "^browser\\-window$"
-                       }
-                    ],
-                    "type": "con"
-                },
-                {
-                    "border": "none",
-                    "current_border_width": 3,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 600,
-                       "width": 800,
-                       "x": 0,
-                       "y": 0
-                    },
-                    "name": "Spotify",
-                    "percent": 0.5,
-                    "swallows": [
-                       {
-                       "class": "^Spotify$",
-                       "instance": "^spotify$"
-                       }
-                    ],
-                    "type": "con"
-                }
-            ]
+            "swallows": [
+               {
+               "class": "^Spotify$",
+               "instance": "^spotify$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
+{
+    // splitv split container with 2 children
+    "border": "pixel",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1351,
+               "width": 1561,
+               "x": 0,
+               "y": 0
+            },
+            "name": "server-monitoring",
+            "percent": 0.5,
+            "swallows": [
+               {
+               "class": "^kitty$",
+               "instance": "^kitty$",
+               "title": "^server\\-monitoring$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 953,
+               "width": 2160,
+               "x": 0,
+               "y": 2850
+            },
+            "name": "Discord",
+            "percent": 0.5,
+            "swallows": [
+               {
+               "class": "^discord$",
+               "instance": "^discord$"
+               }
+            ],
+            "type": "con"
         }
     ]
 }
