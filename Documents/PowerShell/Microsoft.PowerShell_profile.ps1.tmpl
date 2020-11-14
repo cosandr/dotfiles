@@ -51,6 +51,14 @@ Set-Alias which where.exe
 Import-Module posh-git
 Import-Module oh-my-posh
 Set-Theme Avit
+# PSReadLine
+Import-Module PSReadLine
+Set-PSReadLineOption -EditMode Emacs
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler –Key DownArrow -Function HistorySearchForward
+
+Set-PSReadlineKeyHandler –Key Ctrl+RightArrow -Function ForwardWord
+Set-PSReadlineKeyHandler –Key Ctrl+LeftArrow -Function BackwardWord
 
 # Chocolatey profile
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
