@@ -7,9 +7,11 @@ XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
+{{- if and (not $is_srv) (not $is_windows) }}
     ControlPath ~/.ssh/cm-%r@%h:%p
     ControlMaster auto
     ControlPersist 10m
+{{- end }}
 
 Host DreSRV-A
     HostName {{ .dresrv.local_ip }}
@@ -37,9 +39,11 @@ Host dresrv.com
 {{- else }}
     HostName {{ .dresrv.local_ip }}
 {{- end }}
+{{- if and (not $is_srv) (not $is_windows) }}
     ControlPath ~/.ssh/cm-%r@%h:%p
     ControlMaster auto
     ControlPersist 10m
+{{- end }}
 
 Host dresrv.com-A
 {{- if .dresrv.use_domain }}

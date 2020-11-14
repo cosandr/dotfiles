@@ -39,7 +39,8 @@
     "discord.workspaceElapsedTime": true,
     "python.showStartPage": false,
     "remote.SSH.remotePlatform": {
-      "dresrv": "linux"
+        "DreSRV": "linux",
+        "DreSRV-A": "linux"
     },
     "git.autofetch": true,
     "git.fetchOnPull": true,

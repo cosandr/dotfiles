@@ -42,7 +42,7 @@ exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/andrei/.config/i3
 # Start stuff
 exec --no-startup-id "spotify --force-device-scale-factor=1.5 &"
 exec --no-startup-id discord &
-exec --no-startup-id kitty --title self-monitoring tmuxinator start hjn &
+exec --no-startup-id kitty --title self-monitoring tmuxinator start hjn --suppress-tmux-version-warning=SUPPRESS-TMUX-VERSION-WARNING &
 exec --no-startup-id $HOME/.config/i3/ssh-monitoring.sh &
 exec --no-startup-id numlockx on &
 {{- else }}
