@@ -64,7 +64,7 @@ exec --no-startup-id alacritty &
 
 {{- if or .dresrv.use_domain (not $is_desktop)}}
 # Use sshfs if we're not in the local network, otherwise we are using NFS
-exec --no-startup-id $HOME/.config/i3/mount-sshfs.sh &
+exec --no-startup-id $HOME/.local/bin/mount-sshfs &
 {{- end }}
 
 # toggle border

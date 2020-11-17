@@ -9,5 +9,6 @@ Restart=always
 StandardOutput=null
 StandardError=null
 ExecStart={{ .chezmoi.homedir }}/.local/bin/caddy run --config {{ .chezmoi.homedir }}/.config/caddy/Caddyfile
+
 [Install]
 WantedBy=default.target

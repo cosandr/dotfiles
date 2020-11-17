@@ -2,7 +2,7 @@
 Name=mount-sshfs
 GenericName=Mount /dresrv
 Comment=Mount server using SSHFS
-Exec=/home/andrei/.config/i3/mount-sshfs.sh
+Exec=/home/andrei/.local/bin/mount-sshfs
 Terminal=false
 Type=Application
 X-GNOME-Autostart-enabled=true

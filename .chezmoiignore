@@ -35,6 +35,7 @@ Documents/
 .config/tmuxinator/htop-journal.yml
 .fonts
 .local/bin/*mount-c
+.local/bin/mount-sshfs
 .local/bin/my-screenlock
 .xinitrc
 .xprofile
