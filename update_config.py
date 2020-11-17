@@ -139,7 +139,9 @@ def check_ignore_config(cfg):
         "redshift": dict(path=".config/redshift"),
         "rofi": dict(path=".config/rofi"),
         "sublime_text": dict(path=".config/sublime-text-3"),
+        "sway": dict(path=".config/sway"),
         "tmuxinator": dict(path=".config/tmuxinator", skip_root=False),
+        "waybar": dict(path=".config/waybar"),
     }
     cfg["data"]["check"]["ignore_config"] = []
     for k, v in check.items():
