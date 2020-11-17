@@ -98,9 +98,8 @@ def check_src(cfg):
 def check_files(cfg):
     """Check if files exist"""
     check = dict(
-        mrbot="srv/containers/containers/mrbot/src/mrbot.log",
-        twitch_rec="srv/containers/containers/twitch/src/log/recorder.log",
-        twitch_enc="srv/containers/containers/twitch/src/log/encoder.log",
+        mrbot="srv/containers/mrbot/src/mrbot.log",
+        twitch="srv/containers/twitch/src/log/twitch.log",
     )
     path_prefix = ""
     if OS_NAME == "Linux":
