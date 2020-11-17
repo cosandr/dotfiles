@@ -5,6 +5,7 @@ import os
 import platform
 import shutil
 import subprocess
+from copy import deepcopy
 from getpass import getpass
 from socket import gethostname
 
@@ -29,7 +30,7 @@ if os.getenv('UPDATE') == '1':
 else:
     UPDATE = False
 
-CONFIG = dict(
+DEFAULT_CONFIG = dict(
     data=dict(
         romsto=dict(
             domain="",
@@ -215,17 +216,17 @@ def main():
     # Might not exist if we are using chezmoi --source
     if os.path.exists(CHEZMOI_HOME):
         # Update config template
-        write_json_file(CONFIG, CHEZMOI_CONFIG_TMPL)
+        write_json_file(DEFAULT_CONFIG, CHEZMOI_CONFIG_TMPL)
 
-    cfg = CONFIG.copy()
+    cfg = deepcopy(DEFAULT_CONFIG)
     old_config = {}
 
     if os.path.exists(CHEZMOI_CONFIG):
         old_config = read_json_file(CHEZMOI_CONFIG)
         if UPDATE:
-            cfg = old_config.copy()
+            cfg = deepcopy(old_config)
     # Read secrets if not updating or if config is default
-    if not UPDATE or cfg == CONFIG:
+    if not UPDATE or cfg == DEFAULT_CONFIG:
         secrets = read_secrets()
         cfg['data'] = {**cfg['data'], **secrets.get('data', {})}
         cfg["data"]["dresrv"]["use_domain"] = HOSTNAME not in ('desktop', 'DreSRV')
