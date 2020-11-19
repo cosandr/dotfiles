@@ -27,6 +27,8 @@ function sudo-wt { Start-Process -Verb runAs wt.exe $args }
 function rm-rf { Remove-Item -Recurse -Force $args }
 function st { Start-Process "C:\Program Files\Sublime Text 3\sublime_text.exe" $args }
 function cd-chezmoi { Set-Location $(chezmoi source-path) }
+function reboot { Restart-Computer -Confirm }
+function poweroff { Stop-Computer -Confirm }
 
 function which {
     $c = Get-Command $args
