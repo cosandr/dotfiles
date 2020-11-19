@@ -1,5 +1,31 @@
-# Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+﻿# Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 # if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
+# Update-Module -Name oh-my-posh -AllowPrerelease -Scope CurrentUser
+
+Import-Module posh-git
+Import-Module oh-my-posh
+
+$MyPrompt = Join-Path (Split-Path -Path "$PROFILE") "dre_posh.json"
+if (Test-Path($MyPrompt)) {
+    Set-PoshPrompt -Theme "$MyPrompt"
+} else {
+    Set-PoshPrompt -Theme powerlevel10k_lean
+}
+
+# PSReadLine
+Import-Module PSReadLine
+Set-PSReadLineOption -EditMode Emacs
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler –Key DownArrow -Function HistorySearchForward
+
+Set-PSReadlineKeyHandler –Key Ctrl+RightArrow -Function ForwardWord
+Set-PSReadlineKeyHandler –Key Ctrl+LeftArrow -Function BackwardWord
+
+# Chocolatey profile
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
+}
 
 function git-alt {
     echo "Setting git to atgb"
@@ -42,31 +68,40 @@ function dlog { docker logs -f $args }
 function dex { docker exec -t $args }
 function dsti { docker container start -i $args }
 {{- end }}
-function touch ($file) { echo "" >> $file }
+function touch ($file) { Write-Output "" >> "$file" }
 function la { Get-ChildItem -Force $args }
+function ll { Get-ChildItem $args }
 function sudoedit { Start-Process -Verb runAs vim $args }
-function sudo-wt { Start-Process -Verb runAs wt.exe }
-function git-sign { git config commit.gpgsign true }
-function Show-Func { (Get-Command $args).ScriptBlock }
+function sudo-wt { Start-Process -Verb runAs wt.exe $args }
 function rm-rf { Remove-Item -Recurse -Force $args }
-Set-Alias ll Get-ChildItem
-Set-Alias st "C:\Program Files\Sublime Text 3\sublime_text.exe"
-Set-Alias which where.exe
+function st { Start-Process "C:\Program Files\Sublime Text 3\sublime_text.exe" $args }
 
-Import-Module posh-git
-Import-Module oh-my-posh
-Set-Theme Avit
-# PSReadLine
-Import-Module PSReadLine
-Set-PSReadLineOption -EditMode Emacs
-Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadlineKeyHandler –Key DownArrow -Function HistorySearchForward
+function which {
+    $c = Get-Command $args
+    if ($c.CommandType -eq "Application") {
+        $c.Source
+    } elseif ($c.CommandType -eq "Function") {
+        $c.ScriptBlock
+    } else {
+        $c
+    }
+}
 
-Set-PSReadlineKeyHandler –Key Ctrl+RightArrow -Function ForwardWord
-Set-PSReadlineKeyHandler –Key Ctrl+LeftArrow -Function BackwardWord
-
-# Chocolatey profile
-$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
+function Set-Venv([String] $Path = "~\venv", [String] $LocalPath = ".\venv") {
+    # Check in cwd
+    $localCheck = Join-Path "$LocalPath" "Scripts\Activate.ps1"
+    if (Test-Path -Path "$localCheck") {
+        . "$localCheck"
+        return
+    } elseif (Test-Path -Path ".\.python-version") {
+        $name = Get-Content -TotalCount 1 ".\.python-version"
+    } else {
+        $name = (Get-Location).Path | Split-Path -Leaf
+    }
+    $check = Join-Path "$Path" "$name\Scripts\Activate.ps1"
+    if (Test-Path -Path "$check") {
+        . "$check"
+    } else {
+        Write-Output "Cannot find any activation script`n`t$localCheck`n`t$check"
+    }
 }
