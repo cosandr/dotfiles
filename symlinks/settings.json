@@ -24,7 +24,7 @@
     "problems.showCurrentInStatus": true,
     "shellcheck.disableVersionCheck": true,
     // "terminal.integrated.rendererType": "experimentalWebgl",
-    "terminal.integrated.fontFamily": "Fira Code",
+    "terminal.integrated.fontFamily": "'FiraCode NF', 'Fira Code'",
     "terminal.integrated.env.windows": {
         "LESSCHARSET": "utf-8",
         "LC_ALL": "C.UTF-8"

@@ -84,7 +84,7 @@ export DISPLAY=localhost:0.0
 {{- if or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop") }}
 {{- if ne .chezmoi.username "root" }}
 # Ensure tunnel is active
-systemctl --user -q is-active tunnel-dresrv.service || systemctl --user start tunnel-dresrv.service &
+systemctl --user -q is-active tunnel-dresrv.service || systemctl --user start --no-block tunnel-dresrv.service
 # Start X server
 if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $TTY = /dev/tty1 ]]; then
   exec startx
@@ -95,7 +95,7 @@ if [[ -z $SSH_AUTH_SOCK ]]; then
 fi
 {{- else }}
 if [[ -z $SSH_AUTH_SOCK ]]; then
-    export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+  export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/keyring/ssh
 fi
 {{- end }}
 {{- end }}

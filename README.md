@@ -51,7 +51,9 @@ CHEZMOI_HOME=. ./update_config.py
 chezmoi --source ~andrei/.local/share/chezmoi apply
 ```
 
-# gpg-agent forwarding
+# gpg-agent
+
+On Windows start `"C:\Program Files (x86)\GnuPG\bin\gpgconf.exe" --launch gpg-agent` with Task Scheduler at login
 
 See [this](https://superuser.com/a/1329299) post.
 
