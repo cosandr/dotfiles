@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $EUID -eq 0 || ( $HOSTNAME != desktop && $HOSTNAME != laptop ) ]]; then
+if [[ $EUID -eq 0 || ( $HOSTNAME != desktop && $HOSTNAME != laptop ) || $(uname -r) =~ Microsoft ]]; then
     exit 0
 fi
 
