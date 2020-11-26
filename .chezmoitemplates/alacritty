@@ -1,3 +1,4 @@
+{{- $is_windows := eq . "windows" -}}
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
 # Any items in the `env` entry below will be added as
@@ -49,7 +50,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: none
+  decorations: {{ if $is_windows }}full{{ else }}none{{ end }}
 
   # Allow terminal applications to change Alacritty's window title.
   dynamic_title: true
@@ -258,6 +259,10 @@ live_config_reload: false
 #  program: /bin/bash
 #  args:
 #    - --login
+{{- if $is_windows }}
+shell:
+  program: pwsh.exe
+{{- end }}
 
 # Startup directory
 #
@@ -303,7 +308,7 @@ mouse:
     #   - (Linux/BSD) xdg-open
     #   - (Windows) explorer
     launcher:
-     program: xdg-open
+     program: {{ if $is_windows }}explorer{{ else }}xdg-open{{ end }}
      args: []
 
     # URL modifiers
