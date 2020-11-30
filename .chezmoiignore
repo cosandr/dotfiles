@@ -59,7 +59,6 @@ Documents/
 {{- end }} {{/* if or $not_desktop $is_wsl */}}
 {{- if or $is_root $not_server $is_wsl }}
 .ssh/*.pub
-.gnupg/gpg-agent.conf
 {{- end }} {{/* if or $is_root $not_server $is_wsl */}}
 {{- if $is_root }}
 .gnupg

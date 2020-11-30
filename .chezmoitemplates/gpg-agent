@@ -1,0 +1,3 @@
+# Timeout to 12 hours
+default-cache-ttl 43200
+max-cache-ttl 43200

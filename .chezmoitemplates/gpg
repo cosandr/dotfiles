@@ -1,0 +1,5 @@
+{{- if eq .hostname "DreSRV" -}}
+use-agent
+{{ end -}}
+keyserver hkp://keyserver.ubuntu.com
+default-key 273D94492E01567B
