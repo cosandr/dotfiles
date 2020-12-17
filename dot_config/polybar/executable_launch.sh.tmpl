@@ -12,8 +12,13 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 # Find and set CPU package
 # https://github.com/polybar/polybar/issues/2078
 for i in /sys/class/hwmon/hwmon*/temp*_input; do 
-    if [ "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*}))" = "coretemp: Package id 0" ]; then
+    name="$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*}))"
+    if [ "$name" = "k10temp: Tctl" ]; then
         export HWMON_PATH="$i"
+        break
+    elif [ "$name" = "coretemp: Package id 0" ]; then
+        export HWMON_PATH="$i"
+        break
     fi
 done
 
