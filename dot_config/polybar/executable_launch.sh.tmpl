@@ -11,7 +11,7 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Find and set CPU package
 # https://github.com/polybar/polybar/issues/2078
-for i in /sys/class/hwmon/hwmon*/temp*_input; do 
+for i in /sys/class/hwmon/hwmon*/temp*_input; do
     name="$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*}))"
     if [ "$name" = "k10temp: Tctl" ]; then
         export HWMON_PATH="$i"
@@ -33,7 +33,7 @@ export PRIMARY_INET
 # Launch bars
 {{- if $is_desktop  }}
 MONITOR=DP-4 polybar main &
-MONITOR=DP-2 polybar secondary &
+MONITOR=HDMI-0 polybar secondary &
 {{- else }}
 MONITOR=eDP-1 polybar main &
 {{- end }}
