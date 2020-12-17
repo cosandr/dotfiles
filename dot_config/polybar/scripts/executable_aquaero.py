@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import re
 import os
+import sys
 
 import requests
 
@@ -46,4 +46,5 @@ try:
     if print_entries:
         print(SEP.join(print_entries))
 except Exception as e:
-    print(f'N/A: {str(e)}')
+    print('AQ ERR')
+    print(e, file=sys.stderr)

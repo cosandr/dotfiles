@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import subprocess
+import sys
 
 
 DEGREES_SYM = "°C"
@@ -15,5 +16,6 @@ try:
     pwr = float(out[2])
     temp = int(out[3])
     print(f' {usage:d}%, {clock:.0f}MHz, {pwr:.0f}W, {temp:d}{DEGREES_SYM}')
-except:
+except Exception as e:
     print(' N/A')
+    print(e, file=sys.stderr)

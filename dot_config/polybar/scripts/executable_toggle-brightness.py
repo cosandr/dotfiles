@@ -80,7 +80,7 @@ class Display:
 class MyDisplays:
     def __init__(self, delay=5, increment=10):
         self.displays: List[Display] = [
-            Display(name='Samsung', bus=5, preset=Preset(day=25, night=5), selected=True,
+            Display(name='Samsung', bus=3, preset=Preset(day=25, night=5), selected=True,
                     min_brightness=5, max_brigtness=70),
             Display(name='Acer', bus=6, preset=Preset(day=35, night=0), selected=True),
         ]

@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import signal
+import sys
 
 import websockets
 from aiohttp import ClientSession, UnixConnector
@@ -129,6 +130,7 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception:
+    except Exception as e:
         print('N/A')
+        print(e, file=sys.stderr)
         exit(1)
