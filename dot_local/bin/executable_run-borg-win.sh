@@ -24,20 +24,31 @@ export BORG_REPO=root@DreSRV:/tank/backup/borg-windows
 # Setting this, so you won't be asked for your repository passphrase:
 # export BORG_PASSPHRASE=''
 
-# some helpers and error handling:
-info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
-trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
+trap 'echo Backup interrupted >&2; exit 2' INT TERM
 
+# Add bitlk_c to /etc/crypttab
+# bitlk_c  PARTUUID=<uuid>    /etc/bitlk_c.key  noauto,bitlk
 MOUNTED_WIN_C=0
 if [[ ! -d /win_c/Users ]]; then
-    info "Mounting C:"
+    echo "Mounting C:"
     set -e
-    /root/mount-windows.sh
+    systemctl start systemd-cryptsetup@bitlk_c.service
+    mount /win_c
     set +e
     MOUNTED_WIN_C=1
 fi
 
-info "Starting backup"
+function cleanup {
+    if [[ $MOUNTED_WIN_C -eq 1 ]]; then
+        echo "Unmounting C:"
+        umount /win_c
+        systemctl stop systemd-cryptsetup@bitlk_c.service
+    fi
+}
+
+trap cleanup EXIT
+
+echo "Starting backup"
 
 # Backup the most important directories into an archive named after
 # the machine this script is currently running on:
@@ -60,7 +71,7 @@ borg create                         \
 
 backup_exit=$?
 
-info "Pruning repository"
+echo "Pruning repository"
 
 # Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly
 # archives of THIS machine. The '{hostname}-' prefix is very important to
@@ -81,18 +92,13 @@ prune_exit=$?
 global_exit=$(( backup_exit > prune_exit ? backup_exit : prune_exit ))
 
 if [ ${global_exit} -eq 0 ]; then
-    info "Backup and Prune finished successfully"
+    echo "Backup and Prune finished successfully"
 elif [ ${global_exit} -eq 1 ]; then
-    info "Backup and/or Prune finished with warnings"
+    echo "Backup and/or Prune finished with warnings"
 else
-    info "Backup and/or Prune finished with errors"
+    echo "Backup and/or Prune finished with errors"
 fi
 
 unset BORG_REPO
-
-if [[ $MOUNTED_WIN_C -eq 1 ]]; then
-    info "Unmounting C:"
-    /root/umount-windows.sh
-fi
 
 exit ${global_exit}

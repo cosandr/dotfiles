@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-# Put password in /root/.bitlk_c
+# Put password in /etc/bitlk_c.key
 # /etc/crypttab
-# bitlk_c   PARTUUID=<uuid here>   /root/.bitlk_c   noauto,bitlk
+# bitlk_c   PARTUUID=<uuid here>   /etc/bitlk_c.key   noauto,bitlk
 # /etc/fstab
 # /dev/mapper/bitlk_c   /win_c  ntfs-3g ro,nofail,uid=1000,gid=1000,umask=227,noatime 0 0
 
