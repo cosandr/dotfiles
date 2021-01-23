@@ -105,6 +105,7 @@ Host prom-tunnel
 {{- if .dresrv.use_domain }}
     HostName {{ .dresrv.domain }}
     Port {{ .dresrv.ssh_port }}
+    LocalForward localhost:8101 localhost:8100
 {{- else }}
     HostName {{ .dresrv.local_ip }}
 {{- end }}
