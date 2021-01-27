@@ -28,11 +28,19 @@ trap 'echo Backup interrupted >&2; exit 2' INT TERM
 
 # Add bitlk_c to /etc/crypttab
 # bitlk_c  PARTUUID=<uuid>    /etc/bitlk_c.key  noauto,bitlk
+UNLOCKED_WIN_C=0
+if grep -E '^bitlk_c' /etc/crypttab; then
+    echo "Unlocking C:"
+    set -e
+    systemctl start systemd-cryptsetup@bitlk_c.service
+    set +e
+    UNLOCKED_WIN_C=1
+fi
 MOUNTED_WIN_C=0
 if [[ ! -d /win_c/Users ]]; then
     echo "Mounting C:"
     set -e
-    systemctl start systemd-cryptsetup@bitlk_c.service
+    
     mount /win_c
     set +e
     MOUNTED_WIN_C=1
@@ -42,6 +50,9 @@ function cleanup {
     if [[ $MOUNTED_WIN_C -eq 1 ]]; then
         echo "Unmounting C:"
         umount /win_c
+    fi
+    if [[ $UNLOCKED_WIN_C -eq 1 ]]; then
+        echo "Locking C:"
         systemctl stop systemd-cryptsetup@bitlk_c.service
     fi
 }
