@@ -12,13 +12,17 @@ http://localhost:7766 {
         uri strip_prefix /aquaero
         reverse_proxy localhost:2782
     }
+    route /fah/* {
+        uri strip_prefix /fah
+        reverse_proxy localhost:9659
+    }
     route /nvidia/* {
         uri strip_prefix /nvidia
         reverse_proxy localhost:9401
     }
-    route /fah/* {
-        uri strip_prefix /fah
-        reverse_proxy localhost:9659
+    route /mph/* {
+        uri strip_prefix /mph
+        reverse_proxy localhost:6743
     }
     handle_errors {
         route /aquaero/* {
@@ -28,6 +32,9 @@ http://localhost:7766 {
             respond "Exporter Not Running" 503
         }
         route /nvidia/* {
+            respond "Exporter Not Running" 503
+        }
+        route /mph/* {
             respond "Exporter Not Running" 503
         }
     }
