@@ -36,6 +36,7 @@ Documents/
 .local/bin/*mount-c
 .local/bin/mount-sshfs
 .local/bin/my-screenlock
+.local/bin/pavolume
 .xinitrc
 .xprofile
 .Xresources
