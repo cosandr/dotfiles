@@ -50,5 +50,6 @@
     "update.mode": "none",
     "terminal.integrated.shell.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
     "workbench.editorAssociations": [],
-    "diffEditor.renderSideBySide": false
+    "diffEditor.renderSideBySide": false,
+    "remote.autoForwardPorts": false
 }
