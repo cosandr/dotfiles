@@ -6,7 +6,7 @@ tray-position = right
 {{- if $is_desktop }}
 modules-left = i3  
 modules-center = title
-modules-right = cpuusage nvusage sep aquaero cputemp nvtemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume sep datetime
+modules-right = cpuusage nvusage sep aquaero cputemp nvtemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume sep calendar datetime
 
 [bar/secondary]
 include-file = ~/.config/polybar/baropts
@@ -16,7 +16,7 @@ modules-right = cpuclk nvclk sep aquaerofans sep ethernet sep time
 {{- else }}
 modules-left = i3 title  
 modules-center =
-modules-right = cpuusage cputemp sep updates srvupdates sep wifi sep volume sep battablet batbase sep datetime sep xkeyboard
+modules-right = cpuusage cputemp sep updates srvupdates sep wifi sep volume sep battablet batbase sep calendar datetime sep xkeyboard
 {{- end }}
 
 ;;; COMMON MODULES ;;;
@@ -71,19 +71,31 @@ format =  <label>%
 {{- end }}
 label = %percentage%
 
+[module/calendar]
+type = custom/text
+{{- if eq $font "icomoon-feather" }}
+content = 
+{{- else if eq $font "nerd-font" }}
+content = 
+{{- else if eq $font "siji" }}
+content = 
+{{- end }}
+content-padding = 0
+click-left = gsimplecal &
+
 [module/datetime]
 type = internal/date
 interval = 60
 date = %a %d %b
 time = %H:%M
 {{- if eq $font "icomoon-feather" }}
-label =  %date%   %time%
+label = %date%   %time%
 {{- else if eq $font "nerd-font" }}
-label =  %date%   %time%
+label = %date%   %time%
 {{- else if eq $font "siji" }}
-label =  %date%   %time%
+label = %date%   %time%
 {{- end }}
-format-padding = 1
+format-padding = 0
 
 [module/i3]
 type = internal/i3
