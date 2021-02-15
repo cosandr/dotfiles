@@ -26,59 +26,82 @@ export BORG_REPO=root@DreSRV:/tank/backup/borg-windows
 
 trap 'echo Backup interrupted >&2; exit 2' INT TERM
 
+drives=('c' 'd')
+declare -a unlocked
+declare -a mounted
 # Add bitlk_c to /etc/crypttab
 # bitlk_c  PARTUUID=<uuid>    /etc/bitlk_c.key  noauto,bitlk
-UNLOCKED_WIN_C=0
-if grep -E '^bitlk_c' /etc/crypttab; then
-    echo "Unlocking C:"
-    set -e
-    systemctl start systemd-cryptsetup@bitlk_c.service
-    set +e
-    UNLOCKED_WIN_C=1
-fi
-MOUNTED_WIN_C=0
-if [[ ! -d /win_c/Users ]]; then
-    echo "Mounting C:"
-    set -e
-    
-    mount /win_c
-    set +e
-    MOUNTED_WIN_C=1
-fi
+for d in "${drives[@]}"; do
+    if ! grep -q "win_$d" /proc/mounts ; then
+        if grep -qE "^bitlk_$d" /etc/crypttab && [[ ! -b "/dev/mapper/bitlk_$d" ]] ; then
+            echo "Unlocking $d"
+            set -e
+            systemctl start "systemd-cryptsetup@bitlk_$d.service"
+            set +e
+            unlocked+=("$d")
+        fi
+        echo "Mounting $d"
+        set -e
+        mount -o ro "/win_$d"
+        set +e
+        mounted+=("$d")
+    fi
+done
 
 function cleanup {
-    if [[ $MOUNTED_WIN_C -eq 1 ]]; then
-        echo "Unmounting C:"
-        umount /win_c
-    fi
-    if [[ $UNLOCKED_WIN_C -eq 1 ]]; then
-        echo "Locking C:"
-        systemctl stop systemd-cryptsetup@bitlk_c.service
-    fi
+    for d in "${mounted[@]}"; do
+        echo "Unmounting $d"
+        umount "/win_$d"
+    done
+    for d in "${unlocked[@]}"; do
+        echo "Locking $d"
+        systemctl start "systemd-cryptsetup@bitlk_$d.service"
+    done
 }
 
 trap cleanup EXIT
 
+# Check paths
+declare -a backup_paths=()
+declare -a check_paths=(
+    "/win_c/Users/Andrei"
+    "/win_d/Drivers"
+    "/win_d/Other"
+    "/win_d/Programs"
+    "/win_d/src"
+)
+for p in "${check_paths[@]}"; do
+    if [[ -d "$p" ]]; then
+        backup_paths+=("$p")
+    else
+        echo "WARN: cannot backup $p: not found"
+    fi
+done
+if [[ ${#backup_paths[@]} -eq 0 ]]; then
+    echo "No backup paths found"
+    exit 1
+fi
+echo "Backing up ${backup_paths[*]}"
+
 echo "Starting backup"
+export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
 
 # Backup the most important directories into an archive named after
 # the machine this script is currently running on:
+# shellcheck disable=SC2086
 
 borg create                         \
     --stats                         \
     --show-rc                       \
     --compression auto,zstd         \
+    --noatime                       \
+    --nobsdflags                    \
     --exclude-caches                \
     --exclude '/win_c/Users/Andrei/AppData/Local/Packages/Spotify*' \
     --exclude '/win_c/Users/Andrei/Downloads' \
     --exclude '/win_d/src/valve-leak' \
-    ::'desktop-win-{now}'           \
-    /win_c/Users/Andrei             \
-    /win_d/Drivers                  \
-    /win_d/Nvidia                   \
-    /win_d/Other                    \
-    /win_d/Programs                 \
-    /win_d/src                      \
+    ::'desktop_win-{now}'           \
+    ${backup_paths[*]}
 
 backup_exit=$?
 
@@ -91,7 +114,7 @@ echo "Pruning repository"
 
 borg prune                          \
     --list                          \
-    --prefix 'desktop-win-'         \
+    --prefix 'desktop_win-'         \
     --show-rc                       \
     --keep-daily    4               \
     --keep-weekly   2               \

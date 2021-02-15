@@ -27,6 +27,7 @@ export BORG_REPO=root@DreSRV:/tank/backup/arch-desktop
 trap 'echo Backup interrupted >&2; exit 2' INT TERM
 
 echo "Starting backup"
+export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
 
 # Backup the most important directories into an archive named after
 # the machine this script is currently running on:
@@ -35,15 +36,16 @@ borg create                         \
     --stats                         \
     --show-rc                       \
     --compression auto,zstd         \
+    --one-file-system               \
     --exclude-caches                \
-    --exclude '/home/*/.cache/*'    \
+    --exclude '/dresrv'             \
+    --exclude 're:^(/dev|/proc|/sys|/tmp|/run)' \
+    --exclude '/home/*/.cache'                  \
     --exclude '/home/*/.local/share/baloo'      \
     --exclude '/home/*/.local/share/containers' \
-    --exclude '/home/*/.snapshots'  \
+    --exclude '/**/.snapshots'                  \
     ::'{hostname}-{now}'            \
-    /etc                            \
-    /home                           \
-    /root                           \
+    / /home /home/andrei
 
 backup_exit=$?
 
