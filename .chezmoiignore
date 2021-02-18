@@ -22,9 +22,6 @@ update_config.*
 {{- $is_wsl := hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}
 AppData/
 Documents/
-{{- if or (not $is_root) ($not_desktop) }}
-.local/bin/run-borg*
-{{- end }} {{/* if or (not $is_root) ($not_desktop) */}}
 {{- if or $is_wsl $is_root (and $not_desktop $not_laptop) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
