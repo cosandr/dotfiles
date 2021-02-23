@@ -93,9 +93,6 @@ alias tmux-mon='tmux new -s mon  "htop -d10" \; split-window "corefreq-cli" \; s
 alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'
 {{- end }}
-{{- if $not_server }}
-alias mntsrv='sshfs andrei@{{- if eq .chezmoi.hostname "desktop" }}DreSRV{{- else }}dresrv.com{{- end}}:/ /dresrv'
-{{- end }}
 {{- if eq .chezmoi.osRelease.id "arch" }}
 alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
 {{- end }}
@@ -104,10 +101,9 @@ alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'
 alias gita='sudo -u andrei git'
 alias logs-nginx='tail $(find /var/log/nginx -type f -printf " -f %p")'
 {{- end }}
+alias cd-chezmoi="cd $(chezmoi source-path)"
 
-{{- if and $not_desktop $not_laptop }}
-export GPG_TTY=$(tty)
-{{- end }}
+[ ! $DISPLAY ] && export GPG_TTY=$(tty)
 
 {{- if has "go-motd" .check.exec }}
 go-motd

@@ -132,9 +132,6 @@ bindsym $super+e layout toggle split
 # toggle tiling / floating
 bindsym $super+space floating toggle
 
-# change focus between tiling / floating windows
-bindsym $super+$shift+space focus mode_toggle
-
 # focus the parent container
 bindsym $super+a focus parent
 
@@ -158,17 +155,15 @@ bindsym $super+l exec "$HOME/.local/bin/my-screenlock"
 
 # switch to workspace
 bindsym $super+Tab workspace next
-bindsym $super+$shift+Tab workspace prev
-bindsym $super+$ctrl+Right move window to workspace next
-bindsym $super+$ctrl+Left move window to workspace prev
-bindsym $super+$alt+$ctrl+Right move container to workspace next
-bindsym $super+$alt+$ctrl+Left move container to workspace prev
+bindsym $super+$shift+$ctrl+d move workspace to output down
+bindsym $super+$shift+d move container to output down
+bindsym $super+$shift+n move window to workspace next
 {{- range $i := (list 1 2 3 4 5 6 7 8 9) }}
 bindsym $super+{{ $i }} workspace {{ $i }}
-bindsym $super+$ctrl+{{ $i }} move container to workspace {{ $i }}; workspace {{ $i }}
+bindsym $super+$shift+{{ $i }} move container to workspace {{ $i }}; workspace {{ $i }}
 {{- end }}
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart i3 inplace
 bindsym $super+$shift+r restart
 
 # exit i3
@@ -194,9 +189,11 @@ bindsym $super+r mode "resize"
 
 
 ##### Pulse Audio controls #####
-bindsym XF86AudioRaiseVolume exec --no-startup-id $HOME/.local/bin/pavolume +1%
-bindsym XF86AudioLowerVolume exec --no-startup-id $HOME/.local/bin/pavolume -1%
-bindsym XF86AudioMute exec --no-startup-id $HOME/.local/bin/pavolume toggle
+{{/* bindsym XF86AudioRaiseVolume exec --no-startup-id $HOME/.local/bin/pavolume +1%
+bindsym XF86AudioLowerVolume exec --no-startup-id $HOME/.local/bin/pavolume -1% */}}
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 1%+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 1%-
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 ##### Media controls #####
 bindsym XF86AudioPlay exec "playerctl --ignore-player=chromium,firefox play-pause"
@@ -213,17 +210,3 @@ for_window [class="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enabl
 for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
 # PiP
 for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
-
-##### i3 with KDE stuff #####
-# for_window [title="Desktop — Plasma"] kill; floating enable; border none
-# for_window [class="plasmashell"] floating enable;
-# for_window [class="Plasma"] floating enable; border none
-# for_window [title="plasma-desktop"] floating enable; border none
-# for_window [title="win7"] floating enable; border none
-# for_window [class="krunner"] floating enable; border none
-# for_window [class="Kmix"] floating enable; border none
-# for_window [class="Klipper"] floating enable; border none
-# for_window [class="Plasmoidviewer"] floating enable; border none
-# for_window [class="(?i)*nextcloud*"] floating disable
-# for_window [class="plasmashell" window_type="notification"] floating enable, border none, move down 950, move right 1630
-# no_focus [class="plasmashell" window_type="notification"] 

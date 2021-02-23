@@ -10,7 +10,7 @@ lock_timeout="30"
 revert() {
     xset dpms "$default_timeout"
 }
-trap revert HUP INT TERM
+trap revert EXIT
 xset dpms "$lock_timeout"
 
 radius=6
