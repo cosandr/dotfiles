@@ -1,4 +1,8 @@
-{{- $is_wsl := contains "Microsoft" .chezmoi.kernel.osrelease -}}
+{{- $is_mac := eq .chezmoi.os "darwin" -}}
+{{- $is_wsl := false -}}
+{{- if not $is_mac -}}
+{{- $is_wsl := hasSuffix "Microsoft" .chezmoi.kernel.osrelease -}}
+{{- end -}}
 
 # Execute code that does not affect the current session in the background.
 {
@@ -80,6 +84,8 @@ export GDK_SCALE=2
 export QT_SCREEN_SCALE_FACTORS=2
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export DISPLAY=localhost:0.0
+{{- else if $is_mac }}
+#export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 {{- else }}
 {{- if or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop") }}
 {{- if ne .chezmoi.username "root" }}

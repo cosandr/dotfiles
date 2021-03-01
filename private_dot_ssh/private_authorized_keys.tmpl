@@ -4,6 +4,9 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOg9fiCqlSj0Xm/+rA02ecxnDYecKEnhYol6WUrM29UA
 {{- if ne .chezmoi.hostname "laptop" }}
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDm8L8QC0mY1G2uMm9eMGpsW4VXs/nFVLRu+vuxjVSEs andrei@laptop
 {{- end }}
+{{- if ne .chezmoi.hostname "macbook" }}
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHwHNoM1fLrOPsuOboxUdfgPy/VscU50yjebHEIqwo7 andrei@macbook
+{{- end }}
 {{- if ne .chezmoi.username "root" }}
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCsPQZm8M5OuCbrdramTAUOe7jOC5wPWYk4LHStjLYD andrei@phone
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHbwK8qZalHpv0GK5Qa+2DsqWN4hb1QqEnppWGQufJrTDyvV9XvKuL7nMBwc5LHuZ5MSZa5Ze8pHzEPfeyF3Xys= andrei@ipad

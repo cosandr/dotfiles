@@ -3,6 +3,7 @@
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
 {{- $is_windows := eq .chezmoi.os "windows" -}}
+{{- $is_mac := eq .chezmoi.os "darwin" -}}
 secret*
 .secret*
 make_*
@@ -19,10 +20,14 @@ update_config.*
 !Documents
 .ssh/*.pub
 {{- else }}
+{{- $is_wsl := false }}
+{{- if not $is_mac }}
+Library/
 {{- $is_wsl := hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}
+{{- end }}
 AppData/
 Documents/
-{{- if or $is_wsl $is_root (and $not_desktop $not_laptop) }}
+{{- if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
 .config/caddy
@@ -37,7 +42,7 @@ Documents/
 .xinitrc
 .xprofile
 .Xresources
-{{- end }} {{/* if or $is_wsl $is_root (and $not_desktop $not_laptop) */}}
+{{- end }} {{/* if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) */}}
 {{- range $v := .check.ignore_config }}
 {{- if $v.missing }}
 {{ $v.path }}
@@ -45,7 +50,7 @@ Documents/
 {{ $v.path }}
 {{- end }} {{/* if $v.missing */}}
 {{- end }} {{/* range $v */}}
-{{- if or $not_desktop $is_wsl }}
+{{- if or $not_desktop $is_wsl $is_mac }}
 # Ignore desktop config on laptop and server
 .local/bin/*mount-c
 .config/i3/workspace-*
@@ -54,7 +59,7 @@ Documents/
 # No Nvidia GPUs
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
-{{- end }} {{/* if or $not_desktop $is_wsl */}}
+{{- end }} {{/* if or $not_desktop $is_wsl $is_mac */}}
 {{- if or $is_root $not_server $is_wsl }}
 .ssh/*.pub
 {{- end }} {{/* if or $is_root $not_server $is_wsl */}}

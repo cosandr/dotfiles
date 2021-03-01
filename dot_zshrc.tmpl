@@ -2,6 +2,7 @@
 {{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
 {{- $not_root := ne .chezmoi.username "root" -}}
+{{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- range .check.source }}
 {{ if . }}source {{ . }}{{ end }}
 {{- end }}
@@ -93,8 +94,10 @@ alias tmux-mon='tmux new -s mon  "htop -d10" \; split-window "corefreq-cli" \; s
 alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'
 {{- end }}
+{{- if not $is_mac }}
 {{- if eq .chezmoi.osRelease.id "arch" }}
 alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
+{{- end }}
 {{- end }}
 {{- if not $not_root }}
 alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'
