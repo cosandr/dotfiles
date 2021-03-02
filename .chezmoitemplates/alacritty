@@ -1,4 +1,5 @@
 {{- $is_windows := eq . "windows" -}}
+{{- $is_mac := eq . "darwin" -}}
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
 # Any items in the `env` entry below will be added as
@@ -50,7 +51,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: {{ if $is_windows }}full{{ else }}none{{ end }}
+  decorations: {{ if or $is_windows $is_mac }}full{{ else }}none{{ end }}
 
   # Allow terminal applications to change Alacritty's window title.
   dynamic_title: true
@@ -112,7 +113,7 @@ font:
     family: Fira Code
     style: Bold Italic
 
-  size: 11.0
+  size: {{ if $is_mac }}14.0{{ else }}11.0{{ end }}
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -477,10 +478,17 @@ mouse:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # at once.
 key_bindings:
+{{- if $is_mac }}
+  - { key: V,        mods: Command,           action: Paste            }
+  - { key: C,        mods: Command,           action: Copy             }
+  - { key: Q,        mods: Command,           action: Quit             }
+  - { key: N,        mods: Command,           action: SpawnNewInstance }
+{{- else }}
   - { key: V,        mods: Control|Shift,           action: Paste            }
   - { key: C,        mods: Control|Shift,           action: Copy             }
   - { key: Q,        mods: Control|Shift,           action: Quit             }
   - { key: N,        mods: Control|Shift,           action: SpawnNewInstance }
+{{- end }}
   - { key: PageUp,   mods: Control|Shift,           action: ScrollPageUp     }
   - { key: PageDown, mods: Control|Shift,           action: ScrollPageDown   }
 
