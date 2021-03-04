@@ -129,6 +129,7 @@ def check_ignore_config(cfg):
         "alacritty": dict(path=".config/alacritty"),
         "caddy": dict(path=".config/caddy"),
         "chromium": dict(path=".config/chromium-flags.conf"),
+        "google-chrome-stable": dict(path=".config/chrome-flags.conf"),
         "code": dict(path=".config/Code"),
         "dunst": dict(path=".config/dunst"),
         "feh": dict(path=".config/feh"),

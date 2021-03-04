@@ -1,7 +1,7 @@
 {{- $is_mac := eq . "darwin" -}}
 {
     "editor.fontFamily": "'Cascadia Code', 'Fira Code', 'Consolas'",
-    "editor.fontSize": {{ if $is_mac }}13{{ else }}11{{ end }},
+    "editor.fontSize": {{ if $is_mac }}13{{ else }}13{{ end }},
     "explorer.confirmDelete": false,
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "Community Material Theme Darker High Contrast",

@@ -1,0 +1,4 @@
+{{- $is_desktop := eq .hostname "desktop" -}}
+--ignore-gpu-blocklist
+--use-gl={{ if $is_desktop }}desktop{{ else }}egl{{ end }}
+--enable-accelerated-video-decode
