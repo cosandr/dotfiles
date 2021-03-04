@@ -1,4 +1,5 @@
 {{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+{{- $is_mac := eq .chezmoi.os "darwin" -}}
 # vim:fileencoding=utf-8:ft=conf:foldmethod=marker
 
 #: Fonts {{"{{{"}}
@@ -24,7 +25,7 @@ bold_italic_font auto
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
-font_size 11.0
+font_size {{ if $is_mac }}14.0{{ else }}11.0{{ end }}
 
 #: Font size (in pts)
 

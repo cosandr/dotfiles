@@ -1,5 +1,7 @@
+{{- $is_mac := eq . "darwin" -}}
 {
     "editor.fontFamily": "'Cascadia Code', 'Fira Code', 'Consolas'",
+    "editor.fontSize": {{ if $is_mac }}12{{ else }}11{{ end }},
     "explorer.confirmDelete": false,
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "Community Material Theme Darker High Contrast",
@@ -40,7 +42,9 @@
     "python.showStartPage": false,
     "remote.SSH.remotePlatform": {
         "DreSRV": "linux",
-        "DreSRV-A": "linux"
+        "DreSRV-A": "linux",
+        "dresrv.com": "linux",
+        "dresrv.com-A": "linux"
     },
     "git.autofetch": true,
     "git.fetchOnPull": true,

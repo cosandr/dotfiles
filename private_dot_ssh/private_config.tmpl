@@ -1,8 +1,16 @@
 {{- $is_windows := eq .chezmoi.os "windows" -}}
 {{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
 {{- $is_root := eq .chezmoi.username "root" }}
+{{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- if $is_windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
+{{- end }}
+
+{{- if $is_mac }}
+Host *
+   UseKeychain yes
+   AddKeysToAgent yes
+   IdentityFile ~/.ssh/id_ed25519
 {{- end }}
 
 Host DreSRV
@@ -17,7 +25,7 @@ Host DreSRV-A
     HostName {{ .dresrv.local_ip }}
     User andrei
     ForwardAgent yes
-{{- if and (not $is_srv) (not $is_windows) }}
+{{- if and (not $is_srv) (not $is_windows) (not $is_mac) }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
 
@@ -54,7 +62,7 @@ Host dresrv.com-A
 {{- end }}
     User andrei
     ForwardAgent yes
-{{- if and (not $is_srv) (not $is_windows) }}
+{{- if and (not $is_srv) (not $is_windows) (not $is_mac) }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
 
@@ -118,7 +126,7 @@ Host prom-tunnel
     TCPKeepAlive yes
 {{- if eq .chezmoi.hostname "desktop" }}
     RemoteForward localhost:17766 localhost:7766
-{{- else }}
+{{- else if eq .chezmoi.hostname "laptop" }}
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
 {{- end }}

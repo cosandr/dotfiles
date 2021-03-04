@@ -1,3 +1,5 @@
+{{- $is_mac := eq .os "darwin" -}}
+{{- $is_laptop := eq .hostname "laptop" -}}
 {
 	"auto_complete": false,
 	"bold_folder_labels": true,
@@ -14,7 +16,7 @@
 		"no_clig",
 		"no_calt"
 	],
-	"font_size": 12,
+	"font_size": {{ if or $is_mac $is_laptop }}15{{ else }}12{{ end }},
 	"highlight_line": false,
 	"hot_exit": false,
 	"ignored_packages":
