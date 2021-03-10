@@ -24,7 +24,10 @@ update_config.*
 {{- if not $is_mac }}
 Library/
 {{- $is_wsl := hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}
-{{- end }}
+{{- else }}
+.config/Code
+.config/chrome-flags.conf
+{{- end }} {{/* if not $is_mac */}}
 AppData/
 Documents/
 {{- if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) }}

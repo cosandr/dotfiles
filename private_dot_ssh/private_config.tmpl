@@ -130,3 +130,14 @@ Host prom-tunnel
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
 {{- end }}
+
+Host ws
+    HostName 192.168.1.43
+    User andrei
+    ForwardAgent yes
+    DynamicForward 5555
+
+Host ws-boot
+    HostName 192.168.1.43
+    User root
+    IdentityFile ~/.ssh/id_rsa
