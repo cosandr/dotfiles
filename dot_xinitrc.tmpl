@@ -1,37 +1,61 @@
 {{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+{{- $is_laptop := eq .chezmoi.hostname "laptop" -}}
 #!/bin/bash
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 
-export LANG=en_US.UTF-8
-export LC_TIME=en_GB.UTF-8
+[[ -f ~/.xinitrc_config ]] && source ~/.xinitrc_config
+LANG=${LANG:-en_US.UTF-8}
+LC_TIME=${LC_TIME:-en_GB.UTF-8}
+
+# Override DPI if it is set
+[[ -n $DPI ]] && xrdb -override <<< "Xft.dpi: $DPI"
+
+mapfile -t monitors < <(xrandr --listmonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
+
 {{- if $is_desktop }}
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export QT_SCALE_FACTOR=1.1
+QT_AUTO_SCREEN_SCALE_FACTOR=${QT_AUTO_SCREEN_SCALE_FACTOR:-0}
+QT_SCALE_FACTOR=${QT_SCALE_FACTOR:-1.1}
+MOUSE_SENS=${MOUSE_SENS:--0.65}
+NVIDIA_CORE_OFFSET=${NVIDIA_CORE_OFFSET:-50}
+NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-1100}
 # Arrange displays
 # SDDM: /usr/share/sddm/scripts/Xsetup
 # Vertical lined up bottom 1680 offset, 1260 slightly higher, 840 middle lined up
-xrandr --output HDMI-0 --mode 3840x2160 --rate 60 --pos 0x0 --output DP-4 --primary --mode 3840x2160 --rate 120 --pos 0x2160
+[[ ${#monitors[@]} -eq 2 ]] && xrandr \
+    --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
+    --output "${monitors[1]}" --mode 3840x2160 --rate 60 --pos 0x0
 # Lower mouse sensitivity
-xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' -0.65
+xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' "$MOUSE_SENS"
 # Nvidia OC
-# nvidia-settings -a [gpu:0]/GPUPowerMizerMode=1
-# nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=50" -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=1000"
-nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffsetAllPerformanceLevels=50" -a "[gpu:0]/GPUMemoryTransferRateOffsetAllPerformanceLevels=1100"
-{{- else }}
-export QT_AUTO_SCREEN_SCALE_FACTOR=1
-export GDK_SCALE=2
-export GDK_DPI_SCALE=0.5
-export MOZ_X11_EGL=1
+nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffsetAllPerformanceLevels=$NVIDIA_CORE_OFFSET" -a "[gpu:0]/GPUMemoryTransferRateOffsetAllPerformanceLevels=$NVIDIA_MEM_OFFSET"
+{{- else if $is_laptop }}
+QT_AUTO_SCREEN_SCALE_FACTOR=${QT_AUTO_SCREEN_SCALE_FACTOR:-1}
+GDK_SCALE=${GDK_SCALE:-2}
+GDK_DPI_SCALE=${GDK_DPI_SCALE:-0.5}
+MOZ_X11_EGL=${MOZ_X11_EGL:-1}
 {{- end }}
+export LANG
+export LC_TIME
+export QT_AUTO_SCREEN_SCALE_FACTOR
+export QT_SCALE_FACTOR
 export QT_QPA_PLATFORMTHEME=qt5ct
+export GDK_SCALE
+export GDK_DPI_SCALE
+export MOZ_X11_EGL
 export SSH_AUTH_SOCK
 export XDG_CACHE_HOME={{ .chezmoi.homedir }}/.cache
 export XDG_CONFIG_HOME={{ .chezmoi.homedir }}/.config
 export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
 export XDG_SESSION_DESKTOP=i3
+export XDG_SESSION_TYPE=x11
+
+# Export monitor names for polybar
+for i in ${!monitors[@]}; do
+    export MONITOR_NAME_$i="${monitors[$i]}"
+done
 
 dbus-update-activation-environment --systemd DISPLAY
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
