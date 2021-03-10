@@ -21,25 +21,6 @@ Host DreSRV
     ControlPersist 10m
 {{- end }}
 
-Host DreSRV-A
-    HostName {{ .dresrv.local_ip }}
-    User andrei
-    ForwardAgent yes
-{{- if and (not $is_srv) (not $is_windows) (not $is_mac) }}
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-{{- end }}
-
-{{ if not $is_srv -}}
-Host DreSRV-X
-    HostName {{ .dresrv.local_ip }}
-    ForwardX11 yes
-    ForwardX11Trusted yes
-{{- if $is_windows }}
-    RequestTTY yes
-    RemoteCommand env GDK_SCALE=2 GDK_DPI_SCALE=0.75 QT_SCREEN_SCALE_FACTORS=2 QT_AUTO_SCREEN_SCALE_FACTOR=0 zsh
-{{- end }}
-{{- end }}
-
 Host dresrv.com
 {{- if .dresrv.use_domain }}
     HostName {{ .dresrv.domain }}
@@ -53,6 +34,29 @@ Host dresrv.com
     ControlPersist 10m
 {{- end }}
 
+{{ if not $is_srv -}}
+Host srv-boot
+    HostName {{ .dresrv.local_ip }}
+    User root
+    Port 2222
+
+Host DreSRV-A
+    HostName {{ .dresrv.local_ip }}
+    User andrei
+    ForwardAgent yes
+{{- if and (not $is_windows) (not $is_mac) }}
+    RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+{{- end }}
+
+Host DreSRV-X
+    HostName {{ .dresrv.local_ip }}
+    ForwardX11 yes
+    ForwardX11Trusted yes
+{{- if $is_windows }}
+    RequestTTY yes
+    RemoteCommand env GDK_SCALE=2 GDK_DPI_SCALE=0.75 QT_SCREEN_SCALE_FACTORS=2 QT_AUTO_SCREEN_SCALE_FACTOR=0 zsh
+{{- end }}
+
 Host dresrv.com-A
 {{- if .dresrv.use_domain }}
     HostName {{ .dresrv.domain }}
@@ -62,8 +66,9 @@ Host dresrv.com-A
 {{- end }}
     User andrei
     ForwardAgent yes
-{{- if and (not $is_srv) (not $is_windows) (not $is_mac) }}
+{{- if and (not $is_windows) (not $is_mac) }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+{{- end }}
 {{- end }}
 
 Host github.com

@@ -53,7 +53,12 @@
     },
     "update.mode": "none",
     "terminal.integrated.shell.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
-    "workbench.editorAssociations": [],
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
     "diffEditor.renderSideBySide": false,
     "remote.autoForwardPorts": false
 }
