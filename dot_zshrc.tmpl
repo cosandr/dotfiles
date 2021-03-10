@@ -3,6 +3,8 @@
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
 {{- $not_root := ne .chezmoi.username "root" -}}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
+{{- $is_linux := eq .chezmoi.os "linux" -}}
+
 {{- range .check.source }}
 {{ if . }}source {{ . }}{{ end }}
 {{- end }}
@@ -69,6 +71,11 @@ alias git-sign='git config commit.gpgsign true'
 alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install --use-feature=2020-resolver -U -r requirements.txt'
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-no-host='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+{{- if $is_linux }}
+alias bt-mx='bluetoothctl power on && bluetoothctl connect 04:5D:4B:52:86:4B'
+alias bt-buds='bluetoothctl power on && bluetoothctl connect F4:7D:EF:0C:BE:02'
+alias bt-off='bluetoothctl power off'
+{{- end }}
 {{- range $k, $v := .check.files }}
 {{ if ne $v "" }}alias logs-{{ $k }}='tail -f {{ $v }}'{{ end }}
 {{- end }}
@@ -86,9 +93,6 @@ alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}"
 alias podlog='podman logs -f'
 alias podex='podman exec -t'
 alias podsti='podman container start -i'
-{{- end }}
-{{- if has "corefreq-cli" .check.exec }}
-alias tmux-mon='tmux new -s mon  "htop -d10" \; split-window "corefreq-cli" \; select-layout even-vertical'
 {{- end }}
 {{- if and (has "virsh" .check.exec) ($not_root) }}
 alias virsh='virsh --connect qemu:///system'
