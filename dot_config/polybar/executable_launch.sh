@@ -1,5 +1,4 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 ## Add this to your wm startup file.
 
@@ -24,16 +23,17 @@ done
 
 # Find and set default network adapter
 PRIMARY_INET=""
-while [ -z $PRIMARY_INET ]; do
+while [[ -z $PRIMARY_INET ]]; do
     PRIMARY_INET=$(route | grep '^default' | grep -m 1 -o '[^ ]*$')
     sleep 1
 done
 export PRIMARY_INET
 
 # Launch bars
-{{- if $is_desktop  }}
-MONITOR=DP-4 polybar main &
-MONITOR=HDMI-0 polybar secondary &
-{{- else }}
-MONITOR=eDP-1 polybar main &
-{{- end }}
+while IFS='=' read -r name value ; do
+    if [[ $name = "MONITOR_NAME_0" ]]; then
+        MONITOR="$value" polybar main &
+    elif [[ $name == 'MONITOR_NAME_'* ]]; then
+        MONITOR="$value" polybar secondary &
+    fi
+done < <(env)

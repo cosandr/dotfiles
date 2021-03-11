@@ -64,7 +64,6 @@ def check_cmds(cfg):
     """Check if commands are in PATH"""
     check = [
         "cargo",
-        "corefreq-cli",
         "docker",
         "dotnet",
         "go-motd",

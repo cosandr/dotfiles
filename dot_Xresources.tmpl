@@ -1,8 +1,9 @@
 {{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+{{- $is_laptop := eq .chezmoi.hostname "laptop" -}}
 ! Fonts {{"{{{"}}
 Xft.antialias: true
 Xft.hinting:   true
 Xft.rgba:      rgb
 Xft.hintstyle: hintfull
-Xft.dpi:       {{ if $is_desktop }}144{{ else }}192{{- end }}
+Xft.dpi:       {{ if $is_desktop }}144{{ else if $is_laptop }}192{{- else }}96{{- end }}
 ! }}}
