@@ -47,6 +47,8 @@ DEFAULT_CONFIG = dict(
             private_name="",
             public_email="",
             public_name="",
+            work_email="",
+            work_name="",
         ),
         check=dict(
             exec=[],
