@@ -1,4 +1,5 @@
 {{- $is_windows := eq .chezmoi.os "windows" -}}
+{{- $is_work := eq .chezmoi.hostname .work.ws_name -}}
 {{- if $is_windows }}
 [core]
     eol = lf
@@ -10,9 +11,14 @@
     program = C:\\Program Files (x86)\\gnupg\\bin\\gpg.exe
 {{- end }}
 [user]
+{{- if $is_work }}
+    email = {{ .work.git_email }}
+    name = {{ .work.git_name }}
+{{- else }}
     email = {{ .git.private_email }}
     name = {{ .git.private_name }}
     signingkey = 273D94492E01567B
+{{- end }}
 [alias]
 {{- if $is_windows }}
     add-urls = !python '{{ .chezmoi.sourceDir | replace "\\" "\\\\" }}\\dot_local\\bin\\executable_git-add-urls'

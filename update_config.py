@@ -46,9 +46,7 @@ DEFAULT_CONFIG = dict(
             private_email="",
             private_name="",
             public_email="",
-            public_name="",
-            work_email="",
-            work_name="",
+            public_name=""
         ),
         check=dict(
             exec=[],
@@ -56,6 +54,11 @@ DEFAULT_CONFIG = dict(
             ignore_config=[],
             source=[],
         ),
+        work=dict(
+            git_name="",
+            git_email="",
+            ws_name="",
+        )
     ),
 )
 
