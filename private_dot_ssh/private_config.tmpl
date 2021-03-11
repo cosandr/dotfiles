@@ -146,3 +146,11 @@ Host ws-boot
     HostName 192.168.1.43
     User root
     IdentityFile ~/.ssh/id_rsa
+
+Host {{ .work.git_url }}
+    HostName {{ .work.git_url }}
+{{- if $is_mac }}
+    IdentityFile {{ if $is_root }}/Users/andrei{{ else }}~{{ end }}/.ssh/id_rsa.work
+{{- else }}
+    IdentityFile ~/.ssh/mac_rsa.work
+{{- end }}

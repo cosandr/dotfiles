@@ -57,6 +57,7 @@ DEFAULT_CONFIG = dict(
         work=dict(
             git_name="",
             git_email="",
+            git_url="",
             ws_name="",
         )
     ),

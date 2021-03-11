@@ -1,6 +1,7 @@
 {{- $not_server := ne .chezmoi.hostname "DreSRV" -}}
 {{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
+{{- $not_work := ne .chezmoi.hostname .work.ws_name -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
 {{- $is_windows := eq .chezmoi.os "windows" -}}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
@@ -63,7 +64,7 @@ Documents/
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }} {{/* if or $not_desktop $is_wsl $is_mac */}}
-{{- if or $is_root $not_server $is_wsl }}
+{{- if or $is_root (and $not_server $not_work) $is_wsl }}
 .ssh/*.pub
 {{- end }} {{/* if or $is_root $not_server $is_wsl */}}
 {{- if $is_root }}
