@@ -72,10 +72,10 @@ def check_cmds(cfg):
         "dotnet",
         "go-motd",
         "go",
+        "kdeconnect-cli",
         "podman",
         "pyenv",
         "virsh",
-        "virt-install",
     ]
     cfg["data"]["check"]["exec"] = []
     for c in check:

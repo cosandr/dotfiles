@@ -1,4 +1,5 @@
 {{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
+{{- $is_laptop := eq .chezmoi.hostname "laptop" -}}
 # set modifier
 set $super Mod4
 set $alt Mod1
@@ -40,11 +41,17 @@ exec --no-startup-id "i3-msg 'workspace 1; append_layout {{.chezmoi.homedir}}/.c
 exec --no-startup-id $HOME/.config/i3/workspace-secondary.sh &
 
 exec --no-startup-id numlockx on &
-{{- else }}
+{{- else if $is_laptop }}
 # Brightness and power buttons on laptop, install xfce4-power-manager
 exec --no-startup-id xfce4-power-manager
 # Set layout to tabbed by default
 exec --no-startup-id i3-msg layout tabbed
+{{- end }}
+
+{{- if has "kdeconnect-cli" .check.exec }}
+exec --no-startup-id /usr/lib/kdeconnectd &
+exec --no-startup-id kdeconnect-indicator &
+bindsym $super+$alt+m exec kdeconnect-sms
 {{- end }}
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
