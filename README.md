@@ -71,3 +71,5 @@ Match User andrei
 systemctl --global mask --now gpg-agent.service gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket
 ```
 - Test with `echo test | gpg --clearsign`
+
+On Mac `brew install gnu-getopt pinentry-mac`
