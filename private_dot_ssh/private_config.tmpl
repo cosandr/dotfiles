@@ -1,5 +1,6 @@
 {{- $is_windows := eq .chezmoi.os "windows" -}}
 {{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
+{{- $is_work := eq .chezmoi.hostname .work.ws_name -}}
 {{- $is_root := eq .chezmoi.username "root" }}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- if $is_windows }}
@@ -13,6 +14,7 @@ Host *
    IdentityFile ~/.ssh/id_ed25519
 {{- end }}
 
+{{- if not $is_work }}
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
 {{- if and (not $is_srv) (not $is_windows) }}
@@ -70,27 +72,6 @@ Host dresrv.com-A
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
 {{- end }}
-
-Host github.com
-    HostName github.com
-{{- if not $is_srv }}
-    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
-{{- else }}
-    IdentityFile ~/.ssh/desktop_ed25519.cosandr
-    IdentityFile ~/.ssh/laptop_ed25519.cosandr
-    IdentityFile ~/.ssh/mac_ed25519.cosandr
-{{- end }}
-
-Host github.com-atgb
-    HostName github.com
-{{- if not $is_srv }}
-    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
-{{- else }}
-    IdentityFile ~/.ssh/desktop_ed25519.atgb
-    IdentityFile ~/.ssh/laptop_ed25519.atgb
-    IdentityFile ~/.ssh/mac_ed25519.atgb
-{{- end }}
-
 Host srvsim
     HostName 192.168.122.6
     User root
@@ -114,7 +95,27 @@ Host romvm
     HostName 10.1.1.33
     ProxyJump romsto
     ForwardAgent yes
+{{- end }} {{/* {{- if not $is_work }} */}}
 
+Host github.com
+    HostName github.com
+{{- if not $is_srv }}
+    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
+{{- else }}
+    IdentityFile ~/.ssh/desktop_ed25519.cosandr
+    IdentityFile ~/.ssh/laptop_ed25519.cosandr
+    IdentityFile ~/.ssh/mac_ed25519.cosandr
+{{- end }}
+
+Host github.com-atgb
+    HostName github.com
+{{- if not $is_srv }}
+    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
+{{- else }}
+    IdentityFile ~/.ssh/desktop_ed25519.atgb
+    IdentityFile ~/.ssh/laptop_ed25519.atgb
+    IdentityFile ~/.ssh/mac_ed25519.atgb
+{{- end }}
 {{ if and (not $is_root) (or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop")) -}}
 Host prom-tunnel
 {{- if .dresrv.use_domain }}
@@ -135,7 +136,6 @@ Host prom-tunnel
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
 {{- end }}
-
 Host ws
     HostName 192.168.1.43
     User andrei

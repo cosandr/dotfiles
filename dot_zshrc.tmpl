@@ -1,6 +1,7 @@
 {{- $not_server := ne .chezmoi.hostname "DreSRV" -}}
 {{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
+{{- $is_work := eq .chezmoi.hostname .work.ws_name -}}
 {{- $not_root := ne .chezmoi.username "root" -}}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- $is_linux := eq .chezmoi.os "linux" -}}
@@ -110,6 +111,11 @@ alias gita='sudo -u andrei git'
 alias logs-nginx='tail $(find /var/log/nginx -type f -printf " -f %p")'
 {{- end }}
 alias cd-chezmoi="cd $(chezmoi source-path)"
+{{- if $is_work }}
+alias ws-mon='tmux new -s mon "htop -d10" \; split-window "journalctl -f" \; select-layout even-vertical || tmux attach -t mon'
+{{- else }}
+alias ws-mon="ssh -t ws 'tmux new -s mon \"htop -d10\" \; split-window \"journalctl -f\" \; select-layout even-vertical || tmux attach -t mon'"
+{{- end }}
 
 [ ! $DISPLAY ] && export GPG_TTY=$(tty)
 
