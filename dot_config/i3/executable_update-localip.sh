@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SRV_IP="dresrv.local"
+SRV_IP="dresrv.hm"
 
 # Wait for SSH agent
 while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
@@ -22,8 +22,8 @@ primary_inet=$(route | grep '^default' | grep -m 1 -o '[^ ]*$')
 all_ips=$(ip -o addr show scope global "$primary_inet" | awk '{gsub(/\/.*/,"",$4); print $4}')
 MY_IPV4=$(awk 'NR==1' <<< "$all_ips")
 
-sed_cmd="sed -i \"s/.*desktop.local$/$MY_IPV4 desktop.local/g\" /etc/hosts"
+sed_cmd="sed -i \"s/.*desktop.hm$/$MY_IPV4 desktop.hm/g\" /etc/hosts"
 
 ssh root@DreSRV "$sed_cmd"
 
-notify-send -a "Update DreSRV hosts" "Updated desktop.local to $MY_IPV4"
+notify-send -a "Update DreSRV hosts" "Updated desktop.hm to $MY_IPV4"

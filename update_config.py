@@ -116,7 +116,7 @@ def check_files(cfg):
         else:
             path_prefix = '/dresrv/'
     elif OS_NAME == "Windows":
-        path_prefix = '//dresrv.local/'
+        path_prefix = '//dresrv.hm/'
     if OS_NAME != "Windows":
         # join takes care of paths which were already absolute
         check = {k: os.path.join(path_prefix, v) for k, v in check.items()}
