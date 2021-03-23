@@ -28,6 +28,7 @@ Library/
 {{- else }}
 .config/Code
 .config/chrome-flags.conf
+Library/Preferences/com.googlecode.iterm2.plist
 {{- end }} {{/* if not $is_mac */}}
 AppData/
 Documents/
