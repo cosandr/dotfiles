@@ -19,6 +19,7 @@ mapfile -t monitors < <(xrandr --listmonitors | awk -F ' ' '{if (NR!=1) {print $
 QT_AUTO_SCREEN_SCALE_FACTOR=${QT_AUTO_SCREEN_SCALE_FACTOR:-0}
 QT_SCALE_FACTOR=${QT_SCALE_FACTOR:-1.1}
 MOUSE_SENS=${MOUSE_SENS:--0.65}
+MOUSE_NAME=${MOUSE_NAME:-"pointer:Logitech G502"}
 NVIDIA_CORE_OFFSET=${NVIDIA_CORE_OFFSET:-50}
 NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-1100}
 # Arrange displays
@@ -28,7 +29,7 @@ NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-1100}
     --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
     --output "${monitors[1]}" --mode 3840x2160 --rate 60 --pos 0x0
 # Lower mouse sensitivity
-xinput set-prop 'Logitech Gaming Mouse G502' 'libinput Accel Speed' "$MOUSE_SENS"
+xinput set-prop "$MOUSE_NAME" 'libinput Accel Speed' "$MOUSE_SENS"
 # Nvidia OC
 nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffsetAllPerformanceLevels=$NVIDIA_CORE_OFFSET" -a "[gpu:0]/GPUMemoryTransferRateOffsetAllPerformanceLevels=$NVIDIA_MEM_OFFSET"
 {{- else if $is_laptop }}
