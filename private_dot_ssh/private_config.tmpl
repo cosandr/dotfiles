@@ -99,6 +99,9 @@ Host romvm
 
 Host github.com
     HostName github.com
+    User git
+    PreferredAuthentications publickey
+    IdentitiesOnly yes
 {{- if not $is_srv }}
     IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
 {{- else }}
@@ -109,6 +112,9 @@ Host github.com
 
 Host github.com-atgb
     HostName github.com
+    User git
+    PreferredAuthentications publickey
+    IdentitiesOnly yes
 {{- if not $is_srv }}
     IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
 {{- else }}
@@ -149,6 +155,9 @@ Host ws-boot
 
 Host {{ .work.git_url }}
     HostName {{ .work.git_url }}
+    User git
+    PreferredAuthentications publickey
+    IdentitiesOnly yes
 {{- if $is_mac }}
     IdentityFile {{ if $is_root }}/Users/andrei{{ else }}~{{ end }}/.ssh/id_rsa.work
 {{- else }}
