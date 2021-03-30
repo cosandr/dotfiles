@@ -1,8 +1,7 @@
 #!/bin/bash
 
 mountpoint="/dresrv"
-if grep -q "$mountpoint" /proc/mounts
-then
+if grep -q "$mountpoint" /proc/mounts; then
     notify-send "$mountpoint already mounted"
     exit 0
 fi

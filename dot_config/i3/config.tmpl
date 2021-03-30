@@ -71,10 +71,8 @@ exec --no-startup-id ~/.fehbg
 exec --no-startup-id firefox &
 exec --no-startup-id alacritty &
 
-{{- if or .dresrv.use_domain (not $is_desktop)}}
-# Use sshfs if we're not in the local network, otherwise we are using NFS
-exec --no-startup-id $HOME/.local/bin/mount-sshfs &
-{{- end }}
+# Run sshfs script if /dresrv is not in fstab
+exec --no-startup-id grep -qE '^\s*[^#](\S+)\s+/dresrv' /etc/fstab || $HOME/.local/bin/mount-sshfs &
 
 # toggle border
 bindsym $super+b border toggle 2
@@ -90,6 +88,7 @@ bindsym $super+Return exec alacritty
 bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@DreSRV-A
 bindsym $ctrl+$alt+2 exec alacritty -e ssh root@DreSRV
 bindsym $ctrl+$alt+3 exec alacritty -e ssh andrei@dresrv.com-A
+bindsym $ctrl+$alt+4 exec alacritty -e ssh ws
 
 # Rofi binds
 bindsym $super+d exec rofi -show drun

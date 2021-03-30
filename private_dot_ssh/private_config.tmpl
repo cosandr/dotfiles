@@ -6,7 +6,6 @@
 {{- if $is_windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 {{- end }}
-
 {{- if $is_mac }}
 Host *
    UseKeychain yes
@@ -71,7 +70,7 @@ Host dresrv.com-A
 {{- if and (not $is_windows) (not $is_mac) }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
-{{- end }}
+{{- end }} {{/* {{- if not $is_srv }} */}}
 Host srvsim
     HostName 192.168.122.6
     User root
@@ -95,6 +94,23 @@ Host romvm
     HostName 10.1.1.33
     ProxyJump romsto
     ForwardAgent yes
+
+Host ws
+    HostName 192.168.1.43
+    User andrei
+    ForwardAgent yes
+
+Host ws-socks
+    HostName 192.168.1.43
+    User andrei
+    DynamicForward 5555
+    ExitOnForwardFailure yes
+    TCPKeepAlive yes
+
+Host ws-boot
+    HostName 192.168.1.43
+    User root
+    IdentityFile ~/.ssh/id_rsa
 {{- end }} {{/* {{- if not $is_work }} */}}
 
 Host github.com
@@ -142,22 +158,6 @@ Host prom-tunnel
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
 {{- end }}
-Host ws
-    HostName 192.168.1.43
-    User andrei
-    ForwardAgent yes
-
-Host ws-socks
-    HostName 192.168.1.43
-    User andrei
-    DynamicForward 5555
-    ExitOnForwardFailure yes
-    TCPKeepAlive yes
-
-Host ws-boot
-    HostName 192.168.1.43
-    User root
-    IdentityFile ~/.ssh/id_rsa
 
 Host {{ .work.git_url }}
     HostName {{ .work.git_url }}
