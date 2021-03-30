@@ -84,6 +84,7 @@ alias bt-off='bluetoothctl power off'
 {{- end }}
 {{- if has "docker" .check.exec }}
 alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
+alias dports='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Ports}}" }}"'
 alias dlog='docker logs -f'
 alias dex='docker exec -t'
 alias dsti='docker container start -i'
