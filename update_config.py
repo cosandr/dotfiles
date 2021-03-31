@@ -70,7 +70,6 @@ def check_cmds(cfg):
         "cargo",
         "docker",
         "dotnet",
-        "go-motd",
         "go",
         "kdeconnect-cli",
         "podman",
