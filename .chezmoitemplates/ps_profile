@@ -49,7 +49,7 @@ function ssh-dresrv-x {
 
 function pip-req {
     pip install -U pip wheel setuptools
-    pip install --use-feature=2020-resolver -U -r requirements.txt
+    pip install -U -r requirements.txt
 }
 
 function pip-req-dev {

@@ -54,8 +54,8 @@ pyenv-replace () {
     pyenv virtualenv "$2" "$1" || return
     pyenv activate "$1" || return
     python3 -m pip install -U pip wheel setuptools || return
-    [[ -f "requirements.txt" ]] && python3 -m pip install --use-feature=2020-resolver -U -r requirements.txt
-    [[ -f "requirements_dev.txt" ]] && python3 -m pip install --use-feature=2020-resolver -U -r requirements_dev.txt
+    [[ -f "requirements.txt" ]] && python3 -m pip install -U -r requirements.txt
+    [[ -f "requirements_dev.txt" ]] && python3 -m pip install -U -r requirements_dev.txt
 }
 {{- end }}
 
@@ -70,7 +70,7 @@ alias git-alt='git config user.email "{{ .git.public_email }}" && git config use
 alias git-main='git config user.email "{{ .git.private_email }}" && git config user.name "{{ .git.private_name }}"'
 alias git-work='git config user.email "{{ .work.git_email }}" && git config user.name "{{ .work.git_name }}"'
 alias git-sign='git config commit.gpgsign true'
-alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install --use-feature=2020-resolver -U -r requirements.txt'
+alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install -U -r requirements.txt'
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-no-host='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 {{- if and $is_linux $not_server $not_root }}
