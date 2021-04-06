@@ -1,4 +1,6 @@
 {{- $is_windows := eq .chezmoi.os "windows" -}}
+{{- $is_desktop :=  eq .chezmoi.hostname "desktop" }}
+{{- $is_laptop :=  eq .chezmoi.hostname "laptop" }}
 {{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
 {{- $is_work := eq .chezmoi.hostname .work.ws_name -}}
 {{- $is_root := eq .chezmoi.username "root" }}
@@ -138,7 +140,7 @@ Host github.com-atgb
     IdentityFile ~/.ssh/laptop_ed25519.atgb
     IdentityFile ~/.ssh/mac_ed25519.atgb
 {{- end }}
-{{ if and (not $is_root) (or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop")) -}}
+{{ if and (not $is_root) (or $is_desktop $is_laptop) -}}
 Host prom-tunnel
 {{- if .dresrv.use_domain }}
     HostName {{ .dresrv.domain }}
@@ -152,9 +154,9 @@ Host prom-tunnel
     ExitOnForwardFailure yes
     ControlMaster no
     TCPKeepAlive yes
-{{- if eq .chezmoi.hostname "desktop" }}
+{{- if $is_desktop }}
     RemoteForward localhost:17766 localhost:7766
-{{- else if eq .chezmoi.hostname "laptop" }}
+{{- else if $is_laptop }}
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
 {{- end }}
@@ -166,6 +168,9 @@ Host {{ .work.git_url }}
     IdentitiesOnly yes
 {{- if $is_mac }}
     IdentityFile {{ if $is_root }}/Users/andrei{{ else }}~{{ end }}/.ssh/id_rsa.work
+{{- else if $is_desktop }}
+    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_rsa
 {{- else }}
     IdentityFile ~/.ssh/mac_rsa.work
+    IdentityFile ~/.ssh/desktop_rsa
 {{- end }}
