@@ -120,11 +120,3 @@ alias ws-mon="ssh -t ws 'tmux new -s mon \"htop -d10\" \; split-window \"journal
 {{- end }}
 
 [ ! $DISPLAY ] && export GPG_TTY=$(tty)
-
-{{- if $not_root }}
-if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
-    [[ -s /etc/motd ]] && cat /etc/motd
-fi
-{{- else }}
-[[ -s /etc/motd ]] && cat /etc/motd
-{{- end }}
