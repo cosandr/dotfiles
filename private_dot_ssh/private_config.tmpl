@@ -3,6 +3,7 @@
 {{- $is_laptop :=  eq .chezmoi.hostname "laptop" }}
 {{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
 {{- $is_work := eq .chezmoi.hostname .work.ws_name -}}
+{{- $is_pi :=  eq .chezmoi.hostname "drepi" }}
 {{- $is_root := eq .chezmoi.username "root" }}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- if $is_windows }}
@@ -91,6 +92,12 @@ Host srvsim-boot
 Host romsto
     HostName {{ .romsto.domain }}
     Port {{ .romsto.ssh_port }}
+{{- if not $is_pi }}
+
+Host drepi
+    HostName 10.0.0.3
+    User pi
+    ForwardAgent yes
 
 Host romvm
     HostName 10.1.1.33
@@ -111,17 +118,33 @@ Host ws-socks
 
 Host ws-boot
     HostName 192.168.1.43
+    Port 2222
     User root
     IdentityFile ~/.ssh/id_rsa
 {{- end }} {{/* {{- if not $is_work }} */}}
+
+Host {{ .work.git_url }}
+    HostName {{ .work.git_url }}
+    User git
+    PreferredAuthentications publickey
+    IdentitiesOnly yes
+{{- if $is_mac }}
+    IdentityFile ~/.ssh/id_rsa.work
+{{- else if $is_desktop }}
+    IdentityFile ~/.ssh/id_rsa
+{{- else }}
+    IdentityFile ~/.ssh/mac_rsa.work
+    IdentityFile ~/.ssh/desktop_rsa
+{{- end }}
+{{- end }} {{/* {{- if not $is_pi }} */}}
 
 Host github.com
     HostName github.com
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- if not $is_srv }}
-    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.cosandr
+{{- if or $is_desktop $is_laptop $is_mac }}
+    IdentityFile ~/.ssh/id_ed25519.cosandr
 {{- else }}
     IdentityFile ~/.ssh/desktop_ed25519.cosandr
     IdentityFile ~/.ssh/laptop_ed25519.cosandr
@@ -133,8 +156,8 @@ Host github.com-atgb
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- if not $is_srv }}
-    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_ed25519.atgb
+{{- if or $is_desktop $is_laptop $is_mac }}
+    IdentityFile ~/.ssh/id_ed25519.atgb
 {{- else }}
     IdentityFile ~/.ssh/desktop_ed25519.atgb
     IdentityFile ~/.ssh/laptop_ed25519.atgb
@@ -159,18 +182,4 @@ Host prom-tunnel
 {{- else if $is_laptop }}
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
-{{- end }}
-
-Host {{ .work.git_url }}
-    HostName {{ .work.git_url }}
-    User git
-    PreferredAuthentications publickey
-    IdentitiesOnly yes
-{{- if $is_mac }}
-    IdentityFile {{ if $is_root }}/Users/andrei{{ else }}~{{ end }}/.ssh/id_rsa.work
-{{- else if $is_desktop }}
-    IdentityFile {{ if $is_root }}/home/andrei{{ else }}~{{ end }}/.ssh/id_rsa
-{{- else }}
-    IdentityFile ~/.ssh/mac_rsa.work
-    IdentityFile ~/.ssh/desktop_rsa
-{{- end }}
+{{- end }} {{/* {{ if and (not $is_root) (or $is_desktop $is_laptop) -}} */}}
