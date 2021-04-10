@@ -65,9 +65,9 @@ Documents/
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }} {{/* if or $not_desktop $is_wsl $is_mac */}}
-{{- if or $is_root (and $not_server $not_work) $is_wsl }}
+{{- if or $is_root (not $not_desktop) (not $not_laptop) $is_mac $is_wsl }}
 .ssh/*.pub
-{{- end }} {{/* if or $is_root $not_server $is_wsl */}}
+{{- end }} {{/* if or $is_root (not $not_desktop) (not $not_laptop) $is_mac $is_wsl */}}
 {{- if $is_root }}
 .gnupg
 {{- end }} {{/* if $is_root */}}
