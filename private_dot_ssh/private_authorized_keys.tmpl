@@ -4,7 +4,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOg9fiCqlSj0Xm/+rA02ecxnDYecKEnhYol6WUrM29UA
 {{- if ne .chezmoi.hostname "laptop" }}
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDm8L8QC0mY1G2uMm9eMGpsW4VXs/nFVLRu+vuxjVSEs andrei@laptop
 {{- end }}
-{{- if ne .chezmoi.hostname "macbook" }}
+{{- if ne .chezmoi.os "darwin" }}
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHwHNoM1fLrOPsuOboxUdfgPy/VscU50yjebHEIqwo7 andrei@macbook
 {{- end }}
 {{- if and (ne .chezmoi.username "root") (ne .chezmoi.hostname .work.ws_name) }}
