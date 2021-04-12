@@ -1,5 +1,9 @@
 {{- if eq .os "darwin" -}}
+{{- if eq .arch "arm64" -}}
+pinentry-program /opt/homebrew/bin/pinentry-mac
+{{- else }}
 pinentry-program /usr/local/bin/pinentry-mac
+{{- end }}
 {{ end -}}
 # Timeout to 12 hours
 default-cache-ttl 43200

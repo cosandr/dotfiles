@@ -88,7 +88,11 @@ export QT_SCREEN_SCALE_FACTORS=2
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export DISPLAY=localhost:0.0
 {{- else if $is_mac }}
-#export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+if [[ -f /usr/local/bin/brew ]]; then
+    eval $(/usr/local/bin/brew shellenv)
+elif [[ -f /opt/homebrew/bin/brew ]]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
+fi
 {{- else }}
 {{- if or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop") }}
 {{- if ne .chezmoi.username "root" }}

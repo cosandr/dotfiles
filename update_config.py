@@ -94,6 +94,8 @@ def check_src(cfg):
         "/usr/share/fzf/key-bindings.zsh",
         "/usr/local/opt/fzf/shell/completion.zsh",
         "/usr/local/opt/fzf/shell/key-bindings.zsh",
+        "/opt/homebrew/opt/fzf/shell/completion.zsh",
+        "/opt/homebrew/opt/fzf/shell/key-bindings.zsh",
     ]
     cfg["data"]["check"]["source"] = []
     for c in check:
