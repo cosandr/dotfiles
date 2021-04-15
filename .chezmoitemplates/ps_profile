@@ -31,14 +31,14 @@ if (Test-Path($ChocolateyProfile)) {
 {{ if $is_core }}
 function git-alt {
     echo "Setting git to atgb"
-    git config user.email "{{ .data.git.public_email }}"
-    git config user.name "{{ .data.git.public_name }}"
+    git config user.email "{{ .data.git.alt_email }}"
+    git config user.name "{{ .data.git.alt_name }}"
 }
 
 function git-main {
     echo "Setting git to cosandr"
-    git config user.email "{{ .data.git.private_email }}"
-    git config user.name "{{ .data.git.private_name }}"
+    git config user.email "{{ .data.git.main_email }}"
+    git config user.name "{{ .data.git.main_name }}"
 }
 
 function ssh-dresrv-x {

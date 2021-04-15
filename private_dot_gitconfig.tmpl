@@ -14,10 +14,11 @@
 {{- if $is_work }}
     email = {{ .work.git_email }}
     name = {{ .work.git_name }}
+    signingkey = {{ .work.git_key }}
 {{- else }}
-    email = {{ .git.private_email }}
-    name = {{ .git.private_name }}
-    signingkey = 273D94492E01567B
+    email = {{ .git.main_email }}
+    name = {{ .git.main_name }}
+    signingkey = {{ .git.main_key }}
 {{- end }}
 [alias]
 {{- if $is_windows }}

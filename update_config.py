@@ -43,10 +43,11 @@ DEFAULT_CONFIG = dict(
             use_domain=False,
         ),
         git=dict(
-            private_email="",
-            private_name="",
-            public_email="",
-            public_name=""
+            main_email="",
+            main_name="",
+            main_key="",
+            alt_email="",
+            alt_name=""
         ),
         check=dict(
             exec=[],
@@ -57,6 +58,7 @@ DEFAULT_CONFIG = dict(
         work=dict(
             git_name="",
             git_email="",
+            git_key="",
             git_url="",
             ws_name="",
         )

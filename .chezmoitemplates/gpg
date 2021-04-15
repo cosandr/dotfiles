@@ -2,4 +2,8 @@
 use-agent
 {{ end -}}
 keyserver hkp://keyserver.ubuntu.com
-default-key 273D94492E01567B
+{{- if eq .hostname .work.ws_name }}
+default-key {{ .work.git_key }}
+{{- else }}
+default-key {{ .git.main_key }}
+{{- end }}

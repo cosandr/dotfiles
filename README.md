@@ -32,10 +32,10 @@ Same structure as config file.
             "ssh_port": ""
         },
         "git": {
-            "private_email": "",
-            "private_name": "",
-            "public_email": "",
-            "public_name": ""
+            "main_email": "",
+            "main_name": "",
+            "alt_email": "",
+            "alt_name": ""
         }
     }
 }
@@ -57,10 +57,10 @@ On Windows start `"C:\Program Files (x86)\GnuPG\bin\gpgconf.exe" --launch gpg-ag
 
 See [this](https://superuser.com/a/1329299) post.
 
-- Export public key `gpg --export 273D94492E01567B > pub`
+- Export public key `gpg --export <public key> > pub`
 - Copy to server
 - Import `gpg --import pub`
-- Set trust `gpg --edit-key 273D94492E01567B`, trust, 5, save
+- Set trust `gpg --edit-key <public key>`, trust, 5, save
 - Edit `sshd_config` on server
 ```
 Match User andrei
