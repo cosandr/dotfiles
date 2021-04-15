@@ -8,8 +8,10 @@ echo 'i2c-dev' > /etc/modules-load.d/i2c.conf
 """
 
 import os
+import re
 import signal
 import subprocess
+import sys
 import threading
 import time
 from typing import List, NamedTuple
@@ -24,7 +26,7 @@ class Display:
     def __init__(self, name, bus, preset=None, selected=False, min_brightness=0, max_brigtness=100):
         self.name: str = name
         self.bus: int = bus
-        self.preset: Preset = preset
+        self.preset: Preset = preset or Preset(day=40, night=0)
         self.brightness: int = None
         self.selected: bool = selected
         self.min_brightness: int = min_brightness
@@ -84,6 +86,12 @@ class MyDisplays:
             Display(name='Samsung', bus=3, preset=Preset(day=25, night=5), selected=True,
                     min_brightness=5, max_brigtness=70),
         ]
+        try:
+            self.read_all()
+        except Exception as e:
+            print(e, file=sys.stderr)
+            self.displays = self.detect_displays()
+            self.read_all()
         self.delay: int = delay
         self.increment: int = increment
         self._counter = 0
@@ -95,6 +103,17 @@ class MyDisplays:
         signal.signal(signal.SIGUSR2, self.handler_down)
         signal.signal(signal.SIGHUP, self.handler_toggle)
         signal.signal(signal.SIGALRM, self.handler_cycle_selected)
+
+    @staticmethod
+    def detect_displays() -> List[Display]:
+        displays = []
+        s = subprocess.run(['ddcutil', 'detect', '--terse'], check=False, text=True, capture_output=True)
+        for m in re.finditer(r".*\/dev\/i2c-(\d).*Monitor:\s+\w+:(\w+):?", s.stdout, re.S):
+            bus = int(m.group(1))
+            name = m.group(2)
+            print(f'Found {name} on bus {bus}', file=sys.stderr)
+            displays.append(Display(name=name, bus=bus, selected=True))
+        return displays
 
     def handler_up(self, _signum, _frame):
         self._counter = 0
@@ -209,18 +228,16 @@ class MyDisplays:
 
 def main():
     md = MyDisplays(delay=2, increment=5)
-    md.read_all()
     md.print()
     while True:
         signal.pause()
 
 
 if __name__ == "__main__":
-    # DEBUG
-    if os.getenv('DEBUG', '0') == '1':
-        print(os.getpid())
+    print(os.getpid(), file=sys.stderr)
     try:
         main()
-    except Exception:
+    except Exception as e:
         print('N/A')
+        print(e, file=sys.stderr)
         exit(1)
