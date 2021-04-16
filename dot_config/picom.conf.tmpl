@@ -181,19 +181,11 @@ inactive-dim = 0.0;
 # `xrender` is the default one.
 #
 # backend = "glx"
-{{- if $is_desktop }}
-backend = "xrender";
-{{- else }}
 backend = "glx";
-{{- end }}
 
 # Enable/disable VSync.
 # vsync = false
-{{- if $is_desktop }}
-vsync = false;
-{{- else }}
 vsync = true;
-{{- end }}
 
 # Enable remote control via D-Bus. See the *D-BUS API* section below for more details.
 # dbus = false
