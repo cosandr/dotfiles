@@ -108,7 +108,7 @@ class MyDisplays:
     def detect_displays() -> List[Display]:
         displays = []
         s = subprocess.run(['ddcutil', 'detect', '--terse'], check=False, text=True, capture_output=True)
-        for m in re.finditer(r".*\/dev\/i2c-(\d).*Monitor:\s+\w+:(\w+):?", s.stdout, re.S):
+        for m in re.finditer(r"I2C bus:\s+\/dev\/i2c-(\d)\s+Monitor:\s+\w+:(\w+):?", s.stdout, re.S):
             bus = int(m.group(1))
             name = m.group(2)
             print(f'Found {name} on bus {bus}', file=sys.stderr)
