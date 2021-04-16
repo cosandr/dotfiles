@@ -28,6 +28,10 @@ NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-1100}
 [[ ${#monitors[@]} -eq 2 ]] && xrandr \
     --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
     --output "${monitors[1]}" --mode 3840x2160 --rate 60 --pos 0x0
+[[ ${#monitors[@]} -eq 3 ]] && xrandr \
+    --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
+    --output "${monitors[1]}" --mode 3840x2160 --rate 60 --pos 0x0 \
+    --output "${monitors[2]}" --off
 # Lower mouse sensitivity
 xinput set-prop "$MOUSE_NAME" 'libinput Accel Speed' "$MOUSE_SENS"
 # Nvidia OC
