@@ -271,7 +271,7 @@ format =  <label>
 {{- else }}
 format = <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-brightness.py
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-brightness.py 2>/dev/null
 click-left = kill -ALRM %pid%
 click-right = kill -HUP %pid%
 scroll-up = kill -USR1 %pid%
@@ -288,7 +288,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = ~/.config/polybar/scripts/nvidia-clock.sh
+exec = QUERY="clocks.gr" UNIT="MHz"  ~/.config/polybar/scripts/nvidia.sh
 interval = 10
 
 [module/nvtemp]
@@ -300,7 +300,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = ~/.config/polybar/scripts/nvidia-temp.sh
+exec = QUERY="temperature.gpu" UNIT="°C"  ~/.config/polybar/scripts/nvidia.sh
 interval = 3
 
 [module/nvusage]
@@ -312,7 +312,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = ~/.config/polybar/scripts/nvidia-usage.sh
+exec = QUERY="utilization.gpu" UNIT="%"  ~/.config/polybar/scripts/nvidia.sh
 interval = 3
 
 [module/switchaudio]
