@@ -108,6 +108,17 @@ alias virt-install='virt-install --connect qemu:///system'
 {{- if eq .chezmoi.osRelease.id "arch" }}
 alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
 {{- end }}
+{{- else }}
+if [[ -d /usr/local/share/zsh-completions ]]; then
+    if (( ! ${fpath[(I)/usr/local/share/zsh-completions]} )); then
+        FPATH=/usr/local/share/zsh-completions:$FPATH
+    fi
+fi
+if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+    if (( ! ${fpath[(I)/opt/homebrew/share/zsh/site-functions]} )); then
+        FPATH=/opt/homebrew/share/zsh/site-functions:$FPATH
+    fi
+fi
 {{- end }}
 {{- if not $not_root }}
 alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'
