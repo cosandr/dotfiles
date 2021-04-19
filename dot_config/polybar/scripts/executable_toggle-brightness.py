@@ -234,6 +234,10 @@ def main():
 
 
 if __name__ == "__main__":
+    _f = None
+    if os.getenv("DEBUG", "0") == "0":
+        _f = open(os.devnull, 'w')
+        sys.stderr = _f
     print(os.getpid(), file=sys.stderr)
     try:
         main()
@@ -241,3 +245,5 @@ if __name__ == "__main__":
         print('N/A')
         print(e, file=sys.stderr)
         exit(1)
+    if _f:
+        _f.close()
