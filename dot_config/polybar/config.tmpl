@@ -271,7 +271,7 @@ format =  <label>
 {{- else }}
 format = <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-brightness.py
+exec = PYTHONUNBUFFERED=1 DELAY=3 ~/.config/polybar/scripts/toggle-brightness.py
 click-left = kill -ALRM %pid%
 click-right = kill -HUP %pid%
 scroll-up = kill -USR1 %pid%

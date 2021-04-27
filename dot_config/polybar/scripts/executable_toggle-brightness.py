@@ -239,6 +239,9 @@ if __name__ == "__main__":
         _f = open(os.devnull, 'w')
         sys.stderr = _f
     print(os.getpid(), file=sys.stderr)
+    delay = int(os.getenv("DELAY", "0"))
+    if delay != 0:
+        time.sleep(delay)
     try:
         main()
     except Exception as e:
