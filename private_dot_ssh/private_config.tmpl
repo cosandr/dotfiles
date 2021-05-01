@@ -147,7 +147,6 @@ Host github.com
     IdentityFile ~/.ssh/id_ed25519.cosandr
 {{- else }}
     IdentityFile ~/.ssh/desktop_ed25519.cosandr
-    IdentityFile ~/.ssh/laptop_ed25519.cosandr
     IdentityFile ~/.ssh/mac_ed25519.cosandr
 {{- end }}
 
@@ -160,7 +159,6 @@ Host github.com-atgb
     IdentityFile ~/.ssh/id_ed25519.atgb
 {{- else }}
     IdentityFile ~/.ssh/desktop_ed25519.atgb
-    IdentityFile ~/.ssh/laptop_ed25519.atgb
     IdentityFile ~/.ssh/mac_ed25519.atgb
 {{- end }}
 {{ if and (not $is_root) (or $is_desktop $is_laptop) -}}
