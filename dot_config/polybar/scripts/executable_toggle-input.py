@@ -11,8 +11,8 @@ import subprocess
 # <sink>: <friendly-name>
 # Should only be two entries that toggle when this script runs
 SWAP = {
-    "alsa_output.usb-FiiO_FiiO_USB_DAC-E07K-01.analog-stereo": "DAC",
-    "alsa_output.pci-0000_00_1f.3.analog-stereo": "MB",
+    "alsa_output.usb-0b0e_Jabra_Link_370_70BF9276CB92-00.analog-stereo": "Jabra",
+    "alsa_output.pci-0000_2d_00.4.analog-stereo": "MB",
 }
 SWAP_KEYS = list(SWAP.keys())
 CURRENT_DEFAULT = ''
