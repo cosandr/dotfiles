@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Wait for SSH agent
+while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
+
+# Start terminal
+{{- if .dresrv.use_domain }}
+SSH_LOGIN="andrei@dresrv.com"
+{{- else }}
+SSH_LOGIN="root@DreSRV"
+{{- end}}
+
+# Wait for server
+while ! ssh -q -o "BatchMode=yes" "$SSH_LOGIN" exit &>/dev/null; do sleep 1; done
+
+# Start terminal
+kitty --title server-monitoring ssh -t "$SSH_LOGIN" 'tmuxinator start hjd --suppress-tmux-version-warning=SUPPRESS-TMUX-VERSION-WARNING' &

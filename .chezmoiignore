@@ -58,7 +58,7 @@ Documents/
 {{- if or $not_desktop $is_wsl $is_mac }}
 # Ignore desktop config on laptop and server
 .local/bin/*mount-c
-.config/i3/workspace-*
+.config/i3/workspace
 .config/polybar/scripts/aquaero*
 .config/polybar/scripts/nvidia*
 # No Nvidia GPUs

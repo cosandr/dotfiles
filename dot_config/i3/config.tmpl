@@ -37,8 +37,7 @@ for_window [class="Spotify"] border none
 for_window [class="discord"] border none
 
 # Restore workspaces
-exec --no-startup-id "i3-msg 'workspace 1; append_layout {{.chezmoi.homedir}}/.config/i3/workspace-main.json'"
-exec --no-startup-id $HOME/.config/i3/workspace-secondary.sh &
+exec --no-startup-id $HOME/.config/i3/workspace/launch.sh &
 
 exec --no-startup-id numlockx on &
 
@@ -224,4 +223,4 @@ for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; bord
 # PiP
 for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
 # Hangouts
-for_window [class="(chromium|[Gg]oogle-[Cc]hrome)" title="(?i)^google\s+hangouts.*$"] floating enable; border none
+# for_window [class="(chromium|[Gg]oogle-[Cc]hrome)" title="(?i)^google\s+hangouts.*$"] floating enable; border none
