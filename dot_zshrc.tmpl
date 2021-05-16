@@ -74,7 +74,8 @@ alias git-work='git config user.email "{{ .work.git_email }}" && git config user
 alias git-sign='git config commit.gpgsign true'
 alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install -U -r requirements.txt'
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
-alias ssh-no-host='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+alias ssh-nh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+alias scp-nh='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 {{- if and $is_linux $not_server $not_root }}
 alias bt-mx='bluetoothctl power on && bluetoothctl connect 04:5D:4B:52:86:4B'
 alias bt-buds='bluetoothctl power on && bluetoothctl connect F4:7D:EF:0C:BE:02'
