@@ -36,6 +36,11 @@ DEFAULT_CONFIG = dict(
             domain="",
             ssh_port="",
         ),
+        romrt=dict(
+            domain="",
+            ssh_user="",
+            ssh_port="",
+        ),
         dresrv=dict(
             domain="",
             local_ip="",
