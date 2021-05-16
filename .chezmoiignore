@@ -26,7 +26,6 @@ update_config.*
 Library/
 {{- $is_wsl := hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}
 {{- else }}
-.config/Code
 .config/chrome-flags.conf
 Library/Preferences/com.googlecode.iterm2.plist
 {{- end }} {{/* if not $is_mac */}}
