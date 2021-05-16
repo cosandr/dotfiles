@@ -497,6 +497,10 @@
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_082F34A7-A2BA-43B9-91F6-69B8FDDF09BC_selection</key>
 	<integer>0</integer>
+	<key>NeverWarnAboutShortLivedSessions_DF7E129D-7453-4E9A-BE4E-7BEAB7C920E3</key>
+	<true/>
+	<key>NeverWarnAboutShortLivedSessions_DF7E129D-7453-4E9A-BE4E-7BEAB7C920E3_selection</key>
+	<integer>0</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -4863,6 +4867,8 @@
 	<key>OpenArrangementAtStartup</key>
 	<false/>
 	<key>OpenNoWindowsAtStartup</key>
+	<false/>
+	<key>ShowFullScreenTabBar</key>
 	<false/>
 	<key>SoundForEsc</key>
 	<false/>
