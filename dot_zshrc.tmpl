@@ -10,6 +10,8 @@
 {{ if . }}source {{ . }}{{ end }}
 {{- end }}
 
+[[ -d ~/.zsh/completion ]] && fpath=(~/.zsh/completion $fpath)
+
 # Don't save failed commands
 zshaddhistory() { whence ${${(z)1}[1]} >| /dev/null || return 1 }
 setopt hist_ignore_dups
