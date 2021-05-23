@@ -63,6 +63,30 @@ pyenv-replace () {
 }
 {{- end }}
 
+# https://github.com/ned300889/i3-configs/blob/master/zshrc
+fed() {
+  vim -p -o $(find . -type f  | fzf -m --preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || bat --style=numbers --color=always {}' --bind "ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort")
+}
+
+fli() {
+  fzf -m --preview --bind "ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort" '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || bat --style=numbers --color=always {}' | xargs ls -lha
+}
+
+# https://gist.github.com/junegunn/f4fca918e937e6bf5bad#gistcomment-2731105
+
+fgh() 
+{
+  git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"  | \
+   fzf --ansi --no-sort --reverse --tiebreak=index --preview \
+   'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}"); [ $# -eq 0 ] || git show --color=always $1 ; }; f {}' \
+   --bind "alt-y:execute:echo {} | grep -o '[a-f0-9]\{7\}' | head -1 | xclip" \
+   --bind "ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-q:abort,ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF" --preview-window=right:60%
+}
+
 # Aliases
 
 alias reboot='confirm reboot'
