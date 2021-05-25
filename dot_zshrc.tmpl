@@ -10,7 +10,7 @@
 {{ if . }}source {{ . }}{{ end }}
 {{- end }}
 
-[[ -d ~/.zsh/completion ]] && fpath=(~/.zsh/completion $fpath)
+[[ -d ~/.zsh/completion ]] && fpath=(~/.zsh/completion $fpath) && autoload -Uz compinit && compinit -i
 
 # Don't save failed commands
 zshaddhistory() { whence ${${(z)1}[1]} >| /dev/null || return 1 }
@@ -138,12 +138,12 @@ alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
 {{- else }}
 if [[ -d /usr/local/share/zsh-completions ]]; then
     if (( ! ${fpath[(I)/usr/local/share/zsh-completions]} )); then
-        FPATH=/usr/local/share/zsh-completions:$FPATH
+        fpath=(/usr/local/share/zsh-completions $fpath)
     fi
 fi
 if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
     if (( ! ${fpath[(I)/opt/homebrew/share/zsh/site-functions]} )); then
-        FPATH=/opt/homebrew/share/zsh/site-functions:$FPATH
+        fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
     fi
 fi
 alias ff-ws='/Applications/Firefox.app/Contents/MacOS/firefox -P ws --no-remote'
