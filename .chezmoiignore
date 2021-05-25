@@ -35,6 +35,7 @@ Documents/
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
 .config/caddy
+.config/mimeapps.list
 .config/systemd
 .config/tmuxinator/htop-journal.yml
 .fonts
