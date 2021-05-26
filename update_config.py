@@ -74,10 +74,8 @@ DEFAULT_CONFIG = dict(
 def check_cmds(cfg):
     """Check if commands are in PATH"""
     check = [
-        "cargo",
         "docker",
         "dotnet",
-        "go",
         "kdeconnect-cli",
         "podman",
         "virsh",
