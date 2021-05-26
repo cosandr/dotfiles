@@ -80,7 +80,6 @@ def check_cmds(cfg):
         "go",
         "kdeconnect-cli",
         "podman",
-        "pyenv",
         "virsh",
     ]
     cfg["data"]["check"]["exec"] = []

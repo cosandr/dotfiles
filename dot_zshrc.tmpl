@@ -45,23 +45,22 @@ compctl -K _dotnet_zsh_complete dotnet
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-{{- if has "pyenv" .check.exec }}
+
 if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-fi
 
-pyenv-replace () {
-    [[ $# -lt 2 ]] && echo "Usage: pyenv-replace <venv> <version>" && return
-    pyenv install -s "$2" || return
-    pyenv uninstall -f "$1" || return
-    pyenv virtualenv "$2" "$1" || return
-    pyenv activate "$1" || return
-    python3 -m pip install -U pip wheel setuptools || return
-    [[ -f "requirements.txt" ]] && python3 -m pip install -U -r requirements.txt
-    [[ -f "requirements_dev.txt" ]] && python3 -m pip install -U -r requirements_dev.txt
-}
-{{- end }}
+    pyenv-replace () {
+        [[ $# -lt 2 ]] && echo "Usage: pyenv-replace <venv> <version>" && return
+        pyenv install -s "$2" || return
+        pyenv uninstall -f "$1" || return
+        pyenv virtualenv "$2" "$1" || return
+        pyenv activate "$1" || return
+        python3 -m pip install -U pip wheel setuptools || return
+        [[ -f "requirements.txt" ]] && python3 -m pip install -U -r requirements.txt
+        [[ -f "requirements_dev.txt" ]] && python3 -m pip install -U -r requirements_dev.txt
+    }
+fi
 
 # https://github.com/ned300889/i3-configs/blob/master/zshrc
 fed() {
