@@ -80,8 +80,8 @@ for d in $_search_path; do
     fi
 done
 unset _search_path
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init --path)"
+if command -v pyenv &>/dev/null; then
+    [[ $(pyenv --version) =~ "pyenv 2." ]] && eval "$(pyenv init --path)"
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 else
     unset PYENV_ROOT

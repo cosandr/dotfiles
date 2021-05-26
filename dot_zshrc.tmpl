@@ -46,7 +46,7 @@ compctl -K _dotnet_zsh_complete dotnet
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-if command -v pyenv 1>/dev/null 2>&1; then
+if command -v pyenv &>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 
