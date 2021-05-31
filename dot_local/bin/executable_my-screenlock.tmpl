@@ -47,17 +47,17 @@ case "$LOCKER" in
         i3lock-fancy-rapid "$radius" "$times" \
             $i3lock_args \
             --tiling \
-            --timepos "$xpos+110:$ypos-70" \
-            --datepos "$xpos+43:$ypos-45" \
-            --clock --date-align 1 --datestr "$locktext" \
-            --insidecolor "$insidecolor" --ringcolor "$ringcolor" --line-uses-inside \
-            --keyhlcolor "$keyhlcolor" --bshlcolor "$bshlcolor" --separatorcolor "$separatorcolor" \
-            --insidevercolor "$insidevercolor" --insidewrongcolor "$insidewrongcolor" \
-            --ringvercolor "$ringvercolor" --ringwrongcolor "$ringwrongcolor" --indpos "$xpos+280:$ypos-70" \
-            --radius "20" --ring-width "4" --veriftext '' --wrongtext '' \
-            --verifcolor "$verifcolor" --timecolor "$timecolor" --datecolor "$datecolor" \
+            --time-pos "$xpos+110:$ypos-70" \
+            --date-pos "$xpos+43:$ypos-45" \
+            --clock --date-align 1 --date-str "$locktext" \
+            --inside-color "$insidecolor" --ring-color "$ringcolor" --line-uses-inside \
+            --keyhl-color "$keyhlcolor" --bshl-color "$bshlcolor" --separator-color "$separatorcolor" \
+            --insidever-color "$insidevercolor" --insidewrong-color "$insidewrongcolor" \
+            --ringver-color "$ringvercolor" --ringwrong-color "$ringwrongcolor" --ind-pos "$xpos+280:$ypos-70" \
+            --radius "20" --ring-width "4" --verif-text '' --wrong-text '' \
+            --verif-color "$verifcolor" --time-color "$timecolor" --date-color "$datecolor" \
             --time-font "$font" --date-font "$font" --layout-font "$font" --verif-font "$font" --wrong-font "$font" \
-            --noinputtext '' 
+            --noinput-text '' 
         ;;
 esac
 
