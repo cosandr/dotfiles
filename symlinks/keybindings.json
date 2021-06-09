@@ -1,8 +1,0 @@
-// Place your key bindings in this file to override the defaults
-[
-    {
-        "key": "alt+s",
-        "command": "editor.action.sortLinesAscending",
-        "when": "editorTextFocus"
-    }
-]
