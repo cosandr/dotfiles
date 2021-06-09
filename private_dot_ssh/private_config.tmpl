@@ -10,11 +10,13 @@
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 {{- end }}
 {{- if $is_mac }}
+XAuthLocation /opt/X11/bin/xauth
+
 Host *
    UseKeychain yes
    AddKeysToAgent yes
    IdentityFile ~/.ssh/id_ed25519
-{{- end }}
+{{ end }}
 
 {{- if not $is_work }}
 Host DreSRV
@@ -74,6 +76,7 @@ Host dresrv.com-A
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
 {{- end }} {{/* {{- if not $is_srv }} */}}
+
 Host srvsim
     HostName 192.168.122.6
     User root
