@@ -29,8 +29,21 @@ while [[ -z $PRIMARY_INET ]]; do
 done
 export PRIMARY_INET
 
-# Launch bars
+# Load specific config if present
+[[ -f ~/.config/polybar/launch_config ]] && source ~/.config/polybar/launch_config
+launched=""
+if [[ -n ${!MONITOR_MAP[*]} ]]; then
+    present_monitors=$(xrandr --listmonitors)
+    for k in "${!MONITOR_MAP[@]}"; do
+        [[ $present_monitors =~ "$k" ]] || continue
+        MONITOR="$k" polybar "${MONITOR_MAP[$k]}" &
+        launched+="$k "
+    done
+fi
+# Auto launch bars
 while IFS='=' read -r name value ; do
+    # Skip if it was launched earlier
+    [[ $launched =~ $value ]] && continue
     if [[ $name = "MONITOR_NAME_0" ]]; then
         MONITOR="$value" polybar main &
     elif [[ $name == 'MONITOR_NAME_'* ]]; then
