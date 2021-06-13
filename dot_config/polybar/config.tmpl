@@ -3,7 +3,6 @@
 [bar/main]
 include-file = ~/.config/polybar/baropts
 tray-position = right
-{{- if $is_desktop }}
 modules-left = i3  
 modules-center = title
 modules-right = cpuusage nvusage sep aquaero cputemp nvtemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
@@ -13,11 +12,13 @@ include-file = ~/.config/polybar/baropts
 modules-left = i3
 modules-center = title
 modules-right = cpuclk nvclk sep aquaerofans sep ethernet sep time
-{{- else }}
+
+[bar/laptop]
+include-file = ~/.config/polybar/baropts
+tray-position = right
 modules-left = i3 title  
 modules-center =
-modules-right = cpuusage cputemp sep updates srvupdates sep wifi sep volume sep battablet batbase sep calendar datetime sep xkeyboard
-{{- end }}
+modules-right = cpuusage cputemp sep updates sep wifi sep volume sep bat sep calendar datetime sep xkeyboard
 
 ;;; COMMON MODULES ;;;
 
@@ -342,40 +343,12 @@ label =  %time%
 {{ if not $is_desktop }}
 ;;; LAPTOP MODULES ;;;
 
-[module/batbase]
+[module/bat]
 type = internal/battery
 full-at = 100
-battery = BAT2
+battery = BAT0
 adapter = ADP1
-poll-interval = 0
-time-format = %H:%M
-format-charging = <animation-charging> <label-charging>
-format-discharging = <ramp-capacity> <label-discharging>
-;format-full = <ramp-capacity> <label-full>
-label-charging = %percentage%%
-label-discharging = %percentage%%
-label-full =  %percentage%%
-; Only applies if <ramp-capacity> is used
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-; Only applies if <animation-charging> is used
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-; Framerate in milliseconds
-animation-charging-framerate = 750
-
-[module/battablet]
-type = internal/battery
-full-at = 100
-battery = BAT1
-adapter = ADP1
-poll-interval = 0
+poll-interval = 15
 time-format = %H:%M
 format-charging = <animation-charging> <label-charging>
 format-discharging = <ramp-capacity> <label-discharging>
