@@ -1,4 +1,3 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 configuration {
 	modi: "window,run,drun";
 /*	width: 50;*/
@@ -46,7 +45,7 @@ configuration {
 /*	hide-scrollbar: false;*/
 /*	fullscreen: false;*/
 /*	fake-transparency: false;*/
-	dpi: {{ if $is_desktop }}144{{ else }}196{{- end }};
+	dpi: {{ if eq (env "GDK_SCALE") "2" }}196{{ else }}144{{- end }};
 /*	threads: 0;*/
 /*	scrollbar-width: 8;*/
 /*	scroll-method: 0;*/

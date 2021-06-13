@@ -1,7 +1,6 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 monitor                  = ${env:MONITOR}
 width                    = 100%
-{{- if $is_desktop }}
+{{- if ne (env "GDK_SCALE") "2" }}
 height                   = 40
 font-0                   = "Noto Sans:size=16;4"
 ; noto-fonts-emoji
