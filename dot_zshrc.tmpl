@@ -6,7 +6,7 @@
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- $is_linux := eq .chezmoi.os "linux" -}}
 
-{{ range .check.source }}{{ if stat . }}
+{{ range .source }}{{ if stat . }}
 source {{ . -}}
 {{ end }}{{- end }}
 
@@ -30,7 +30,7 @@ confirm () {
 }
 
 {{- if lookPath "dotnet" }}
-_dotnet_zsh_complete() 
+_dotnet_zsh_complete()
 {
     local completions=("$(dotnet complete "$words")")
 
@@ -73,7 +73,7 @@ fli() {
 
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad#gistcomment-2731105
 
-fgh() 
+fgh()
 {
   git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"  | \
    fzf --ansi --no-sort --reverse --tiebreak=index --preview \
@@ -107,7 +107,7 @@ alias bt-buds='bluetoothctl power on && bluetoothctl connect F4:7D:EF:0C:BE:02'
 alias bt-jabra='bluetoothctl power on && bluetoothctl connect 30:50:75:11:EF:92'
 alias bt-off='bluetoothctl power off'
 {{- end }}
-{{- range $k, $v := .check.files }}
+{{- range $k, $v := .files }}
 {{- $fp := joinPath "/" $v }}
 {{- if $not_server }}
 {{- $fp := joinPath "/dresrv" $v }}

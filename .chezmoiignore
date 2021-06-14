@@ -1,7 +1,5 @@
-{{- $not_server := ne .chezmoi.hostname "DreSRV" -}}
 {{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
 {{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
-{{- $not_work := ne .chezmoi.hostname .work.ws_name -}}
 {{- $is_root := eq .chezmoi.username "root" -}}
 {{- $is_windows := eq .chezmoi.os "windows" -}}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
@@ -47,7 +45,7 @@ Documents/
 .xprofile
 .Xresources
 {{- end }} {{/* if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) */}}
-{{- range $v := .check.ignore_config }}
+{{- range $v := .ignore_config }}
 {{- if not (lookPath $v.exec) }}
 {{ $v.path }}
 {{- else if and $is_root $v.skip_root }}
@@ -70,7 +68,7 @@ Documents/
 {{- if $is_root }}
 .gnupg
 {{- end }} {{/* if $is_root */}}
-{{- if eq (get .check.files "mrbot") "" }}
+{{- if eq (get .files "mrbot") "" }}
 .config/tmuxinator/hjd.yml
-{{- end }} {{/* if eq (get .check.files "mrbot") "" */}}
+{{- end }} {{/* if eq (get .files "mrbot") "" */}}
 {{- end }} {{/* if $is_windows */}}

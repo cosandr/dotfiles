@@ -10,4 +10,4 @@ windows:
       panes:
         - htop -d10
         - journalctl -f
-        - tail -f {{ if $is_server }}{{ joinPath "/" .check.files.mrbot }}{{ else }}{{ joinPath "/dresrv" .check.files.mrbot }}{{ end }}
+        - tail -f {{ if $is_server }}{{ joinPath "/" .files.mrbot }}{{ else }}{{ joinPath "/dresrv" .files.mrbot }}{{ end }}
