@@ -48,11 +48,11 @@ Documents/
 .Xresources
 {{- end }} {{/* if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) */}}
 {{- range $v := .check.ignore_config }}
-{{- if $v.missing }}
+{{- if not (lookPath $v.exec) }}
 {{ $v.path }}
 {{- else if and $is_root $v.skip_root }}
 {{ $v.path }}
-{{- end }} {{/* if $v.missing */}}
+{{- end }} {{/* if not (lookPath $v.exec) */}}
 {{- end }} {{/* range $v */}}
 {{- if or $not_desktop $is_wsl $is_mac }}
 # Ignore desktop config on laptop and server

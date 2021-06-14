@@ -23,9 +23,27 @@
    "alt_name": ""
   },
   "check": {
-   "exec": [],
    "files": {},
-   "ignore_config": [],
+   "ignore_config": [
+     {"exec": "alacritty", "path": ".config/alacritty", "skip_root": true},
+     {"exec": "caddy", "path": ".config/caddy", "skip_root": true},
+     {"exec": "chromium", "path": ".config/chromium-flags.conf", "skip_root": true},
+     {"exec": "google-chrome-stable", "path": ".config/chrome-flags.conf", "skip_root": true},
+     {"exec": "dunst", "path": ".config/dunst", "skip_root": true},
+     {"exec": "feh", "path": ".config/feh", "skip_root": true},
+     {"exec": "htop", "path": ".config/htop", "skip_root": false},
+     {"exec": "i3", "path": ".config/i3", "skip_root": true},
+     {"exec": "kitty", "path": ".config/kitty", "skip_root": true},
+     {"exec": "nvim", "path": ".config/nvim", "skip_root": false},
+     {"exec": "picom", "path": ".config/picom.conf", "skip_root": true},
+     {"exec": "polybar", "path": ".config/polybar", "skip_root": true},
+     {"exec": "redshift", "path": ".config/redshift", "skip_root": true},
+     {"exec": "rofi", "path": ".config/rofi", "skip_root": true},
+     {"exec": "sublime_text", "path": ".config/sublime-text-3", "skip_root": true},
+     {"exec": "sway", "path": ".config/sway", "skip_root": true},
+     {"exec": "tmuxinator", "path": ".config/tmuxinator", "skip_root": false},
+     {"exec": "waybar", "path": ".config/waybar", "skip_root": true}
+   ],
    "source": [
       "{{ .chezmoi.homedir }}/.zprezto/init.zsh",
       "/usr/share/zsh/site-functions/_podman",
