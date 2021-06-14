@@ -108,7 +108,11 @@ alias bt-jabra='bluetoothctl power on && bluetoothctl connect 30:50:75:11:EF:92'
 alias bt-off='bluetoothctl power off'
 {{- end }}
 {{- range $k, $v := .check.files }}
-{{ if ne $v "" }}alias logs-{{ $k }}='tail -f {{ $v }}'{{ end }}
+{{- $fp := joinPath "/" $v }}
+{{- if $not_server }}
+{{- $fp := joinPath "/dresrv" $v }}
+{{- end }}
+{{ if and (ne $v "") (stat $fp) }}alias logs-{{ $k }}='tail -f {{ $fp }}'{{ end }}
 {{- end }}
 {{- if lookPath "docker" }}
 alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'

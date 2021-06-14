@@ -67,7 +67,8 @@ $env:EDITOR="vim"
 # Aliases (and functions acting as aliases)
 {{ if $is_core }}
 {{- range $k, $v := .data.check.files }}
-{{ if ne $v "" }}function logs-{{ $k }} { Get-Content {{ $v }} -Wait -Tail 10 }{{ end }}
+{{- $fp := print "//dresrv.hm/" $v -}}
+{{ if stat $fp }}function logs-{{ $k }} { Get-Content {{ $fp }} -Wait -Tail 10 }{{ end }}
 {{- end }}
 
 {{- if lookPath "docker" }}
