@@ -29,7 +29,7 @@ confirm () {
     esac
 }
 
-{{- if has "dotnet" .check.exec }}
+{{- if lookPath "dotnet" }}
 _dotnet_zsh_complete() 
 {
     local completions=("$(dotnet complete "$words")")
@@ -110,14 +110,14 @@ alias bt-off='bluetoothctl power off'
 {{- range $k, $v := .check.files }}
 {{ if ne $v "" }}alias logs-{{ $k }}='tail -f {{ $v }}'{{ end }}
 {{- end }}
-{{- if has "docker" .check.exec }}
+{{- if lookPath "docker" }}
 alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
 alias dports='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Ports}}" }}"'
 alias dlog='docker logs -f'
 alias dex='docker exec -t'
 alias dsti='docker container start -i'
 {{- end }}
-{{- if has "podman" .check.exec }}
+{{- if lookPath "podman" }}
 {{- if $not_root }}
 alias podman='sudo podman'
 {{- end }}
@@ -126,7 +126,7 @@ alias podlog='podman logs -f'
 alias podex='podman exec -t'
 alias podsti='podman container start -i'
 {{- end }}
-{{- if and (has "virsh" .check.exec) ($not_root) }}
+{{- if and (lookPath "virsh") ($not_root) }}
 alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'
 {{- end }}

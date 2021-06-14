@@ -58,7 +58,7 @@ exec --no-startup-id i3-msg layout tabbed
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
-{{- if has "kdeconnect-cli" .check.exec }}
+{{- if lookPath "kdeconnect-cli" }}
 exec --no-startup-id /usr/lib/kdeconnectd
 bindsym $super+$alt+m exec kdeconnect-sms
 {{- end }}
