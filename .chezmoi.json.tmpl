@@ -1,5 +1,6 @@
 {
   "data": {
+    "less_mouse": {{ if eq .chezmoi.os "windows" }}false{{ else }}{{ contains "--mouse" (output "less" "--help") }}{{ end }},
     "dresrv": {"use_domain": false},
     "files": {
         "mrbot": "srv/containers/mrbot/src/mrbot.log",
