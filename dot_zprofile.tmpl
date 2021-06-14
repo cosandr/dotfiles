@@ -62,7 +62,7 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-export PYENV_ROOT={{ if eq .chezmoi.hostname "DreSRV" }}"/opt/pyenv"{{ else }}"$HOME/.pyenv"{{ end }}
+export PYENV_ROOT={{ if stat "/opt/pyenv/bin" }}"/opt/pyenv"{{ else }}"$HOME/.pyenv"{{ end }}
 _search_path=(
     "$HOME/.local/bin"
     "$HOME/.cargo/bin"
@@ -91,29 +91,29 @@ export QT_SCREEN_SCALE_FACTORS=2
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export DISPLAY=localhost:0.0
 {{- else if $is_mac }}
-if [[ -f /usr/local/bin/brew ]]; then
-    eval $(/usr/local/bin/brew shellenv)
-elif [[ -f /opt/homebrew/bin/brew ]]; then
-    eval $(/opt/homebrew/bin/brew shellenv)
-fi
-{{- else }}
-command -v vagrant &>/dev/null && export VAGRANT_DEFAULT_PROVIDER=libvirt
-{{- if or (eq .chezmoi.hostname "desktop") (eq .chezmoi.hostname "laptop") }}
-{{- if ne .chezmoi.username "root" }}
+{{- if stat "/usr/local/bin/brew" }}
+eval $(/usr/local/bin/brew shellenv)
+{{- else if stat "/opt/homebrew/bin/brew" }}
+eval $(/opt/homebrew/bin/brew shellenv)
+{{- end }}
+{{- else if ne .chezmoi.username "root" }}
+{{- if and (lookPath "vagrant") (lookPath "libvirtd") }}
+export VAGRANT_DEFAULT_PROVIDER=libvirt
+{{- end }}
+{{- if stat (joinPath .chezmoi.homedir ".config/systemd/user/tunnel-dresrv.service") }}
 # Ensure tunnel is active
 systemctl --user -q is-active tunnel-dresrv.service || systemctl --user start --no-block tunnel-dresrv.service
+{{- end }}
+{{- if lookPath "startx" }}
 # Start X server
 if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty1" ]]; then
   systemctl -q is-active graphical.target && exec startx
 fi
+{{- end }}
+{{- if lookPath "gnome-keyring-daemon" }}
 if [[ -z $SSH_AUTH_SOCK ]]; then
   eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
   export SSH_AUTH_SOCK
 fi
-{{- else }}
-if [[ -z $SSH_AUTH_SOCK ]]; then
-  export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/keyring/ssh
-fi
-{{- end }}
 {{- end }}
 {{- end }}
