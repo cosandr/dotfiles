@@ -6,9 +6,9 @@
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- $is_linux := eq .chezmoi.os "linux" -}}
 
-{{- range .check.source }}
-{{ if . }}source {{ . }}{{ end }}
-{{- end }}
+{{ range .check.source }}{{ if stat . }}
+source {{ . -}}
+{{ end }}{{- end }}
 
 [[ -d ~/.zsh/completion ]] && fpath=(~/.zsh/completion $fpath) && autoload -Uz compinit && compinit -i
 
