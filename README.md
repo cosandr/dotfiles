@@ -1,11 +1,11 @@
 # Secrets
 
-Assuming `.secrets_pass` contains the password in plain text
+Assuming `.secrets.pass` contains the password in plain text
 
 ### Encrypt
 
 ```sh
-gpg --passphrase-file .secrets_pass --batch --yes --symmetric --cipher-algo AES256 -o secrets.json.gpg .secrets.json
+gpg --armor --symmetric --passphrase-file .secrets.pass --batch --yes --cipher-algo AES256 -o secrets.json.gpg .secrets.json
 ```
 
 ### Decrypt
@@ -14,9 +14,9 @@ The Python script will decrypt it for you if `secrets.json.gpg` exists but `.sec
 
 ```sh
 # To stdout
-gpg --passphrase-file .secrets_pass --batch -d secrets.json.gpg
+gpg --passphrase-file .secrets.pass --batch -d secrets.json.gpg
 # To file
-gpg --passphrase-file .secrets_pass --batch --yes -o .secrets.json -d secrets.json.gpg
+gpg --passphrase-file .secrets.pass --batch --yes -o .secrets.json -d secrets.json.gpg
 ```
 
 ### Example
@@ -47,7 +47,7 @@ If we want to use another user's chezmoi, here `andrei`
 
 ```sh
 cd ~andrei/.local/share/chezmoi
-CHEZMOI_HOME=. ./update_config.py
+CHEZMOI_HOME=. ./update_secrets.py
 chezmoi --source ~andrei/.local/share/chezmoi apply
 ```
 

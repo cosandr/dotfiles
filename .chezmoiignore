@@ -3,12 +3,9 @@
 {{- $is_root := eq .chezmoi.username "root" -}}
 {{- $is_windows := eq .chezmoi.os "windows" -}}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
-secret*
-.secret*
-make_*
 symlinks
 README.md
-update_config.*
+update_secrets*
 {{- if $is_windows }}
 *
 !.gitconfig
