@@ -50,8 +50,6 @@ workspace {{ $i }} output primary
 workspace {{ $i }} output secondary
 {{- end }}
 {{- else if $is_laptop }}
-# Brightness and power buttons on laptop, install xfce4-power-manager
-exec --no-startup-id xfce4-power-manager
 # Set layout to tabbed by default
 exec --no-startup-id i3-msg layout tabbed
 {{- end }}
