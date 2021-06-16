@@ -1,0 +1,12 @@
+# /home/andrei/.config/tmuxinator/hjr.yml
+
+name: hjr
+root: ~/
+
+windows:
+  - main:
+      layout: 2ff7,147x38,0,0[147x17,0,0,0,147x11,0,18,1,147x8,0,30,2]
+      panes:
+        - htop -d10
+        - journalctl -f
+        - radeontop -t 50 -c

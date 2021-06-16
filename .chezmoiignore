@@ -58,10 +58,6 @@ Documents/
 .local/bin/*mount-c
 .config/i3/workspace
 .config/polybar/scripts/aquaero*
-.config/polybar/scripts/nvidia*
-# No Nvidia GPUs
-.config/tmuxinator/hnvtop.yml
-.config/tmuxinator/hjn.yml
 {{- end }} {{/* if or $not_desktop $is_wsl $is_mac */}}
 {{- if or $is_root (not $not_desktop) (not $not_laptop) $is_mac $is_wsl }}
 .ssh/*.pub
@@ -69,6 +65,15 @@ Documents/
 {{- if $is_root }}
 .gnupg
 {{- end }} {{/* if $is_root */}}
+{{- if or ($is_root) (not (lookPath "nvtop")) }}
+.config/polybar/scripts/nvidia*
+# No Nvidia GPUs
+.config/tmuxinator/hnvtop.yml
+.config/tmuxinator/hjn.yml
+{{- end }}
+{{- if or ($is_root) (not (lookPath "radeontop")) }}
+.config/tmuxinator/hjr.yml
+{{- end }}
 {{- if eq (get .files "mrbot") "" }}
 .config/tmuxinator/hjd.yml
 {{- end }} {{/* if eq (get .files "mrbot") "" */}}
