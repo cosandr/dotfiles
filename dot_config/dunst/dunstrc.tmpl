@@ -1,4 +1,3 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 {{- $icons := "Papirus" -}}
 # Dunst Config - Dark
 # --------------------
@@ -6,7 +5,7 @@
 [global]
 monitor = 0
 follow = none
-{{- if $is_desktop }}
+{{- if eq .dunst_location "bottom_right" }}
 geometry = "0x20-50-50"
 {{- else }}
 geometry = "0x10-50+50"
