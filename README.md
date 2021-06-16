@@ -73,3 +73,20 @@ systemctl --global mask --now gpg-agent.service gpg-agent.socket gpg-agent-ssh.s
 - Test with `echo test | gpg --clearsign`
 
 On Mac `brew install gnu-getopt pinentry-mac`
+
+# AMDGPU
+
+### Backlight
+```
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", GROUP="video", MODE="0664"
+RUN+="/bin/chgrp video /sys/class/backlight/acpi_video0/brightness"
+RUN+="/bin/chmod g+w /sys/class/backlight/acpi_video0/brightness"
+```
+
+### Clocks
+```
+# Memory
+/sys/class/drm/card0/device/hwmon/hwmon7/freq1_input
+# GPU
+/sys/class/drm/card0/device/hwmon/hwmon7/freq2_input
+```

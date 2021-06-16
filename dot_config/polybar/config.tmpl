@@ -3,7 +3,7 @@
 [bar/main]
 include-file = ~/.config/polybar/baropts
 tray-position = right
-modules-left = i3  
+modules-left = i3
 modules-center = title
 modules-right = cpuusage nvusage sep aquaero cputemp nvtemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
 
@@ -16,9 +16,22 @@ modules-right = cpuclk nvclk sep aquaerofans sep ethernet sep time
 [bar/laptop]
 include-file = ~/.config/polybar/baropts
 tray-position = right
-modules-left = i3 title  
+modules-left = i3 title
 modules-center =
 modules-right = cpuusage cputemp sep updates sep wifi sep volume sep bat sep calendar datetime sep xkeyboard
+
+[bar/laptop-ext]
+include-file = ~/.config/polybar/baropts
+tray-position = right
+modules-left = i3
+modules-center = title
+modules-right = cpuusage amd_gpu_usage sep amd_mem_usage sep cputemp amd_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+
+[bar/laptop-ext-secondary]
+include-file = ~/.config/polybar/baropts
+modules-left = i3
+modules-center = title
+modules-right = cpuclk amd_gpu_clk sep amd_mem_clk sep amd_power sep ethernet sep time
 
 ;;; COMMON MODULES ;;;
 
@@ -157,7 +170,7 @@ label-sep = |
 
 [module/sep]
 type = custom/text
-content = | 
+content = |
 content-padding = 0
 content-foreground = "#424242"
 
@@ -236,21 +249,6 @@ format = <label-layout> <label-indicator>
 format-spacing = 0
 label-layout =  %layout%
 
-;;; END COMMON MODULES ;;;
-{{ if $is_desktop }}
-;;; DESKTOP MODULES ;;;
-
-[module/aquaero]
-type = custom/script
-exec = PYTHONUNBUFFERED=1 FONT="{{$font}}" ~/.config/polybar/scripts/aquaero.py
-interval = 10
-
-[module/aquaerofans]
-type = custom/script
-format =  <label>
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/aquaero_fans.py
-interval = 10
-
 [module/ethernet]
 type = internal/network
 interface = ${env:PRIMARY_INET}
@@ -259,7 +257,7 @@ format-connected = <label-connected>
 ; Nerd Font
 format-connected-prefix = ""
 label-disconnected = 
-label-connected = %downspeed:9% [%local_ip%] 
+label-connected = %downspeed:9% [%local_ip%]
 format-disconnected = <label-disconnected>
 format-padding = 0
 
@@ -279,6 +277,43 @@ scroll-up = kill -USR1 %pid%
 scroll-down = kill -USR2 %pid%
 tail = true
 interval = 0
+
+[module/switchaudio]
+type = custom/script
+format = <label>
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-input.py
+click-left = kill -HUP %pid%
+click-right = pavucontrol &
+tail = true
+interval = 0
+
+[module/time]
+type = internal/date
+interval = 60
+date =
+time = %H:%M
+{{- if eq $font "icomoon-feather" }}
+label =  %time%
+{{- else if eq $font "nerd-font" }}
+label =  %time%
+{{- else if eq $font "siji" }}
+label =  %time%
+{{- end }}
+
+;;; END COMMON MODULES ;;;
+{{ if $is_desktop }}
+;;; DESKTOP MODULES ;;;
+
+[module/aquaero]
+type = custom/script
+exec = PYTHONUNBUFFERED=1 FONT="{{$font}}" ~/.config/polybar/scripts/aquaero.py
+interval = 10
+
+[module/aquaerofans]
+type = custom/script
+format =  <label>
+exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/aquaero_fans.py
+interval = 10
 
 [module/nvclk]
 type = custom/script
@@ -315,28 +350,6 @@ format =  <label>
 {{- end }}
 exec = QUERY="utilization.gpu" UNIT="%"  ~/.config/polybar/scripts/nvidia.sh
 interval = 3
-
-[module/switchaudio]
-type = custom/script
-format = <label>
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-input.py
-click-left = kill -HUP %pid%
-click-right = pavucontrol &
-tail = true
-interval = 0
-
-[module/time]
-type = internal/date
-interval = 60
-date =
-time = %H:%M
-{{- if eq $font "icomoon-feather" }}
-label =  %time%
-{{- else if eq $font "nerd-font" }}
-label =  %time%
-{{- else if eq $font "siji" }}
-label =  %time%
-{{- end }}
 
 ;;; END DESKTOP MODULES ;;;
 {{- end }}
