@@ -21,6 +21,14 @@ for i in /sys/class/hwmon/hwmon*/temp*_input; do
     fi
 done
 
+# Find and set amdgpu hwmon
+for i in /sys/class/hwmon/hwmon*/device/vendor; do
+    # Found amdgpu
+    if [[ $(<"$i") -eq "0x1002" ]] && [[ -f $(dirname "$i")/gpu_busy_percent ]]; then
+        export HWMON_AMDGPU="$(dirname "$(dirname "$i")")"
+    fi
+done
+
 # Find and set default network adapter
 PRIMARY_INET=""
 while [[ -z $PRIMARY_INET ]]; do
@@ -35,7 +43,7 @@ launched=""
 if [[ -n ${!MONITOR_MAP[*]} ]]; then
     present_monitors=$(xrandr --listmonitors)
     for k in "${!MONITOR_MAP[@]}"; do
-        [[ $present_monitors =~ "$k" ]] || continue
+        [[ $present_monitors =~ $k ]] || continue
         MONITOR="$k" polybar "${MONITOR_MAP[$k]}" &
         launched+="$k "
     done

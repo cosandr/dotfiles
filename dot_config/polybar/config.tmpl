@@ -390,5 +390,56 @@ interval = 3.0
 format-disconnected = <label-disconnected>
 format-padding = 0
 
+[module/amd_gpu_clk]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="gpu_clk" UNIT="MHz"  ~/.config/polybar/scripts/amdgpu.sh
+interval = 10
+
+[module/amd_mem_clk]
+type = custom/script
+exec = QUERY="mem_clk" UNIT="MHz"  ~/.config/polybar/scripts/amdgpu.sh
+interval = 10
+
+[module/amd_temp]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="gpu_temp" UNIT="°C"  ~/.config/polybar/scripts/amdgpu.sh
+interval = 3
+
+[module/amd_gpu_usage]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="gpu_usage" UNIT="%"  ~/.config/polybar/scripts/amdgpu.sh
+interval = 3
+
+[module/amd_mem_usage]
+type = custom/script
+exec = QUERY="mem_usage" UNIT="%"  ~/.config/polybar/scripts/amdgpu.sh
+interval = 3
+
+[module/amd_power]
+type = custom/script
+exec = QUERY="power" UNIT="W"  ~/.config/polybar/scripts/amdgpu.sh
+interval = 3
+
 ;;; END LAPTOP MODULES ;;;
 {{- end }}
