@@ -6,6 +6,7 @@
 symlinks
 README.md
 update_secrets*
+install-caddy.sh
 {{- if $is_windows }}
 *
 !.gitconfig
@@ -29,7 +30,6 @@ Documents/
 {{- if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
-.config/caddy
 .config/mimeapps.list
 .config/systemd
 .config/tmuxinator/htop-journal.yml
@@ -42,6 +42,10 @@ Documents/
 .xprofile
 .Xresources
 {{- end }} {{/* if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) */}}
+{{- if or (not (lookPath "caddy")) (.no_tunnel) }}
+.config/caddy
+.config/systemd/tunnel-dresrv.service
+{{- end }}
 {{- range $v := .ignore_config }}
 {{- if not (lookPath $v.exec) }}
 {{ $v.path }}
