@@ -10,10 +10,57 @@ import subprocess
 
 # <sink>: <friendly-name>
 # Should only be two entries that toggle when this script runs
-SWAP = {
-    "alsa_output.usb-0b0e_Jabra_Link_370_70BF9276CB92-00.analog-stereo": "Jabra",
-    "alsa_output.pci-0000_2d_00.4.analog-stereo": "MB",
+dev_list = {
+    0: {
+        "alsa_output.usb-0b0e_Jabra_Link_370_70BF9276CB92-00.analog-stereo": "Jabra",
+    },
+    1: {
+        "alsa_output.pci-0000_2d_00.4.analog-stereo": "MB",
+        "alsa_output.pci-0000_01_00.1.hdmi-stereo-extra3": "Sony",
+    }
 }
+# Get audio devices
+s = subprocess.run(["pactl", "list", "short", "sinks"], text=True, capture_output=True, check=True)
+_avail_devs = []
+for t in s.stdout.splitlines():
+    tmp = t.split()
+    if len(tmp) > 2:
+        _avail_devs.append(tmp[1])
+
+SWAP = {}
+# Determine which devices are available
+for dev, name in dev_list[0].items():
+    if dev in _avail_devs:
+        SWAP[dev] = name
+        break
+
+for dev, name in dev_list[1].items():
+    if dev in _avail_devs:
+        SWAP[dev] = name
+        break
+
+# No defined devices found, pick first two or fail
+if len(SWAP) == 0:
+    # Not enough devices to swap
+    if len(_avail_devs) <= 1:
+        print("Dev 1")
+        exit(0)
+    # Pick first two
+    SWAP = {
+        _avail_devs[0]: "Dev 1",
+        _avail_devs[1]: "Dev 2",
+    }
+elif len(SWAP) == 1:
+    # Not enough devices to swap
+    if len(_avail_devs) <= 1:
+        print(SWAP.get(_avail_devs[0], "Dev 1"))
+        exit(0)
+    # Pick the other
+    for dev in _avail_devs:
+        if dev not in SWAP:
+            SWAP[dev] = "Dev 2"
+
+
 SWAP_KEYS = list(SWAP.keys())
 CURRENT_DEFAULT = ''
 
