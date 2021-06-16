@@ -3,6 +3,7 @@
     "less_mouse": {{ if eq .chezmoi.os "windows" }}false{{ else }}{{ contains "--mouse" (output "less" "--help") }}{{ end }},
     "dresrv": {"use_domain": {{ ne .chezmoi.hostname "desktop" }}},
     "no_tunnel": {{ ne .chezmoi.hostname "desktop" }},
+    "x_dpi": {{ if eq .chezmoi.hostname "desktop" }}144{{ else if eq .chezmoi.hostname "laptop" }}192{{- else }}96{{- end }},
     "files": {
         "mrbot": "srv/containers/mrbot/src/mrbot.log",
         "twitch": "srv/containers/twitch/src/log/twitch.log"

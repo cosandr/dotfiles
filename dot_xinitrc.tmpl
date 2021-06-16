@@ -11,9 +11,6 @@ LANG=${LANG:-en_US.UTF-8}
 LC_TIME=${LC_TIME:-en_GB.UTF-8}
 HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
 
-# Override DPI if it is set
-[[ -n $DPI ]] && xrdb -override <<< "Xft.dpi: $DPI"
-
 mapfile -t monitors < <(xrandr --listmonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
 
 {{- if $is_desktop }}
