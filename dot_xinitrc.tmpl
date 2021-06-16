@@ -46,6 +46,10 @@ QT_SCALE_FACTOR=${QT_SCALE_FACTOR:-1.1}
 GDK_SCALE=${GDK_SCALE:-2}
 GDK_DPI_SCALE=${GDK_DPI_SCALE:-0.5}
 MOZ_X11_EGL=${MOZ_X11_EGL:-1}
+[[ ${#monitors[@]} -eq 3 ]] && xrandr \
+    --output DP-2 --primary \
+    --output DP-1 --left-of DP-2 \
+    --output eDP-1 --right-of DP-2
 {{- end }}
 export HOSTNAME
 export LANG
