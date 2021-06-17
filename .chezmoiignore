@@ -44,7 +44,8 @@ Documents/
 {{- end }} {{/* if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) */}}
 {{- if or (not (lookPath "caddy")) (.no_tunnel) }}
 .config/caddy
-.config/systemd/tunnel-dresrv.service
+.config/systemd/user/caddy.service
+.config/systemd/user/tunnel-dresrv.service
 {{- end }}
 {{- range $v := .ignore_config }}
 {{- if not (lookPath $v.exec) }}
