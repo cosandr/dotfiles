@@ -6,6 +6,7 @@
 symlinks
 README.md
 update_secrets*
+update_config*
 install-caddy.sh
 {{- if $is_windows }}
 *
