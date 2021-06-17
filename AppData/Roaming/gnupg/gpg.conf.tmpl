@@ -1,1 +1,1 @@
-{{- template "gpg" dict "hostname" .chezmoi.hostname "git" .git "work" .work -}}
+{{- template "gpg" dict "gpg" .gpg "main_key" .git.main_key "work_key" .work.git_key -}}

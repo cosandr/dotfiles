@@ -12,6 +12,11 @@
       "include_dresrv": {{ ne .chezmoi.hostname "DreSRV" }},
       "include_rom": {{ eq .chezmoi.hostname "desktop" "laptop" }}
     },
+    "gpg": {
+      "default_key": "main",
+      "keyserver": "hkp://keyserver.ubuntu.com",
+      "use_agent": {{ eq .chezmoi.hostname "DreSRV" }}
+    },
     "files": {
       "mrbot": "srv/containers/mrbot/src/mrbot.log",
       "twitch": "srv/containers/twitch/src/log/twitch.log"

@@ -1,9 +1,9 @@
-{{- if eq .hostname "DreSRV" -}}
+{{- if .gpg.use_agent -}}
 use-agent
 {{ end -}}
-keyserver hkp://keyserver.ubuntu.com
-{{- if eq .hostname .work.ws_name }}
-default-key {{ .work.git_key }}
+keyserver {{ .gpg.keyserver }}
+{{- if eq .gpg.default_key "work" }}
+default-key {{ .work_key }}
 {{- else }}
-default-key {{ .git.main_key }}
+default-key {{ .main_key }}
 {{- end }}
