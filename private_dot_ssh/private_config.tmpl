@@ -2,14 +2,12 @@
 {{- $is_desktop :=  eq .chezmoi.hostname "desktop" }}
 {{- $is_laptop :=  eq .chezmoi.hostname "laptop" }}
 {{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
-{{- $is_work := eq .chezmoi.hostname .work.ws_name -}}
 {{- $is_pi :=  eq .chezmoi.hostname "drepi" }}
-{{- $is_root := eq .chezmoi.username "root" }}
 {{- $is_mac := eq .chezmoi.os "darwin" -}}
+{{- $home := .chezmoi.homedir -}}
 {{- if $is_windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
-{{- end }}
-{{- if $is_mac }}
+{{- else if $is_mac }}
 XAuthLocation /opt/X11/bin/xauth
 
 Host *
@@ -18,7 +16,7 @@ Host *
    IdentityFile ~/.ssh/id_ed25519
 {{ end }}
 
-{{- if not $is_work }}
+{{- if .ssh.include_dresrv }}
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
 {{- if and (not $is_srv) (not $is_windows) }}
@@ -50,7 +48,7 @@ Host DreSRV-A
     HostName {{ .dresrv.local_ip }}
     User andrei
     ForwardAgent yes
-{{- if and (not $is_windows) (not $is_mac) }}
+{{- if stat "/run/user/1000/gnupg/S.gpg-agent" }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
 
@@ -72,10 +70,10 @@ Host dresrv.com-A
 {{- end }}
     User andrei
     ForwardAgent yes
-{{- if and (not $is_windows) (not $is_mac) }}
+{{- if stat "/run/user/1000/gnupg/S.gpg-agent" }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
-{{- end }} {{/* {{- if not $is_srv }} */}}
+{{- end }} {{/* {{- if .ssh.include_dresrv }} */}}
 
 Host srvsim
     HostName 192.168.122.6
@@ -91,7 +89,8 @@ Host srvsim-boot
 {{- if not $is_srv }}
     ProxyJump DreSRV
 {{- end }}
-
+{{- end }} {{/* {{- if .ssh.include_dresrv }} */}}
+{{ if .ssh.include_rom }}
 Host romsto
     HostName {{ .romsto.domain }}
     Port {{ .romsto.ssh_port }}
@@ -108,18 +107,20 @@ Host romrt-socks
     DynamicForward 4321
     ExitOnForwardFailure yes
     TCPKeepAlive yes
+
+Host romvm
+    HostName 10.1.1.33
+    ProxyJump romsto
+    ForwardAgent yes
+{{- end }} {{/* {{- if .ssh.include_rom }} */}}
 {{- if not $is_pi }}
 
 Host drepi
     HostName 10.0.0.3
     User pi
     ForwardAgent yes
-
-Host romvm
-    HostName 10.1.1.33
-    ProxyJump romsto
-    ForwardAgent yes
-
+{{- end }} {{/* {{- if not $is_pi }} */}}
+{{ if .ssh.include_work }}
 Host ws
     HostName 192.168.1.43
     User andrei
@@ -137,33 +138,28 @@ Host ws-boot
     Port 2222
     User root
     IdentityFile ~/.ssh/id_rsa
-{{- end }} {{/* {{- if not $is_work }} */}}
 
 Host {{ .work.git_url }}
     HostName {{ .work.git_url }}
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- if $is_mac }}
-    IdentityFile ~/.ssh/id_rsa.work
-{{- else if $is_desktop }}
-    IdentityFile ~/.ssh/id_rsa
-{{- else }}
-    IdentityFile ~/.ssh/mac_rsa.work
-    IdentityFile ~/.ssh/desktop_rsa
+{{- range $k := (list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/mac_rsa.work" ".ssh/desktop_rsa") }}
+{{- if stat (joinPath $home $k) }}
+    IdentityFile ~/{{ $k }}
 {{- end }}
-{{- end }} {{/* {{- if not $is_pi }} */}}
+{{- end }}
+{{- end }} {{/* {{- if .ssh.include_work }} */}}
 
 Host github.com
     HostName github.com
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- if or $is_desktop $is_laptop $is_mac }}
-    IdentityFile ~/.ssh/id_ed25519.cosandr
-{{- else }}
-    IdentityFile ~/.ssh/desktop_ed25519.cosandr
-    IdentityFile ~/.ssh/mac_ed25519.cosandr
+{{- range $k := (list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr") }}
+{{- if stat (joinPath $home $k) }}
+    IdentityFile ~/{{ $k }}
+{{- end }}
 {{- end }}
 
 Host github.com-atgb
@@ -171,13 +167,12 @@ Host github.com-atgb
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- if or $is_desktop $is_laptop $is_mac }}
-    IdentityFile ~/.ssh/id_ed25519.atgb
-{{- else }}
-    IdentityFile ~/.ssh/desktop_ed25519.atgb
-    IdentityFile ~/.ssh/mac_ed25519.atgb
+{{- range $k := (list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" ".ssh/mac_ed25519.atgb") }}
+{{- if stat (joinPath $home $k) }}
+    IdentityFile ~/{{ $k }}
 {{- end }}
-{{ if and (not $is_root) (or $is_desktop $is_laptop) -}}
+{{- end }}
+{{ if not .no_tunnel }}
 Host prom-tunnel
 {{- if .dresrv.use_domain }}
     HostName {{ .dresrv.domain }}
@@ -196,4 +191,4 @@ Host prom-tunnel
 {{- else if $is_laptop }}
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
-{{- end }} {{/* {{ if and (not $is_root) (or $is_desktop $is_laptop) -}} */}}
+{{- end }} {{/* {{ if not .no_tunnel -}} */}}

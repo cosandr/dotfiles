@@ -1,13 +1,20 @@
 {
   "data": {
     "less_mouse": {{ if eq .chezmoi.os "windows" }}false{{ else }}{{ contains "--mouse" (output "less" "--help") }}{{ end }},
-    "dresrv": {"use_domain": {{ ne .chezmoi.hostname "desktop" }}},
+    "dresrv": {
+      "use_domain": {{ ne .chezmoi.hostname "desktop" }}
+    },
     "no_tunnel": {{ ne .chezmoi.hostname "desktop" }},
     "x_dpi": {{ if eq .chezmoi.hostname "desktop" }}144{{ else if eq .chezmoi.hostname "laptop" }}192{{- else }}96{{- end }},
     "dunst_location": {{ if eq .chezmoi.hostname "desktop" }}"bottom_right"{{ else }}"top_right"{{ end }},
+    "ssh": {
+      "include_work": {{ eq .chezmoi.hostname "desktop" "laptop" "mbp" }},
+      "include_dresrv": {{ ne .chezmoi.hostname "DreSRV" }},
+      "include_rom": {{ eq .chezmoi.hostname "desktop" "laptop" }}
+    },
     "files": {
-        "mrbot": "srv/containers/mrbot/src/mrbot.log",
-        "twitch": "srv/containers/twitch/src/log/twitch.log"
+      "mrbot": "srv/containers/mrbot/src/mrbot.log",
+      "twitch": "srv/containers/twitch/src/log/twitch.log"
     },
     "ignore_config": [
       {"exec": "alacritty",            "skip_root": true,  "path": ".config/alacritty"},
