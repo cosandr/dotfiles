@@ -58,7 +58,6 @@ Documents/
 {{- if or $not_desktop $is_wsl $is_mac }}
 # Ignore desktop config on laptop and server
 .local/bin/*mount-c
-.config/i3/workspace
 .config/polybar/scripts/aquaero*
 {{- end }} {{/* if or $not_desktop $is_wsl $is_mac */}}
 {{- if or $is_root (not $not_desktop) (not $not_laptop) $is_mac $is_wsl }}

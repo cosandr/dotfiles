@@ -2,8 +2,9 @@
 
 
 declare -A ws_opts
-ws_opts["1"]=""
-ws_opts["2"]=""
+for i in $(seq 1 "$MONITOR_COUNT"); do
+    ws_opts[$i]=""
+done
 
 # Example content
 # ws_opts["1"]="work"
@@ -28,6 +29,7 @@ for i in "${!ws_opts[@]}"; do
     grep -q "self-monitoring" "${file_name}" && "$HOME"/.config/i3/self-monitoring.sh &
     grep -q "server-monitoring" "${file_name}" && "$HOME"/.config/i3/server-monitoring.sh &
     grep -q "workstation-monitoring" "${file_name}" && "$HOME"/.config/i3/workstation-monitoring.sh &
+    grep -q "slack" "${file_name}" && gtk-launch slack
     grep -q "discord" "${file_name}" && gtk-launch discord
     grep -qiE 'name.*google\s+chrome' "${file_name}" && gtk-launch google-chrome
 done
