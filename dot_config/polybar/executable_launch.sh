@@ -29,10 +29,11 @@ for i in /sys/class/hwmon/hwmon*/device/vendor; do
     fi
 done
 
-# Find and set default network adapter
+# Find and set default network adapter, try for 5 seconds
 PRIMARY_INET=""
-while [[ -z $PRIMARY_INET ]]; do
+for i in {1..5}; do
     PRIMARY_INET=$(route | grep '^default' | grep -m 1 -o '[^ ]*$')
+    [[ -n $PRIMARY_INET ]] && break
     sleep 1
 done
 export PRIMARY_INET
