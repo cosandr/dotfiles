@@ -25,7 +25,7 @@ for i in "${!ws_opts[@]}"; do
     i3-msg "workspace ${name}; append_layout ${file_name}"
     # Launch stuff if needed
     grep -q "spotify" "${file_name}" && gtk-launch spotify
-    grep -q "self-monitoring" "${file_name}" && kitty --detach --title self-monitoring tmuxinator start hjn --suppress-tmux-version-warning=SUPPRESS-TMUX-VERSION-WARNING &
+    grep -q "self-monitoring" "${file_name}" && "$HOME"/.config/i3/self-monitoring.sh &
     grep -q "server-monitoring" "${file_name}" && "$HOME"/.config/i3/server-monitoring.sh &
     grep -q "workstation-monitoring" "${file_name}" && "$HOME"/.config/i3/workstation-monitoring.sh &
     grep -q "discord" "${file_name}" && gtk-launch discord
