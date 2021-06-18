@@ -13,6 +13,16 @@ case $idle_hook in
             'xset dpms force off' \
             ''
         ;;
+    xidlehook-lock)
+        xidlehook \
+            --not-when-fullscreen \
+            --not-when-audio \
+            --timer 590 \
+            'xset dpms force off' \
+            --timer 10 \
+            '"$HOME/.local/bin/my-screenlock"' \
+            ''
+        ;;
     xidlehook-suspend)
         export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
         xidlehook \
