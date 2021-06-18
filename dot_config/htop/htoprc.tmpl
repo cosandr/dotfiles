@@ -27,14 +27,14 @@ color_scheme=0
 enable_mouse=1
 delay=10
 {{- if $is_server }}
-left_meters=LeftCPUs Memory Swap
+left_meters=LeftCPUs2 Memory Swap
 left_meter_modes=1 1 1
-right_meters=RightCPUs Tasks LoadAverage Uptime
+right_meters=RightCPUs2 Tasks LoadAverage Uptime
 right_meter_modes=1 2 2 2
 {{- else if $is_laptop }}
-left_meters=LeftCPUs Memory Swap Battery
+left_meters=LeftCPUs2 Memory Swap Battery
 left_meter_modes=1 1 1 1
-right_meters=RightCPUs Tasks LoadAverage Uptime
+right_meters=RightCPUs2 Tasks LoadAverage Uptime
 right_meter_modes=1 2 2 2
 {{- else }}
 left_meters=LeftCPUs2 Memory Swap
