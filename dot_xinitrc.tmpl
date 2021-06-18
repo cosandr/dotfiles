@@ -12,6 +12,7 @@ LC_TIME=${LC_TIME:-en_GB.UTF-8}
 HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
 
 mapfile -t monitors < <(xrandr --listmonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
+export MONITOR_COUNT="${#monitors[@]}"
 
 {{- if $is_desktop }}
 QT_AUTO_SCREEN_SCALE_FACTOR=${QT_AUTO_SCREEN_SCALE_FACTOR:-0}
@@ -23,10 +24,10 @@ NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-1100}
 # Arrange displays
 # SDDM: /usr/share/sddm/scripts/Xsetup
 # Vertical lined up bottom 1680 offset, 1260 slightly higher, 840 middle lined up
-[[ ${#monitors[@]} -eq 2 ]] && xrandr \
+[[ $MONITOR_COUNT -eq 2 ]] && xrandr \
     --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
     --output "${monitors[1]}" --mode 3840x2160 --rate 60 --pos 0x0
-[[ ${#monitors[@]} -eq 3 ]] && xrandr \
+[[ $MONITOR_COUNT -eq 3 ]] && xrandr \
     --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
     --output "${monitors[2]}" --mode 3840x2160 --rate 60 --pos 0x0 \
     --output "${monitors[1]}" --off
@@ -43,7 +44,7 @@ QT_SCALE_FACTOR=${QT_SCALE_FACTOR:-1.1}
 GDK_SCALE=${GDK_SCALE:-2}
 GDK_DPI_SCALE=${GDK_DPI_SCALE:-0.5}
 MOZ_X11_EGL=${MOZ_X11_EGL:-1}
-[[ ${#monitors[@]} -eq 3 ]] && xrandr \
+[[ $MONITOR_COUNT -eq 3 ]] && xrandr \
     --output DP-2 --primary \
     --output DP-1 --left-of DP-2 \
     --output eDP-1 --right-of DP-2
