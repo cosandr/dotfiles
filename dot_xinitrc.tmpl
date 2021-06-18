@@ -6,7 +6,7 @@
 
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 
-[[ -f ~/.xinitrc_config ]] && source ~/.xinitrc_config
+[[ -f ~/.config/override/xinitrc ]] && source ~/.config/override/xinitrc
 LANG=${LANG:-en_US.UTF-8}
 LC_TIME=${LC_TIME:-en_GB.UTF-8}
 HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}

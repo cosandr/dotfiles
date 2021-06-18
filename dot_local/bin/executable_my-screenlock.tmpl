@@ -14,8 +14,7 @@ trap revert EXIT
 xset dpms "$lock_timeout"
 
 OPTS=""
-[[ -f ~/.config/screenlocker ]] && source ~/.config/screenlocker
-LOCKER=${LOCKER:-i3lock}
+LOCKER=${LOCKER:-{{ if lookPath "i3lock-fancy-rapid"}}i3lock-fancy-rapid{{ else }}i3lock{{ end }}}
 
 insidecolor='00000000'
 ringcolor='ffffffff'
@@ -34,6 +33,8 @@ locktext='Type password to unlock...'
 # Adding width and height for multiple monitors
 xpos={{- if $is_desktop }}"w+x"{{- else }}"x"{{- end }}
 ypos={{- if $is_desktop }}"y+h"{{- else }}"h"{{- end }}
+
+[[ -f ~/.config/override/lock ]] && source ~/.config/lock
 
 i3lock_args="--ignore-empty-password --pass-media-keys --nofork $OPTS"
 
@@ -57,7 +58,7 @@ case "$LOCKER" in
             --radius "20" --ring-width "4" --verif-text '' --wrong-text '' \
             --verif-color "$verifcolor" --time-color "$timecolor" --date-color "$datecolor" \
             --time-font "$font" --date-font "$font" --layout-font "$font" --verif-font "$font" --wrong-font "$font" \
-            --noinput-text '' 
+            --noinput-text ''
         ;;
 esac
 

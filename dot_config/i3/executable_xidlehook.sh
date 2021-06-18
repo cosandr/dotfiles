@@ -2,7 +2,7 @@
 
 idle_hook=${idle_hook:-"xidlehook"}
 
-[[ -f ~/.i3_config ]] && source ~/.i3_config
+[[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
 
 case $idle_hook in
     xidlehook)

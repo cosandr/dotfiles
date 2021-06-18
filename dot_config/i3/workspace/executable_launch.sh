@@ -9,7 +9,7 @@ done
 # Example content
 # ws_opts["1"]="work"
 # ws_opts["2"]="work"
-[[ -f ~/.i3_config ]] && source ~/.i3_config
+[[ -f ~/.config/override/i3 ]] && source ~/.config/override/i3
 
 for i in "${!ws_opts[@]}"; do
     name="$i"

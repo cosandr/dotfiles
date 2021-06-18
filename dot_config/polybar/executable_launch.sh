@@ -38,7 +38,7 @@ done
 export PRIMARY_INET
 
 # Load specific config if present
-[[ -f ~/.config/polybar/launch_config ]] && source ~/.config/polybar/launch_config
+[[ -f ~/.config/override/polybar ]] && source ~/.config/override/polybar
 launched=""
 if [[ -n ${!MONITOR_MAP[*]} ]]; then
     present_monitors=$(xrandr --listmonitors)
