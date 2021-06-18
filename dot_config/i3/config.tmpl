@@ -213,6 +213,11 @@ bindsym XF86AudioPlay exec "playerctl --ignore-player=chromium,firefox play-paus
 bindsym XF86AudioNext exec "playerctl --ignore-player=chromium,firefox next"
 bindsym XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
 
+{{- if and (stat "/sys/class/backlight/acpi_video0/brightness") (lookPath "brightnessctl") }}
+bindsym XF86MonBrightnessUp exec "brightnessctl -d acpi_video0 set 10%+"
+bindsym XF86MonBrightnessDown exec "brightnessctl -d acpi_video0 set 10%-"
+{{- end }}
+
 for_window [class="Pavucontrol"] floating enable; border normal
 for_window [class="jetbrains-toolbox"] floating enable; border none
 for_window [class="gnome-calculator"] floating enable; border none
