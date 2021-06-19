@@ -38,6 +38,18 @@ Host dresrv.com
     ControlPersist 10m
 {{- end }}
 
+Host gitlab.dresrv.com
+    HostName {{ if .dresrv.use_domain }}{{ .dresrv.domain }}{{ else }}{{ .dresrv.local_ip }}{{ end }}
+    Port {{ .dresrv.ssh_port_gitlab }}
+    User git
+    PreferredAuthentications publickey
+    IdentitiesOnly yes
+{{- range $k := (list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr") }}
+{{- if stat (joinPath $home $k) }}
+    IdentityFile ~/{{ $k }}
+{{- end }}
+{{- end }}
+
 {{ if not $is_srv -}}
 Host srv-boot
     HostName {{ .dresrv.local_ip }}
