@@ -1,4 +1,3 @@
-{{- $is_server := eq .chezmoi.hostname "DreSRV" -}}
 # /home/andrei/.config/tmuxinator/hjd.yml
 
 name: hjd
@@ -10,4 +9,4 @@ windows:
       panes:
         - htop -d10
         - journalctl -f
-        - tail -f {{ if $is_server }}{{ joinPath "/" .files.mrbot }}{{ else }}{{ joinPath "/dresrv" .files.mrbot }}{{ end }}
+        - tail -f {{ .files.mrbot }}

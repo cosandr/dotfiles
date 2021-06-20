@@ -1,27 +1,49 @@
 {
+{{- $is_windows := eq .chezmoi.os "windows" }}
+{{- $is_desktop := eq .chezmoi.hostname "desktop" }}
+{{- $is_server := eq .chezmoi.hostname "DreSRV" }}
+{{- $is_mac := eq .chezmoi.os "darwin" }}
+{{- $is_linux := eq .chezmoi.os "linux" }}
+{{- $is_laptop := or (eq .chezmoi.hostname "laptop" "mbp") $is_mac }}
   "data": {
-    "less_mouse": {{ if eq .chezmoi.os "windows" }}false{{ else }}{{ contains "--mouse" (output "less" "--help") }}{{ end }},
+{{- if $is_linux }}
+    "x_dpi": {{ if $is_desktop }}144{{ else if $is_laptop }}192{{- else }}96{{- end }},
+    "dunst_location": {{ if $is_desktop }}"bottom_right"{{ else }}"top_right"{{ end }},
+{{- end }}
+{{- if not $is_windows }}
+    "less_mouse": {{ contains "--mouse" (output "less" "--help") }},
+{{- end }}
+    "no_tunnel": {{ not $is_desktop }},
     "dresrv": {
-      "use_domain": {{ ne .chezmoi.hostname "desktop" }}
+      "use_domain": {{ and (not $is_server) (not $is_desktop)}}
     },
-    "no_tunnel": {{ ne .chezmoi.hostname "desktop" }},
-    "x_dpi": {{ if eq .chezmoi.hostname "desktop" }}144{{ else if eq .chezmoi.hostname "laptop" }}192{{- else }}96{{- end }},
-    "dunst_location": {{ if eq .chezmoi.hostname "desktop" }}"bottom_right"{{ else }}"top_right"{{ end }},
     "ssh": {
-      "include_work": {{ eq .chezmoi.hostname "desktop" "laptop" "mbp" }},
-      "include_dresrv": {{ ne .chezmoi.hostname "DreSRV" }},
-      "include_rom": {{ eq .chezmoi.hostname "desktop" "laptop" }}
+      "include_work": {{ $is_laptop }},
+      "include_dresrv": true,
+      "include_rom": {{ or $is_laptop $is_desktop $is_server }},
+      "use_work": {{ $is_laptop }}
     },
     "gpg": {
-      "default_key": "main",
+      "default_key": {{ if $is_laptop }}"work"{{ else }}"main"{{ end }},
       "main": "273D94492E01567B",
       "work": "2C076B5CE4421C50",
       "keyserver": "hkp://keyserver.ubuntu.com",
-      "use_agent": {{ eq .chezmoi.hostname "DreSRV" }}
+      "use_agent": {{ $is_server }}
     },
     "files": {
-      "mrbot": "srv/containers/mrbot/src/mrbot.log",
-      "twitch": "srv/containers/twitch/src/log/twitch.log"
+{{- if $is_windows }}{{ $prefix := "//dresrv.hm/" }}
+      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
+      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
+{{- else if $is_mac }}{{ $prefix := print .chezmoi.homedir "/dresrv/" }}
+      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
+      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
+{{- else if not $is_server }}{{ $prefix := "/dresrv/" }}
+      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
+      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
+{{- else }}{{ $prefix := "/" }}
+      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
+      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
+{{- end }}
     },
     "ignore_config": [
       {"exec": "alacritty",            "skip_root": true,  "path": ".config/alacritty"},
