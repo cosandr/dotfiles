@@ -157,7 +157,8 @@ Host {{ .work.git_url }}
     PreferredAuthentications publickey
     IdentitiesOnly yes
 {{- range $k := (list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/mac_rsa.work" ".ssh/desktop_rsa") }}
-{{- if stat (joinPath $home $k) }}
+{{- $fp := joinPath $home $k }}
+{{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
 {{- end }}
 {{- end }}
@@ -169,7 +170,8 @@ Host github.com
     PreferredAuthentications publickey
     IdentitiesOnly yes
 {{- range $k := (list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr") }}
-{{- if stat (joinPath $home $k) }}
+{{- $fp := joinPath $home $k }}
+{{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
 {{- end }}
 {{- end }}
@@ -180,7 +182,8 @@ Host github.com-atgb
     PreferredAuthentications publickey
     IdentitiesOnly yes
 {{- range $k := (list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" ".ssh/mac_ed25519.atgb") }}
-{{- if stat (joinPath $home $k) }}
+{{- $fp := joinPath $home $k }}
+{{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
 {{- end }}
 {{- end }}
