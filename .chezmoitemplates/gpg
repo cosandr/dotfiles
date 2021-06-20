@@ -2,8 +2,4 @@
 use-agent
 {{ end -}}
 keyserver {{ .gpg.keyserver }}
-{{- if eq .gpg.default_key "work" }}
-default-key {{ .work_key }}
-{{- else }}
-default-key {{ .main_key }}
-{{- end }}
+default_key {{ get .gpg .gpg.default_key }}

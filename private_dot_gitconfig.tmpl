@@ -14,12 +14,11 @@
 {{- if $is_work }}
     email = {{ .work.git_email }}
     name = {{ .work.git_name }}
-    signingkey = {{ .work.git_key }}
 {{- else }}
     email = {{ .git.main_email }}
     name = {{ .git.main_name }}
-    signingkey = {{ .git.main_key }}
 {{- end }}
+    signingkey = {{ get .gpg .gpg.default_key }}
 [alias]
 {{- if $is_windows }}
     add-urls = !python '{{ .chezmoi.sourceDir | replace "\\" "\\\\" }}\\dot_local\\bin\\executable_git-add-urls'
