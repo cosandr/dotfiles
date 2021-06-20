@@ -8,7 +8,7 @@ import shutil
 from getpass import getpass
 from difflib import unified_diff
 
-CHEZMOI_HOME = os.getenv('CHEZMOI_HOME') or subprocess.run(["chezmoi", "source-path"], text=True, capture_output=True).stdout.strip()
+CHEZMOI_HOME = os.getenv('CHEZMOI_HOME') or subprocess.run(["chezmoi", "source-path"], universal_newlines=True, capture_output=True).stdout.strip()
 SECRETS_FILE = os.getenv('SECRETS_FILE') or os.path.join(CHEZMOI_HOME, '.chezmoidata.json')
 SECRETS_ENCRYPTED = os.getenv('SECRETS_ENCRYPTED') or os.path.join(CHEZMOI_HOME, '.secrets.json.gpg')
 SECRETS_PASS = os.getenv('SECRETS_PASS') or os.path.join(CHEZMOI_HOME, '.secrets.pass')
@@ -36,7 +36,7 @@ def decrypt_secrets():
         update_secrets_pass()
     try:
         return subprocess.run(['gpg', '--batch', '--yes', '--passphrase-file', SECRETS_PASS,
-                               '-d', SECRETS_ENCRYPTED], text=True, capture_output=True).stdout
+                               '-d', SECRETS_ENCRYPTED], universal_newlines=True, capture_output=True).stdout
     except Exception:
         os.unlink(SECRETS_PASS)
         exit(1)
@@ -77,8 +77,11 @@ def show_diff(old):
         d = unified_diff([x + "\n" for x in old.splitlines()], [x + "\n" for x in new.splitlines()],
                          fromfile='before', tofile='after')
         sys.stdout.writelines(d)
-    else:
-        subprocess.run(['diff', '--unified', '--color=always', '--', '-', SECRETS_FILE], text=True, input=old)
+        return
+    try:
+        subprocess.run(['diff', '--unified', '--color=always', '--', '-', SECRETS_FILE], universal_newlines=True, input=old, check=True, capture_output=True).stdout
+    except:
+        subprocess.run(['diff', '--unified', '--', '-', SECRETS_FILE], universal_newlines=True, input=old)
 
 
 def main():
@@ -133,4 +136,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print('Cancelled')
+        print('\n\nCancelled')
