@@ -14,7 +14,7 @@
 		"no_clig",
 		"no_calt"
 	],
-	"font_size": {{ if or .is.mac .is.laptop }}15{{ else }}12{{ end }},
+	"font_size": {{ .font_size }},
 	"highlight_line": false,
 	"hot_exit": false,
 	"ignored_packages":

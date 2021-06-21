@@ -27,7 +27,7 @@ font:
     family: Fira Code
     style: Bold Italic
 
-  size: {{ if .is.mac }}14.0{{ else }}11.0{{ end }}
+  size: {{ .font_size }}
 
 # KDE Breeze (Ported from Konsole)
 colors:

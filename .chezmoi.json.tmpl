@@ -25,6 +25,14 @@
 {{- if not $is_windows }}
     "less_mouse": {{ contains "--mouse" (output "less" "--help") }},
 {{- end }}
+    "font_size": {
+      "alacritty": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
+      "dunst": 9,
+      "i3": 10,
+      "kitty": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
+      "rofi": 12,
+      "sublime": {{ if $is_mac }}15{{ else }}12{{ end }}
+    },
     "no_tunnel": {{ not $is_desktop }},
     "dresrv": {
       "use_domain": {{ and (not $is_server) (not $is_desktop)}}
