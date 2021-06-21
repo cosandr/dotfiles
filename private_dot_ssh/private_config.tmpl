@@ -40,7 +40,8 @@ Host gitlab.dresrv.com
     PreferredAuthentications publickey
     IdentitiesOnly yes
 {{- range $k := (list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr") }}
-{{- if stat (joinPath $home $k) }}
+{{- $fp := joinPath $home $k }}
+{{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
 {{- end }}
 {{- end }}
