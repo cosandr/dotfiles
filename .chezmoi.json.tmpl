@@ -20,6 +20,7 @@
 {{- if $is_linux }}
     "x_dpi": {{ if $is_desktop }}144{{ else if $is_laptop }}192{{- else }}96{{- end }},
     "dunst_location": {{ if $is_desktop }}"bottom_right"{{ else }}"top_right"{{ end }},
+    "monitor_count": {{ default 1 (env "MONITOR_COUNT") }},
 {{- end }}
 {{- if not $is_windows }}
     "less_mouse": {{ contains "--mouse" (output "less" "--help") }},

@@ -1,4 +1,4 @@
-{{- $monitor_count := atoi (env "MONITOR_COUNT") -}}
+{{- $monitor_count := int .monitor_count -}}
 # set modifier
 set $super Mod4
 set $alt Mod1
