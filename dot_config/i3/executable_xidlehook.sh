@@ -13,17 +13,18 @@ case $idle_hook in
             'xset dpms force off' \
             ''
         ;;
-    xidlehook-lock)
+    xidlehook_lock)
         xidlehook \
             --not-when-fullscreen \
             --not-when-audio \
             --timer 590 \
             'xset dpms force off' \
+            '' \
             --timer 10 \
-            '"$HOME/.local/bin/my-screenlock"' \
+            '"$HOME"/.local/bin/my-screenlock' \
             ''
         ;;
-    xidlehook-suspend)
+    xidlehook_suspend)
         export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
         xidlehook \
             --not-when-fullscreen \
@@ -41,7 +42,7 @@ case $idle_hook in
             'systemctl suspend' \
             ''
         ;;
-    xfce4-power-manager)
+    xfce4_power_manager)
         xfce4-power-manager &
         ;;
 esac

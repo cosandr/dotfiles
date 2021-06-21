@@ -2,4 +2,4 @@
 use-agent
 {{ end -}}
 keyserver {{ .gpg.keyserver }}
-default_key {{ get .gpg .gpg.default_key }}
+default-key {{ get .gpg .gpg.default_key }}

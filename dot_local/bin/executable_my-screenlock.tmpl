@@ -34,7 +34,7 @@ locktext='Type password to unlock...'
 xpos={{- if $is_desktop }}"w+x"{{- else }}"x"{{- end }}
 ypos={{- if $is_desktop }}"y+h"{{- else }}"h"{{- end }}
 
-[[ -f ~/.config/override/lock ]] && source ~/.config/lock
+[[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
 
 i3lock_args="--ignore-empty-password --pass-media-keys --nofork $OPTS"
 
