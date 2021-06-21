@@ -1,12 +1,9 @@
-{{- $is_windows := eq . "windows" -}}
-{{- $is_mac := eq . "darwin" -}}
-
 # https://github.com/alacritty/alacritty/blob/master/alacritty.yml
 env:
   TERM: xterm-256color
 
 window:
-  decorations: {{ if or $is_windows $is_mac }}full{{ else }}none{{ end }}
+  decorations: {{ if or .is.windows .is.mac }}full{{ else }}none{{ end }}
   dynamic_title: true
 
 scrolling:
@@ -30,7 +27,7 @@ font:
     family: Fira Code
     style: Bold Italic
 
-  size: {{ if $is_mac }}14.0{{ else }}11.0{{ end }}
+  size: {{ if .is.mac }}14.0{{ else }}11.0{{ end }}
 
 # KDE Breeze (Ported from Konsole)
 colors:
@@ -101,7 +98,7 @@ cursor:
 
 live_config_reload: false
 
-{{- if $is_windows }}
+{{- if .is.windows }}
 shell:
   program: pwsh.exe
 {{- end }}
@@ -111,7 +108,7 @@ mouse:
 
 key_bindings:
 {{- $mods := "Control|Shift" -}}
-{{ if $is_mac }}{{ $mods := "Command" }}{{ end }}
+{{ if .is.mac }}{{ $mods := "Command" }}{{ end }}
   - { key: V,        mods: {{ $mods }}, action: Paste            }
   - { key: C,        mods: {{ $mods }}, action: Copy             }
   - { key: Q,        mods: {{ $mods }}, action: Quit             }

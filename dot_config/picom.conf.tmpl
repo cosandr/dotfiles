@@ -1,4 +1,3 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
 #################################
 #             Shadows           #
 #################################
@@ -216,7 +215,7 @@ detect-client-opacity = false;
 # try detecting this with X RandR extension.
 #
 # refresh-rate = 60
-{{- if $is_desktop }}
+{{- if .is.desktop }}
 refresh-rate = 120;
 {{- else }}
 refresh-rate = 0;

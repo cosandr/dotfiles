@@ -1,5 +1,3 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
-{{- $is_mac := eq .chezmoi.os "darwin" -}}
 # vim:fileencoding=utf-8:ft=conf:foldmethod=marker
 
 #: Fonts {{"{{{"}}
@@ -25,7 +23,7 @@ bold_italic_font auto
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
-font_size {{ if $is_mac }}14.0{{ else }}11.0{{ end }}
+font_size {{ if .is.mac }}14.0{{ else }}11.0{{ end }}
 
 #: Font size (in pts)
 
@@ -292,7 +290,7 @@ command_on_bell none
 
 #: Window layout {{"{{{"}}
 
-{{- if $is_desktop }}
+{{- if .is.desktop }}
 remember_window_size  no
 {{- else }}
 remember_window_size  yes
@@ -591,7 +589,7 @@ allow_remote_control no
 #: content of windows, etc. Note that this even works over ssh
 #: connections.
 
-# env 
+# env
 
 #: Specify environment variables to set in all child processes. Note
 #: that environment variables are expanded recursively, so if you

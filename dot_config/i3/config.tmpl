@@ -1,5 +1,3 @@
-{{- $is_desktop := eq .chezmoi.hostname "desktop" -}}
-{{- $is_laptop := eq .chezmoi.hostname "laptop" -}}
 {{- $monitor_count := atoi (env "MONITOR_COUNT") -}}
 # set modifier
 set $super Mod4

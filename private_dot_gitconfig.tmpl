@@ -1,5 +1,4 @@
-{{- $is_windows := eq .chezmoi.os "windows" -}}
-{{- if $is_windows }}
+{{- if .is.windows }}
 [core]
     eol = lf
     sshCommand = C:/Program\\ Files/OpenSSH-Win64/ssh.exe
@@ -19,7 +18,7 @@
 {{- end }}
     signingkey = {{ get .gpg .gpg.default_key }}
 [alias]
-{{- if $is_windows }}
+{{- if .is.windows }}
     add-urls = !python '{{ .chezmoi.sourceDir | replace "\\" "\\\\" }}\\dot_local\\bin\\executable_git-add-urls'
 {{- else }}
     pushall = !git remote | xargs -L1 -I R git push R master

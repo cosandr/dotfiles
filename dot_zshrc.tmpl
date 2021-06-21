@@ -1,11 +1,3 @@
-{{- $not_server := ne .chezmoi.hostname "DreSRV" -}}
-{{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
-{{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
-{{- $is_work := eq .chezmoi.hostname .work.ws_name -}}
-{{- $not_root := ne .chezmoi.username "root" -}}
-{{- $is_mac := eq .chezmoi.os "darwin" -}}
-{{- $is_linux := eq .chezmoi.os "linux" -}}
-
 {{ range .source }}{{ if stat . }}
 source {{ . -}}
 {{ end }}{{- end }}
@@ -101,7 +93,7 @@ alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip 
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-nh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias scp-nh='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-{{- if and $is_linux $not_server $not_root }}
+{{- if and .is.linux (not .is.server) (not .is.root) }}
 alias bt-mx='bluetoothctl power on && bluetoothctl connect 04:5D:4B:52:86:4B'
 alias bt-buds='bluetoothctl power on && bluetoothctl connect F4:7D:EF:0C:BE:02'
 alias bt-jabra='bluetoothctl power on && bluetoothctl connect 30:50:75:11:EF:92'
@@ -118,7 +110,7 @@ alias dex='docker exec -t'
 alias dsti='docker container start -i'
 {{- end }}
 {{- if lookPath "podman" }}
-{{- if $not_root }}
+{{- if not .is.root }}
 alias podman='sudo podman'
 {{- end }}
 alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}" }}  {{ "{{.Status}}" }}  {{ "{{.Created}}" }}"'
@@ -126,13 +118,13 @@ alias podlog='podman logs -f'
 alias podex='podman exec -t'
 alias podsti='podman container start -i'
 {{- end }}
-{{- if and (lookPath "virsh") ($not_root) }}
+{{- if and (lookPath "virsh") (not .is.root) }}
 alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'
 {{- end }}
-{{- if not $is_mac }}
+{{- if not .is.mac }}
 {{- if eq .chezmoi.osRelease.id "arch" }}
-alias autoremove='{{if $not_root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
+alias autoremove='{{if not .is.root}}sudo {{ end }}pacman -Rcns $(pacman -Qdtq)'
 {{- end }}
 {{- else }}
 if [[ -d /usr/local/share/zsh-completions ]]; then
@@ -148,15 +140,15 @@ fi
 alias ff-ws='/Applications/Firefox.app/Contents/MacOS/firefox -P ws --no-remote'
 alias ff-romrt='/Applications/Firefox.app/Contents/MacOS/firefox -P romrt --no-remote'
 {{- end }}
-{{- if not $not_root }}
+{{- if .is.root }}
 alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'
 alias gita='sudo -u andrei git'
 alias logs-nginx='tail $(find /var/log/nginx -type f -printf " -f %p")'
 {{- end }}
 alias cd-chezmoi="cd $(chezmoi source-path)"
-{{- if $is_work }}
+{{- if .is.work }}
 alias ws-mon='tmux new -s mon "htop -d10" \; split-window "journalctl -f" \; select-layout even-vertical || tmux attach -t mon'
-{{- else }}
+{{- else if .ssh.include_work }}
 alias ws-mon="ssh -t ws 'tmux new -s mon \"htop -d10\" \; split-window \"journalctl -f\" \; select-layout even-vertical || tmux attach -t mon'"
 {{- end }}
 

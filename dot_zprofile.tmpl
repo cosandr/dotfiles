@@ -1,9 +1,3 @@
-{{- $is_mac := eq .chezmoi.os "darwin" -}}
-{{- $is_wsl := false -}}
-{{- if not $is_mac -}}
-{{- $is_wsl := hasSuffix "Microsoft" .chezmoi.kernel.osrelease -}}
-{{- end -}}
-
 # Execute code that does not affect the current session in the background.
 {
   # Compile the completion dump to increase startup speed.
@@ -82,7 +76,7 @@ if command -v pyenv &>/dev/null; then
 else
     unset PYENV_ROOT
 fi
-{{- if $is_wsl }}
+{{- if .is.wsl }}
 if [[ -z $SSH_AUTH_SOCK ]]; then
   export SSH_AUTH_SOCK=${WSL_AUTH_SOCK}
 fi
@@ -90,13 +84,13 @@ export GDK_SCALE=2
 export QT_SCREEN_SCALE_FACTORS=2
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export DISPLAY=localhost:0.0
-{{- else if $is_mac }}
+{{- else if .is.mac }}
 {{- if stat "/usr/local/bin/brew" }}
 eval $(/usr/local/bin/brew shellenv)
 {{- else if stat "/opt/homebrew/bin/brew" }}
 eval $(/opt/homebrew/bin/brew shellenv)
 {{- end }}
-{{- else if ne .chezmoi.username "root" }}
+{{- else if not .is.root }}
 {{- if and (lookPath "vagrant") (lookPath "libvirtd") }}
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 {{- end }}

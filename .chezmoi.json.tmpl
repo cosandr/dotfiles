@@ -6,6 +6,17 @@
 {{- $is_linux := eq .chezmoi.os "linux" }}
 {{- $is_laptop := or (eq .chezmoi.hostname "laptop" "mbp") $is_mac }}
   "data": {
+    "is": {
+      "desktop": {{ $is_desktop }},
+      "laptop": {{ $is_laptop }},
+      "linux": {{ $is_linux }},
+      "mac": {{ $is_mac }},
+      "root": {{ eq .chezmoi.username "root" }},
+      "server": {{ $is_server }},
+      "windows": {{ $is_windows }},
+      "work": false,
+      "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
+    },
 {{- if $is_linux }}
     "x_dpi": {{ if $is_desktop }}144{{ else if $is_laptop }}192{{- else }}96{{- end }},
     "dunst_location": {{ if $is_desktop }}"bottom_right"{{ else }}"top_right"{{ end }},
@@ -18,7 +29,7 @@
       "use_domain": {{ and (not $is_server) (not $is_desktop)}}
     },
     "ssh": {
-      "include_work": {{ $is_laptop }},
+      "include_work": {{ or $is_laptop $is_desktop }},
       "include_dresrv": true,
       "include_rom": {{ or $is_laptop $is_desktop $is_server }},
       "use_work": {{ $is_laptop }}

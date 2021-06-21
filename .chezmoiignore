@@ -1,14 +1,9 @@
-{{- $not_desktop := ne .chezmoi.hostname "desktop" -}}
-{{- $not_laptop := ne .chezmoi.hostname "laptop" -}}
-{{- $is_root := eq .chezmoi.username "root" -}}
-{{- $is_windows := eq .chezmoi.os "windows" -}}
-{{- $is_mac := eq .chezmoi.os "darwin" -}}
 symlinks
 README.md
 update_secrets*
 update_config*
 install-caddy.sh
-{{- if $is_windows }}
+{{- if .is.windows }}
 *
 !.gitconfig
 !.ssh
@@ -18,17 +13,15 @@ install-caddy.sh
 !Documents
 .ssh/*.pub
 {{- else }}
-{{- $is_wsl := false }}
-{{- if not $is_mac }}
+{{- if not .is.mac }}
 Library/
-{{- $is_wsl := hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}
 {{- else }}
 .config/chrome-flags.conf
 Library/Preferences/com.googlecode.iterm2.plist
-{{- end }} {{/* if not $is_mac */}}
+{{- end }} {{/* if not .is.mac */}}
 AppData/
 Documents/
-{{- if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) }}
+{{- if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
 .config/mimeapps.list
@@ -42,40 +35,41 @@ Documents/
 .xinitrc
 .xprofile
 .Xresources
-{{- end }} {{/* if or $is_mac $is_wsl $is_root (and $not_desktop $not_laptop) */}}
+{{- end }} {{/* if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) */}}
 {{- if or (not (lookPath "caddy")) (.no_tunnel) }}
 .config/caddy
 .config/systemd/user/caddy.service
 .config/systemd/user/tunnel-dresrv.service
 {{- end }}
+{{- $r := .is.root -}}
 {{- range $v := .ignore_config }}
 {{- if not (lookPath $v.exec) }}
 {{ $v.path }}
-{{- else if and $is_root $v.skip_root }}
+{{- else if and $r $v.skip_root }}
 {{ $v.path }}
 {{- end }} {{/* if not (lookPath $v.exec) */}}
 {{- end }} {{/* range $v */}}
-{{- if or $not_desktop $is_wsl $is_mac }}
+{{- if or (not .is.desktop) .is.wsl .is.mac }}
 # Ignore desktop config on laptop and server
 .local/bin/*mount-c
 .config/polybar/scripts/aquaero*
-{{- end }} {{/* if or $not_desktop $is_wsl $is_mac */}}
-{{- if or $is_root (not $not_desktop) (not $not_laptop) $is_mac $is_wsl }}
+{{- end }} {{/* if or (not .is.desktop) .is.wsl .is.mac */}}
+{{- if or .is.root (not (not .is.desktop)) (not (not .is.laptop)) .is.mac .is.wsl }}
 .ssh/*.pub
-{{- end }} {{/* if or $is_root (not $not_desktop) (not $not_laptop) $is_mac $is_wsl */}}
-{{- if $is_root }}
+{{- end }} {{/* if or .is.root (not (not .is.desktop)) (not (not .is.laptop)) .is.mac .is.wsl */}}
+{{- if .is.root }}
 .gnupg
-{{- end }} {{/* if $is_root */}}
-{{- if or ($is_root) (not (lookPath "nvtop")) }}
+{{- end }} {{/* if .is.root */}}
+{{- if or (.is.root) (not (lookPath "nvtop")) }}
 .config/polybar/scripts/nvidia*
 # No Nvidia GPUs
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }}
-{{- if or ($is_root) (not (lookPath "radeontop")) }}
+{{- if or (.is.root) (not (lookPath "radeontop")) }}
 .config/tmuxinator/hjr.yml
 {{- end }}
 {{- if eq (get .files "mrbot") "" }}
 .config/tmuxinator/hjd.yml
 {{- end }} {{/* if eq (get .files "mrbot") "" */}}
-{{- end }} {{/* if $is_windows */}}
+{{- end }} {{/* if .is.windows */}}

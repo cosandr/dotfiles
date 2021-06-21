@@ -1,13 +1,8 @@
-{{- $is_windows := eq .chezmoi.os "windows" -}}
-{{- $is_desktop :=  eq .chezmoi.hostname "desktop" }}
-{{- $is_laptop :=  eq .chezmoi.hostname "laptop" }}
-{{- $is_srv :=  eq .chezmoi.hostname "DreSRV" }}
 {{- $is_pi :=  eq .chezmoi.hostname "drepi" }}
-{{- $is_mac := eq .chezmoi.os "darwin" -}}
 {{- $home := .chezmoi.homedir -}}
-{{- if $is_windows }}
+{{- if .is.windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
-{{- else if $is_mac }}
+{{- else if .is.mac }}
 XAuthLocation /opt/X11/bin/xauth
 
 Host *
@@ -19,7 +14,7 @@ Host *
 {{- if .ssh.include_dresrv }}
 Host DreSRV
     HostName {{ .dresrv.local_ip }}
-{{- if and (not $is_srv) (not $is_windows) }}
+{{- if and (not .is.server) (not .is.windows) }}
     ControlPath ~/.ssh/cm-%r@%h:%p
     ControlMaster auto
     ControlPersist 10m
@@ -32,7 +27,7 @@ Host dresrv.com
 {{- else }}
     HostName {{ .dresrv.local_ip }}
 {{- end }}
-{{- if and (not $is_srv) (not $is_windows) }}
+{{- if and (not .is.server) (not .is.windows) }}
     ControlPath ~/.ssh/cm-%r@%h:%p
     ControlMaster auto
     ControlPersist 10m
@@ -50,7 +45,7 @@ Host gitlab.dresrv.com
 {{- end }}
 {{- end }}
 
-{{ if not $is_srv -}}
+{{ if not .is.server -}}
 Host srv-boot
     HostName {{ .dresrv.local_ip }}
     User root
@@ -68,7 +63,7 @@ Host DreSRV-X
     HostName {{ .dresrv.local_ip }}
     ForwardX11 yes
     ForwardX11Trusted yes
-{{- if $is_windows }}
+{{- if .is.windows }}
     RequestTTY yes
     RemoteCommand env GDK_SCALE=2 GDK_DPI_SCALE=0.75 QT_SCREEN_SCALE_FACTORS=2 QT_AUTO_SCREEN_SCALE_FACTOR=0 zsh
 {{- end }}
@@ -90,7 +85,7 @@ Host dresrv.com-A
 Host srvsim
     HostName 192.168.122.6
     User root
-{{- if not $is_srv }}
+{{- if not .is.server }}
     ProxyJump DreSRV
 {{- end }}
 
@@ -98,7 +93,7 @@ Host srvsim-boot
     HostName 192.168.122.6
     Port 2222
     User root
-{{- if not $is_srv }}
+{{- if not .is.server }}
     ProxyJump DreSRV
 {{- end }}
 {{- end }} {{/* {{- if .ssh.include_dresrv }} */}}
@@ -201,9 +196,9 @@ Host prom-tunnel
     ExitOnForwardFailure yes
     ControlMaster no
     TCPKeepAlive yes
-{{- if $is_desktop }}
+{{- if .is.desktop }}
     RemoteForward localhost:17766 localhost:7766
-{{- else if $is_laptop }}
+{{- else if .is.laptop }}
     RemoteForward localhost:27766 localhost:7766
 {{- end }}
 {{- end }} {{/* {{ if not .no_tunnel -}} */}}
