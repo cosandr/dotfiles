@@ -13,7 +13,7 @@ else:
     USER_HOME = os.path.expanduser("~")
 
 
-CHEZMOI_HOME = os.getenv('CHEZMOI_HOME') or subprocess.run(["chezmoi", "source-path"], universal_newlines=True, capture_output=True).stdout.strip()
+CHEZMOI_HOME = os.getenv('CHEZMOI_HOME') or subprocess.run(["chezmoi", "source-path"], universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip()
 CHEZMOI_CONFIG = os.getenv('CHEZMOI_CONFIG') or os.path.join(USER_HOME, '.config/chezmoi/chezmoi.json')
 CHEZMOI_CONFIG_TMPL = os.getenv('CHEZMOI_CONFIG_TMPL') or os.path.join(CHEZMOI_HOME, '.chezmoi.json.tmpl')
 
@@ -34,7 +34,7 @@ def read_config_template():
     config = None
     with open(CHEZMOI_CONFIG_TMPL, 'r', encoding='utf-8') as fr:
         config = fr.read()
-    s = subprocess.run(["chezmoi", "execute-template"], universal_newlines=True, input=config, capture_output=True)
+    s = subprocess.run(["chezmoi", "execute-template"], universal_newlines=True, input=config, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return s.stdout
 
 
@@ -50,8 +50,12 @@ def show_diff(new):
         sys.stdout.writelines(d)
         return
     try:
-        subprocess.run(['diff', '--unified', '--color=always', '--', CHEZMOI_CONFIG, '-'], universal_newlines=True, input=new, check=True, capture_output=True).stdout
-    except:
+        s = subprocess.run(['diff', '--unified', '--color=always', '--', CHEZMOI_CONFIG, '-'], universal_newlines=True, input=new, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # Exit status is 0 if inputs are the same, 1 if different, 2 if trouble.
+        if s.returncode == 2:
+            raise RuntimeError
+        print(s.stdout)
+    except RuntimeError:
         subprocess.run(['diff', '--unified', '--', CHEZMOI_CONFIG, '-'], universal_newlines=True, input=new)
 
 
