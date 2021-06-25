@@ -115,6 +115,11 @@ key_bindings:
   - { key: N,        mods: {{ $mods }}, action: SpawnNewInstance }
   - { key: PageUp,   mods: {{ $mods }}, action: ScrollPageUp     }
   - { key: PageDown, mods: {{ $mods }}, action: ScrollPageDown   }
-  - { key: Space,    mods: Control|Shift, mode: ~Search,    action: ToggleViMode     }
+  - { key: Minus,    mods: {{ $mods }}, action: DecreaseFontSize }
+  - { key: Equals,   mods: {{ $mods }}, action: IncreaseFontSize }
+  - { key: Plus,     mods: {{ $mods }}, action: IncreaseFontSize }
+  - { key: NumpadAdd,      mods: {{ $mods }}, action: IncreaseFontSize }
+  - { key: NumpadSubtract, mods: {{ $mods }}, action: DecreaseFontSize }
+  - { key: Space,    mods: Control|Shift, mode: ~Search,    action: ToggleViMode   }
   - { key: Slash,                         mode: Vi|~Search, action: SearchForward  }
   - { key: Slash,    mods: Shift,         mode: Vi|~Search, action: SearchBackward }
