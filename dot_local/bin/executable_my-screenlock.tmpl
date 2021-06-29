@@ -3,15 +3,6 @@
 # https://github.com/oakszyjrnrdy/betterlockscreen_rapid
 # https://github.com/pavanjadhaw/betterlockscreen/commit/643ea70aa77686ebe84889943a258b890dffe2fb
 
-default_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")
-lock_timeout="30"
-
-revert() {
-    xset dpms "$default_timeout"
-}
-trap revert EXIT
-xset dpms "$lock_timeout"
-
 OPTS=""
 LOCKER=${LOCKER:-{{ if lookPath "i3lock-fancy-rapid"}}i3lock-fancy-rapid{{ else }}i3lock{{ end }}}
 
@@ -34,6 +25,17 @@ xpos={{- if .is.desktop }}"w+x"{{- else }}"x"{{- end }}
 ypos={{- if .is.desktop }}"y+h"{{- else }}"h"{{- end }}
 
 [[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
+
+if [[ ! $idle_hook =~ screen_on ]]; then
+    default_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")
+    lock_timeout="30"
+
+    revert() {
+        xset dpms "$default_timeout"
+    }
+    trap revert EXIT
+    xset dpms "$lock_timeout"
+fi
 
 i3lock_args="--ignore-empty-password --pass-media-keys --nofork $OPTS"
 

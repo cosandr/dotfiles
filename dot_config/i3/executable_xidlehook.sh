@@ -24,6 +24,14 @@ case $idle_hook in
             '"$HOME"/.local/bin/my-screenlock' \
             ''
         ;;
+    xidlehook_lock_screen_on)
+        xidlehook \
+            --not-when-fullscreen \
+            --not-when-audio \
+            --timer 600 \
+            '"$HOME"/.local/bin/my-screenlock screen_on' \
+            ''
+        ;;
     xidlehook_suspend)
         export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
         xidlehook \
