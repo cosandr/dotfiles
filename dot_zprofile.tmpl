@@ -104,6 +104,27 @@ if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty1" ]]; then
   systemctl -q is-active graphical.target && exec startx
 fi
 {{- end }}
+{{- if lookPath "sway" }}
+# Start Sway if on tty2
+if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty2" ]] && systemctl -q is-active graphical.target; then
+  [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+  eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+  export SSH_AUTH_SOCK
+
+  export LANG=${LANG:-en_US.UTF-8}
+  export LC_TIME=${LC_TIME:-en_GB.UTF-8}
+  export HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
+
+  export XDG_CACHE_HOME={{ .chezmoi.homedir }}/.cache
+  export XDG_CONFIG_HOME={{ .chezmoi.homedir }}/.config
+  export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
+  export XDG_SESSION_DESKTOP=sway
+  export XDG_SESSION_TYPE=wayland
+
+  export MOZ_ENABLE_WAYLAND=1
+  exec sway
+fi
+{{- end }}
 {{- if lookPath "gnome-keyring-daemon" }}
 if [[ -z $SSH_AUTH_SOCK ]]; then
   eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
