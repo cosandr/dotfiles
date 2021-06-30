@@ -15,7 +15,7 @@ install-caddy.sh
 {{- else }}
 {{- if not .is.mac }}
 Library/
-.local/bin/tilde-switch
+.local/bin/tilde-switch*
 {{- else }}
 .config/chrome-flags.conf
 Library/Preferences/com.googlecode.iterm2.plist
