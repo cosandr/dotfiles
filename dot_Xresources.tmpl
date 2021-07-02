@@ -3,5 +3,5 @@ Xft.antialias: true
 Xft.hinting:   true
 Xft.rgba:      rgb
 Xft.hintstyle: hintfull
-Xft.dpi:       {{ .x_dpi }}
+Xft.dpi:       {{ mulf 96 .scale | int64 }}
 ! }}}

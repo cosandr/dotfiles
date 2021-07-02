@@ -1,25 +1,14 @@
 monitor                  = ${env:MONITOR}
 width                    = 100%
-{{- if ne (env "GDK_SCALE") "2" }}
-height                   = 40
-font-0                   = "Noto Sans:size=16;4"
+height                   = {{ mulf 30 .scale | int64 }}
+font-0                   = "Noto Sans:size={{ mulf 11 .scale | int64 }};{{ mulf 2 .scale | int64 }}"
 ; noto-fonts-emoji
-font-1                   = "Noto Color Emoji:pixelsize=16:style=Regular:scale=10;4"
+font-1                   = "Noto Color Emoji:pixelsize={{ mulf 11 .scale | int64 }}:style=Regular:scale={{ mulf 5 .scale | int64 }};{{ mulf 2 .scale | int64 }}"
 ; ttf-nerd-fonts-symbols
-font-2                   = "Symbols Nerd Font:size=20;5"
+font-2                   = "Symbols Nerd Font:size={{ mulf 15 .scale | int64 }};{{ mulf 3 .scale | int64 }}"
 ; https://dropways.github.io/feathericons/
-font-3                   = "Feather:size=20;5"
-font-4                   = "siji:size=20;5"
-{{- else }}
-height                   = 60
-font-0                   = "Noto Sans:size=22;4"
-; noto-fonts-emoji
-font-1                   = "Noto Color Emoji:pixelsize=22:style=Regular:scale=10;4"
-; ttf-nerd-fonts-symbols
-font-2                   = "Symbols Nerd Font:size=30;6"
-font-3                   = "Feather:size=30;6"
-font-4                   = "siji:size=35;6"
-{{- end }}
+font-3                   = "Feather:size={{ mulf 15 .scale | int64 }};{{ mulf 3 .scale | int64 }}"
+font-4                   = "siji:size={{ mulf 16 .scale | int64 }};{{ mulf 3 .scale | int64 }}"
 radius                   = 0
 line-size                = 0
 bottom                   = true

@@ -17,7 +17,7 @@ include-file = ~/.config/polybar/baropts
 tray-position = right
 modules-left = i3 title
 modules-center =
-modules-right = cpuusage cputemp sep updates sep wifi sep volume sep bat sep calendar datetime sep xkeyboard
+modules-right = cpuusage cputemp sep updates sep volume sep backlight sep calendar datetime sep wifi bat sep xkeyboard
 
 [bar/laptop-ext]
 include-file = ~/.config/polybar/baropts
@@ -277,6 +277,18 @@ scroll-down = kill -USR2 %pid%
 tail = true
 interval = 0
 
+[module/backlight]
+type = internal/backlight
+card = ${env:BACKLIGHT_DEV}
+enable-scroll = true
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else }}
+format = <label>
+{{- end }}
+
 [module/switchaudio]
 type = custom/script
 format = <label>
@@ -359,7 +371,7 @@ interval = 3
 type = internal/battery
 full-at = 100
 battery = BAT0
-adapter = ADP1
+adapter = AC
 poll-interval = 15
 time-format = %H:%M
 format-charging = <animation-charging> <label-charging>

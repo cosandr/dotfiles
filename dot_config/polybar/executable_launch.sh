@@ -26,7 +26,14 @@ for i in /sys/class/hwmon/hwmon*/device/vendor; do
     # Found amdgpu
     if [[ $(<"$i") -eq "0x1002" ]] && [[ -f $(dirname "$i")/gpu_busy_percent ]]; then
         export HWMON_AMDGPU="$(dirname "$(dirname "$i")")"
+        break
     fi
+done
+
+# Find and set brightness device
+for i in /sys/class/backlight/*/brightness; do
+    export BACKLIGHT_DEV="$(basename "$(dirname "$i")")"
+    break
 done
 
 # Find and set default network adapter, try for 5 seconds

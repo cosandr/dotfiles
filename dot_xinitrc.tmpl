@@ -36,7 +36,10 @@ nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffsetAllPerformanceLevels=$NVIDIA_C
 {{- else if .is.laptop }}
 # Invert scrolling
 TOUCHPAD_NAME=${TOUCHPAD_NAME:-"bcm5974"}
-xinput set-prop "$TOUCHPAD_NAME" 'libinput Natural Scrolling Enabled' 1
+TOUCHPAD_TAP=${TOUCHPAD_TAP:-"0"}
+TOUCHPAD_NATURAL_SCROLL=${TOUCHPAD_NATURAL_SCROLL:-"1"}
+xinput set-prop "$TOUCHPAD_NAME" 'libinput Natural Scrolling Enabled' "$TOUCHPAD_NATURAL_SCROLL"
+xinput set-prop "$TOUCHPAD_NAME" 'libinput Tapping Enabled' "$TOUCHPAD_TAP"
 QT_AUTO_SCREEN_SCALE_FACTOR=${QT_AUTO_SCREEN_SCALE_FACTOR:-1}
 QT_SCALE_FACTOR=${QT_SCALE_FACTOR:-1.1}
 GDK_SCALE=${GDK_SCALE:-2}

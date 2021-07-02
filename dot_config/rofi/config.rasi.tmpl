@@ -45,7 +45,7 @@ configuration {
 /*	hide-scrollbar: false;*/
 /*	fullscreen: false;*/
 /*	fake-transparency: false;*/
-	dpi: {{ if eq (env "GDK_SCALE") "2" }}196{{ else }}144{{- end }};
+	dpi: {{ mulf 96 .scale | int64 }};
 /*	threads: 0;*/
 /*	scrollbar-width: 8;*/
 /*	scroll-method: 0;*/
