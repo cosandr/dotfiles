@@ -68,6 +68,6 @@ for i in ${!monitors[@]}; do
     export MONITOR_NAME_$i="${monitors[$i]}"
 done
 
-dbus-update-activation-environment --systemd DISPLAY
+dbus-update-activation-environment --systemd DISPLAY XDG_SESSION_ID XAUTHORITY
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
 exec i3
