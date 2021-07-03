@@ -53,4 +53,12 @@ case $idle_hook in
     xfce4_power_manager)
         xfce4-power-manager &
         ;;
+    none)
+        echo "No screen locker"
+        exit 0
+        ;;
+    *)
+        echo "Unknown locker $idle_hook"
+        exit 1
+        ;;
 esac
