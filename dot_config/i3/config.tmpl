@@ -73,6 +73,7 @@ exec --no-startup-id /usr/lib/kdeconnectd
 bindsym $super+$alt+m exec kdeconnect-sms
 {{- end }}
 
+exec --no-startup-id systemctl --user start xsession.target
 exec --no-startup-id $HOME/.config/i3/xidlehook.sh &
 exec --no-startup-id picom -b
 exec --no-startup-id redshift-gtk
