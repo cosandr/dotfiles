@@ -102,8 +102,8 @@ bindsym $ctrl+$alt+3 exec alacritty -e ssh andrei@dresrv.com-A
 bindsym $ctrl+$alt+4 exec alacritty -e ssh ws
 
 # Rofi binds
-bindsym $super+d exec $HOME/.local/bin/rofi -show drun
-bindsym $alt+Tab exec $HOME/.local/bin/rofi -show window
+bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
+bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
 
 # Turn off displays, delay for button release
 bindsym $super+Pause exec sleep 1 && xset dpms force off

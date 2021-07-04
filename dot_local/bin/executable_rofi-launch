@@ -10,4 +10,4 @@ fi
 FONT=${FONT:-"Noto Sans 12"}
 THEME=${THEME:-"material"}
 
-exec /sbin/rofi -dpi "${DPI}" -font "${FONT}" -theme "${HOME}/.config/rofi/${THEME}.rasi" "$@"
+exec rofi -dpi "${DPI}" -font "${FONT}" -theme "${HOME}/.config/rofi/${THEME}.rasi" "$@"
