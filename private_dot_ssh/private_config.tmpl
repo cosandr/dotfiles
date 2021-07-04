@@ -1,5 +1,8 @@
-{{- $is_pi :=  eq .chezmoi.hostname "drepi" }}
+{{- $is_pi :=  eq .chezmoi.hostname "drepi" -}}
 {{- $home := .chezmoi.homedir -}}
+{{- $work_keys := list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/mac_rsa.work" ".ssh/desktop_rsa" ".ssh/laptop_rsa" -}}
+{{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr" -}}
+{{- $atgb_keys := list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" ".ssh/mac_ed25519.atgb" -}}
 {{- if .is.windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 {{- else if .is.mac }}
@@ -8,8 +11,7 @@ XAuthLocation /opt/X11/bin/xauth
 Host *
    UseKeychain yes
    AddKeysToAgent yes
-   IdentityFile ~/.ssh/id_ed25519
-{{ end }}
+{{- end }}
 
 {{- if .ssh.include_dresrv }}
 Host DreSRV
@@ -39,7 +41,7 @@ Host gitlab.dresrv.com
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- range $k := (list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr") }}
+{{- range $k := $cosandr_keys }}
 {{- $fp := joinPath $home $k }}
 {{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
@@ -152,10 +154,20 @@ Host {{ .work.git_url }}
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- range $k := (list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/mac_rsa.work" ".ssh/desktop_rsa") }}
+{{- range $k := $work_keys }}
 {{- $fp := joinPath $home $k }}
 {{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
+{{- end }}
+{{- end }}
+{{ range $h := .work.hosts }}
+Host {{ $h }}
+    User root
+{{- range $k := $work_keys }}
+{{- $fp := joinPath $home $k }}
+{{- if or (stat $fp) (stat (print $fp ".pub")) }}
+    IdentityFile ~/{{ $k }}
+{{ end }}
 {{- end }}
 {{- end }}
 {{- end }} {{/* {{- if .ssh.include_work }} */}}
@@ -165,7 +177,7 @@ Host github.com
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- range $k := (list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr") }}
+{{- range $k := $cosandr_keys }}
 {{- $fp := joinPath $home $k }}
 {{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
@@ -177,7 +189,7 @@ Host github.com-atgb
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- range $k := (list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" ".ssh/mac_ed25519.atgb") }}
+{{- range $k := $atgb_keys }}
 {{- $fp := joinPath $home $k }}
 {{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
