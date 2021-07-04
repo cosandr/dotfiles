@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 if ! DPI=$(xrdb -query | grep -oP 'Xft\.dpi:\s+\K\d+'); then
     DPI=${DPI:-"96"}
 fi
 
-# shellcheck source=/dev/null
-[ -f ~/.config/override/rofi ] && . ~/.config/override/rofi
+FONT="Noto Sans 12"
+THEME="material"
 
-FONT=${FONT:-"Noto Sans 12"}
-THEME=${THEME:-"material"}
+# shellcheck source=/dev/null
+[[ -f ~/.config/override/rofi ]] && . ~/.config/override/rofi
 
 exec rofi -dpi "${DPI}" -font "${FONT}" -theme "${HOME}/.config/rofi/${THEME}.rasi" "$@"

@@ -3,13 +3,18 @@
 mapfile -t present_monitors < <(xrandr --listactivemonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
 MONITOR_COUNT="${#present_monitors[@]}"
 
-FONT=${FONT:-"Noto Sans:10"}
-FONT_NAG=${FONT_NAG:-"Noto Sans:20"}
-MONITOR_COUNT=${MONITOR_COUNT:-"1"}
+FONT="Noto Sans 10"
+FONT_NAG="Noto Sans 14"
+[[ -z $MONITOR_COUNT || $MONITOR_COUNT -eq 0 ]] && MONITOR_COUNT="1"
+
+# shellcheck source=/dev/null
+[[ -f ~/.config/override/i3 ]] && source ~/.config/override/i3
 
 export FONT FONT_NAG MONITOR_COUNT
 # Update config
 chezmoi apply ~/.config/i3/config
+# Don't pass env vars to i3
+unset FONT FONT_NAG
 
 [[ $1 = "restart" ]] && exec i3-msg restart
 
