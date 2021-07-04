@@ -1,15 +1,10 @@
-{{- $icons := "Papirus" -}}
 # Dunst Config - Dark
 # --------------------
 
 [global]
 monitor = 0
 follow = none
-{{- if eq .dunst_location "bottom_right" }}
 geometry = "0x20-50-50"
-{{- else }}
-geometry = "0x10-50+50"
-{{- end }}
 indicate_hidden = yes
 shrink = no
 transparency = 30
@@ -21,7 +16,7 @@ frame_color = "#e8e8e8"
 separator_color = "#e8e8e8"
 sort = no
 idle_threshold = 120
-font = Noto Sans {{ .font_size.dunst }}
+font = Noto Sans 9
 line_height = 0
 markup = full
 format = "<b>%a</b>\n%s\n%b"
@@ -40,11 +35,6 @@ always_run_script = false
 title = Dunst
 class = Dunst
 corner_radius = 10
-{{- if eq $icons "Adwaita" }}
-icon_path = /usr/share/icons/Adwaita/32x32/actions/:/usr/share/icons/Adwaita/32x32/apps/:/usr/share/icons/Adwaita/32x32/categories/:/usr/share/icons/Adwaita/32x32/devices/:/usr/share/icons/Adwaita/32x32/emblems/:/usr/share/icons/Adwaita/32x32/emotes/:/usr/share/icons/Adwaita/32x32/legacy/:/usr/share/icons/Adwaita/32x32/mimetypes/:/usr/share/icons/Adwaita/32x32/places/:/usr/share/icons/Adwaita/32x32/status/:/usr/share/icons/Adwaita/32x32/ui/
-{{- else if eq $icons "Papirus" }}
-icon_path = /usr/share/icons/Papirus/32x32/actions/:/usr/share/icons/Papirus/32x32/apps/:/usr/share/icons/Papirus/32x32/devices/:/usr/share/icons/Papirus/32x32/emblems/:/usr/share/icons/Papirus/32x32/emotes/:/usr/share/icons/Papirus/32x32/mimetypes/:/usr/share/icons/Papirus/32x32/places/:/usr/share/icons/Papirus/32x32/status/
-{{- end }}
 max_icon_size = 50
 mouse_left_click = do_action
 mouse_middle_click = close_all

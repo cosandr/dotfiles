@@ -59,7 +59,7 @@ workspace {{ $i }} output left
 workspace {{ $i }} output right
 {{- end }}
 {{- end }} {{/* {{- if eq $monitor_count 2 }} */}}
-exec --no-startup-id dunst
+exec --no-startup-id dunst-launch
 exec --no-startup-id firefox &
 exec --no-startup-id alacritty &
 

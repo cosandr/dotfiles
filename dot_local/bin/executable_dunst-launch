@@ -1,0 +1,20 @@
+#!/bin/bash
+
+declare -A icon_paths=(
+    ["Papirus"]="/usr/share/icons/Papirus/32x32/actions/:/usr/share/icons/Papirus/32x32/apps/:/usr/share/icons/Papirus/32x32/devices/:/usr/share/icons/Papirus/32x32/emblems/:/usr/share/icons/Papirus/32x32/emotes/:/usr/share/icons/Papirus/32x32/mimetypes/:/usr/share/icons/Papirus/32x32/places/:/usr/share/icons/Papirus/32x32/status/"
+    ["Adwaita"]="/usr/share/icons/Adwaita/32x32/actions/:/usr/share/icons/Adwaita/32x32/apps/:/usr/share/icons/Adwaita/32x32/categories/:/usr/share/icons/Adwaita/32x32/devices/:/usr/share/icons/Adwaita/32x32/emblems/:/usr/share/icons/Adwaita/32x32/emotes/:/usr/share/icons/Adwaita/32x32/legacy/:/usr/share/icons/Adwaita/32x32/mimetypes/:/usr/share/icons/Adwaita/32x32/places/:/usr/share/icons/Adwaita/32x32/status/:/usr/share/icons/Adwaita/32x32/ui/"
+)
+
+declare -A geometries=(
+    ["bottom-right"]="0x20-50-50"
+    ["top-right"]="0x10-50+50"
+)
+
+LOCATION=${LOCATION:-"bottom-right"}
+FONT=${FONT:-"Noto Sans 9"}
+ICONS=${ICONS:-"Papirus"}
+
+# shellcheck source=/dev/null
+[ -f ~/.config/override/dunst ] && . ~/.config/override/dunst
+
+exec dunst -geometry "${geometries[$LOCATION]}" -font "$FONT" -icon_path "${icon_paths[$ICONS]}"
