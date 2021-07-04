@@ -45,8 +45,22 @@ for i in {1..5}; do
 done
 export PRIMARY_INET
 
+# Reference values for 96 DPI
+HEIGHT=${HEIGHT:-"30"}
+FONT_0=${FONT_0:-"Noto Sans:size=11;2"}
+# noto-fonts-emoji
+FONT_1=${FONT_1:-"Noto Color Emoji:pixelsize=11:style=Regular:scale=5;2"}
+# ttf-nerd-fonts-symbols
+FONT_2=${FONT_2:-"Symbols Nerd Font:size=15;3"}
+# https://dropways.github.io/feathericons/
+FONT_3=${FONT_3:-"Feather:size=15;3"}
+FONT_4=${FONT_4:-"siji:size=16;3"}
+
 # Load specific config if present
 [[ -f ~/.config/override/polybar ]] && source ~/.config/override/polybar
+
+export HEIGHT FONT_0 FONT_1 FONT_2 FONT_3 FONT_4
+
 launched=""
 if [[ -n ${!MONITOR_MAP[*]} ]]; then
     present_monitors=$(xrandr --listmonitors)
