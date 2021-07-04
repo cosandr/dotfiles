@@ -18,7 +18,6 @@
       "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
     },
 {{- if $is_linux }}
-    "scale": {{ if $is_desktop }}1.5{{- else }}1{{- end }},
     "dunst_location": {{ if $is_desktop }}"bottom_right"{{ else }}"top_right"{{ end }},
     "monitor_count": {{ default 1 (env "MONITOR_COUNT") }},
 {{- end }}

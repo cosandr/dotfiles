@@ -1,0 +1,44 @@
+#!/bin/bash
+
+DPI=${DPI:-"96"}
+override_file="$HOME/.config/override/xorg"
+declare -A MONITOR_MAP
+mapfile -t present_monitors < <(xrandr --listactivemonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
+
+check_file() {
+    local tmp="${override_file}_$1"
+    if [[ ! -f $tmp ]]; then
+        echo "$tmp: No such file"
+        return
+    fi
+    override_file="$tmp"
+}
+
+if [[ -n $1 ]]; then
+    check_file "$1"
+fi
+
+# Check for monitor count specific file
+check_file "${#present_monitors[@]}"
+
+echo "Override file: $override_file"
+
+# shellcheck source=/dev/null
+[[ -f $override_file ]] && source "$override_file"
+
+
+# Override DPI if required
+[[ $(xrdb -query) =~ dpi.*"$DPI" ]] || xrdb -override <<< "Xft.dpi: $DPI"
+
+# Don't run xrandr if we have nothing to do
+[[ ${#MONITOR_MAP[@]} -eq 0 ]] && exit 0
+
+cmd="xrandr"
+# shellcheck disable=SC2086
+for k in "${!MONITOR_MAP[@]}"; do
+    # Skip if screen isn't active
+    [[ ${present_monitors[*]} =~ $k ]] || continue
+    cmd+=" --output $k ${MONITOR_MAP[$k]}"
+done
+
+exec "$cmd"

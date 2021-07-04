@@ -9,9 +9,6 @@ LANG=${LANG:-en_US.UTF-8}
 LC_TIME=${LC_TIME:-en_GB.UTF-8}
 HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
 
-mapfile -t monitors < <(xrandr --listmonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
-export MONITOR_COUNT="${#monitors[@]}"
-
 {{- if .is.desktop }}
 QT_AUTO_SCREEN_SCALE_FACTOR=${QT_AUTO_SCREEN_SCALE_FACTOR:-0}
 QT_SCALE_FACTOR=${QT_SCALE_FACTOR:-1.1}
@@ -19,16 +16,6 @@ MOUSE_SENS=${MOUSE_SENS:--0.65}
 MOUSE_NAME=${MOUSE_NAME:-"pointer:Logitech G502"}
 NVIDIA_CORE_OFFSET=${NVIDIA_CORE_OFFSET:-50}
 NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-1100}
-# Arrange displays
-# SDDM: /usr/share/sddm/scripts/Xsetup
-# Vertical lined up bottom 1680 offset, 1260 slightly higher, 840 middle lined up
-[[ $MONITOR_COUNT -eq 2 ]] && xrandr \
-    --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
-    --output "${monitors[1]}" --mode 3840x2160 --rate 60 --pos 0x0
-[[ $MONITOR_COUNT -eq 3 ]] && xrandr \
-    --output "${monitors[0]}" --primary --mode 3840x2160 --rate 120 --pos 0x2160 \
-    --output "${monitors[2]}" --mode 3840x2160 --rate 60 --pos 0x0 \
-    --output "${monitors[1]}" --off
 # Lower mouse sensitivity
 xinput set-prop "$MOUSE_NAME" 'libinput Accel Speed' "$MOUSE_SENS"
 # Nvidia OC
@@ -45,10 +32,6 @@ QT_SCALE_FACTOR=${QT_SCALE_FACTOR:-1.1}
 GDK_SCALE=${GDK_SCALE:-2}
 GDK_DPI_SCALE=${GDK_DPI_SCALE:-0.5}
 MOZ_X11_EGL=${MOZ_X11_EGL:-1}
-[[ $MONITOR_COUNT -eq 3 ]] && xrandr \
-    --output DP-2 --primary \
-    --output DP-1 --left-of DP-2 \
-    --output eDP-1 --right-of DP-2
 {{- end }}
 export HOSTNAME
 export LANG
@@ -66,11 +49,8 @@ export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
 export XDG_SESSION_DESKTOP=i3
 export XDG_SESSION_TYPE=x11
 
-# Export monitor names for polybar
-for i in ${!monitors[@]}; do
-    export MONITOR_NAME_$i="${monitors[$i]}"
-done
+{{ .chezmoi.homedir }}/.local/bin/xorg-conf
 
-dbus-update-activation-environment --systemd DISPLAY XDG_SESSION_ID XAUTHORITY
+dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
 exec i3
