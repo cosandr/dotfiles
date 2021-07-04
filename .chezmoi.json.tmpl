@@ -31,7 +31,6 @@
       "i3": 10,
       "sway": 10,
       "kitty": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
-      "rofi": 12,
       "sublime": {{ if $is_mac }}15{{ else }}12{{ end }}
     },
     "no_tunnel": {{ not $is_desktop }},
@@ -81,6 +80,7 @@
       {"exec": "polybar",              "skip_root": true,  "path": ".config/polybar"},
       {"exec": "redshift",             "skip_root": true,  "path": ".config/redshift"},
       {"exec": "rofi",                 "skip_root": true,  "path": ".config/rofi"},
+      {"exec": "rofi",                 "skip_root": true,  "path": ".local/bin/rofi"},
       {"exec": "sublime_text",         "skip_root": true,  "path": ".config/sublime-text-3"},
       {"exec": "sway",                 "skip_root": true,  "path": ".config/sway"},
       {"exec": "tmuxinator",           "skip_root": false, "path": ".config/tmuxinator"},

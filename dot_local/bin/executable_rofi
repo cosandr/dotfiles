@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# shellcheck source=/dev/null
+[ -f ~/.config/override/rofi ] && . ~/.config/override/rofi
+
+DPI=${DPI:-"96"}
+FONT=${FONT:-"Noto Sans 12"}
+THEME=${THEME:-"material"}
+
+exec /sbin/rofi -dpi "${DPI}" -font "${FONT}" -theme "${HOME}/.config/rofi/${THEME}.rasi" "$@"
