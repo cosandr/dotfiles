@@ -46,4 +46,4 @@ export XDG_SESSION_TYPE=x11
 
 dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
-exec i3
+exec $HOME/.local/bin/i3-launch

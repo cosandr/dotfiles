@@ -1,4 +1,5 @@
-{{- $monitor_count := int .monitor_count -}}
+{{- $monitor_count := int (default 1 (env "MONITOR_COUNT")) -}}
+{{- $font := default "Noto Sans 10" (env "FONT") -}}
 # set modifier
 set $super Mod4
 set $alt Mod1
@@ -11,7 +12,7 @@ set $left Left
 set $right Right
 
 # set font
-font pango: Noto Sans {{ .font_size.i3 }}
+font pango: {{ $font }}
 
 # Use Mouse+$super to drag floating windows to their wanted position
 floating_modifier $super

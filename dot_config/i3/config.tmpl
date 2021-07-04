@@ -1,4 +1,6 @@
-{{- $monitor_count := int .monitor_count -}}
+{{- $monitor_count := int (default 1 (env "MONITOR_COUNT")) -}}
+{{- $font := default "Noto Sans:10" (env "FONT") -}}
+{{- $font_nag := default "Noto Sans:20" (env "FONT_NAG") -}}
 # set modifier
 set $super Mod4
 set $alt Mod1
@@ -11,7 +13,7 @@ set $left Left
 set $right Right
 
 # set font
-font pango: Noto Sans {{ .font_size.i3 }}
+font pango: {{ $font }}
 
 # Use Mouse+$super to drag floating windows to their wanted position
 floating_modifier $super
@@ -196,10 +198,10 @@ bindsym $super+$shift+{{ $i }} move container to workspace {{ $i }}; workspace {
 {{- end }}
 
 # restart i3 inplace
-bindsym $super+$shift+r restart
+bindsym $super+$shift+r exec $HOME/.local/bin/i3-launch restart
 
 # exit i3
-bindsym $super+$shift+e exec "i3-nagbar -f 'pango:Noto Sans:20' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
+bindsym $super+$shift+e exec "i3-nagbar -f 'pango:{{ $font_nag }}' -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
 
 # resize window
 mode "resize" {

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+mapfile -t present_monitors < <(xrandr --listactivemonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
+MONITOR_COUNT="${#present_monitors[@]}"
+
+FONT=${FONT:-"Noto Sans:10"}
+FONT_NAG=${FONT_NAG:-"Noto Sans:20"}
+MONITOR_COUNT=${MONITOR_COUNT:-"1"}
+
+export FONT FONT_NAG MONITOR_COUNT
+# Update config
+chezmoi apply ~/.config/i3/config
+
+[[ $1 = "restart" ]] && exec i3-msg restart
+
+exec i3
