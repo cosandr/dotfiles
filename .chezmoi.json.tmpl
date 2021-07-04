@@ -17,18 +17,11 @@
       "work": false,
       "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
     },
-{{- if $is_linux }}
-    "dunst_location": {{ if $is_desktop }}"bottom_right"{{ else }}"top_right"{{ end }},
-    "monitor_count": {{ default 1 (env "MONITOR_COUNT") }},
-{{- end }}
 {{- if not $is_windows }}
     "less_mouse": {{ contains "--mouse" (output "less" "--help") }},
 {{- end }}
     "font_size": {
       "alacritty": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
-      "dunst": 9,
-      "i3": 10,
-      "sway": 10,
       "kitty": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
       "sublime": {{ if $is_mac }}15{{ else }}12{{ end }}
     },
@@ -69,20 +62,20 @@
       {"exec": "caddy",                "skip_root": true,  "path": ".config/caddy"},
       {"exec": "chromium",             "skip_root": true,  "path": ".config/chromium-flags.conf"},
       {"exec": "google-chrome-stable", "skip_root": true,  "path": ".config/chrome-flags.conf"},
-      {"exec": "dunst",                "skip_root": true,  "path": ".config/dunst"},
+      {"exec": "dunst",                "skip_root": true,  "path": ".config/dunst\n.local/bin/dunst*"},
       {"exec": "feh",                  "skip_root": true,  "path": ".config/feh"},
       {"exec": "htop",                 "skip_root": false, "path": ".config/htop"},
-      {"exec": "i3",                   "skip_root": true,  "path": ".config/i3"},
+      {"exec": "i3",                   "skip_root": true,  "path": ".config/i3\n.local/bin/i3*"},
       {"exec": "kitty",                "skip_root": true,  "path": ".config/kitty"},
       {"exec": "nvim",                 "skip_root": false, "path": ".config/nvim"},
       {"exec": "picom",                "skip_root": true,  "path": ".config/picom.conf"},
-      {"exec": "polybar",              "skip_root": true,  "path": ".config/polybar"},
+      {"exec": "polybar",              "skip_root": true,  "path": ".config/polybar\n.local/bin/polybar*"},
       {"exec": "redshift",             "skip_root": true,  "path": ".config/redshift"},
-      {"exec": "rofi",                 "skip_root": true,  "path": ".config/rofi"},
-      {"exec": "rofi",                 "skip_root": true,  "path": ".local/bin/rofi"},
+      {"exec": "rofi",                 "skip_root": true,  "path": ".config/rofi\n.local/bin/rofi*"},
       {"exec": "sublime_text",         "skip_root": true,  "path": ".config/sublime-text-3"},
       {"exec": "sway",                 "skip_root": true,  "path": ".config/sway"},
       {"exec": "tmuxinator",           "skip_root": false, "path": ".config/tmuxinator"},
+      {"exec": "xrandr",               "skip_root": true,  "path": ".local/bin/xorg*"},
       {"exec": "waybar",               "skip_root": true,  "path": ".config/waybar"}
     ],
     "source": [
