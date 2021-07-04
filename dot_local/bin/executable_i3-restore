@@ -1,19 +1,22 @@
 #!/bin/bash
 
+declare -A WS
+MONITOR_COUNT=${MONITOR_COUNT:-"1"}
 
-declare -A ws_opts
 for i in $(seq 1 "$MONITOR_COUNT"); do
-    ws_opts[$i]=""
+    # Initialize map
+    WS[$i]=""
 done
 
 # Example content
-# ws_opts["1"]="work"
-# ws_opts["2"]="work"
+# WS["1"]="work"
+# WS["2"]="work"
+# shellcheck source=/dev/null
 [[ -f ~/.config/override/i3 ]] && source ~/.config/override/i3
 
-for i in "${!ws_opts[@]}"; do
+for i in "${!WS[@]}"; do
     name="$i"
-    opt="${ws_opts[$i]}"
+    opt="${WS[$i]}"
     file_name="$HOME/.config/i3/workspace/${name}.json"
     if [[ -n $opt ]]; then
         file_name_opt="$HOME/.config/i3/workspace/${name}-${opt}.json"
