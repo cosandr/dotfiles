@@ -66,7 +66,7 @@ workspace {{ $i }} output right
 {{- end }}
 {{- end }} {{/* {{- if eq $monitor_count 2 }} */}}
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id $HOME/.local/bin/polybar-launch
 
 {{- if lookPath "kdeconnect-cli" }}
 exec --no-startup-id /usr/lib/kdeconnectd
