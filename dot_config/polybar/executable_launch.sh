@@ -45,38 +45,59 @@ for i in {1..5}; do
 done
 export PRIMARY_INET
 
-# Reference values for 96 DPI
-HEIGHT=${HEIGHT:-"30"}
-FONT_0=${FONT_0:-"Noto Sans:size=11;2"}
-# noto-fonts-emoji
-FONT_1=${FONT_1:-"Noto Color Emoji:pixelsize=11:style=Regular:scale=5;2"}
-# ttf-nerd-fonts-symbols
-FONT_2=${FONT_2:-"Symbols Nerd Font:size=15;3"}
-# https://dropways.github.io/feathericons/
-FONT_3=${FONT_3:-"Feather:size=15;3"}
-FONT_4=${FONT_4:-"siji:size=16;3"}
+# Fetch DPI from xorg
+if ! DPI=$(xrdb -query | grep -oP 'Xft\.dpi:\s+\K\d+'); then
+    DPI=96
+fi
 
+# Required fonts
+# noto-fonts-emoji
+# ttf-nerd-fonts-symbols
+# https://dropways.github.io/feathericons/
+
+# Some presets
+if [[ $DPI -eq 196 ]]; then
+    HEIGHT="60"
+    FONT_0="Noto Sans:size=22;2"
+    FONT_1="Noto Color Emoji:pixelsize=22:style=Regular:scale=10;4"
+    FONT_2="Symbols Nerd Font:size=30;6"
+    FONT_3="Feather:size=30;6"
+    FONT_4="siji:size=35;6"
+elif [[ $DPI -eq 144 ]]; then
+    HEIGHT="45"
+    FONT_0="Noto Sans:size=16;3"
+    FONT_1="Noto Color Emoji:pixelsize=16:style=Regular:scale=7;3"
+    FONT_2="Symbols Nerd Font:size=22;4"
+    FONT_3="Feather:size=22;4"
+    FONT_4="siji:size=24;4"
+else
+    HEIGHT="30"
+    FONT_0="Noto Sans:size=11;2"
+    FONT_1="Noto Color Emoji:pixelsize=11:style=Regular:scale=5;2"
+    FONT_2="Symbols Nerd Font:size=15;3"
+    FONT_3="Feather:size=15;3"
+    FONT_4="siji:size=16;3"
+fi
+
+declare -A MONITOR_MAP
+
+mapfile -t present_monitors < <(xrandr --listmonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
+
+# shellcheck source=/dev/null
 # Load specific config if present
 [[ -f ~/.config/override/polybar ]] && source ~/.config/override/polybar
 
 export HEIGHT FONT_0 FONT_1 FONT_2 FONT_3 FONT_4
 
-launched=""
-if [[ -n ${!MONITOR_MAP[*]} ]]; then
-    present_monitors=$(xrandr --listmonitors)
-    for k in "${!MONITOR_MAP[@]}"; do
-        [[ $present_monitors =~ $k ]] || continue
-        MONITOR="$k" polybar "${MONITOR_MAP[$k]}" &
-        launched+="$k "
-    done
-fi
-# Auto launch bars
-while IFS='=' read -r name value ; do
-    # Skip if it was launched earlier
-    [[ $launched =~ $value ]] && continue
-    if [[ $name = "MONITOR_NAME_0" ]]; then
-        MONITOR="$value" polybar main &
-    elif [[ $name == 'MONITOR_NAME_'* ]]; then
-        MONITOR="$value" polybar secondary &
+# Loop indices so we know which monitor was first (primary, hopefully)
+for i in "${!present_monitors[@]}"; do
+    export MONITOR="${present_monitors[$i]}"
+    # Use override bar
+    if [[ -n ${MONITOR_MAP[$MONITOR]} ]]; then
+        polybar "${MONITOR_MAP[$MONITOR]}" &
+    elif [[ $i -eq 0 ]]; then
+        polybar main &
+    else
+        polybar secondary &
     fi
-done < <(env)
+done
