@@ -3,7 +3,7 @@
 DPI=${DPI:-"96"}
 override_file="$HOME/.config/override/xorg"
 declare -A MONITOR_MAP
-mapfile -t present_monitors < <(xrandr --listactivemonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
+mapfile -t present_monitors < <(xrandr --query | grep -oP '\S+\s+connected' | cut -d' ' -f1)
 
 check_file() {
     local tmp="${override_file}_$1"
