@@ -1,0 +1,11 @@
+[Unit]
+Description=Start Workstation Proxy
+
+[Service]
+Restart=always
+RestartSec=5
+ExecStartPre=bash -c "while ! ping -q -c 1 -W 1 192.168.1.43 > /dev/null; do sleep 1; done"
+ExecStart=ssh -N ws-socks
+
+[Install]
+WantedBy=default.target

@@ -67,6 +67,9 @@ Documents/
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }}
+{{- if or .is.root (not .ssh.include_work) }}
+.config/systemd/user/ws*
+{{- end }}
 {{- if or (.is.root) (not (lookPath "radeontop")) }}
 .config/tmuxinator/hjr.yml
 {{- end }}
