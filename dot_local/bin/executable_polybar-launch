@@ -59,42 +59,57 @@ fi
 # https://dropways.github.io/feathericons/
 
 # Some presets
-if [[ $DPI -eq 196 ]]; then
-    HEIGHT="60"
-    FONT_0="Noto Sans:size=22;2"
-    FONT_1="Noto Color Emoji:pixelsize=22:style=Regular:scale=10;4"
-    FONT_2="Symbols Nerd Font:size=30;6"
-    FONT_3="Feather:size=30;6"
-    FONT_4="siji:size=35;6"
-elif [[ $DPI -eq 144 ]]; then
-    HEIGHT="45"
-    FONT_0="Noto Sans:size=16;3"
-    FONT_1="Noto Color Emoji:pixelsize=16:style=Regular:scale=7;3"
-    FONT_2="Symbols Nerd Font:size=22;4"
-    FONT_3="Feather:size=22;4"
-    FONT_4="siji:size=24;4"
-else
-    HEIGHT="30"
-    FONT_0="Noto Sans:size=11;2"
-    FONT_1="Noto Color Emoji:pixelsize=11:style=Regular:scale=5;2"
-    FONT_2="Symbols Nerd Font:size=15;3"
-    FONT_3="Feather:size=15;3"
-    FONT_4="siji:size=16;3"
-fi
+conf_dpi() {
+    case $1 in
+        196)
+            export HEIGHT="60"
+            export FONT_0="Noto Sans:size=22;2"
+            export FONT_1="Noto Color Emoji:pixelsize=22:style=Regular:scale=10;4"
+            export FONT_2="Symbols Nerd Font:size=30;6"
+            export FONT_3="Feather:size=30;6"
+            export FONT_4="siji:size=35;6"
+            ;;
+        144)
+            export HEIGHT="45"
+            export FONT_0="Noto Sans:size=16;3"
+            export FONT_1="Noto Color Emoji:pixelsize=16:style=Regular:scale=7;3"
+            export FONT_2="Symbols Nerd Font:size=22;4"
+            export FONT_3="Feather:size=22;4"
+            export FONT_4="siji:size=24;4"
+            ;;
+        *)
+            export HEIGHT="30"
+            export FONT_0="Noto Sans:size=11;2"
+            export FONT_1="Noto Color Emoji:pixelsize=11:style=Regular:scale=5;2"
+            export FONT_2="Symbols Nerd Font:size=15;3"
+            export FONT_3="Feather:size=15;3"
+            export FONT_4="siji:size=16;3"
+            ;;
+    esac
+}
 
 declare -A MONITOR_MAP
+# Example, launch laptop bar on eDP-1
+# MONITOR_MAP["eDP-1"]=laptop
+declare -A DPI_MAP
+# Example, use 96 DPI for eDP-1
+# DPI_MAP["eDP-1"]='96'
 
-mapfile -t present_monitors < <(xrandr --listmonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
+mapfile -t present_monitors < <(xrandr --listactivemonitors | awk -F ' ' '{if (NR!=1) {print $(NF)}}')
 
 # shellcheck source=/dev/null
 # Load specific config if present
 [[ -f ~/.config/override/polybar ]] && source ~/.config/override/polybar
 
-export HEIGHT FONT_0 FONT_1 FONT_2 FONT_3 FONT_4
-
 # Loop indices so we know which monitor was first (primary, hopefully)
 for i in "${!present_monitors[@]}"; do
     export MONITOR="${present_monitors[$i]}"
+    # Check for per-monitor DPI
+    if [[ -n ${DPI_MAP[$MONITOR]} ]]; then
+        conf_dpi "${DPI_MAP[$MONITOR]}"
+    else
+        conf_dpi "$DPI"
+    fi
     # Use override bar
     if [[ -n ${MONITOR_MAP[$MONITOR]} ]]; then
         polybar "${MONITOR_MAP[$MONITOR]}" &
