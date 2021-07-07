@@ -99,14 +99,19 @@ export VAGRANT_DEFAULT_PROVIDER=libvirt
 systemctl --user -q is-active tunnel-dresrv.service || systemctl --user start --no-block tunnel-dresrv.service
 {{- end }}
 {{- if lookPath "startx" }}
-# Start X server
-if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty1" ]]; then
-  systemctl -q is-active graphical.target && exec startx
+if systemctl -q is-active graphical.target; then
+    if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty1" ]]; then
+        exec startx
+    # Start X server with nvidia as primary on laptop on TTY2
+    elif [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty2" ]]; then
+        _conf="xorg.conf.d/10-nvidia-drm-outputclass.conf.opt"
+        [[ -f "/etc/X11/${_conf}" ]] && exec startx -- -config "$_conf"
+    fi
 fi
 {{- end }}
 {{- if lookPath "sway" }}
-# Start Sway if on tty2
-if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty2" ]] && systemctl -q is-active graphical.target; then
+# Start Sway if on tty3
+if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty3" ]] && systemctl -q is-active graphical.target; then
   [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
   eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
   export SSH_AUTH_SOCK
