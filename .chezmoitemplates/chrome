@@ -1,3 +1,3 @@
 --ignore-gpu-blocklist
---use-gl={{ if .is.desktop }}desktop{{ else }}egl{{ end }}
+--use-gl={{ if lookPath "nvidia-smi" }}desktop{{ else }}egl{{ end }}
 --enable-accelerated-video-decode
