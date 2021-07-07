@@ -250,7 +250,7 @@ label-layout =  %layout%
 
 [module/ethernet]
 type = internal/network
-interface = ${env:PRIMARY_INET}
+interface = ${env:PRIMARY_ETH}
 interval = 2.0
 format-connected = <label-connected>
 ; Nerd Font
@@ -397,7 +397,7 @@ animation-charging-framerate = 750
 
 [module/wifi]
 type = internal/network
-interface = ${env:PRIMARY_INET}
+interface = ${env:PRIMARY_WLAN}
 format-connected = <ramp-signal> <label-connected>
 label-connected = %essid%
 ramp-signal-0 = 

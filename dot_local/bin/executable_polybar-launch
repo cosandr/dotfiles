@@ -36,14 +36,17 @@ for i in /sys/class/backlight/*/brightness; do
     break
 done
 
-# Find and set default network adapter, try for 5 seconds
-PRIMARY_INET=""
-for i in {1..5}; do
-    PRIMARY_INET=$(route | grep '^default' | grep -m 1 -o '[^ ]*$')
-    [[ -n $PRIMARY_INET ]] && break
-    sleep 1
-done
-export PRIMARY_INET
+# Find and set default ethernet adapter
+if ! PRIMARY_ETH=$(route | grep '^default' | awk '{print $NF}' | grep -m 1 '^e'); then
+    PRIMARY_ETH=""
+fi
+export PRIMARY_ETH
+
+# Find and set default wifi adapter
+if ! PRIMARY_WLAN=$(route | grep '^default' | awk '{print $NF}' | grep -m 1 '^w'); then
+    PRIMARY_WLAN=""
+fi
+export PRIMARY_WLAN
 
 # Fetch DPI from xorg
 if ! DPI=$(xrdb -query | grep -oP 'Xft\.dpi:\s+\K\d+'); then
