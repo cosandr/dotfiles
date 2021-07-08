@@ -1,40 +1,59 @@
 {{- $font := "icomoon-feather" -}}
+{{- $nvidia := lookPath "nvidia-smi" -}}
+{{- $amd := lookPath "radeontop" }}
 [bar/main]
 include-file = ~/.config/polybar/baropts
 tray-position = right
 modules-left = i3
 modules-center = title
-modules-right = cpuusage nvusage sep aquaero cputemp nvtemp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+{{- if $amd }}
+modules-right = cpu_usage amd_gpu_usage sep aquaero cpu_temp amd_temp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+{{- else if $nvidia }}
+modules-right = cpu_usage nv_gpu_usage sep aquaero cpu_temp nv_temp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+{{- else }}
+modules-right = cpu_usage sep aquaero cpu_temp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+{{- end }}
 
 [bar/secondary]
 include-file = ~/.config/polybar/baropts
 modules-left = i3
 modules-center = title
-modules-right = cpuclk nvclk sep aquaerofans sep ethernet sep time
+modules-right = cpu_clk {{ if $nvidia }}nv_gpu_clk{{ else if $amd }}amd_gpu_clk{{ end }} sep aquaerofans sep ethernet sep time
 
 [bar/laptop]
 include-file = ~/.config/polybar/baropts
 tray-position = right
 modules-left = i3 title
 modules-center =
-modules-right = cpuusage cputemp sep updates sep volume sep backlight sep calendar datetime sep wifi bat sep xkeyboard
+modules-right = cpu_usage cpu_temp sep updates sep volume sep backlight sep calendar datetime sep wifi bat sep xkeyboard
 
 [bar/laptop-ext]
 include-file = ~/.config/polybar/baropts
 tray-position = right
 modules-left = i3
 modules-center = title
-modules-right = cpuusage amd_gpu_usage sep amd_mem_usage sep cputemp amd_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
-
+{{- if $amd }}
+modules-right = cpu_usage amd_gpu_usage sep amd_mem_usage sep cpu_temp amd_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+{{- else if $nvidia }}
+modules-right = cpu_usage nv_gpu_usage sep nv_mem_usage sep cpu_temp nv_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+{{- else }}
+modules-right = cpu_usage cpu_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+{{- end }}
 [bar/laptop-ext-secondary]
 include-file = ~/.config/polybar/baropts
 modules-left = i3
 modules-center = title
-modules-right = cpuclk amd_gpu_clk sep amd_mem_clk sep amd_power sep ethernet sep time
+{{- if $amd }}
+modules-right = cpu_clk amd_gpu_clk sep amd_mem_clk sep amd_power sep ethernet wifi_stats sep bat time
+{{- else if $nvidia }}
+modules-right = cpu_clk nv_gpu_clk sep nv_mem_clk sep nv_power sep ethernet wifi_stats sep bat time
+{{- else }}
+modules-right = cpu_clk sep ethernet wifi_stats sep bat time
+{{- end }}
 
 ;;; COMMON MODULES ;;;
 
-[module/cpuclk]
+[module/cpu_clk]
 type = custom/script
 {{- if eq $font "icomoon-feather" }}
 format =   <label>
@@ -46,7 +65,7 @@ format =  <label>
 exec = ~/.config/polybar/scripts/cpu-clock.sh
 interval = 10
 
-[module/cputemp]
+[module/cpu_temp]
 type = internal/temperature
 {{- if eq $font "icomoon-feather" }}
 label =  %temperature-c%
@@ -72,7 +91,7 @@ base-temperature = 20
 base-temperature = 40
 {{- end }}
 
-[module/cpuusage]
+[module/cpu_usage]
 type = internal/cpu
 internal = 1
 {{- if eq $font "icomoon-feather" }}
@@ -260,6 +279,37 @@ label-connected = %downspeed:9% [%local_ip%]
 format-disconnected = <label-disconnected>
 format-padding = 0
 
+[module/wifi]
+type = internal/network
+interface = ${env:PRIMARY_WLAN}
+format-connected = <ramp-signal> <label-connected>
+label-connected = %essid%
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+{{- if eq $font "icomoon-feather" }}
+label-disconnected = 
+{{- else if eq $font "nerd-font" }}
+label-disconnected = 睊
+{{- end }}
+interval = 3.0
+format-disconnected = <label-disconnected>
+format-padding = 0
+
+[module/wifi_stats]
+type = internal/network
+interface = ${env:PRIMARY_WLAN}
+interval = 2.0
+format-connected = <label-connected>
+; Nerd Font
+format-connected-prefix = "直"
+label-disconnected = 睊
+label-connected = %downspeed:9% [%local_ip%]
+format-disconnected = <label-disconnected>
+format-padding = 0
+
 [module/monitor_brightness]
 type = custom/script
 {{- if eq $font "icomoon-feather" }}
@@ -326,42 +376,6 @@ format =  <label>
 exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/aquaero_fans.py
 interval = 10
 
-[module/nvclk]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = QUERY="clocks.gr" UNIT="MHz"  ~/.config/polybar/scripts/nvidia.sh
-interval = 10
-
-[module/nvtemp]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = QUERY="temperature.gpu" UNIT="°C"  ~/.config/polybar/scripts/nvidia.sh
-interval = 3
-
-[module/nvusage]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = QUERY="utilization.gpu" UNIT="%"  ~/.config/polybar/scripts/nvidia.sh
-interval = 3
-
 ;;; END DESKTOP MODULES ;;;
 {{- end }}
 {{ if not .is.desktop }}
@@ -395,25 +409,83 @@ animation-charging-4 = 
 ; Framerate in milliseconds
 animation-charging-framerate = 750
 
-[module/wifi]
-type = internal/network
-interface = ${env:PRIMARY_WLAN}
-format-connected = <ramp-signal> <label-connected>
-label-connected = %essid%
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-{{- if eq $font "icomoon-feather" }}
-label-disconnected = 
-{{- else if eq $font "nerd-font" }}
-label-disconnected = 睊
+;;; END LAPTOP MODULES ;;;
 {{- end }}
-interval = 3.0
-format-disconnected = <label-disconnected>
-format-padding = 0
+{{- if $nvidia }}
+[module/nv_gpu_clk]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="clocks.gr" UNIT="MHz"  ~/.config/polybar/scripts/nvidia.sh
+interval = 10
 
+[module/nv_mem_clk]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="clocks.mem" UNIT="MHz"  ~/.config/polybar/scripts/nvidia.sh
+interval = 10
+
+[module/nv_temp]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="temperature.gpu" UNIT="°C"  ~/.config/polybar/scripts/nvidia.sh
+interval = 3
+
+[module/nv_gpu_usage]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="utilization.gpu" UNIT="%"  ~/.config/polybar/scripts/nvidia.sh
+interval = 3
+
+[module/nv_mem_usage]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="utilization.memory" UNIT="%"  ~/.config/polybar/scripts/nvidia.sh
+interval = 3
+
+[module/nv_power]
+type = custom/script
+{{- if eq $font "icomoon-feather" }}
+format =  <label>
+{{- else if eq $font "nerd-font" }}
+format =  <label>
+{{- else if eq $font "siji" }}
+format =  <label>
+{{- end }}
+exec = QUERY="power.draw" UNIT="W"  ~/.config/polybar/scripts/nvidia.sh
+interval = 3
+{{- end }}
+
+{{- if $amd }}
 [module/amd_gpu_clk]
 type = custom/script
 {{- if eq $font "icomoon-feather" }}
@@ -464,6 +536,4 @@ interval = 3
 type = custom/script
 exec = QUERY="power" UNIT="W"  ~/.config/polybar/scripts/amdgpu.sh
 interval = 3
-
-;;; END LAPTOP MODULES ;;;
 {{- end }}

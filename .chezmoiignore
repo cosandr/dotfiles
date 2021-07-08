@@ -61,7 +61,7 @@ Documents/
 {{- if .is.root }}
 .gnupg
 {{- end }} {{/* if .is.root */}}
-{{- if or (.is.root) (not (lookPath "nvtop")) }}
+{{- if or (.is.root) (not (lookPath "nvidia-smi")) }}
 .config/polybar/scripts/nvidia*
 # No Nvidia GPUs
 .config/tmuxinator/hnvtop.yml

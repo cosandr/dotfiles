@@ -4,7 +4,7 @@
 Requires the following udev rule in /etc/udev/rules.d/45-ddcutil-i2c.rules
 KERNEL=="i2c-[0-9]*", GROUP="andrei", MODE="0660", PROGRAM="/usr/bin/ddcutil --bus=%n getvcp 0x10"
 Requires i2c-dev kernel module
-echo 'i2c-dev' > /etc/modules-load.d/i2c.conf
+echo 'i2c-dev' | sudo tee /etc/modules-load.d/i2c.conf
 """
 
 import os
