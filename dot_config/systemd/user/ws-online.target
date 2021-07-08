@@ -1,0 +1,5 @@
+[Unit]
+Description=Workstation is available
+BindsTo=default.target
+Wants=ws-gpg.service
+Wants=ws-proxy.service

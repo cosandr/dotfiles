@@ -1,12 +1,12 @@
 [Unit]
-Description=Start Workstation Proxy
+Description=Start Workstation GPG Forwarding
 After=ws-online.target
 BindsTo=ws-online.target
 
 [Service]
 Restart=always
 RestartSec=5
-ExecStart=ssh ws-socks 'while true; do sleep 1; done'
+ExecStart=ssh ws-gpg 'while true; do sleep 1; done'
 
 [Install]
 WantedBy=default.target

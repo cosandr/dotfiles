@@ -68,6 +68,7 @@ Documents/
 .config/tmuxinator/hjn.yml
 {{- end }}
 {{- if or .is.root (not .ssh.include_work) }}
+.local/bin/ws*
 .config/systemd/user/ws*
 {{- end }}
 {{- if or (.is.root) (not (lookPath "radeontop")) }}
