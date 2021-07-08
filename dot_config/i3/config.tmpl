@@ -81,8 +81,6 @@ exec --no-startup-id picom -b
 exec --no-startup-id redshift-gtk
 exec --no-startup-id dunst-launch
 exec --no-startup-id ~/.fehbg
-exec --no-startup-id firefox &
-exec --no-startup-id alacritty &
 
 # Run sshfs script if /dresrv is not in fstab
 exec --no-startup-id grep -qE '^\s*[^#](\S+)\s+/dresrv' /etc/fstab || $HOME/.local/bin/mount-sshfs &

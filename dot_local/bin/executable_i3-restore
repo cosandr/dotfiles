@@ -8,6 +8,22 @@ for i in $(seq 1 "$MONITOR_COUNT"); do
     WS[$i]=""
 done
 
+start() {
+    # Delay to avoid issues with workspaces
+    sleep 1
+    case $1 in
+        alacritty) alacritty ;;
+        chrome) gtk-launch google-chrome ;;
+        discord) gtk-launch discord ;;
+        firefox) gtk-launch firefox ;;
+        self-mon) "$HOME"/.config/i3/self-monitoring.sh ;;
+        slack) gtk-launch slack ;;
+        spotify) gtk-launch spotify ;;
+        srv-mon) "$HOME"/.config/i3/server-monitoring.sh ;;
+        ws-mon) "$HOME"/.config/i3/workstation-monitoring.sh ;;
+    esac
+}
+
 # Example content
 # WS["1"]="work"
 # WS["2"]="work"
@@ -28,11 +44,13 @@ for i in "${!WS[@]}"; do
     fi
     i3-msg "workspace ${name}; append_layout ${file_name}"
     # Launch stuff if needed
-    grep -q "spotify" "${file_name}" && gtk-launch spotify
-    grep -q "self-monitoring" "${file_name}" && "$HOME"/.config/i3/self-monitoring.sh &
-    grep -q "server-monitoring" "${file_name}" && "$HOME"/.config/i3/server-monitoring.sh &
-    grep -q "workstation-monitoring" "${file_name}" && "$HOME"/.config/i3/workstation-monitoring.sh &
-    grep -q "slack" "${file_name}" && gtk-launch slack
-    grep -q "discord" "${file_name}" && gtk-launch discord
-    grep -qiE 'name.*google\s+chrome' "${file_name}" && gtk-launch google-chrome
+    grep -qi "alacritty" "${file_name}" && start alacritty &
+    grep -qi "discord" "${file_name}" && start discord &
+    grep -qi "firefox" "${file_name}" && start firefox &
+    grep -qi "self-monitoring" "${file_name}" && start self-mon &
+    grep -qi "server-monitoring" "${file_name}" && start srv-mon &
+    grep -qi "slack" "${file_name}" && start slack &
+    grep -qi "spotify" "${file_name}" && start spotify &
+    grep -qi "workstation-monitoring" "${file_name}" && start ws-mon &
+    grep -qiE 'name.*google\s+chrome' "${file_name}" && start chrome &
 done

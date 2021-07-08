@@ -76,7 +76,7 @@
                     "swallows": [
                        {
                        "class": "^Google\\-chrome$",
-                       "title": "^Google\\ Hangouts$",
+                       "title": "^Google\\ Hangouts.*$",
                        "window_role": "^pop\\-up$"
                        }
                     ],
