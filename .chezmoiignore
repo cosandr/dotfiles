@@ -30,7 +30,6 @@ Documents/
 .config/tmuxinator/htop-journal.yml
 .fonts
 .local/bin/*mount-c
-.local/bin/mount-sshfs
 .local/bin/my-screenlock
 .local/bin/pavolume
 .xinitrc
@@ -67,7 +66,11 @@ Documents/
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }}
-{{- if or .is.root (not .ssh.include_work) }}
+{{- if or .is.root (not .ssh.include_work) .is.work }}
+.local/bin/ws*
+.config/systemd/user/ws*
+{{- end }}
+{{- if or .is.root (not .ssh.include_dresrv) .is.server }}
 .local/bin/ws*
 .config/systemd/user/ws*
 {{- end }}

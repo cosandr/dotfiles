@@ -3,7 +3,7 @@ Description=Wait for workstation to come up
 
 [Service]
 Type=simple
-ExecStart=sh -c '${HOME}/.local/bin/ws-wait-online'
+ExecStart=sh -c 'exec ${HOME}/.local/bin/ws-wait-online'
 
 [Install]
 WantedBy=default.target

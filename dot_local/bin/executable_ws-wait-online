@@ -6,8 +6,8 @@ is_online() {
     ping -q -c 1 -W 1 192.168.1.43 > /dev/null
 }
 
-# Make sure we stop target when exiting, if needed
-trap 'is_online || systemctl --user stop ws-online.target' EXIT
+# Make sure we stop target when exiting
+trap 'systemctl --user stop ws-online.target' EXIT
 
 run() {
     # Wait for ping

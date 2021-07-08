@@ -1,16 +1,15 @@
 #!/bin/bash
 
+if grep -qE '^\s*[^#](\S+)\s+/dresrv' /etc/fstab; then
+    echo "System is using fstab mount"
+    exit 0
+fi
+
 mountpoint="/dresrv"
 if grep -q "$mountpoint" /proc/mounts; then
     notify-send "$mountpoint already mounted"
     exit 0
 fi
-
-# Wait for SSH agent
-while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
-
-# Wait for server
-while ! ping -c 1 -W 1 {{ if .dresrv.use_domain }}{{ .dresrv.domain }}{{ else }}{{ .dresrv.local_ip }}{{- end }}; do sleep 1; done
 
 mountcmd=$(sshfs andrei@{{- if .dresrv.use_domain }}dresrv.com{{- else }}DreSRV{{- end }}:/ "$mountpoint")
 if [[ $? -eq 0  ]]; then

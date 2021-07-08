@@ -1,0 +1,16 @@
+[Unit]
+Description=Start DreSRV GPG Forwarding
+After=dresrv-online.target
+BindsTo=dresrv-online.target
+
+[Service]
+Restart=always
+RestartSec=5
+{{- if .dresrv.use_domain }}
+ExecStart=ssh dresrv.com-gpg 'while true; do sleep 1; done'
+{{- else }}
+ExecStart=ssh DreSRV-gpg 'while true; do sleep 1; done'
+{{- end }}
+
+[Install]
+WantedBy=default.target

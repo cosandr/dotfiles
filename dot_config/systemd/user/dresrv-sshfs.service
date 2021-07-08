@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount DreSRV using sshfs
+After=dresrv-online.target
+BindsTo=dresrv-online.target
+
+[Service]
+Restart=on-failure
+RestartSec=20
+ExecStart=sh -c 'exec ${HOME}/.local/bin/dresrv-sshfs'
+
+[Install]
+WantedBy=default.target
