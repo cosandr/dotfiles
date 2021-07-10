@@ -71,8 +71,8 @@ Documents/
 .config/systemd/user/ws*
 {{- end }}
 {{- if or .is.root (not .ssh.include_dresrv) .is.server }}
-.local/bin/ws*
-.config/systemd/user/ws*
+.local/bin/dresrv*
+.config/systemd/user/dresrv*
 {{- end }}
 {{- if or (.is.root) (not (lookPath "radeontop")) }}
 .config/tmuxinator/hjr.yml
