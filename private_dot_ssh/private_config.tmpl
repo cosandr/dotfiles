@@ -77,8 +77,7 @@ Host dresrv.com-A
 {{- end }}
     User andrei
     ForwardAgent yes
-
-{{- if and (stat "/run/user/1000/gnupg/S.gpg-agent") (or .is.desktop .is.laptop) }}
+{{ if and (stat "/run/user/1000/gnupg/S.gpg-agent") (or .is.desktop .is.laptop) }}
 Host dresrv.com-gpg
 {{- if .dresrv.use_domain }}
     HostName {{ .dresrv.domain }}
@@ -146,8 +145,7 @@ Host ws
     User andrei
     ForwardAgent yes
     TCPKeepAlive yes
-
-{{- if and (stat "/run/user/1000/gnupg/S.gpg-agent") (or .is.desktop .is.laptop) }}
+{{ if and (stat "/run/user/1000/gnupg/S.gpg-agent") (or .is.desktop .is.laptop) }}
 Host ws-gpg
     HostName 192.168.1.43
     User andrei
@@ -189,11 +187,10 @@ Host {{ $h }}
 {{- $fp := joinPath $home $k }}
 {{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
+{{- end }}
+{{- end }}
 {{ end }}
-{{- end }}
-{{- end }}
 {{- end }} {{/* {{- if .ssh.include_work }} */}}
-
 Host github.com
     HostName github.com
     User git
