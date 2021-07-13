@@ -2,6 +2,7 @@
 {{- $is_windows := eq .chezmoi.os "windows" }}
 {{- $is_desktop := eq .chezmoi.hostname "desktop" }}
 {{- $is_server := eq .chezmoi.hostname "DreSRV" }}
+{{- $is_ws := eq .chezmoi.hostname "xaitedre" }}
 {{- $is_mac := eq .chezmoi.os "darwin" }}
 {{- $is_linux := eq .chezmoi.os "linux" }}
 {{- $is_laptop := or (eq .chezmoi.hostname "laptop" "mbp") $is_mac }}
@@ -14,7 +15,7 @@
       "root": {{ eq .chezmoi.username "root" }},
       "server": {{ $is_server }},
       "windows": {{ $is_windows }},
-      "work": false,
+      "ws": {{ $is_ws }},
       "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
     },
 {{- if not $is_windows }}
@@ -30,17 +31,18 @@
       "use_domain": {{ and (not $is_server) (not $is_desktop)}}
     },
     "ssh": {
-      "include_work": {{ or $is_laptop $is_desktop }},
+      "include_work": {{ or $is_laptop $is_desktop $is_ws }},
       "include_dresrv": true,
       "include_rom": {{ or $is_laptop $is_desktop $is_server }},
-      "use_work": {{ $is_laptop }}
+      "use_work": {{ or $is_laptop $is_ws }}
     },
     "gpg": {
-      "default_key": {{ if $is_laptop }}"work"{{ else }}"main"{{ end }},
+      "default_key": {{ if or $is_laptop $is_ws }}"work"{{ else }}"main"{{ end }},
       "main": "273D94492E01567B",
       "work": "2C076B5CE4421C50",
       "keyserver": "hkp://keyserver.ubuntu.com",
-      "use_agent": {{ $is_server }}
+      "use_agent": false,
+      "no_autostart": {{ or $is_server $is_ws }}
     },
     "files": {
 {{- if $is_windows }}{{ $prefix := "//dresrv.hm/" }}

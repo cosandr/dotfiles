@@ -1,5 +1,4 @@
-{{- if .gpg.use_agent -}}
-use-agent
-{{ end -}}
+{{ if .gpg.use_agent }}use-agent{{ end }}
+{{ if .gpg.no_autostart }}no-autostart{{ end }}
 keyserver {{ .gpg.keyserver }}
 default-key {{ get .gpg .gpg.default_key }}

@@ -146,7 +146,7 @@ alias gita='sudo -u andrei git'
 alias logs-nginx='tail $(find /var/log/nginx -type f -printf " -f %p")'
 {{- end }}
 alias cd-chezmoi="cd $(chezmoi source-path)"
-{{- if .is.work }}
+{{- if .is.ws }}
 alias ws-mon='tmux new -s mon "htop -d10" \; split-window "journalctl -f" \; select-layout even-vertical || tmux attach -t mon'
 {{- else if .ssh.include_work }}
 alias ws-mon="ssh -t ws 'tmux new -s mon \"htop -d10\" \; split-window \"journalctl -f\" \; select-layout even-vertical || tmux attach -t mon'"

@@ -54,23 +54,23 @@ Documents/
 .local/bin/*mount-c
 .config/polybar/scripts/aquaero*
 {{- end }} {{/* if or (not .is.desktop) .is.wsl .is.mac */}}
-{{- if or .is.root (not (not .is.desktop)) (not (not .is.laptop)) .is.mac .is.wsl }}
+{{- if or .is.root .is.desktop .is.laptop .is.mac .is.wsl }}
 .ssh/*.pub
 {{- end }} {{/* if or .is.root (not (not .is.desktop)) (not (not .is.laptop)) .is.mac .is.wsl */}}
 {{- if .is.root }}
 .gnupg
 {{- end }} {{/* if .is.root */}}
-{{- if or (.is.root) (not (lookPath "nvidia-smi")) }}
+{{- if or .is.root (not (lookPath "nvidia-smi")) }}
 .config/polybar/scripts/nvidia*
 # No Nvidia GPUs
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }}
-{{- if or .is.root (not .ssh.include_work) .is.work }}
+{{- if or .is.root (not .ssh.include_work) .is.ws }}
 .local/bin/ws*
 .config/systemd/user/ws*
 {{- end }}
-{{- if or .is.root (not .ssh.include_dresrv) .is.server }}
+{{- if or .is.root (not .ssh.include_dresrv) .is.server .is.ws }}
 .local/bin/dresrv*
 .config/systemd/user/dresrv*
 {{- end }}
