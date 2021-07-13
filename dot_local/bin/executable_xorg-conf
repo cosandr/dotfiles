@@ -14,12 +14,13 @@ check_file() {
     override_file="$tmp"
 }
 
+# Check for monitor count specific file
+check_file "${#present_monitors[@]}"
+
+# Check for requested file
 if [[ -n $1 ]]; then
     check_file "$1"
 fi
-
-# Check for monitor count specific file
-check_file "${#present_monitors[@]}"
 
 echo "Override file: $override_file"
 
