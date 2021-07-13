@@ -78,14 +78,7 @@ Host dresrv.com-A
     User andrei
     ForwardAgent yes
 
-{{- if stat "/run/user/1000/gnupg/S.gpg-agent" }}
-Host DreSRV-gpg
-    HostName {{ .dresrv.local_ip }}
-    User andrei
-    ExitOnForwardFailure yes
-    TCPKeepAlive yes
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-
+{{- if and (stat "/run/user/1000/gnupg/S.gpg-agent") (or .is.desktop .is.laptop) }}
 Host dresrv.com-gpg
 {{- if .dresrv.use_domain }}
     HostName {{ .dresrv.domain }}
@@ -96,8 +89,10 @@ Host dresrv.com-gpg
     User andrei
     ExitOnForwardFailure yes
     TCPKeepAlive yes
+    # Set in sshd_config too
+    StreamLocalBindUnlink yes
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-{{- end }} {{/* {{- if stat "/run/user/1000/gnupg/S.gpg-agent"}} */}}
+{{- end }} {{/* and (stat "/run/user/1000/gnupg/S.gpg-agent") (or .is.desktop .is.laptop) */}}
 {{- end }} {{/* {{- not .is.server }} */}}
 
 Host srvsim
@@ -152,12 +147,14 @@ Host ws
     ForwardAgent yes
     TCPKeepAlive yes
 
-{{- if stat "/run/user/1000/gnupg/S.gpg-agent" }}
+{{- if and (stat "/run/user/1000/gnupg/S.gpg-agent") (or .is.desktop .is.laptop) }}
 Host ws-gpg
     HostName 192.168.1.43
     User andrei
     ExitOnForwardFailure yes
     TCPKeepAlive yes
+    # Set in sshd_config too
+    StreamLocalBindUnlink yes
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
 {{- end }}
 

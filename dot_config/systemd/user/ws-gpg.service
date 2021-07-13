@@ -6,9 +6,7 @@ BindsTo=ws-online.target
 [Service]
 Restart=always
 RestartSec=5
-ExecStartPre=-ssh ws 'rm -fv /run/user/1000/gnupg/S.gpg-agent'
-ExecStart=ssh ws-gpg 'while true; do sleep 1; done'
-ExecStartPost=-ssh ws 'rm -fv /run/user/1000/gnupg/S.gpg-agent'
+ExecStart=ssh ws-gpg 'while true; do sleep 5; done'
 
 [Install]
 WantedBy=default.target
