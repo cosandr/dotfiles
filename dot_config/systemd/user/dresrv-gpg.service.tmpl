@@ -7,9 +7,11 @@ BindsTo=dresrv-online.target
 Restart=always
 RestartSec=5
 {{- if .dresrv.use_domain }}
+ExecStartPre=-ssh dresrv.com 'rm -fv /run/user/1000/gnupg/S.gpg-agent'
 ExecStart=ssh dresrv.com-gpg 'while true; do sleep 1; done'
 {{- else }}
 ExecStart=ssh DreSRV-gpg 'while true; do sleep 1; done'
+ExecStartPost=-ssh DreSRV 'rm -fv /run/user/1000/gnupg/S.gpg-agent'
 {{- end }}
 
 [Install]
