@@ -1,5 +1,5 @@
 [Unit]
-Description=Start Workstation GPG Forwarding
+Description=Workstation GPG Forwarding
 After=ws-online.target
 BindsTo=ws-online.target
 

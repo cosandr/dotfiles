@@ -1,5 +1,5 @@
 [Unit]
-Description=Start DreSRV GPG Forwarding
+Description=DreSRV GPG Forwarding
 After=dresrv-online.target
 BindsTo=dresrv-online.target
 
