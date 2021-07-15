@@ -94,10 +94,6 @@ eval $(/opt/homebrew/bin/brew shellenv)
 {{- if and (lookPath "vagrant") (lookPath "libvirtd") }}
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 {{- end }}
-{{- if stat (joinPath .chezmoi.homedir ".config/systemd/user/tunnel-dresrv.service") }}
-# Ensure tunnel is active
-systemctl --user -q is-active tunnel-dresrv.service || systemctl --user start --no-block tunnel-dresrv.service
-{{- end }}
 {{- if lookPath "startx" }}
 if systemctl -q is-active graphical.target; then
     if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty1" ]]; then

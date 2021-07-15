@@ -2,11 +2,12 @@
 Description=Tunnel Ports to DreSRV
 After=caddy.service
 Requires=caddy.service
+After=dresrv-online.target
+BindsTo=dresrv-online.target
 
 [Service]
 Restart=always
 RestartSec=5
-ExecStartPre=bash -c "while ! ping -q -c 1 -W 1 {{ .dresrv.domain }} > /dev/null; do sleep 1; done"
 ExecStart=ssh -N prom-tunnel
 
 [Install]

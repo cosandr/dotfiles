@@ -39,7 +39,7 @@ Documents/
 {{- if or (not (lookPath "caddy")) (.no_tunnel) }}
 .config/caddy
 .config/systemd/user/caddy.service
-.config/systemd/user/tunnel-dresrv.service
+.config/systemd/user/dresrv-tunnel.service
 {{- end }}
 {{- $r := .is.root -}}
 {{- range $v := .ignore_config }}
