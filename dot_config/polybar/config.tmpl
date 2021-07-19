@@ -25,7 +25,7 @@ include-file = ~/.config/polybar/baropts
 tray-position = right
 modules-left = i3 title
 modules-center =
-modules-right = cpu_usage cpu_temp sep updates sep volume sep backlight sep calendar datetime sep wifi bat sep xkeyboard
+modules-right = cpu_usage cpu_temp sep updates sep volume sep backlight sep calendar datetime sep wifi bt_battery bat sep xkeyboard
 
 [bar/laptop-ext]
 include-file = ~/.config/polybar/baropts
@@ -338,6 +338,13 @@ format =  <label>
 {{- else }}
 format = <label>
 {{- end }}
+
+[module/bt_battery]
+type = custom/script
+format = <label>
+exec = ~/.config/polybar/scripts/bluetooth-battery.sh
+tail = false
+interval = 60
 
 [module/switchaudio]
 type = custom/script
