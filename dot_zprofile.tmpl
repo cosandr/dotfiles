@@ -116,9 +116,9 @@ if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty3" ]] && systemctl -q is-active graph
   export LC_TIME=${LC_TIME:-en_GB.UTF-8}
   export HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
 
-  export XDG_CACHE_HOME={{ .chezmoi.homedir }}/.cache
-  export XDG_CONFIG_HOME={{ .chezmoi.homedir }}/.config
-  export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
+  export XDG_CACHE_HOME={{ .chezmoi.homeDir }}/.cache
+  export XDG_CONFIG_HOME={{ .chezmoi.homeDir }}/.config
+  export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
   export XDG_SESSION_DESKTOP=sway
   export XDG_SESSION_TYPE=wayland
 

@@ -48,7 +48,7 @@
 {{- if $is_windows }}{{ $prefix := "//dresrv.hm/" }}
       "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
       "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
-{{- else if $is_mac }}{{ $prefix := print .chezmoi.homedir "/dresrv/" }}
+{{- else if $is_mac }}{{ $prefix := print .chezmoi.homeDir "/dresrv/" }}
       "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
       "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
 {{- else if not $is_server }}{{ $prefix := "/dresrv/" }}
@@ -81,7 +81,7 @@
       {"exec": "waybar",               "skip_root": true,  "path": ".config/waybar"}
     ],
     "source": [
-      "{{ .chezmoi.homedir }}/.zprezto/init.zsh",
+      "{{ .chezmoi.homeDir }}/.zprezto/init.zsh",
       "/opt/homebrew/opt/fzf/shell/completion.zsh",
       "/opt/homebrew/opt/fzf/shell/key-bindings.zsh",
       "/usr/local/opt/fzf/shell/completion.zsh",

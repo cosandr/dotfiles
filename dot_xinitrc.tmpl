@@ -30,9 +30,9 @@ export LC_TIME
 export SSH_AUTH_SOCK
 export QT_QPA_PLATFORMTHEME
 
-export XDG_CACHE_HOME={{ .chezmoi.homedir }}/.cache
-export XDG_CONFIG_HOME={{ .chezmoi.homedir }}/.config
-export XDG_DATA_HOME={{ .chezmoi.homedir }}/.local/share
+export XDG_CACHE_HOME={{ .chezmoi.homeDir }}/.cache
+export XDG_CONFIG_HOME={{ .chezmoi.homeDir }}/.config
+export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
 export XDG_SESSION_DESKTOP=i3
 export XDG_SESSION_TYPE=x11
 
@@ -42,7 +42,7 @@ export XDG_SESSION_TYPE=x11
 [[ -n $GDK_DPI_SCALE ]] && export GDK_DPI_SCALE
 [[ -n $MOZ_X11_EGL ]] && export MOZ_X11_EGL
 
-{{ .chezmoi.homedir }}/.local/bin/xorg-conf
+{{ .chezmoi.homeDir }}/.local/bin/xorg-conf
 
 dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle

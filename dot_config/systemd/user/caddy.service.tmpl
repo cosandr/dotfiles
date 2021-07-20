@@ -1,14 +1,14 @@
 [Unit]
 Description=Caddy Reverse Proxy
-ConditionPathExists={{ .chezmoi.homedir }}/.local/bin/caddy
-ConditionPathExists={{ .chezmoi.homedir }}/.config/caddy/Caddyfile
+ConditionPathExists={{ .chezmoi.homeDir }}/.local/bin/caddy
+ConditionPathExists={{ .chezmoi.homeDir }}/.config/caddy/Caddyfile
 
 [Service]
 Restart=always
 # Silence errors
 StandardOutput=null
 StandardError=null
-ExecStart={{ .chezmoi.homedir }}/.local/bin/caddy run --config {{ .chezmoi.homedir }}/.config/caddy/Caddyfile
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/caddy run --config {{ .chezmoi.homeDir }}/.config/caddy/Caddyfile
 
 [Install]
 WantedBy=default.target
