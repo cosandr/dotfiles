@@ -110,10 +110,6 @@ Host srvsim-boot
 {{- end }}
 {{- end }} {{/* {{- if .ssh.include_dresrv }} */}}
 {{ if .ssh.include_rom }}
-Host romsto
-    HostName {{ .romsto.domain }}
-    Port {{ .romsto.ssh_port }}
-
 Host romrt
     HostName {{ .romrt.domain }}
     User {{ .romrt.ssh_user }}
@@ -126,6 +122,12 @@ Host romrt-socks
     DynamicForward 4321
     ExitOnForwardFailure yes
     TCPKeepAlive yes
+
+Host romsto
+    HostName {{ .romsto.domain }}
+    Port {{ .romsto.ssh_port }}
+    ForwardAgent yes
+    ProxyJump romrt
 
 Host romvm
     HostName 10.1.1.33
