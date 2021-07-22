@@ -61,7 +61,7 @@
                     "type": "con"
                 },
                 {
-                    "border": "pixel",
+                    "border": "none",
                     "current_border_width": 3,
                     "floating": "auto_off",
                     "geometry": {
@@ -79,6 +79,27 @@
                        "title": "^Google\\ Hangouts.*$",
                        "window_role": "^pop\\-up$"
                        }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "none",
+                    "current_border_width": 3,
+                    "floating": "auto_off",
+                    "geometry": {
+                        "height": 1296,
+                        "width": 1536,
+                        "x": 4992,
+                        "y": 432
+                    },
+                    "marks": [],
+                    "name": "Slack",
+                    "percent": 0.5,
+                    "swallows": [
+                        {
+                        "class": "^Slack$",
+                        "instance": "^slack$"
+                        }
                     ],
                     "type": "con"
                 }

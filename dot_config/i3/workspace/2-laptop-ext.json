@@ -61,7 +61,7 @@
                     "type": "con"
                 },
                 {
-                    "border": "pixel",
+                    "border": "none",
                     "current_border_width": 3,
                     "floating": "auto_off",
                     "geometry": {
