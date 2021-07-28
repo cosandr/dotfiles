@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+set -uo pipefail
 
 # nerd-fonts
 
@@ -17,8 +19,12 @@ if [ -z "$mac" ]; then
     exit 0
 fi
 
-perc="$(dbus-send --print-reply=literal --system --dest=org.bluez \
+if perc="$(dbus-send --print-reply=literal --system --dest=org.bluez \
     /org/bluez/hci0/dev_"$mac" org.freedesktop.DBus.Properties.Get \
-    string:"org.bluez.Battery1" string:"Percentage" | grep -oP '\d+$')"
-
-echo "${ICON_ON}${perc}%"
+    string:"org.bluez.Battery1" string:"Percentage" 2>/dev/null | grep -oP '\d+$')"; then
+    echo "${ICON_ON}${perc}%"
+    exit 0
+else
+    echo "${ICON_ON}?%"
+    exit 0
+fi
