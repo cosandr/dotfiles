@@ -91,6 +91,10 @@ class MyDisplays:
         except Exception as e:
             print(e, file=sys.stderr)
             self.displays = self.detect_displays()
+            while not self.displays:
+                print('N/A')
+                time.sleep(30)
+                self.displays = self.detect_displays()
             self.read_all()
         self.delay: int = delay
         self.increment: int = increment
