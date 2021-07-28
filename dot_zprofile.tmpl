@@ -94,37 +94,40 @@ eval $(/opt/homebrew/bin/brew shellenv)
 {{- if and (lookPath "vagrant") (lookPath "libvirtd") }}
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 {{- end }}
-{{- if lookPath "startx" }}
-if systemctl -q is-active graphical.target; then
-    if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty1" ]]; then
-        exec startx
-    # Start X server with nvidia as primary on laptop on TTY2
-    elif [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty2" ]]; then
-        _conf="xorg.conf.d/10-nvidia-drm-outputclass.conf.opt"
-        [[ -f "/etc/X11/${_conf}" ]] && exec startx -- -config "$_conf"
-    fi
-fi
-{{- end }}
-{{- if lookPath "sway" }}
-# Start Sway if on tty3
-if [[ -z "$DISPLAY" && "$(tty)" = "/dev/tty3" ]] && systemctl -q is-active graphical.target; then
-  [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-  eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-  export SSH_AUTH_SOCK
+{{- if or (lookPath "startx") (lookPath "sway") }}
+start_gui() {
+    case "$(tty)" in
+        /dev/tty1)
+            command -v startx &>/dev/null || return
+            exec startx
+            ;;
+        /dev/tty2)
+            command -v startx &>/dev/null || return
+            _conf="xorg.conf.d/10-nvidia-drm-outputclass.conf.opt"
+            [[ -f "/etc/X11/${_conf}" ]] && exec startx -- -config "$_conf"
+            ;;
+        /dev/tty3)
+            command -v sway &>/dev/null || return
+            [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+            eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+            export SSH_AUTH_SOCK
 
-  export LANG=${LANG:-en_US.UTF-8}
-  export LC_TIME=${LC_TIME:-en_GB.UTF-8}
-  export HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
+            export LANG=${LANG:-en_US.UTF-8}
+            export LC_TIME=${LC_TIME:-en_GB.UTF-8}
+            export HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
 
-  export XDG_CACHE_HOME={{ .chezmoi.homeDir }}/.cache
-  export XDG_CONFIG_HOME={{ .chezmoi.homeDir }}/.config
-  export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
-  export XDG_SESSION_DESKTOP=sway
-  export XDG_SESSION_TYPE=wayland
+            export XDG_CACHE_HOME={{ .chezmoi.homeDir }}/.cache
+            export XDG_CONFIG_HOME={{ .chezmoi.homeDir }}/.config
+            export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
+            export XDG_SESSION_DESKTOP=sway
+            export XDG_SESSION_TYPE=wayland
 
-  export MOZ_ENABLE_WAYLAND=1
-  exec sway
-fi
+            export MOZ_ENABLE_WAYLAND=1
+            exec sway
+            ;;
+    esac
+}
+[[ -z "$DISPLAY" && $(systemctl get-default) = "graphical.target" ]] && start_gui
 {{- end }}
 {{- if lookPath "gnome-keyring-daemon" }}
 if [[ -z $SSH_AUTH_SOCK ]]; then
