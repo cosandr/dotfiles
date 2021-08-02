@@ -23,6 +23,16 @@
 {{- else }}
     pushall = !git remote | xargs -L1 -I R git push R master
 {{- end }}
+    {{/* https://stackoverflow.com/a/9726638 */}}
+    cas = commit --amend --date=now -S
+    lg = log --graph --oneline --decorate
+    lga = log --graph --oneline --decorate --all
+    lgs = log --show-signature
+    rbc = rebase --continue
+    rba = rebase --abort
+    cpc = cherry-pick --continue
+    cpa = cherry-pick --abort
+    sbu = submodule update --recursive --init
 [commit]
     verbose = true
 [pull]
