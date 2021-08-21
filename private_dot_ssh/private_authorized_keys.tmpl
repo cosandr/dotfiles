@@ -1,13 +1,10 @@
 {{- if not .is.desktop }}
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOg9fiCqlSj0Xm/+rA02ecxnDYecKEnhYol6WUrM29UA andrei@desktop
-{{- end }}
-{{- if not .is.mac }}
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHwHNoM1fLrOPsuOboxUdfgPy/VscU50yjebHEIqwo7 andrei@macbook
+{{ include "private_dot_ssh/private_desktop_ed25519.pub" | trim }}
 {{- end }}
 {{- if not .is.laptop }}
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDCHMjI/tkb21/PtXRfj8VBsqGJn9TkP0+XDkw7LZ+5x andrei@laptop
+{{ include "private_dot_ssh/private_laptop_ed25519.pub" | trim }}
 {{- end }}
 {{- if and (not .is.root) (not .is.ws) }}
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJUPDGt+dT86d++/2cHASvCYBzppmrf3d6kg6uU7G+kfePZW+9/CgHMwvEgvIMrY/rtSFzqeNmhl+OFeqoXb84AOo3dG7mf9EbZTzIVJFqGNR79c2p6xZ2mXtubCZ4IokwlCvf7YAL/cyJFmftuoLYiWangTrlev7Tf4C4T37v47qZ6h6UULKPGRfclb6NTjXl5JfnusSjvsepHTq8Zn10WpS6/JcKOfMrsZw54tKj22dZDvmvRO/ntfnw/LId5nENGf4j78pqtpMBxoa5FD0sY/BrHsoZennPayq1Vb11BoJMmm1qKhfpKnYy83YG0UBvTypMOkpL47GW0+eyyBI6VOkRyVvv0Nx9gTvnEMV8RR69DJWtm5E0Hzc0E9DRzUiMe2MxtRHUtWIdrLp+zsthf6KkeUEVO1Wh+fpfHxYUFukSNxXbD44Q1VAflC6uHeSPd3FkZfts0use9naPraLGTw/p73pxjpPhoh6BUUkcRPTz7bdGxCVPh3BKBiNvIppOIUNVxYlz/6XMNeug0JT+yl+iHFX0DWqvXqb83nh9dzqPH1O308PRXE4IreOWrsRA/ethanmAk708gkP6DIQwiwOpW9to3ZZdpEKcQmfWtXSTKz6OoKoJ3H441yu5wLSuGH/QrI/pllfIInOXBhBqbvFXEbM7aTZcfBD5m0uXjw== andrei@phone
+{{ include "private_dot_ssh/private_phone_ed25519.pub" | trim }}
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHbwK8qZalHpv0GK5Qa+2DsqWN4hb1QqEnppWGQufJrTDyvV9XvKuL7nMBwc5LHuZ5MSZa5Ze8pHzEPfeyF3Xys= andrei@ipad
 {{- end }}
