@@ -16,6 +16,7 @@ start() {
         chrome) gtk-launch google-chrome ;;
         discord) gtk-launch discord ;;
         firefox) gtk-launch firefox ;;
+        firefox-work) gtk-launch firefox-work ;;
         self-mon) "$HOME"/.config/i3/self-monitoring.sh ;;
         slack) gtk-launch slack ;;
         spotify) gtk-launch spotify ;;
@@ -47,6 +48,7 @@ for i in "${!WS[@]}"; do
     grep -qi "alacritty" "${file_name}" && start alacritty &
     grep -qi "discord" "${file_name}" && start discord &
     grep -qi "firefox" "${file_name}" && start firefox &
+    grep -qi "firefox-work" "${file_name}" && start firefox-work &
     grep -qi "self-monitoring" "${file_name}" && start self-mon &
     grep -qi "server-monitoring" "${file_name}" && start srv-mon &
     grep -qi "slack" "${file_name}" && start slack &

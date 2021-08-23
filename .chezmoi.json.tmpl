@@ -63,9 +63,10 @@
       {"exec": "alacritty",            "skip_root": true,  "path": ".config/alacritty"},
       {"exec": "caddy",                "skip_root": true,  "path": ".config/caddy"},
       {"exec": "chromium",             "skip_root": true,  "path": ".config/chromium-flags.conf"},
-      {"exec": "google-chrome-stable", "skip_root": true,  "path": ".config/chrome-flags.conf"},
       {"exec": "dunst",                "skip_root": true,  "path": ".config/dunst\n.local/bin/dunst*"},
       {"exec": "feh",                  "skip_root": true,  "path": ".config/feh"},
+      {"exec": "firefox",              "skip_root": true,  "path": ".local/share/applications/firefox*"},
+      {"exec": "google-chrome-stable", "skip_root": true,  "path": ".config/chrome-flags.conf"},
       {"exec": "htop",                 "skip_root": false, "path": ".config/htop"},
       {"exec": "i3",                   "skip_root": true,  "path": ".config/i3\n.local/bin/i3*\n.local/bin/auto-lock"},
       {"exec": "kitty",                "skip_root": true,  "path": ".config/kitty"},
@@ -77,8 +78,8 @@
       {"exec": "sublime_text",         "skip_root": true,  "path": ".config/sublime-text-3"},
       {"exec": "sway",                 "skip_root": true,  "path": ".config/sway"},
       {"exec": "tmuxinator",           "skip_root": false, "path": ".config/tmuxinator"},
-      {"exec": "xrandr",               "skip_root": true,  "path": ".local/bin/xorg*"},
-      {"exec": "waybar",               "skip_root": true,  "path": ".config/waybar"}
+      {"exec": "waybar",               "skip_root": true,  "path": ".config/waybar"},
+      {"exec": "xrandr",               "skip_root": true,  "path": ".local/bin/xorg*"}
     ],
     "source": [
       "{{ .chezmoi.homeDir }}/.zprezto/init.zsh",

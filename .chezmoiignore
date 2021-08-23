@@ -32,6 +32,7 @@ Documents/
 .local/bin/*mount-c
 .local/bin/my-screenlock
 .local/bin/pavolume
+.local/share/applications
 .xinitrc
 .xprofile
 .Xresources
@@ -68,6 +69,7 @@ Documents/
 {{- end }}
 {{- if or .is.root (not .ssh.include_work) .is.ws }}
 .local/bin/ws*
+.local/share/applications/*work*
 .config/systemd/user/ws*
 {{- end }}
 {{- if or .is.root (not .ssh.include_dresrv) .is.server .is.ws }}
