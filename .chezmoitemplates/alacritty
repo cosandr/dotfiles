@@ -10,6 +10,16 @@ scrolling:
   history: 50000
   multiplier: 3
 
+hints:
+  enabled:
+    - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
+              [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+      command: {{ if .is.windows }}explorer{{ else if .is.mac }}open{{ else }}xdg-open{{ end }}
+      post_processing: true
+      mouse:
+        enabled: true
+        mods: Control
+
 font:
   normal:
     family: Fira Code
