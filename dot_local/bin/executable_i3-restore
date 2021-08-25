@@ -48,11 +48,11 @@ for i in "${!WS[@]}"; do
     grep -qi "alacritty" "${file_name}" && start alacritty &
     grep -qi "discord" "${file_name}" && start discord &
     grep -qi "firefox" "${file_name}" && start firefox &
-    grep -qi "firefox-work" "${file_name}" && start firefox-work &
     grep -qi "self-monitoring" "${file_name}" && start self-mon &
     grep -qi "server-monitoring" "${file_name}" && start srv-mon &
     grep -qi "slack" "${file_name}" && start slack &
     grep -qi "spotify" "${file_name}" && start spotify &
     grep -qi "workstation-monitoring" "${file_name}" && start ws-mon &
+    grep -qiE 'class.*firefox\S+work' "${file_name}" && start firefox-work &
     grep -qiE 'name.*google\s+chrome' "${file_name}" && start chrome &
 done
