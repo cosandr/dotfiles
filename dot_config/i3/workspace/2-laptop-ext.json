@@ -106,13 +106,12 @@
                "y": 31
             },
             "marks": [],
-            "name": "Google Chrome",
+            "name": "Firefox (Work)",
             "percent": 1,
             "swallows": [
                {
-               "class": "^Google\\-chrome$",
-               "instance": "^google\\-chrome$",
-               "window_role": "^browser$"
+               "class": "^firefox\\-work$",
+               "instance": "^Navigator$"
                }
             ],
             "type": "con"
