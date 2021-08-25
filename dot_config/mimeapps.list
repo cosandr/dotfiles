@@ -1,6 +1,6 @@
 [Added Associations]
 application/octet-stream=vim.desktop;
-application/pdf=firefox.desktop;
+application/pdf=org.gnome.Evince.desktop;firefox.desktop;
 application/vnd.ms-publisher=sublime_text.desktop;
 application/x-7z-compressed=xarchiver.desktop;
 application/x-extension-htm=firefox.desktop;
@@ -24,7 +24,7 @@ x-scheme-handler/https=firefox.desktop;
 
 [Default Applications]
 application/pcx=feh.desktop
-application/pdf=firefox.desktop
+application/pdf=org.gnome.Evince.desktop
 application/x-extension-htm=firefox.desktop
 application/x-extension-html=firefox.desktop
 application/x-extension-shtml=firefox.desktop
