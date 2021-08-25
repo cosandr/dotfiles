@@ -19,12 +19,12 @@
                 "y": 3
             },
             "marks": [],
-            "name": "Google Hangouts",
+            "name": "Google Chat",
             "percent": 0.5,
             "swallows": [
                 {
                   "class": "^Google\\-chrome$",
-                  "title": "^Google\\ Hangouts.*$",
+                  "title": "^Chat$",
                   "window_role": "^pop\\-up$"
                 }
             ],
@@ -109,10 +109,10 @@
             "name": "Firefox (Work)",
             "percent": 1,
             "swallows": [
-               {
+              {
                "class": "^firefox\\-work$",
                "instance": "^Navigator$"
-               }
+              }
             ],
             "type": "con"
         }

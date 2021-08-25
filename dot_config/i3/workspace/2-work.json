@@ -71,14 +71,14 @@
                        "y": 1092
                     },
                     "marks": [],
-                    "name": "Google Hangouts",
+                    "name": "Google Chat",
                     "percent": 0.5,
                     "swallows": [
-                       {
-                       "class": "^Google\\-chrome$",
-                       "title": "^Google\\ Hangouts.*$",
-                       "window_role": "^pop\\-up$"
-                       }
+                      {
+                        "class": "^Google\\-chrome$",
+                        "title": "^Chat$",
+                        "window_role": "^pop\\-up$"
+                      }
                     ],
                     "type": "con"
                 },

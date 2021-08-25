@@ -17,6 +17,7 @@ start() {
         discord) gtk-launch discord ;;
         firefox) gtk-launch firefox ;;
         firefox-work) gtk-launch firefox-work ;;
+        google-chat) google-chrome-stable --app='https://chat.google.com' ;;
         self-mon) "$HOME"/.config/i3/self-monitoring.sh ;;
         slack) gtk-launch slack ;;
         spotify) gtk-launch spotify ;;
@@ -55,4 +56,5 @@ for i in "${!WS[@]}"; do
     grep -qi "workstation-monitoring" "${file_name}" && start ws-mon &
     grep -qiE 'class.*firefox\S+work' "${file_name}" && start firefox-work &
     grep -qiE 'name.*google\s+chrome' "${file_name}" && start chrome &
+    grep -qiE 'name.*google\s+chat' "${file_name}" && start google-chat &
 done
