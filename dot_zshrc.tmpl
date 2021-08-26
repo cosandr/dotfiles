@@ -92,10 +92,12 @@ alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip 
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-nh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias scp-nh='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-{{- if and .is.linux (not .is.server) (not .is.root) }}
+{{- if and .is.linux (not .is.server) (not .is.root) (lookPath "bluetoothctl") }}
 alias bt-mx='bluetoothctl power on && bluetoothctl connect 04:5D:4B:52:86:4B'
 alias bt-buds='bluetoothctl power on && bluetoothctl connect F4:7D:EF:0C:BE:02'
 alias bt-jabra='bluetoothctl power on && bluetoothctl connect 30:50:75:11:EF:92'
+alias bt-edifier='bluetoothctl power on && bluetoothctl connect 60:F4:3A:71:1A:BA'
+alias bt-on='bluetoothctl power on'
 alias bt-off='bluetoothctl power off'
 {{- end }}
 {{- range $k, $v := .files }}
