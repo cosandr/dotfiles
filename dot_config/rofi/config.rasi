@@ -2,7 +2,6 @@ configuration {
 	modi: "window,run,drun";
 /*	width: 50;*/
 /*	lines: 15;*/
-	columns: 2;
 /*	font: "Noto Sans 12";*/
 /*	bw: 1;*/
 /*	location: 0;*/
