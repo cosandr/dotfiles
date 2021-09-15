@@ -102,11 +102,6 @@ start_gui() {
             exec startx
             ;;
         /dev/tty2)
-            command -v startx &>/dev/null || return
-            _conf="xorg.conf.d/10-nvidia-drm-outputclass.conf.opt"
-            [[ -f "/etc/X11/${_conf}" ]] && exec startx -- -config "$_conf"
-            ;;
-        /dev/tty3)
             command -v sway &>/dev/null || return
             [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
             eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
