@@ -84,14 +84,14 @@ bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
 
 # Common apps
 bindsym $super+$alt+b exec firefox
-bindsym $super+$alt+c exec code --enable-features=UseOzonePlatform --ozone-platform=wayland --new-window
+bindsym $super+$alt+c exec code --new-window
 bindsym $super+$alt+f exec thunar
 bindsym $super+$alt+g exec goland
 bindsym $super+$alt+p exec pycharm
 # Secondary bindings
 mode "launcher" {
     bindsym b exec chromium, mode "default"
-    bindsym c exec code --enable-features=UseOzonePlatform --ozone-platform=wayland, mode "default"
+    bindsym c exec code, mode "default"
     bindsym d exec discord, mode "default"
     bindsym g exec goland dontReopenProjects, mode "default"
     bindsym p exec pycharm dontReopenProjects, mode "default"
@@ -196,9 +196,9 @@ bindsym XF86AudioPlay exec "playerctl --ignore-player=chromium,firefox play-paus
 bindsym XF86AudioNext exec "playerctl --ignore-player=chromium,firefox next"
 bindsym XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
 
-{{- if and (stat "/sys/class/backlight/acpi_video0/brightness") (lookPath "brightnessctl") }}
-bindsym XF86MonBrightnessUp exec "brightnessctl -d acpi_video0 set 10%+"
-bindsym XF86MonBrightnessDown exec "brightnessctl -d acpi_video0 set 10%-"
+{{- if lookPath "brightnessctl" }}
+bindsym XF86MonBrightnessUp exec "brightnessctl set 10%+"
+bindsym XF86MonBrightnessDown exec "brightnessctl set 10%-"
 {{- end }}
 
 for_window [class="Pavucontrol"] floating enable; border normal
@@ -244,5 +244,9 @@ input type:touchpad {
 bar {
     swaybar_command waybar
 }
+
+output eDP-1 scale 2
+output HDMI-A-1 scale 1.5
+output DP-2 scale 1.5
 
 include /etc/sway/config.d/*
