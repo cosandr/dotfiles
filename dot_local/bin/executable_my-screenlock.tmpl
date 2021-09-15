@@ -40,6 +40,9 @@ fi
 i3lock_args="--ignore-empty-password --pass-media-keys --nofork $OPTS"
 
 case "$LOCKER" in
+    sxlock)
+        sxlock -d
+        ;;
     i3lock)
         i3lock $i3lock_args --color 303030ff
         ;;
