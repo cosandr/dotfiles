@@ -1,0 +1,194 @@
+{{- $font := default "Noto Sans 10" (env "FONT") -}}
+# set modifier
+set $super Mod4
+set $alt Mod1
+set $shift Shift
+set $ctrl Control
+
+set $up Up
+set $down Down
+set $left Left
+set $right Right
+
+# set font
+font pango: {{ $font }}
+
+# Use Mouse+$super to drag floating windows to their wanted position
+floating_modifier $super
+
+focus_follows_mouse no
+
+# No titlebars
+default_border pixel 2
+
+# Titlebars for terminals
+for_window [class="(k|Alacr)itty"] border normal 2
+# No borders for monitoring windows
+for_window [class="(k|Alacr)itty" title="\w+-monitoring"] border none
+
+# Don't need borders either
+for_window [class="Spotify"] border none
+for_window [class="discord"] border none
+{{- if lookPath "nextcloud" }}
+exec --no-startup-id nextcloud --background &
+{{- end }}
+
+{{- if lookPath "kdeconnect-cli" }}
+exec --no-startup-id /usr/lib/kdeconnectd
+bindsym $super+$alt+m exec kdeconnect-sms
+{{- end }}
+
+# toggle border
+bindsym $super+b border toggle 2
+
+# kill focused window
+bindsym $super+q kill
+bindsym --release button2 kill
+
+# start a terminal
+bindsym $super+$shift+Return exec kitty
+bindsym $super+Return exec alacritty
+# Alacritty shortcuts
+bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@DreSRV-A
+bindsym $ctrl+$alt+2 exec alacritty -e ssh root@DreSRV
+bindsym $ctrl+$alt+3 exec alacritty -e ssh andrei@dresrv.com-A
+bindsym $ctrl+$alt+4 exec alacritty -e ssh ws
+
+# Rofi binds
+bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
+bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
+
+# Common apps
+bindsym $super+$alt+b exec firefox
+bindsym $super+$alt+$shift+b exec gtk-launch firefox-work
+bindsym $super+$alt+c exec code --new-window
+bindsym $super+$alt+f exec thunar
+bindsym $super+$alt+g exec goland
+bindsym $super+$alt+p exec pycharm
+# Secondary bindings
+mode "launcher" {
+    bindsym b exec chromium, mode "default"
+    bindsym c exec code, mode "default"
+    bindsym d exec discord, mode "default"
+    bindsym g exec goland dontReopenProjects, mode "default"
+    bindsym p exec pycharm dontReopenProjects, mode "default"
+    bindsym w exec firefox -P ws --no-remote, mode "default"
+    bindsym r exec firefox -P romrt --no-remote, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $super+$alt+r mode "launcher"
+
+# change focus
+bindsym $super+$left focus left
+bindsym $super+$down focus down
+bindsym $super+$up focus up
+bindsym $super+$right focus right
+
+# move focused window
+bindsym $super+$shift+$left move left
+bindsym $super+$shift+$down move down
+bindsym $super+$shift+$up move up
+bindsym $super+$shift+$right move right
+
+# split in horizontal orientation
+bindsym $super+h split h
+
+# split in vertical orientation
+bindsym $super+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $super+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $super+s layout stacking
+bindsym $super+w layout tabbed
+bindsym $super+e layout toggle split
+
+# toggle tiling / floating
+bindsym $super+space floating toggle
+
+# focus the parent container
+bindsym $super+a focus parent
+
+# focus the child container
+bindsym $super+$shift+a focus child
+
+# move the currently focused window to the scratchpad
+bindsym $super+$shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $super+minus scratchpad show
+
+# Lock screen
+bindsym $super+l exec "$HOME/.local/bin/my-screenlock"
+
+# switch to workspace
+bindsym $super+Tab workspace next
+bindsym $super+$shift+$ctrl+h move workspace to output left
+bindsym $super+$shift+$ctrl+j move workspace to output down
+bindsym $super+$shift+$ctrl+k move workspace to output up
+bindsym $super+$shift+$ctrl+l move workspace to output right
+bindsym $super+$shift+$alt+h move container to output left
+bindsym $super+$shift+$alt+j move container to output down
+bindsym $super+$shift+$alt+k move container to output up
+bindsym $super+$shift+$alt+l move container to output right
+bindsym $super+$shift+n move window to workspace next
+{{- range $i := (list 1 2 3 4 5 6 7 8 9) }}
+bindsym $super+{{ $i }} workspace {{ $i }}
+bindsym $super+$shift+{{ $i }} move container to workspace {{ $i }}; workspace {{ $i }}
+{{- end }}
+
+# resize window
+mode "resize" {
+    # Big steps
+    bindsym $left resize shrink width 20 px or 5 ppt
+    bindsym $down resize shrink height 20 px or 5 ppt
+    bindsym $up resize grow height 20 px or 5 ppt
+    bindsym $right resize grow width 20 px or 5 ppt
+    # Fine adjustment
+    bindsym $shift+$left resize shrink width 5 px
+    bindsym $shift+$down resize shrink height 5 px
+    bindsym $shift+$up resize grow height 5 px
+    bindsym $shift+$right resize grow width 5 px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $super+r mode "resize"
+
+
+##### Pulse Audio controls #####
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 1
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 1
+bindsym XF86AudioMute exec --no-startup-id pamixer -t
+
+##### Media controls #####
+bindsym XF86AudioPlay exec "playerctl --ignore-player=chromium,firefox play-pause"
+bindsym XF86AudioNext exec "playerctl --ignore-player=chromium,firefox next"
+bindsym XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
+
+{{- if lookPath "brightnessctl"}}
+{{- if stat "/sys/class/backlight/acpi_video0/brightness" }}
+bindsym XF86MonBrightnessUp exec "brightnessctl -d acpi_video0 set 10%+"
+bindsym XF86MonBrightnessDown exec "brightnessctl -d acpi_video0 set 10%-"
+{{- else }}
+bindsym XF86MonBrightnessUp exec "brightnessctl set 10%+"
+bindsym XF86MonBrightnessDown exec "brightnessctl set 10%-"
+{{- end }}
+{{- end }}
+
+for_window [class="Pavucontrol"] floating enable; border normal
+for_window [class="jetbrains-toolbox"] floating enable; border none
+for_window [class="gnome-calculator"] floating enable; border none
+# Jetbrains splash window
+for_window [class="jetbrains-\w+" title="^win0$"] floating enable; border none
+for_window [class="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enable; border none
+# Evaluation window
+for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
+# PiP
+for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
+# Hangouts
+# for_window [class="(chromium|[Gg]oogle-[Cc]hrome)" title="(?i)^google\s+hangouts.*$"] floating enable; border none
