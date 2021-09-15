@@ -122,6 +122,8 @@ start_gui() {
             export XDG_SESSION_DESKTOP=sway
             export XDG_SESSION_TYPE=wayland
 
+            {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
+
             export MOZ_ENABLE_WAYLAND=1
             exec sway
             ;;

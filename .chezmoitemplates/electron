@@ -1,0 +1,4 @@
+{{- if eq .type "wayland" }}
+--enable-features=UseOzonePlatform
+--ozone-platform=wayland
+{{- end }}

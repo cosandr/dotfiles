@@ -36,6 +36,8 @@ export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
 export XDG_SESSION_DESKTOP=i3
 export XDG_SESSION_TYPE=x11
 
+{{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
+
 [[ -n $QT_AUTO_SCREEN_SCALE_FACTOR ]] && export QT_AUTO_SCREEN_SCALE_FACTOR
 [[ -n $QT_SCALE_FACTOR ]] && export QT_SCALE_FACTOR
 [[ -n $GDK_SCALE ]] && export GDK_SCALE

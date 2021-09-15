@@ -1,3 +1,7 @@
 --ignore-gpu-blocklist
 --use-gl={{ if lookPath "nvidia-smi" }}desktop{{ else }}egl{{ end }}
 --enable-accelerated-video-decode
+{{- if eq .type "wayland" }}
+--enable-features=UseOzonePlatform
+--ozone-platform=wayland
+{{- end }}
