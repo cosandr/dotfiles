@@ -61,7 +61,7 @@ fi
 # Some presets
 conf_dpi() {
     case $1 in
-        196)
+        192)
             export HEIGHT="60"
             export FONT_0="Noto Sans:size=22;2"
             export FONT_1="Noto Color Emoji:pixelsize=22:style=Regular:scale=10;4"
