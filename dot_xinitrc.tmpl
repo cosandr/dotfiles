@@ -46,6 +46,6 @@ export XDG_SESSION_TYPE=x11
 
 {{ .chezmoi.homeDir }}/.local/bin/xorg-conf
 
-dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK
+dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
 exec $HOME/.local/bin/i3-launch

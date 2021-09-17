@@ -3,8 +3,13 @@
 # https://github.com/oakszyjrnrdy/betterlockscreen_rapid
 # https://github.com/pavanjadhaw/betterlockscreen/commit/643ea70aa77686ebe84889943a258b890dffe2fb
 
+# Do nothing if running from systemd and swayidle is running
+[[ $SYSTEMD_SUSPEND -eq 1 ]] && pgrep -u {{ .chezmoi.username }} swayidle && exit 0
+
 OPTS=""
 LOCKER=${LOCKER:-{{ if lookPath "i3lock-fancy-rapid"}}i3lock-fancy-rapid{{ else }}i3lock{{ end }}}
+WAYLAND_OPTS=${WAYLAND_OPTS:-"-i $HOME/.wallpaper"}
+WAYLAND_LOCKER=${WAYLAND_LOCKER:-swaylock}
 
 insidecolor='00000000'
 ringcolor='ffffffff'
@@ -25,6 +30,14 @@ xpos={{- if .is.desktop }}"w+x"{{- else }}"x"{{- end }}
 ypos={{- if .is.desktop }}"y+h"{{- else }}"h"{{- end }}
 
 [[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
+
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    case "$WAYLAND_LOCKER" in
+        swaylock)
+            swaylock $WAYLAND_OPTS
+    esac
+    exit 0
+fi
 
 if [[ ! $idle_hook =~ screen_on ]]; then
     default_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")

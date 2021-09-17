@@ -117,9 +117,12 @@ start_gui() {
             export XDG_SESSION_DESKTOP=sway
             export XDG_SESSION_TYPE=wayland
 
+            export MOZ_ENABLE_WAYLAND=1
+            export MOZ_USE_XINPUT2=1
+
             {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
 
-            export MOZ_ENABLE_WAYLAND=1
+            dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
             exec sway
             ;;
     esac

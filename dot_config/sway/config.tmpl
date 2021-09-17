@@ -9,7 +9,8 @@ exec swayidle -w \
     timeout 10 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
 	timeout 590 '$HOME/.local/bin/my-screenlock' \
 	timeout 600 'swaymsg "output * dpms off"' \
-	resume 'swaymsg "output * dpms on"'
+	resume 'swaymsg "output * dpms on"' \
+    before-sleep '$HOME/.local/bin/my-screenlock'
 
 # Needs swaybg
 output "*" bg $HOME/.wallpaper fill
@@ -34,5 +35,10 @@ bar {
 output eDP-1 scale 2
 output HDMI-A-1 scale 1.5
 output DP-2 scale 1.5
+
+# Home
+output eDP-1 scale 2
+output 'Acer Technologies XV273K 0x0000CFF9' scale 1.5 pos 1920,1440 mode 3840x2160@120Hz
+output 'Samsung Electric Company U24E850 HTHH300363' scale 1.5 pos 1920,0
 
 include /etc/sway/config.d/*
