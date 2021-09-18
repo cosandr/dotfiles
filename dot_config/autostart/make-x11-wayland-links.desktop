@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=MakeLinks
+GenericName=Prepare for X11 or Wayland session
+Comment=Prepare for X11 or Wayland session
+Exec={{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true

@@ -38,6 +38,22 @@ Documents/
 .xprofile
 .Xresources
 {{- end }} {{/* if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) */}}
+{{- if not (eq .session_desktop "i3" "sway") }}
+.config/mimeapps.list
+.config/override
+.local/bin/auto-lock
+.local/bin/*-launch
+.local/bin/i3*
+.local/bin/my-screenlock
+.local/bin/pavolume
+.local/bin/rofi*
+.local/bin/xorg*
+.xinitrc
+.xprofile
+.Xresources
+{{- else }}
+.config/autostart
+{{- end }} {{/* if not (eq .session_desktop "i3" "sway") */}}
 {{- if or (not (lookPath "caddy")) (.no_tunnel) }}
 .config/caddy
 .config/systemd/user/caddy.service

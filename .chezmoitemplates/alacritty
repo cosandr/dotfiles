@@ -3,7 +3,7 @@ env:
   TERM: xterm-256color
 
 window:
-  decorations: {{ if or .is.windows .is.mac }}full{{ else }}none{{ end }}
+  decorations: {{ if or .is.windows .is.mac (not (eq .sess "i3" "sway")) }}full{{ else }}none{{ end }}
   dynamic_title: true
 
 scrolling:
