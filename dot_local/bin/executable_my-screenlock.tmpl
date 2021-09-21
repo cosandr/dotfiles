@@ -50,14 +50,21 @@ if [[ ! $idle_hook =~ screen_on ]]; then
     xset dpms "$lock_timeout"
 fi
 
-i3lock_args="--ignore-empty-password --pass-media-keys --nofork $OPTS"
+# Check if we have i3lock-color
+if [[ $(i3lock --version 2>&1) =~ "Raymond Li" ]]; then
+    i3lock_color="303030ff"
+    i3lock_args="--ignore-empty-password --pass-media-keys --nofork $OPTS"
+else
+    i3lock_color="303030"
+    i3lock_args="--ignore-empty-password --nofork $OPTS"
+fi
 
 case "$LOCKER" in
     sxlock)
         sxlock -d
         ;;
     i3lock)
-        i3lock $i3lock_args --color 303030ff
+        i3lock $i3lock_args --color "$i3lock_color"
         ;;
     i3lock-fancy-rapid)
         radius=6
