@@ -5,6 +5,7 @@ env:
 window:
   decorations: {{ if or .is.windows .is.mac (not (eq .sess "i3" "sway")) }}full{{ else }}none{{ end }}
   dynamic_title: true
+  opacity: 1.0
 
 scrolling:
   history: 50000
@@ -84,8 +85,6 @@ bell:
  animation: EaseOutExpo
 # duration: 0
  color: '#ffffff'
-
-background_opacity: 1.0
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
