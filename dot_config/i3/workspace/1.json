@@ -21,8 +21,8 @@
             "percent": null,
             "swallows": [
                {
-               "class": "^firefox$",
-               "instance": "^Navigator$"
+               "class": "(?i)^firefox$",
+               "instance": "(?i)^navigator$"
                }
             ],
             "type": "con"

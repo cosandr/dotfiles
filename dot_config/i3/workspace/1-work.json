@@ -32,8 +32,8 @@
                     "percent": 0.333333333333333,
                     "swallows": [
                        {
-                       "class": "^firefox$",
-                       "instance": "^Navigator$"
+                       "class": "(?i)^firefox$",
+                       "instance": "(?i)^navigator$"
                        }
                     ],
                     "type": "con"
@@ -53,8 +53,8 @@
                     "percent": 0.333333333333333,
                     "swallows": [
                        {
-                        "class": "^firefox\\-work$",
-                        "instance": "^Navigator$"
+                        "class": "(?i)^firefox\\-work$",
+                        "instance": "(?i)^navigator$"
                        }
                     ],
                     "type": "con"
