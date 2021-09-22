@@ -3,6 +3,9 @@
 
 ### Sway specific ###
 
+# Needs wl-clipboard grim slurp
+bindsym $super+$shift+s --release exec grim -g "$(slurp)" - | wl-copy
+
 bindsym $super+Pause exec sleep 1 && swaymsg "output * dpms off"
 
 exec swayidle -w \

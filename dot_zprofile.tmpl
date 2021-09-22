@@ -123,7 +123,7 @@ start_gui() {
             {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
 
             dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
-            exec sway
+            exec sway &> ~/.cache/sway.log
             ;;
     esac
 }
