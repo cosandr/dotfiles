@@ -30,12 +30,12 @@
         "memory",
         "cpu",
         "temperature",
+        "custom/switchaudio",
         "pulseaudio",
         "custom/keyboard-layout",
         "battery",
         "tray",
-        "clock#date",
-        "clock#time"
+        "custom/clock"
     ],
 
 
@@ -63,18 +63,6 @@
         "tooltip": true
     },
 
-    "clock#time": {
-        "interval": 1,
-        "format": "{:%H:%M}",
-        "tooltip": false
-    },
-
-    "clock#date": {
-      "interval": 10,
-      "format": "  {:%e %b %Y}", // Icon: calendar-alt
-      "tooltip-format": "{:%e %B %Y}"
-    },
-
     "cpu": {
         "interval": 5,
         "format": "  {usage}% ({load})", // Icon: microchip
@@ -82,6 +70,11 @@
           "warning": 70,
           "critical": 90
         }
+    },
+
+    "custom/clock": {
+        "exec": "date +'%a %d %b   %H:%M'",
+        "interval": 60
     },
 
     "custom/keyboard-layout": {
@@ -92,6 +85,14 @@
       // Signal sent by Sway key binding (~/.config/sway/key-bindings)
       "signal": 1, // SIGHUP
       "tooltip": false
+    },
+
+    "custom/switchaudio": {
+        "format": "{}",
+        "interval": "once",
+        "exec": "PYTHONUNBUFFERED=1 $HOME/.config/polybar/scripts/toggle-input.py",
+        "on-click": "pkill -HUP -u andrei -f toggle-input.py",
+        "on-click-right": "pavucontrol"
     },
 
     "memory": {
@@ -124,7 +125,7 @@
             "car": "", // Icon: car
             "default": ["", ""] // Icons: volume-down, volume-up
         },
-        "on-click": "alacritty --title='Sound Mixer' --command='pulsemixer'",
+        "on-click-right": "pavucontrol",
         "tooltip": true
     },
 
