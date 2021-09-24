@@ -69,6 +69,12 @@
     padding-left: 8px;
     padding-right: 8px;
 }
+#custom-clock {
+    padding-right: 8px;
+}
+#custom-scratchpad-indicator {
+    padding-right: 8px;
+}
 
 
 /* -----------------------------------------------------------------------------
@@ -154,10 +160,6 @@
     /* No styles */
 }
 
-#custom-spotify {
-    color: rgb(102, 220, 105);
-}
-
 #temperature {
     /* No styles */
 }
@@ -180,8 +182,8 @@
     border-bottom: 2px solid transparent;
     /* To compensate for the top border and still have vertical centering */
     padding-top: 2px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
     color: #888888;
 }
 
