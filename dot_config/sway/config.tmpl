@@ -6,25 +6,32 @@
 # Needs wl-clipboard grim slurp
 bindsym $super+$shift+s --release exec grim -g "$(slurp)" - | wl-copy
 
-bindsym $super+Pause exec sleep 1 && swaymsg "output * dpms off"
+bindsym $super+Pause exec sleep 1 && swaymsg output '*' dpms off
+bindsym $super+KP_Subtract exec sleep 1 && swaymsg output '*' dpms off
+bindsym --locked $super+$shift+KP_Enter exec swaymsg output '*' dpms on
 
 exec swayidle -w \
-    timeout 10 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
+    timeout 10 'if pgrep -x swaylock; then swaymsg output "*" dpms off; fi' \
 	timeout 590 '$HOME/.local/bin/my-screenlock' \
-	timeout 600 'swaymsg "output * dpms off"' \
-	resume 'swaymsg "output * dpms on"' \
-    before-sleep '$HOME/.local/bin/my-screenlock'
+	timeout 600 'swaymsg output "*" dpms off' \
+	resume 'swaymsg output "*" dpms on' \
+    before-sleep '$HOME/.local/bin/my-screenlock' \
+    after-resume 'swaymsg output "*" dpms on'
 
-exec kanshi
+exec_always pkill kanshi && kanshi
 
 # Needs swaybg
 output "*" bg $HOME/.wallpaper fill
 
-bindsym $super+Shift+r reload
+bindsym $super+$shift+r reload
 
 bindsym $super+$shift+e exec "swaynag -f 'pango:{{ $font_nag }}' -t warning -m 'Exit sway?' -b 'Yes' 'swaymsg exit'"
 
-input * xkb_numlock enable
+input * {
+    xkb_numlock enable
+    xkb_layout "us,no"
+    xkb_options "grp:rctrl_rshift_toggle"
+}
 
 input type:touchpad {
     dwt enabled

@@ -32,6 +32,7 @@ ypos={{- if .is.desktop }}"y+h"{{- else }}"h"{{- end }}
 [[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    trap 'swaymsg output "*" dpms on' EXIT
     case "$WAYLAND_LOCKER" in
         swaylock)
             swaylock $WAYLAND_OPTS
