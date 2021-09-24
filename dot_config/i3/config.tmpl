@@ -3,6 +3,10 @@
 
 ### i3 specific ###
 
+# Rofi binds
+bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
+bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
+
 exec --no-startup-id systemctl --user start xsession.target
 exec --no-startup-id $HOME/.local/bin/auto-lock &
 exec --no-startup-id picom -b

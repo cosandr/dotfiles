@@ -3,8 +3,10 @@
 
 ### Sway specific ###
 
+bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun
+
 # Needs wl-clipboard grim slurp
-bindsym $super+$shift+s --release exec grim -g "$(slurp)" - | wl-copy
+bindsym --release $super+$shift+s exec grim -g "$(slurp)" - | wl-copy
 
 bindsym $super+Pause exec sleep 1 && swaymsg output '*' dpms off
 bindsym $super+KP_Subtract exec sleep 1 && swaymsg output '*' dpms off
