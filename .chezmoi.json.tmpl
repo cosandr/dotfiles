@@ -71,7 +71,7 @@
       {"exec": "google-chrome-stable", "skip_root": true,  "path": ".config/chrome-flags.conf\n.local/share/applications/google-chrome*\n.local/bin/google-chrome*"},
       {"exec": "htop",                 "skip_root": false, "path": ".config/htop"},
       {"exec": "i3",                   "skip_root": true,  "path": ".config/i3\n.local/bin/i3*\n.local/bin/auto-lock"},
-      {"exec": "kanshi",               "skip_root": true,  "path": ".config/kanshi"},
+      {"exec": "kanshi",               "skip_root": true,  "path": ".config/kanshi\n.config/systemd/user/kanshi.service"},
       {"exec": "kitty",                "skip_root": true,  "path": ".config/kitty"},
       {"exec": "nvim",                 "skip_root": false, "path": ".config/nvim"},
       {"exec": "picom",                "skip_root": true,  "path": ".config/picom.conf"},
@@ -80,7 +80,8 @@
       {"exec": "rofi",                 "skip_root": true,  "path": ".config/rofi\n.local/bin/rofi*"},
       {"exec": "slack",                "skip_root": true,  "path": ".local/share/applications/slack*\n.local/bin/slack"},
       {"exec": "sublime_text",         "skip_root": true,  "path": ".config/sublime-text-3"},
-      {"exec": "sway",                 "skip_root": true,  "path": ".config/sway"},
+      {"exec": "sway",                 "skip_root": true,  "path": ".config/sway\n.config/systemd/user/sway-session.target"},
+      {"exec": "swayidle",             "skip_root": true,  "path": ".config/systemd/user/swayidle.service"},
       {"exec": "tmuxinator",           "skip_root": false, "path": ".config/tmuxinator"},
       {"exec": "waybar",               "skip_root": true,  "path": ".config/waybar"},
       {"exec": "xrandr",               "skip_root": true,  "path": ".local/bin/xorg*"}
