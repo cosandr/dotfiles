@@ -18,11 +18,11 @@ start() {
         firefox) gtk-launch firefox ;;
         firefox-work) gtk-launch firefox-work ;;
         google-chat) google-chrome-stable --app='https://chat.google.com' ;;
-        self-mon) "$HOME"/.config/i3/self-monitoring.sh ;;
+        self-mon) "$HOME"/.local/bin/self-mon ;;
         slack) gtk-launch slack ;;
         spotify) gtk-launch spotify ;;
-        srv-mon) "$HOME"/.config/i3/server-monitoring.sh ;;
-        ws-mon) "$HOME"/.config/i3/workstation-monitoring.sh ;;
+        srv-mon) "$HOME"/.local/bin/dresrv-mon ;;
+        ws-mon) "$HOME"/.local/bin/ws-mon ;;
     esac
 }
 
