@@ -1,3 +1,2 @@
 feh --auto-zoom \
-    --image-bg black \
-    --auto-reload
+    --image-bg black
