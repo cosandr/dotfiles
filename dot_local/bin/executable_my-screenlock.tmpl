@@ -8,7 +8,6 @@
 
 OPTS=""
 LOCKER=${LOCKER:-{{ if lookPath "i3lock-fancy-rapid"}}i3lock-fancy-rapid{{ else }}i3lock{{ end }}}
-WAYLAND_OPTS=${WAYLAND_OPTS:-"-i $HOME/.wallpaper"}
 WAYLAND_LOCKER=${WAYLAND_LOCKER:-swaylock}
 
 insidecolor='00000000'
@@ -33,6 +32,12 @@ ypos={{- if .is.desktop }}"y+h"{{- else }}"h"{{- end }}
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     trap 'swaymsg output "*" dpms on' EXIT
+    # We have swaylock-effects
+    if [[ $(swaylock --help 2>&1) =~ "--screenshots" ]]; then
+        WAYLAND_OPTS=${WAYLAND_OPTS:-"-i $HOME/.wallpaper --clock --indicator --effect-blur 7x5 --effect-vignette 0.5:0.5 --grace 2"}
+    else
+        WAYLAND_OPTS=${WAYLAND_OPTS:-"-i $HOME/.wallpaper"}
+    fi
     case "$WAYLAND_LOCKER" in
         swaylock)
             swaylock $WAYLAND_OPTS
