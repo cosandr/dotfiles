@@ -18,7 +18,7 @@ install-caddy.sh
 Library/
 .local/bin/tilde-switch*
 {{- else }}
-.config/chrome-flags.conf
+.config/chrome-flags*.conf
 Library/Preferences/com.googlecode.iterm2.plist
 {{- end }} {{/* if not .is.mac */}}
 AppData/
@@ -26,11 +26,13 @@ Documents/
 {{- if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
+.config/electron-flags*.conf
 .config/mimeapps.list
 .config/systemd
 .config/tmuxinator/htop-journal.yml
 .fonts
 .local/bin/*mount-c
+.local/bin/make-x11-wayland-links
 .local/bin/my-screenlock
 .local/bin/pavolume
 .local/share/applications
