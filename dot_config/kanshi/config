@@ -9,7 +9,7 @@ profile {
 }
 
 profile {
-    output eDP-1 scale 2 position 0,0
-    output "Acer Technologies XV273K 0x0000CFF9" scale 1.5 position 1920,1440 mode 3840x2160@120Hz
+    output eDP-1 scale 2 position 0,1800
+    output "Acer Technologies XV273K 0x0000CFF9" scale 1.5 position 1920,1440 mode 3840x2160@119.910Hz
     output "Samsung Electric Company U24E850 HTHH300363" scale 1.5 position 1920,0
 }
