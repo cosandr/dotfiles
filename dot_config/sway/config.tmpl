@@ -3,6 +3,18 @@
 
 ### Sway specific ###
 
+for_window [app_id="pavucontrol"] floating enable; border normal
+for_window [app_id="jetbrains-toolbox"] floating enable; border none
+for_window [app_id="gnome-calculator"] floating enable; border none
+for_window [app_id="discord" title="Discord Updater"] floating enable; border none
+# Jetbrains splash window
+for_window [app_id="jetbrains-\w+" title="^win0$"] floating enable; border none
+for_window [app_id="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enable; border none
+# Evaluation window
+for_window [app_id="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
+# PiP
+for_window [app_id="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
+
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
 bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun

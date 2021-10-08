@@ -3,6 +3,17 @@
 
 ### i3 specific ###
 
+for_window [class="Pavucontrol"] floating enable; border normal
+for_window [class="jetbrains-toolbox"] floating enable; border none
+for_window [class="gnome-calculator"] floating enable; border none
+# Jetbrains splash window
+for_window [class="jetbrains-\w+" title="^win0$"] floating enable; border none
+for_window [class="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enable; border none
+# Evaluation window
+for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
+# PiP
+for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
+
 # Rofi binds
 bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
 bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
