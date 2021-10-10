@@ -1,0 +1,73 @@
+#!/bin/bash
+
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+
+[[ -f ~/.config/override/gui ]] && source ~/.config/override/gui
+
+START_CMD=${START_CMD:-"$1"}
+
+if [[ -z $START_CMD ]]; then
+    if command -v sway &>/dev/null; then
+        START_CMD=sway
+    elif command -v startx &>/dev/null; then
+        START_CMD=startx
+    else
+        echo "No supported WM installed"
+        exit 1
+    fi
+elif ! command -v "$START_CMD" &>/dev/null; then
+    echo "$START_CMD not found"
+    exit 1
+fi
+
+LANG=${LANG:-"en_US.UTF-8"}
+LC_TIME=${LC_TIME:-"en_GB.UTF-8"}
+HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
+QT_QPA_PLATFORMTHEME=${QT_QPA_PLATFORMTHEME:-"qt5ct"}
+
+# Nvidia OC
+if command -v nvidia-settings &>/dev/null; then
+    NVIDIA_CORE_OFFSET=${NVIDIA_CORE_OFFSET:-0}
+    NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-0}
+    # Only run if one of them is non-zero
+    [[ $NVIDIA_CORE_OFFSET -ne 0 || $NVIDIA_MEM_OFFSET -ne 0 ]] && nvidia-settings \
+        -a "[gpu:0]/GPUGraphicsClockOffsetAllPerformanceLevels=$NVIDIA_CORE_OFFSET" \
+        -a "[gpu:0]/GPUMemoryTransferRateOffsetAllPerformanceLevels=$NVIDIA_MEM_OFFSET"
+fi
+
+export HOSTNAME
+export LANG
+export LC_TIME
+export SSH_AUTH_SOCK
+export QT_QPA_PLATFORMTHEME
+
+export XDG_CACHE_HOME={{ .chezmoi.homeDir }}/.cache
+export XDG_CONFIG_HOME={{ .chezmoi.homeDir }}/.config
+export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
+
+[[ -n $QT_AUTO_SCREEN_SCALE_FACTOR ]] && export QT_AUTO_SCREEN_SCALE_FACTOR
+[[ -n $QT_SCALE_FACTOR ]] && export QT_SCALE_FACTOR
+[[ -n $GDK_SCALE ]] && export GDK_SCALE
+[[ -n $GDK_DPI_SCALE ]] && export GDK_DPI_SCALE
+[[ -n $MOZ_X11_EGL ]] && export MOZ_X11_EGL
+
+dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
+
+case "$START_CMD" in
+    startx)
+        export XDG_SESSION_DESKTOP=i3
+        export XDG_SESSION_TYPE=x11
+        {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
+        exec startx &> ~/.cache/startx.log
+        ;;
+    sway)
+        [[ -f ~/.config/override/sway ]] && source ~/.config/override/sway
+        export XDG_SESSION_DESKTOP=sway
+        export XDG_SESSION_TYPE=wayland
+        {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
+        exec sway &> ~/.cache/sway.log
+        ;;
+    *)
+        echo "Unknown command $START_CMD"
+        exit 1
+esac

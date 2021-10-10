@@ -26,6 +26,8 @@ Library/
 .local/bin/code
 .local/bin/discord
 .local/bin/self-mon
+.local/bin/slack
+.local/bin/start-gui
 .local/bin/xorg-*
 Library/Preferences/com.googlecode.iterm2.plist
 {{- end }} {{/* if not .is.mac */}}

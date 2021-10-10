@@ -95,39 +95,7 @@ eval $(/opt/homebrew/bin/brew shellenv)
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 {{- end }}
 {{- if or (lookPath "startx") (lookPath "sway") }}
-start_gui() {
-    case "$(tty)" in
-        /dev/tty1)
-            command -v startx &>/dev/null || return
-            exec startx
-            ;;
-        /dev/tty2)
-            command -v sway &>/dev/null || return
-            [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-            eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-            export SSH_AUTH_SOCK
-
-            export LANG=${LANG:-en_US.UTF-8}
-            export LC_TIME=${LC_TIME:-en_GB.UTF-8}
-            export HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
-
-            export XDG_CACHE_HOME={{ .chezmoi.homeDir }}/.cache
-            export XDG_CONFIG_HOME={{ .chezmoi.homeDir }}/.config
-            export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
-            export XDG_SESSION_DESKTOP=sway
-            export XDG_SESSION_TYPE=wayland
-
-            export MOZ_ENABLE_WAYLAND=1
-            export MOZ_USE_XINPUT2=1
-
-            {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
-
-            dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
-            exec sway &> ~/.cache/sway.log
-            ;;
-    esac
-}
-[[ -z "$DISPLAY" && $(systemctl get-default) = "graphical.target" ]] && start_gui
+[[ -z "$DISPLAY" && $(systemctl get-default) = "graphical.target" && "$(tty)" = /dev/tty1 ]] && exec ~/.local/bin/start-gui &> ~/.cache/start-gui.log
 {{- end }}
 {{- if lookPath "gnome-keyring-daemon" }}
 if [[ -z $SSH_AUTH_SOCK ]]; then

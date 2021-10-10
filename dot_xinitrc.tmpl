@@ -2,50 +2,14 @@
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-
 [[ -f ~/.config/override/xinitrc ]] && source ~/.config/override/xinitrc
-LANG=${LANG:-"en_US.UTF-8"}
-LC_TIME=${LC_TIME:-"en_GB.UTF-8"}
-HOSTNAME=${HOSTNAME:-"{{ .chezmoi.hostname }}"}
-QT_QPA_PLATFORMTHEME=${QT_QPA_PLATFORMTHEME:-"qt5ct"}
 
 # Set mouse sensitivity
 if [[ -n $MOUSE_NAME && -n $MOUSE_SENS ]]; then
     xinput set-prop "$MOUSE_NAME" 'libinput Accel Speed' "$MOUSE_SENS"
 fi
-# Nvidia OC
-if command -v nvidia-settings &>/dev/null; then
-    NVIDIA_CORE_OFFSET=${NVIDIA_CORE_OFFSET:-0}
-    NVIDIA_MEM_OFFSET=${NVIDIA_MEM_OFFSET:-0}
-    # Only run if one of them is non-zero
-    [[ $NVIDIA_CORE_OFFSET -ne 0 || $NVIDIA_MEM_OFFSET -ne 0 ]] && nvidia-settings \
-        -a "[gpu:0]/GPUGraphicsClockOffsetAllPerformanceLevels=$NVIDIA_CORE_OFFSET" \
-        -a "[gpu:0]/GPUMemoryTransferRateOffsetAllPerformanceLevels=$NVIDIA_MEM_OFFSET"
-fi
-
-export HOSTNAME
-export LANG
-export LC_TIME
-export SSH_AUTH_SOCK
-export QT_QPA_PLATFORMTHEME
-
-export XDG_CACHE_HOME={{ .chezmoi.homeDir }}/.cache
-export XDG_CONFIG_HOME={{ .chezmoi.homeDir }}/.config
-export XDG_DATA_HOME={{ .chezmoi.homeDir }}/.local/share
-export XDG_SESSION_DESKTOP=i3
-export XDG_SESSION_TYPE=x11
-
-{{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
-
-[[ -n $QT_AUTO_SCREEN_SCALE_FACTOR ]] && export QT_AUTO_SCREEN_SCALE_FACTOR
-[[ -n $QT_SCALE_FACTOR ]] && export QT_SCALE_FACTOR
-[[ -n $GDK_SCALE ]] && export GDK_SCALE
-[[ -n $GDK_DPI_SCALE ]] && export GDK_DPI_SCALE
-[[ -n $MOZ_X11_EGL ]] && export MOZ_X11_EGL
 
 {{ .chezmoi.homeDir }}/.local/bin/xorg-conf
 
-dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
 exec $HOME/.local/bin/i3-launch
