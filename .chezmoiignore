@@ -19,6 +19,14 @@ Library/
 .local/bin/tilde-switch*
 {{- else }}
 .config/chrome-flags*.conf
+.config/chromium-flags*.conf
+.config/electron-flags*.conf
+.local/bin/*-sshfs
+.local/bin/*-wait-online
+.local/bin/code
+.local/bin/discord
+.local/bin/self-mon
+.local/bin/xorg-*
 Library/Preferences/com.googlecode.iterm2.plist
 {{- end }} {{/* if not .is.mac */}}
 AppData/
