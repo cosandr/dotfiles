@@ -1,7 +1,11 @@
 {{- $font_nag := default "Noto Sans 14" (env "FONT_NAG") -}}
-{{ template "i3-sway" }}
+{{ template "i3-sway" "sway" }}
 
 ### Sway specific ###
+
+titlebar_border_thickness 1
+titlebar_padding 5 2
+smart_borders on
 
 for_window [app_id="pavucontrol"] floating enable; border normal
 for_window [app_id="jetbrains-toolbox"] floating enable; border none
@@ -30,7 +34,7 @@ bindsym --locked $super+$shift+KP_Enter exec swaymsg output '*' dpms on
 # Needs swaybg
 output "*" bg $HOME/.wallpaper fill
 
-bindsym $super+$shift+r reload
+bindsym $super+$shift+r exec swaymsg reload && systemctl --user restart kanshi.service
 
 bindsym $super+$shift+e exec "swaynag -f 'pango:{{ $font_nag }}' -t warning -m 'Exit sway?' -b 'Yes' 'swaymsg exit'"
 
