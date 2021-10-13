@@ -1,0 +1,10 @@
+[Unit]
+Description=Swayidle daemon
+BindsTo=sway-session.target
+
+[Service]
+Type=simple
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/swayidle
+
+[Install]
+WantedBy=sway-session.target

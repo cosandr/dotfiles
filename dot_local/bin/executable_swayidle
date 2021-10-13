@@ -1,0 +1,20 @@
+#!/bin/sh
+
+SCREEN_ON=${SCREEN_ON:-0}
+
+[ -f ~/.config/override/swayidle ] && . ~/.config/override/swayidle
+
+# shellcheck disable=SC2016
+if [ "$SCREEN_ON" -eq 1 ]; then
+    exec swayidle -w \
+        timeout 600 '${HOME}/.local/bin/my-screenlock' \
+        before-sleep '${HOME}/.local/bin/my-screenlock'
+else
+    exec swayidle -w \
+        timeout 10 'if pgrep -x swaylock; then swaymsg output "*" dpms off; fi' \
+        timeout 590 '${HOME}/.local/bin/my-screenlock' \
+        timeout 600 'swaymsg output "*" dpms off' \
+        resume 'swaymsg output "*" dpms on' \
+        before-sleep '${HOME}/.local/bin/my-screenlock' \
+        after-resume 'swaymsg output "*" dpms on'
+fi
