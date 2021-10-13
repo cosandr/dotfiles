@@ -6,11 +6,11 @@ SCREEN_ON=${SCREEN_ON:-0}
 
 # shellcheck disable=SC2016
 if [ "$SCREEN_ON" -eq 1 ]; then
-    exec swayidle -w \
+    exec /usr/bin/swayidle -w \
         timeout 600 '${HOME}/.local/bin/my-screenlock' \
         before-sleep '${HOME}/.local/bin/my-screenlock'
 else
-    exec swayidle -w \
+    exec /usr/bin/swayidle -w \
         timeout 10 'if pgrep -x swaylock; then swaymsg output "*" dpms off; fi' \
         timeout 590 '${HOME}/.local/bin/my-screenlock' \
         timeout 600 'swaymsg output "*" dpms off' \
