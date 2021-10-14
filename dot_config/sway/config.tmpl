@@ -10,7 +10,7 @@ smart_borders on
 for_window [app_id="pavucontrol"] floating enable; border normal
 for_window [app_id="jetbrains-toolbox"] floating enable; border none
 for_window [app_id="gnome-calculator"] floating enable; border none
-for_window [app_id="discord" title="Discord Updater"] floating enable; border none;
+for_window [app_id="discord" title="Discord Updater"] floating enable; border none
 no_focus [app_id="discord" title="Discord Updater"]
 # Jetbrains splash window
 for_window [app_id="jetbrains-\w+" title="^win0$"] floating enable; border none
@@ -19,6 +19,8 @@ for_window [app_id="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enab
 for_window [app_id="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
 # PiP
 for_window [app_id="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
+# Thunar
+for_window [app_id="thunar" title="File Operation Progress"] floating enable; border none
 
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
@@ -53,6 +55,14 @@ input type:touchpad {
 
 bar {
     swaybar_command waybar
+}
+
+output {
+    eDP-1 scale 2
+    "Goldstar Company Ltd LG HDR 4K 0x00008DDC" scale 1.5
+    "Goldstar Company Ltd LG HDR 4K 0x00000B9F" scale 1.5
+    "Acer Technologies XV273K 0x0000CFF9" scale 1.5
+    "Samsung Electric Company U24E850 HTHH300363" scale 1.5
 }
 
 include /etc/sway/config.d/*
