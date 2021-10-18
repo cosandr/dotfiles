@@ -53,8 +53,8 @@ Documents/
 {{- if not (eq .session_desktop "i3" "sway") }}
 .config/mimeapps.list
 .config/override
-.local/bin/auto-lock
 .local/bin/*-launch
+.local/bin/auto-lock
 .local/bin/i3*
 .local/bin/my-screenlock
 .local/bin/pavolume

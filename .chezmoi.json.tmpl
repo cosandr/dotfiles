@@ -32,7 +32,7 @@
       "use_domain": {{ and (not $is_server) (not $is_desktop)}}
     },
     "ssh": {
-      "include_work": {{ or $is_laptop $is_desktop $is_ws }},
+      "include_work": {{ or $is_laptop $is_ws }},
       "include_dresrv": true,
       "include_rom": {{ or $is_laptop $is_desktop $is_server }},
       "use_work": {{ or $is_laptop $is_ws }}
@@ -63,8 +63,8 @@
     "ignore_config": [
       {"exec": "alacritty",            "skip_root": true,  "path": ".config/alacritty"},
       {"exec": "caddy",                "skip_root": true,  "path": ".config/caddy"},
-      {"exec": "code",                 "skip_root": true,  "path": ".local/bin/code"},
       {"exec": "chromium",             "skip_root": true,  "path": ".config/chromium-flags*.conf"},
+      {"exec": "code",                 "skip_root": true,  "path": ".local/bin/code\n.local/share/applications/visual-studio-code.desktop"},
       {"exec": "discord",              "skip_root": true,  "path": ".local/share/applications/discord*\n.local/bin/discord"},
       {"exec": "dunst",                "skip_root": true,  "path": ".config/dunst\n.local/bin/dunst*"},
       {"exec": "feh",                  "skip_root": true,  "path": ".config/feh"},
