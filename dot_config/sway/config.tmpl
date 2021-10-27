@@ -21,13 +21,16 @@ for_window [app_id="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; bor
 for_window [app_id="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
 # Thunar
 for_window [app_id="thunar" title="File Operation Progress"] floating enable; border none
+# Java iKVM
+for_window [app_id=null title="^Java iKVM Viewer.*"] floating enable
+no_focus [app_id=null title="^Java iKVM Viewer.*"]
 
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
 bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun
 
 # Needs wl-clipboard grim slurp
-bindsym $super+$shift+s exec grim -g "$(slurp)" - | wl-copy
+bindsym $super+$shift+s exec grim -g "$(slurp)" - | tee $HOME/Pictures/Screenshots/$(date +%F_%T).png | wl-copy
 
 bindsym $super+Pause exec sleep 1 && swaymsg output '*' dpms off
 bindsym $super+KP_Subtract exec sleep 1 && swaymsg output '*' dpms off
