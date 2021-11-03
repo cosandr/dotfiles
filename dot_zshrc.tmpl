@@ -152,3 +152,5 @@ alias self-mon='tmux new -s mon "htop -d10" \; split-window "journalctl -f" \; s
 {{- end }}
 
 [ ! $DISPLAY ] && export GPG_TTY=$(tty)
+
+[[ -f ~/.config/override/zshrc ]] && source ~/.config/override/zshrc
