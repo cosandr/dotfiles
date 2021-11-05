@@ -26,17 +26,25 @@
         "sway/window"
     ],
     "modules-right": [
-        "network",
-        "memory",
         "cpu",
         "temperature",
-        "custom/switchaudio",
+        "custom/sep",
+        "memory",
+        "custom/sep",
         "pulseaudio",
-        "custom/keyboard-layout",
-        "battery",
-        "tray",
+        "custom/sep",
+        "network",
+        "custom/sep",
+        "backlight",
+        "custom/sep",
         "custom/clock",
-        "custom/scratchpad-indicator"
+        "custom/sep",
+        "battery",
+        "custom/sep",
+        "custom/keyboard-layout",
+        "custom/sep",
+        "custom/scratchpad-indicator",
+        "tray"
     ],
 
 
@@ -51,9 +59,9 @@
             "critical": 10
         },
         // Connected to AC
-        "format": "  {icon}  {capacity}%", // Icon: bolt
+        "format": " {icon} {capacity}%", // Icon: bolt
         // Not connected to AC
-        "format-discharging": "{icon}  {capacity}%",
+        "format-discharging": "{icon} {capacity}%",
         "format-icons": [
             "", // Icon: battery-full
             "", // Icon: battery-three-quarters
@@ -66,11 +74,18 @@
 
     "cpu": {
         "interval": 5,
-        "format": "  {usage}% ({load})",
+        "format": " {usage}%",
         "states": {
           "warning": 70,
           "critical": 90
         }
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": " {percent}%",
+        "on-scroll-up": "brightnessctl set 1%+",
+        "on-scroll-down": "brightnessctl set 1%-"
     },
 
     "custom/clock": {
@@ -82,7 +97,7 @@
       "exec": "swaymsg -t get_inputs | grep -m1 'xkb_active_layout_name' | cut -d '\"' -f4",
       // Interval set only as a fallback, as the value is updated by signal
       "interval": 30,
-      "format": "  {}", // Icon: keyboard
+      "format": " {}", // Icon: keyboard
       // Signal sent by Sway key binding (~/.config/sway/key-bindings)
       "signal": 1, // SIGHUP
       "tooltip": false
@@ -107,7 +122,7 @@
 
     "memory": {
         "interval": 5,
-        "format": " {}%", // Icon: memory
+        "format": " {avail:0.1f}G",
         "states": {
             "warning": 70,
             "critical": 90
@@ -116,31 +131,27 @@
 
     "network": {
         "interval": 5,
-        "format-wifi": "  {essid} ({signalStrength}%)",
-        "format-ethernet": "  {bandwidthDownBits}: {ipaddr}",
+        "format-wifi": " {essid}",
+        "format-ethernet": " {bandwidthDownBits}",
         "format-disconnected": "",
-        "tooltip-format": "{ifname}: {ipaddr}"
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format-wifi": "{ipaddr}/{cidr} ({signaldBm})"
     },
 
     "pulseaudio": {
         "scroll-step": 1,
-        "format": "{icon}  {volume}%",
-        "format-muted": " ",
+        "max-length": 15,
+        "format": "{icon} {volume}% {desc}",
+        "format-muted": "",
         "format-icons": {
-            "headphones": "", // Icon: headphones
-            "handsfree": "", // Icon: headset
-            "headset": "", // Icon: headset
-            "phone": "", // Icon: phone
-            "portable": "", // Icon: phone
-            "car": "", // Icon: car
-            "default": ["", ""] // Icons: volume-down, volume-up
+            "default": ["", "", ""] // Icons: volume-down, volume-up
         },
         "on-click-right": "pavucontrol",
         "tooltip": true
     },
 
     "sway/mode": {
-        "format": "<span style=\"italic\">  {}</span>", // Icon: expand-arrows-alt
+        "format": "<span style=\"italic\"> {}</span>", // Icon: expand-arrows-alt
         "tooltip": false
     },
 
@@ -154,13 +165,6 @@
         "disable-scroll": true,
         "format": "{icon} {name}",
         "format-icons": {
-            "1:WWW": "龜", // Icon: firefox-browser
-            "2:Mail": "", // Icon: mail
-            "3:Editor": "", // Icon: code
-            "4:Terminals": "", // Icon: terminal
-            "8:Documents": "", // Icon: book
-            "9:Multimedia": "", // Icon: play-circle
-            "10:Torrent": "", // Icon: cloud-download-alt
             "urgent": "",
             "focused": "",
             "default": ""
@@ -170,7 +174,7 @@
     "temperature": {
       "critical-threshold": 80,
       "interval": 5,
-      "format": "{icon}  {temperatureC}°C",
+      "format": "{icon} {temperatureC}°C",
       "format-icons": [
           "", // Icon: temperature-empty
           "", // Icon: temperature-quarter
@@ -184,6 +188,10 @@
     "tray": {
         "icon-size": 21,
         "spacing": 10
+    },
+
+    "custom/sep": {
+        "format": " | "
     }
 
 }
