@@ -3,15 +3,18 @@
 
 [global]
 monitor = 0
-follow = none
-geometry = "0x20-50-50"
+follow = mouse
+width = (0, 300)
+height = (0, 300)
+origin = bottom-right
+offset = 20x10
 indicate_hidden = yes
 shrink = no
 transparency = 30
 separator_height = 1
 padding = 8
 horizontal_padding = 10
-frame_width = 0
+frame_width = 1
 frame_color = "#e8e8e8"
 separator_color = "#e8e8e8"
 sort = no
@@ -40,12 +43,6 @@ mouse_left_click = do_action
 mouse_middle_click = close_all
 mouse_right_click = close_current
 
-[shortcuts]
-close = ctrl+space
-close_all = ctrl+shift+space
-history = ctrl+Escape
-context = ctrl+shift+period
-
 [urgency_low]
 timeout = 2
 background = "#141414"
@@ -60,3 +57,4 @@ foreground = "#e8e8e8"
 timeout = 0
 background = "#141414"
 foreground = "#e8e8e8"
+frame_color = "#ff0000"
