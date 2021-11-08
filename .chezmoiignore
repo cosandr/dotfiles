@@ -59,6 +59,7 @@ Documents/
 .local/bin/my-screenlock
 .local/bin/pavolume
 .local/bin/rofi*
+.local/bin/start-gui
 .local/bin/xorg*
 .xinitrc
 .xprofile
