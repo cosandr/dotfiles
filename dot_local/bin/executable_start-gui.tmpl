@@ -4,7 +4,7 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 
 [[ -f ~/.config/override/gui ]] && source ~/.config/override/gui
 
-START_CMD=${START_CMD:-"$1"}
+START_CMD=${1:-"$START_CMD"}
 
 if [[ -z $START_CMD ]]; then
     if command -v sway &>/dev/null; then
