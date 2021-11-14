@@ -8,6 +8,7 @@ application/x-extension-html=firefox.desktop;
 application/x-extension-shtml=firefox.desktop;
 application/x-extension-xht=firefox.desktop;
 application/x-extension-xhtml=firefox.desktop;
+application/x-ms-dos-executable=wine.desktop;
 application/xhtml+xml=firefox.desktop;
 application/xml=sublime_text.desktop;
 application/zip=org.gnome.FileRoller.desktop;
