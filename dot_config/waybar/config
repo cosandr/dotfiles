@@ -106,7 +106,7 @@
     "custom/switchaudio": {
         "format": "{}",
         "interval": "once",
-        "exec": "PYTHONUNBUFFERED=1 $HOME/.config/polybar/scripts/toggle-input.py",
+        "exec": "PYTHONUNBUFFERED=1 $HOME/.local/bin/bar/toggle-input.py",
         "on-click": "pkill -HUP -u andrei -f toggle-input.py",
         "on-click-right": "pavucontrol"
     },
