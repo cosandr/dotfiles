@@ -88,6 +88,7 @@ alias git-alt='git config user.email "{{ .git.alt_email }}" && git config user.n
 alias git-main='git config user.email "{{ .git.main_email }}" && git config user.name "{{ .git.main_name }}" && git config user.signingkey "{{ .gpg.main }}"'
 alias git-work='git config user.email "{{ .work.git_email }}" && git config user.name "{{ .work.git_name }}" && git config user.signingkey "{{ .gpg.work }}"'
 alias git-sign='git config commit.gpgsign true'
+alias git-no-sign='git config commit.gpgsign false'
 alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip install -U -r requirements.txt'
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-nh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
