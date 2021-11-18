@@ -7,13 +7,15 @@ Requires i2c-dev kernel module
 echo 'i2c-dev' | sudo tee /etc/modules-load.d/i2c.conf
 """
 
+import asyncio
 import os
 import re
-import signal
 import sys
-import asyncio
 import time
 from typing import List, NamedTuple
+
+from dbus_next.aio.message_bus import MessageBus
+from dbus_next.service import ServiceInterface, method
 
 
 class Preset(NamedTuple):
@@ -80,8 +82,9 @@ class Display:
             await self.set_brightness(self.preset.day)
 
 
-class MyDisplays:
-    def __init__(self, delay=5, increment=10):
+class DisplayInterface(ServiceInterface):
+    def __init__(self, name, delay=5, increment=10):
+        super().__init__(name)
         self.displays: List[Display] = [
             Display(name='Acer', bus=4, preset=Preset(day=35, night=0), selected=True),
             Display(name='Samsung', bus=3, preset=Preset(day=25, night=5), selected=True,
@@ -95,11 +98,6 @@ class MyDisplays:
         self.delay_event = asyncio.Event()
         asyncio.create_task(self.async_init())
         asyncio.create_task(self.delay_worker())
-        loop = asyncio.get_running_loop()
-        loop.add_signal_handler(signal.SIGUSR1, self.handler_up)
-        loop.add_signal_handler(signal.SIGUSR2, self.handler_down)
-        loop.add_signal_handler(signal.SIGHUP, lambda: asyncio.create_task(self.handler_toggle()))
-        loop.add_signal_handler(signal.SIGALRM, lambda: asyncio.create_task(self.handler_cycle_selected()))
 
     async def async_init(self):
         try:
@@ -125,7 +123,8 @@ class MyDisplays:
             displays.append(Display(name=name, bus=bus, selected=True))
         return displays
 
-    def handler_up(self):
+    @method()
+    def up(self):
         self._counter = 0
         for d in self.displays:
             if not d.selected:
@@ -137,7 +136,8 @@ class MyDisplays:
         self.delay_event.set()
         self.print(show_next=True)
 
-    def handler_down(self):
+    @method()
+    def down(self):
         self._counter = 0
         for d in self.displays:
             if not d.selected:
@@ -149,10 +149,12 @@ class MyDisplays:
         self.delay_event.set()
         self.print(show_next=True)
 
-    async def handler_toggle(self):
+    @method()
+    async def toggle(self):
         await self.toggle_preset()
 
-    async def handler_cycle_selected(self):
+    @method()
+    async def cycle_selected(self):
         # Select first if all or no displays are selected
         sel_all = False
         sel_list = [d.selected for d in self.displays]
@@ -237,8 +239,17 @@ class MyDisplays:
 
 
 async def main():
-    md = MyDisplays(delay=2, increment=5)
-    md.print()
+    name = 'com.andrei.brightness'
+    path = '/'
+    interface_name = 'ddcci.control'
+
+    bus = await MessageBus().connect()
+    interface = DisplayInterface(interface_name, delay=2, increment=5)
+    bus.export(path, interface)
+    await bus.request_name(name)
+    print(f'dest: "{name}", path: "{path}", interface: "{interface_name}"', file=sys.stderr)
+    interface.print()
+    await bus.wait_for_disconnect()
 
 
 if __name__ == "__main__":
@@ -250,10 +261,8 @@ if __name__ == "__main__":
     delay = int(os.getenv("DELAY", "0"))
     if delay != 0:
         time.sleep(delay)
-    loop = asyncio.get_event_loop()
     try:
-        loop.create_task(main())
-        loop.run_forever()
+        asyncio.run(main())
     except Exception as e:
         print('N/A')
         print(e, file=sys.stderr)

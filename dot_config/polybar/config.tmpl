@@ -320,10 +320,10 @@ format =  <label>
 format = <label>
 {{- end }}
 exec = PYTHONUNBUFFERED=1 DELAY=3 ~/.local/bin/bar/toggle-brightness.py
-click-left = kill -ALRM %pid%
-click-right = kill -HUP %pid%
-scroll-up = kill -USR1 %pid%
-scroll-down = kill -USR2 %pid%
+click-left = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.cycle_selected
+click-right = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.toggle
+scroll-up = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.up
+scroll-down = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.down
 tail = true
 interval = 0
 
