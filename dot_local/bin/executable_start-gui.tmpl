@@ -57,7 +57,7 @@ case "$START_CMD" in
         export XDG_SESSION_TYPE=x11
         dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
         {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
-        exec startx &> ~/.cache/startx.log
+        exec startx "${@:2}" &> ~/.cache/startx.log
         ;;
     sway)
         [[ -f ~/.config/override/sway ]] && source ~/.config/override/sway
@@ -67,9 +67,9 @@ case "$START_CMD" in
         dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE XDG_CURRENT_DESKTOP
         {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
         if command -v nvidia-smi &>/dev/null; then
-            exec sway --unsupported-gpu &> ~/.cache/sway.log
+            exec sway --unsupported-gpu "${@:2}" &> ~/.cache/sway.log
         else
-            exec sway &> ~/.cache/sway.log
+            exec sway "${@:2}" &> ~/.cache/sway.log
         fi
         ;;
     *)
