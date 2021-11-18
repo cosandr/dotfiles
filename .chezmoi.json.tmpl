@@ -38,7 +38,7 @@
       "use_work": {{ or $is_laptop $is_ws }}
     },
     "gpg": {
-      "default_key": {{ if or $is_laptop $is_ws }}"work"{{ else }}"main"{{ end }},
+      "default_key": {{ if $is_ws }}"work"{{ else }}"main"{{ end }},
       "main": "273D94492E01567B",
       "work": "2C076B5CE4421C50",
       "keyserver": "hkp://keyserver.ubuntu.com",

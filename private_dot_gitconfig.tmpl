@@ -9,7 +9,7 @@
     program = C:\\Program Files (x86)\\gnupg\\bin\\gpg.exe
 {{- end }}
 [user]
-{{- if .ssh.use_work }}
+{{- if .is.ws }}
     email = {{ .work.git_email }}
     name = {{ .work.git_name }}
 {{- else }}
@@ -39,3 +39,5 @@
     rebase = true
 [push]
     default = current
+[includeIf "gitdir:~/work/**/.git"]
+    path = ~/.gitconfig_work
