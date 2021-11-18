@@ -35,6 +35,8 @@
         "custom/sep",
         "network",
         "custom/sep",
+        "custom/monitor_brightness",
+        "custom/sep",
         "backlight",
         "custom/sep",
         "custom/clock",
@@ -103,12 +105,14 @@
       "tooltip": false
     },
 
-    "custom/switchaudio": {
-        "format": "{}",
+    "custom/monitor_brightness": {
+        "format": " {}",
         "interval": "once",
-        "exec": "PYTHONUNBUFFERED=1 $HOME/.local/bin/bar/toggle-input.py",
-        "on-click": "pkill -HUP -u andrei -f toggle-input.py",
-        "on-click-right": "pavucontrol"
+        "exec": "PYTHONUNBUFFERED=1 DELAY=3 $HOME/.local/bin/bar/toggle-brightness.py",
+        "on-click": "dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.cycle_selected",
+        "on-click-right": "dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.toggle",
+        "on-scroll-up": "dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.up",
+        "on-scroll-down": "dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.down"
     },
 
     "custom/scratchpad-indicator": {
