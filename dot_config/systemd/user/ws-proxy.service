@@ -9,4 +9,4 @@ RestartSec=5
 ExecStart=ssh ws-socks 'while true; do sleep 5; done'
 
 [Install]
-WantedBy=default.target
+WantedBy=ws-online.target

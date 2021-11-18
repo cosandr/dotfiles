@@ -1,5 +1,2 @@
 [Unit]
 Description=DreSRV is available
-Wants=dresrv-gpg.service
-Wants=dresrv-sshfs.service
-Wants=dresrv-tunnel.service

@@ -11,4 +11,4 @@ RestartSec=5
 ExecStart=ssh -N prom-tunnel
 
 [Install]
-WantedBy=default.target
+WantedBy=dresrv-online.target
