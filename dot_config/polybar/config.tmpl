@@ -62,7 +62,7 @@ format =   <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = ~/.config/polybar/scripts/cpu-clock.sh
+exec = ~/.local/bin/bar/cpu-clock.sh
 interval = 10
 
 [module/cpu_temp]
@@ -202,9 +202,9 @@ format =  <label>
 format =  <label>
 {{- end }}
 {{- if .dresrv.use_domain }}
-exec = PYTHONUNBUFFERED=1 SERVER="localhost:8101" ~/.config/polybar/scripts/go-check-updates-ws.py
+exec = PYTHONUNBUFFERED=1 SERVER="localhost:8101" ~/.local/bin/bar/go-check-updates-ws.py
 {{- else }}
-exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hm:8100" ~/.config/polybar/scripts/go-check-updates-ws.py
+exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hm:8100" ~/.local/bin/bar/go-check-updates-ws.py
 {{- end }}
 click-left = kill -USR1 %pid%
 click-right = kill -USR2 %pid%
@@ -226,7 +226,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock ~/.config/polybar/scripts/go-check-updates-ws.py
+exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock ~/.local/bin/bar/go-check-updates-ws.py
 click-left = kill -USR1 %pid%
 click-right = kill -USR2 %pid%
 tail = true
@@ -253,7 +253,7 @@ ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
 {{- end }}
-click-middle = ~/.config/polybar/scripts/switch-ports.sh &
+click-middle = ~/.local/bin/bar/switch-ports.sh &
 click-right = pavucontrol &
 
 [module/xkeyboard]
@@ -319,11 +319,11 @@ format =  <label>
 {{- else }}
 format = <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 DELAY=3 ~/.config/polybar/scripts/toggle-brightness.py
-click-left = kill -ALRM %pid%
-click-right = kill -HUP %pid%
-scroll-up = kill -USR1 %pid%
-scroll-down = kill -USR2 %pid%
+exec = PYTHONUNBUFFERED=1 DELAY=3 ~/.local/bin/bar/toggle-brightness.py
+click-left = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.cycle_selected
+click-right = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.toggle
+scroll-up = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.up
+scroll-down = dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.down
 tail = true
 interval = 0
 
@@ -342,14 +342,14 @@ format = <label>
 [module/bt_battery]
 type = custom/script
 format = <label>
-exec = ~/.config/polybar/scripts/bluetooth-battery.sh
+exec = ~/.local/bin/bar/bluetooth-battery.sh
 tail = false
 interval = 60
 
 [module/switchaudio]
 type = custom/script
 format = <label>
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/toggle-input.py
+exec = PYTHONUNBUFFERED=1 ~/.local/bin/bar/toggle-input.py
 click-left = kill -HUP %pid%
 click-right = pavucontrol &
 tail = true
@@ -374,13 +374,13 @@ label =  %time%
 
 [module/aquaero]
 type = custom/script
-exec = PYTHONUNBUFFERED=1 FONT="{{$font}}" ~/.config/polybar/scripts/aquaero.py
+exec = PYTHONUNBUFFERED=1 FONT="{{$font}}" ~/.local/bin/bar/aquaero.py
 interval = 10
 
 [module/aquaerofans]
 type = custom/script
 format =  <label>
-exec = PYTHONUNBUFFERED=1 ~/.config/polybar/scripts/aquaero_fans.py
+exec = PYTHONUNBUFFERED=1 ~/.local/bin/bar/aquaero_fans.py
 interval = 10
 
 ;;; END DESKTOP MODULES ;;;
@@ -428,7 +428,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="clocks.gr" UNIT="MHz"  ~/.config/polybar/scripts/nvidia.sh
+exec = QUERY="clocks.gr" UNIT="MHz"  ~/.local/bin/bar/nvidia.sh
 interval = 10
 
 [module/nv_mem_clk]
@@ -440,7 +440,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="clocks.mem" UNIT="MHz"  ~/.config/polybar/scripts/nvidia.sh
+exec = QUERY="clocks.mem" UNIT="MHz"  ~/.local/bin/bar/nvidia.sh
 interval = 10
 
 [module/nv_temp]
@@ -452,7 +452,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="temperature.gpu" UNIT="°C"  ~/.config/polybar/scripts/nvidia.sh
+exec = QUERY="temperature.gpu" UNIT="°C"  ~/.local/bin/bar/nvidia.sh
 interval = 3
 
 [module/nv_gpu_usage]
@@ -464,7 +464,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="utilization.gpu" UNIT="%"  ~/.config/polybar/scripts/nvidia.sh
+exec = QUERY="utilization.gpu" UNIT="%"  ~/.local/bin/bar/nvidia.sh
 interval = 3
 
 [module/nv_mem_usage]
@@ -476,7 +476,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="utilization.memory" UNIT="%"  ~/.config/polybar/scripts/nvidia.sh
+exec = QUERY="utilization.memory" UNIT="%"  ~/.local/bin/bar/nvidia.sh
 interval = 3
 
 [module/nv_power]
@@ -488,7 +488,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="power.draw" UNIT="W"  ~/.config/polybar/scripts/nvidia.sh
+exec = QUERY="power.draw" UNIT="W"  ~/.local/bin/bar/nvidia.sh
 interval = 3
 {{- end }}
 
@@ -502,12 +502,12 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="gpu_clk" UNIT="MHz"  ~/.config/polybar/scripts/amdgpu.sh
+exec = QUERY="gpu_clk" UNIT="MHz"  ~/.local/bin/bar/amdgpu.sh
 interval = 10
 
 [module/amd_mem_clk]
 type = custom/script
-exec = QUERY="mem_clk" UNIT="MHz"  ~/.config/polybar/scripts/amdgpu.sh
+exec = QUERY="mem_clk" UNIT="MHz"  ~/.local/bin/bar/amdgpu.sh
 interval = 10
 
 [module/amd_temp]
@@ -519,7 +519,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="gpu_temp" UNIT="°C"  ~/.config/polybar/scripts/amdgpu.sh
+exec = QUERY="gpu_temp" UNIT="°C"  ~/.local/bin/bar/amdgpu.sh
 interval = 3
 
 [module/amd_gpu_usage]
@@ -531,16 +531,16 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = QUERY="gpu_usage" UNIT="%"  ~/.config/polybar/scripts/amdgpu.sh
+exec = QUERY="gpu_usage" UNIT="%"  ~/.local/bin/bar/amdgpu.sh
 interval = 3
 
 [module/amd_mem_usage]
 type = custom/script
-exec = QUERY="mem_usage" UNIT="%"  ~/.config/polybar/scripts/amdgpu.sh
+exec = QUERY="mem_usage" UNIT="%"  ~/.local/bin/bar/amdgpu.sh
 interval = 3
 
 [module/amd_power]
 type = custom/script
-exec = QUERY="power" UNIT="W"  ~/.config/polybar/scripts/amdgpu.sh
+exec = QUERY="power" UNIT="W"  ~/.local/bin/bar/amdgpu.sh
 interval = 3
 {{- end }}

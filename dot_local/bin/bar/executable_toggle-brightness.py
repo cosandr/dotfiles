@@ -7,14 +7,15 @@ Requires i2c-dev kernel module
 echo 'i2c-dev' | sudo tee /etc/modules-load.d/i2c.conf
 """
 
+import asyncio
 import os
 import re
-import signal
-import subprocess
 import sys
-import threading
 import time
 from typing import List, NamedTuple
+
+from dbus_next.aio.message_bus import MessageBus
+from dbus_next.service import ServiceInterface, method
 
 
 class Preset(NamedTuple):
@@ -46,17 +47,18 @@ class Display:
                 val = self.max_brigtness
         self._next_brightness = val
 
-    def read_brightness(self):
-        s = subprocess.run(
-            ['ddcutil', '--bus', str(self.bus), '--terse', 'getvcp', '10'],
-            check=True, text=True, capture_output=True,
+    async def read_brightness(self):
+        s = await asyncio.create_subprocess_exec(
+            'ddcutil', '--bus', str(self.bus), '--terse', 'getvcp', '10',
+            stdout=asyncio.subprocess.PIPE,
         )
+        stdout, _ = await s.communicate()
         # Output for 5% brightness
         # VCP 10 C 5 100
-        self.brightness = int(s.stdout.split()[3])
+        self.brightness = int(stdout.split()[3])
         self.next_brightness = self.brightness
 
-    def set_brightness(self, val: int = None):
+    async def set_brightness(self, val: int = None):
         if val is None:
             val = self.next_brightness
         if self.brightness == val:
@@ -65,61 +67,64 @@ class Display:
             val = 0
         elif val > 100:
             val = 100
-        subprocess.Popen(['ddcutil', '--bus', str(self.bus), 'setvcp', '10', str(val)])
+        s = await asyncio.create_subprocess_exec('ddcutil', '--bus', str(self.bus), 'setvcp', '10', str(val))
+        await s.wait()
         self.brightness = val
         self.next_brightness = val
 
-    def toggle_preset(self):
+    async def toggle_preset(self):
         # Default to day
         if self.brightness is None:
-            self.set_brightness(self.preset.day)
+            await self.set_brightness(self.preset.day)
         elif self.brightness > self.preset.night:
-            self.set_brightness(self.preset.night)
+            await self.set_brightness(self.preset.night)
         else:
-            self.set_brightness(self.preset.day)
+            await self.set_brightness(self.preset.day)
 
 
-class MyDisplays:
-    def __init__(self, delay=5, increment=10):
+class DisplayInterface(ServiceInterface):
+    def __init__(self, name, delay=5, increment=10):
+        super().__init__(name)
         self.displays: List[Display] = [
             Display(name='Acer', bus=4, preset=Preset(day=35, night=0), selected=True),
             Display(name='Samsung', bus=3, preset=Preset(day=25, night=5), selected=True,
                     min_brightness=5, max_brigtness=70),
         ]
-        try:
-            self.read_all()
-        except Exception as e:
-            print(e, file=sys.stderr)
-            self.displays = self.detect_displays()
-            while not self.displays:
-                print('N/A')
-                time.sleep(30)
-                self.displays = self.detect_displays()
-            self.read_all()
         self.delay: int = delay
         self.increment: int = increment
         self._counter = 0
-        self.selected_event: threading.Event = threading.Event()
-        self.selected_thread: threading.Thread = None
-        self.delay_event: threading.Event = threading.Event()
-        threading.Thread(target=self.delay_worker, daemon=True).start()
-        signal.signal(signal.SIGUSR1, self.handler_up)
-        signal.signal(signal.SIGUSR2, self.handler_down)
-        signal.signal(signal.SIGHUP, self.handler_toggle)
-        signal.signal(signal.SIGALRM, self.handler_cycle_selected)
+        self.selected_event = asyncio.Event()
+        self.selected_task: asyncio.Task = None
+        self.delay_event = asyncio.Event()
+        asyncio.create_task(self.async_init())
+        asyncio.create_task(self.delay_worker())
+
+    async def async_init(self):
+        try:
+            await self.read_all()
+        except Exception as e:
+            print(e, file=sys.stderr)
+            self.displays = await self.detect_displays()
+            while not self.displays:
+                print('N/A')
+                await asyncio.sleep(30)
+                self.displays = await self.detect_displays()
+            self.read_all()
 
     @staticmethod
-    def detect_displays() -> List[Display]:
+    async def detect_displays() -> List[Display]:
         displays = []
-        s = subprocess.run(['ddcutil', 'detect', '--terse'], check=False, text=True, capture_output=True)
-        for m in re.finditer(r"I2C bus:\s+\/dev\/i2c-(\d)\s+Monitor:\s+\w+:(\w+):?", s.stdout, re.S):
+        s = await asyncio.create_subprocess_exec('ddcutil', 'detect', '--terse', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        stdout, _ = await s.communicate()
+        for m in re.finditer(r"I2C bus:\s+\/dev\/i2c-(\d)\s+Monitor:\s+\w+:(\w+):?", stdout, re.S):
             bus = int(m.group(1))
             name = m.group(2)
             print(f'Found {name} on bus {bus}', file=sys.stderr)
             displays.append(Display(name=name, bus=bus, selected=True))
         return displays
 
-    def handler_up(self, _signum, _frame):
+    @method()
+    def up(self):
         self._counter = 0
         for d in self.displays:
             if not d.selected:
@@ -131,7 +136,8 @@ class MyDisplays:
         self.delay_event.set()
         self.print(show_next=True)
 
-    def handler_down(self, _signum, _frame):
+    @method()
+    def down(self):
         self._counter = 0
         for d in self.displays:
             if not d.selected:
@@ -143,10 +149,12 @@ class MyDisplays:
         self.delay_event.set()
         self.print(show_next=True)
 
-    def handler_toggle(self, _signum, _frame):
-        self.toggle_preset()
+    @method()
+    async def toggle(self):
+        await self.toggle_preset()
 
-    def handler_cycle_selected(self, _signum, _frame):
+    @method()
+    async def cycle_selected(self):
         # Select first if all or no displays are selected
         sel_all = False
         sel_list = [d.selected for d in self.displays]
@@ -170,35 +178,35 @@ class MyDisplays:
             else:
                 d.selected = False
 
-        def show_selected():
+        async def show_selected():
             self.print_selected(show_next=self.delay_event.is_set())
-            time.sleep(1)
+            await asyncio.sleep(1)
             if self.selected_event.is_set():
                 self.selected_event.clear()
                 return
             self.print(show_next=self.delay_event.is_set())
 
-        if self.selected_thread is not None and self.selected_thread.is_alive():
+        if self.selected_task is not None and self.selected_task.done():
             self.selected_event.set()
 
-        self.selected_thread = threading.Thread(target=show_selected)
-        self.selected_thread.start()
+        self.selected_task = asyncio.create_task(show_selected())
 
-    def toggle_preset(self):
+    async def toggle_preset(self):
         for d in self.displays:
-            d.toggle_preset()
+            await d.toggle_preset()
         self.print()
 
-    def read_all(self):
+    async def read_all(self):
         for d in self.displays:
-            d.read_brightness()
+            await d.read_brightness()
         self.print()
 
-    def set_all(self):
+    async def set_all(self):
         for d in self.displays:
             if not d.selected:
                 continue
-            d.set_brightness()
+            # Run in tasks?
+            await d.set_brightness()
         self.print()
 
     def print(self, show_next=False):
@@ -217,24 +225,31 @@ class MyDisplays:
                 tmp.append(f'{getattr(d, attr)}%')
         print(', '.join(tmp))
 
-    def delay_worker(self):
+    async def delay_worker(self):
         """Waits for event and then sets all displays' brightness"""
         while True:
-            self.delay_event.wait()
+            await self.delay_event.wait()
             while self._counter < self.delay:
-                time.sleep(1)
+                await asyncio.sleep(1)
                 self._counter += 1
-            self.set_all()
+            await self.set_all()
             self._counter = 0
             # Do stuff
             self.delay_event.clear()
 
 
-def main():
-    md = MyDisplays(delay=2, increment=5)
-    md.print()
-    while True:
-        signal.pause()
+async def main():
+    name = 'com.andrei.brightness'
+    path = '/'
+    interface_name = 'ddcci.control'
+
+    bus = await MessageBus().connect()
+    interface = DisplayInterface(interface_name, delay=2, increment=5)
+    bus.export(path, interface)
+    await bus.request_name(name)
+    print(f'dest: "{name}", path: "{path}", interface: "{interface_name}"', file=sys.stderr)
+    interface.print()
+    await bus.wait_for_disconnect()
 
 
 if __name__ == "__main__":
@@ -247,7 +262,7 @@ if __name__ == "__main__":
     if delay != 0:
         time.sleep(delay)
     try:
-        main()
+        asyncio.run(main())
     except Exception as e:
         print('N/A')
         print(e, file=sys.stderr)

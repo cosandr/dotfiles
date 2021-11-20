@@ -83,7 +83,7 @@ Documents/
 {{- if or (not .is.desktop) .is.wsl .is.mac }}
 # Ignore desktop config on laptop and server
 .local/bin/*mount-c
-.config/polybar/scripts/aquaero*
+.local/bin/bar/aquaero*
 {{- end }} {{/* if or (not .is.desktop) .is.wsl .is.mac */}}
 {{- if or .is.root .is.desktop .is.laptop .is.mac .is.wsl }}
 .ssh/*.pub
@@ -92,7 +92,7 @@ Documents/
 .gnupg
 {{- end }} {{/* if .is.root */}}
 {{- if or .is.root (not (lookPath "nvidia-smi")) }}
-.config/polybar/scripts/nvidia*
+.local/bin/bar/nvidia*
 # No Nvidia GPUs
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
@@ -108,6 +108,9 @@ Documents/
 {{- end }}
 {{- if or (.is.root) (not (lookPath "radeontop")) }}
 .config/tmuxinator/hjr.yml
+{{- end }}
+{{- if not (or (lookPath "polybar") (lookPath "waybar")) }}
+.local/bin/bar
 {{- end }}
 {{- if eq (get .files "mrbot") "" }}
 .config/tmuxinator/hjd.yml
