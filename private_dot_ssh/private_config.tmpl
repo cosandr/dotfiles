@@ -216,23 +216,3 @@ Host github.com-atgb
     IdentityFile ~/{{ $k }}
 {{- end }}
 {{- end }}
-{{ if not .no_tunnel }}
-Host prom-tunnel
-{{- if .dresrv.use_domain }}
-    HostName {{ .dresrv.domain }}
-    Port {{ .dresrv.ssh_port }}
-    LocalForward localhost:8101 localhost:8100
-{{- else }}
-    HostName {{ .dresrv.local_ip }}
-{{- end }}
-    User prom-tunnel
-    IdentityFile ~/.ssh/id_ed25519.prom
-    ExitOnForwardFailure yes
-    ControlMaster no
-    TCPKeepAlive yes
-{{- if .is.desktop }}
-    RemoteForward localhost:17766 localhost:7766
-{{- else if .is.laptop }}
-    RemoteForward localhost:27766 localhost:7766
-{{- end }}
-{{- end }} {{/* {{ if not .no_tunnel -}} */}}

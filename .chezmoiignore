@@ -67,11 +67,6 @@ Documents/
 {{- else }}
 .config/autostart
 {{- end }} {{/* if not (eq .session_desktop "i3" "sway") */}}
-{{- if or (not (lookPath "caddy")) (.no_tunnel) }}
-.config/caddy
-.config/systemd/user/caddy.service
-.config/systemd/user/dresrv-tunnel.service
-{{- end }}
 {{- $r := .is.root -}}
 {{- range $v := .ignore_config }}
 {{- if not (lookPath $v.exec) }}
