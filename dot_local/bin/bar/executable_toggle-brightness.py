@@ -11,7 +11,6 @@ import asyncio
 import os
 import re
 import sys
-import time
 from typing import List, NamedTuple
 
 from dbus_next.aio.message_bus import MessageBus
@@ -21,6 +20,10 @@ from dbus_next.service import ServiceInterface, method
 class Preset(NamedTuple):
     day: int
     night: int
+
+
+class MissingMonitorException(Exception):
+    pass
 
 
 class Display:
@@ -50,12 +53,16 @@ class Display:
     async def read_brightness(self):
         s = await asyncio.create_subprocess_exec(
             'ddcutil', '--bus', str(self.bus), '--terse', 'getvcp', '10',
-            stdout=asyncio.subprocess.PIPE,
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL,
         )
-        stdout, _ = await s.communicate()
+        stdout = (await s.communicate())[0].decode()
+        print(f'read_brightness: {stdout}', file=sys.stderr)
         # Output for 5% brightness
         # VCP 10 C 5 100
-        self.brightness = int(stdout.split()[3])
+        m = re.match(r'^VCP 10 C (\d+) \d+\s?$', stdout)
+        if not m:
+            raise MissingMonitorException(f'No monitor detected on bus {self.bus}')
+        self.brightness = int(m.group(1))
         self.next_brightness = self.brightness
 
     async def set_brightness(self, val: int = None):
@@ -109,14 +116,15 @@ class DisplayInterface(ServiceInterface):
                 print('N/A')
                 await asyncio.sleep(30)
                 self.displays = await self.detect_displays()
-            self.read_all()
+            await self.read_all()
 
     @staticmethod
     async def detect_displays() -> List[Display]:
         displays = []
-        s = await asyncio.create_subprocess_exec('ddcutil', 'detect', '--terse', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-        stdout, _ = await s.communicate()
-        for m in re.finditer(r"I2C bus:\s+\/dev\/i2c-(\d)\s+Monitor:\s+\w+:(\w+):?", stdout, re.S):
+        s = await asyncio.create_subprocess_exec('ddcutil', 'detect', '--terse', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
+        stdout = (await s.communicate())[0].decode()
+        print(f'detect_displays:\n{stdout}', file=sys.stderr)
+        for m in re.finditer(r"I2C bus:\s+\/dev\/i2c-(\d+)\s+Monitor:\s+\w+:(\w+):?", stdout, re.S):
             bus = int(m.group(1))
             name = m.group(2)
             print(f'Found {name} on bus {bus}', file=sys.stderr)
@@ -198,7 +206,14 @@ class DisplayInterface(ServiceInterface):
 
     async def read_all(self):
         for d in self.displays:
-            await d.read_brightness()
+            try:
+                await d.read_brightness()
+            except MissingMonitorException:
+                pass
+        if all([d.brightness is None for d in self.displays]):
+            raise Exception('No monitors detected')
+        # Remove invalid monitors
+        self.displays = [d for d in self.displays if d.brightness is not None]
         self.print()
 
     async def set_all(self):
@@ -239,6 +254,10 @@ class DisplayInterface(ServiceInterface):
 
 
 async def main():
+    delay = int(os.getenv("DELAY", "0"))
+    if delay != 0:
+        await asyncio.sleep(delay)
+
     name = 'com.andrei.brightness'
     path = '/'
     interface_name = 'ddcci.control'
@@ -258,9 +277,6 @@ if __name__ == "__main__":
         _f = open(os.devnull, 'w')
         sys.stderr = _f
     print(os.getpid(), file=sys.stderr)
-    delay = int(os.getenv("DELAY", "0"))
-    if delay != 0:
-        time.sleep(delay)
     try:
         asyncio.run(main())
     except Exception as e:

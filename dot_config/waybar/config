@@ -107,8 +107,9 @@
 
     "custom/monitor_brightness": {
         "format": " {}",
-        "interval": "once",
         "exec": "PYTHONUNBUFFERED=1 DELAY=3 $HOME/.local/bin/bar/toggle-brightness.py",
+        "exec-on-event": false,
+        "tooltip": false,
         "on-click": "dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.cycle_selected",
         "on-click-right": "dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.toggle",
         "on-scroll-up": "dbus-send --session --dest=com.andrei.brightness --print-reply / ddcci.control.up",
