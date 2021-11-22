@@ -1,0 +1,97 @@
+// =============================================================================
+//
+// Waybar configuration
+//
+// Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+//
+// =============================================================================
+
+[
+    {
+        "layer": "top",
+        "position": "bottom",
+        "height": 30,
+        "output": "eDP-1",
+        "modules-left": [
+            "sway/workspaces",
+            "sway/mode"
+        ],
+        "modules-center": [
+            "sway/window"
+        ],
+        "modules-right": [
+            "cpu",
+            "temperature",
+            "custom/sep",
+            "memory",
+            "custom/sep",
+            "pulseaudio",
+            "custom/sep",
+            "network#wifi",
+            "custom/sep",
+            "backlight",
+            "custom/sep",
+            "custom/clock",
+            "custom/sep",
+            "battery",
+            "custom/sep",
+            "custom/keyboard-layout",
+            "custom/sep",
+            "custom/scratchpad-indicator",
+            "tray"
+        ],
+{{ template "waybar_modules" }}
+    },
+    {
+        "layer": "top",
+        "position": "bottom",
+        "height": 30,
+        "output": ["HDMI-A-1"],
+        "modules-left": [
+            "sway/workspaces",
+            "sway/mode"
+        ],
+        "modules-center": [
+            "sway/window"
+        ],
+        "modules-right": [
+            "cpu",
+            "temperature",
+            "custom/sep",
+            "memory",
+            "custom/sep",
+            "custom/updates",
+            "custom/sep",
+            "pulseaudio",
+            "custom/sep",
+            "custom/monitor_brightness",
+            "custom/sep",
+            "custom/clock"
+        ],
+{{ template "waybar_modules" }}
+    },
+    {
+        "layer": "top",
+        "position": "bottom",
+        "height": 30,
+        "output": ["DP-6"],
+        "modules-left": [
+            "sway/workspaces",
+            "sway/mode"
+        ],
+        "modules-center": [
+            "sway/window"
+        ],
+        "modules-right": [
+            "custom/cpu_clk",
+            "custom/sep",
+            "network#ethernet_ip",
+            "network#wifi_ip",
+            "custom/sep",
+            "battery",
+            "custom/sep",
+            "custom/clock"
+        ],
+{{ template "waybar_modules" }}
+    }
+]
