@@ -206,8 +206,8 @@ exec = PYTHONUNBUFFERED=1 SERVER="localhost:8101" ~/.local/bin/bar/go-check-upda
 {{- else }}
 exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hm:8100" ~/.local/bin/bar/go-check-updates-ws.py
 {{- end }}
-click-left = kill -USR1 %pid%
-click-right = kill -USR2 %pid%
+click-left = dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.notify >/dev/null
+click-right = dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.refresh >/dev/null
 tail = true
 interval = 0
 
@@ -227,8 +227,8 @@ format =  <label>
 format =  <label>
 {{- end }}
 exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock ~/.local/bin/bar/go-check-updates-ws.py
-click-left = kill -USR1 %pid%
-click-right = kill -USR2 %pid%
+click-left = dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.notify >/dev/null
+click-right = dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.refresh >/dev/null
 tail = true
 interval = 0
 

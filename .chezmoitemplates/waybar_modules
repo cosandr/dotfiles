@@ -49,7 +49,9 @@
         "format": " {}",
         "exec": "PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock $HOME/.local/bin/bar/go-check-updates-ws.py",
         "exec-on-event": false,
-        "tooltip": false
+        "tooltip": false,
+        "on-click": "dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.notify >/dev/null",
+        "on-click-right": "dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.refresh >/dev/null",
     },
 
     "custom/keyboard-layout": {

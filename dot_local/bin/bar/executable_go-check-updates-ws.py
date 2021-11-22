@@ -3,45 +3,57 @@
 import asyncio
 import json
 import os
-import signal
 import sys
 
 import websockets
 from aiohttp import ClientSession, UnixConnector
+from dbus_next.aio.message_bus import MessageBus
+from dbus_next.service import ServiceInterface, method
 
 
-class UpdatesClient:
-    def __init__(self, loop, server):
-        self.loop: asyncio.AbstractEventLoop = loop
+class UpdatesClient(ServiceInterface):
+    def __init__(self, name, server):
+        super().__init__(name)
         self.server: str = server
         self.sess: ClientSession = None
         self.ws: websockets.Connect = None
         self.api_uri: str = 'http://{}/api'
         self.ws_uri: str = 'ws://{}/ws'
         self.data = {}
-        self.loop.add_signal_handler(signal.SIGUSR1, self.handler_notify)
-        self.loop.add_signal_handler(signal.SIGUSR2, self.handler_refresh)
-        self.loop.add_signal_handler(signal.SIGTERM, self.handler_close)
 
-    def handler_notify(self):
-        self.loop.create_task(self.handler_notify_async())
-
-    async def handler_notify_async(self):
+    @method()
+    async def notify(self):
         await self.get_updates_api()
         print(self.get_numupdates())
         await self.send_notification(f'{self.get_numupdates()} pending', self.updates_str())
 
-    def handler_refresh(self):
-        self.loop.create_task(self.refresh())
+    @method()
+    async def refresh(self):
+        await self.send_notification("Refreshing", level='normal')
+        try:
+            async with self.sess.get(url=self.api_uri, params=dict(updates='true', refresh='true')) as resp:
+                data = await resp.json()
+                if data.get('error'):
+                    return await self.send_notification("Refresh failed", content=data['error'], level='critical')
+                self.data = data.get('data', {})
+        except Exception as e:
+            await self.send_notification("Refresh failed", content=str(e), level='critical')
 
-    def handler_close(self):
-        # takes too long to run
-        # self.loop.create_task(self.handler_close_async())
-        exit(0)
+    @method()
+    async def close(self):
+        if self.sess:
+            await self.sess.close()
+        if self.ws:
+            await self.ws.close()
 
-    async def handler_close_async(self):
-        await self.close()
-        exit(0)
+    @method()
+    async def reconnect(self):
+        if self.ws:
+            await self.ws.close()
+        if self.server.startswith('/'):
+            self.ws = await websockets.unix_connect(self.server, uri=self.ws_uri)
+        else:
+            self.ws = await websockets.connect(self.ws_uri)
 
     async def run(self):
         if self.server.startswith('/'):
@@ -62,20 +74,6 @@ class UpdatesClient:
             except Exception:
                 print('WS ERR')
                 await self.reconnect()
-
-    async def reconnect(self):
-        if self.ws:
-            await self.ws.close()
-        if self.server.startswith('/'):
-            self.ws = await websockets.unix_connect(self.server, uri=self.ws_uri)
-        else:
-            self.ws = await websockets.connect(self.ws_uri)
-
-    async def close(self):
-        if self.sess:
-            await self.sess.close()
-        if self.ws:
-            await self.ws.close()
 
     def updates_str(self) -> str:
         if not self.data.get('updates'):
@@ -107,29 +105,23 @@ class UpdatesClient:
             data = await resp.json()
             self.data = data.get('data', {})
 
-    async def refresh(self):
-        await self.send_notification("Refreshing", level='normal')
-        try:
-            async with self.sess.get(url=self.api_uri, params=dict(updates='true', refresh='true')) as resp:
-                data = await resp.json()
-                if data.get('error'):
-                    return await self.send_notification("Refresh failed", content=data['error'], level='critical')
-                self.data = data.get('data', {})
-        except Exception as e:
-            await self.send_notification("Refresh failed", content=str(e), level='critical')
 
+async def main():
+    name = 'com.andrei.go-check-updates'
+    path = '/'
+    interface_name = 'gcu.control'
 
-def main():
-    loop = asyncio.get_event_loop()
-    if os.getenv('DEBUG', '0') == '1':
-        print(f'PID: {os.getpid()}')
-    client = UpdatesClient(loop, server=os.getenv("SERVER", "localhost:8100"))
-    loop.run_until_complete(client.run())
+    bus = await MessageBus().connect()
+    interface = UpdatesClient(interface_name, server=os.getenv("SERVER", "localhost:8100"))
+    bus.export(path, interface)
+    await bus.request_name(name)
+    print(f'dest: "{name}", path: "{path}", interface: "{interface_name}"', file=sys.stderr)
+    await interface.run()
 
 
 if __name__ == "__main__":
     try:
-        main()
+        asyncio.run(main())
     except Exception as e:
         print('N/A')
         print(e, file=sys.stderr)
