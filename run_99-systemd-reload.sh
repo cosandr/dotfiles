@@ -12,7 +12,7 @@ command -v systemctl &>/dev/null || exit 0
 systemctl --user daemon-reload
 
 # Ensure services are enabled
-services=( "dresrv-gpg" "dresrv-tunnel" "dresrv-wait-online" "kanshi" "swayidle" "ws-gpg" "ws-proxy" "ws-wait-online" )
+services=( "dresrv-gpg" "dresrv-tunnel" "dresrv-wait-online" "kanshi" "swayidle" "waybar" "ws-gpg" "ws-proxy" "ws-wait-online" )
 
 for srv in "${services[@]}"; do
     if [[ -f ~/.config/systemd/user/"$srv".service ]]; then
