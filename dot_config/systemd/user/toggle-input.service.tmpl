@@ -1,0 +1,10 @@
+[Unit]
+Description=Cycle PulseAudio outputs
+BindsTo=waybar.service
+
+[Service]
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/bar/toggle-input.py
+Restart=on-failure
+
+[Install]
+WantedBy=waybar.service

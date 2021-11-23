@@ -133,6 +133,7 @@
         "format-icons": {
             "default": ["", "", ""] // Icons: volume-down, volume-up
         },
+        "on-click": "dbus-send --session --dest=com.andrei.audio --print-reply / input.toggle.swap >/dev/null",
         "on-click-right": "pavucontrol",
         "tooltip": true
     },

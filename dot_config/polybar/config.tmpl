@@ -350,7 +350,7 @@ interval = 60
 type = custom/script
 format = <label>
 exec = PYTHONUNBUFFERED=1 ~/.local/bin/bar/toggle-input.py
-click-left = kill -HUP %pid%
+click-left = dbus-send --session --dest=com.andrei.audio --print-reply / input.toggle.swap
 click-right = pavucontrol &
 tail = true
 interval = 0
