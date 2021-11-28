@@ -88,9 +88,11 @@ Host dresrv.com-gpg
     User andrei
     ExitOnForwardFailure yes
     TCPKeepAlive yes
+{{- if not .is.windows }}
     # Set in sshd_config too
     StreamLocalBindUnlink yes
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+{{- end }}
 {{- end }} {{/* and (lookPath "gpg-agent") (or .is.desktop .is.laptop) */}}
 {{- end }} {{/* {{- not .is.server }} */}}
 
@@ -153,9 +155,11 @@ Host ws-gpg
     User andrei
     ExitOnForwardFailure yes
     TCPKeepAlive yes
+{{- if not .is.windows }}
     # Set in sshd_config too
     StreamLocalBindUnlink yes
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+{{- end }}
 {{- end }}
 
 Host ws-socks

@@ -89,6 +89,7 @@
       {"exec": "xrandr",               "skip_root": true,  "path": ".local/bin/xorg*"}
     ],
     "source": [
+{{- if not $is_windows }}
       "{{ .chezmoi.homeDir }}/.zprezto/init.zsh",
       "{{ .chezmoi.homeDir }}/.cargo/env",
       "/opt/homebrew/opt/fzf/shell/completion.zsh",
@@ -103,6 +104,7 @@
       "/usr/share/fzf/shell/key-bindings.zsh",
       "/usr/share/zsh/site-functions/_podman",
       "/usr/share/zsh/site-functions/fzf"
+{{- end }}
     ]
   }
 }
