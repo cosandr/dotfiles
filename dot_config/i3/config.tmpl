@@ -39,7 +39,7 @@ bindsym $shift+Print exec "scrot -u $HOME/Pictures/Screenshots/$(date +%F_%T).pn
 # Turn off displays, delay for button release
 bindsym $super+Pause exec sleep 1 && xset dpms force off
 
-exec_always --no-startup-id $HOME/.local/bin/polybar-launch
+exec_always --no-startup-id $HOME/.local/bin/bar/polybar-launch
 
 # Restore workspaces
 exec --no-startup-id $HOME/.local/bin/i3-restore &
