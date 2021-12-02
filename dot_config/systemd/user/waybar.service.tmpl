@@ -5,7 +5,7 @@ Documentation=https://github.com/Alexays/Waybar/wiki/
 BindsTo=sway-session.target
 
 [Service]
-ExecStart=/usr/bin/waybar
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/bar/waybar-launch
 ExecReload=kill -SIGUSR2 $MAINPID
 Restart=on-failure
 

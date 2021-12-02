@@ -28,10 +28,10 @@
     },
 
     "backlight": {
-        "device": "intel_backlight",
+        "device": "$BACKLIGHT_DEV",
         "format": " {percent}%",
-        "on-scroll-up": "brightnessctl set 1%+",
-        "on-scroll-down": "brightnessctl set 1%-"
+        "on-scroll-up": "brightnessctl -d $BACKLIGHT_DEV set 1%+",
+        "on-scroll-down": "brightnessctl -d $BACKLIGHT_DEV set 1%-"
     },
 
     "custom/cpu_clk": {
@@ -94,8 +94,7 @@
     },
 
     "network#ethernet": {
-        // TODO: auto-detect
-        "interface": "enp84s0u1",
+        "interface": "$PRIMARY_ETH",
         "interval": 5,
         "format-ethernet": " {bandwidthDownBits}",
         "format-disconnected": "",
@@ -103,15 +102,14 @@
     },
 
     "network#ethernet_ip": {
-        // TODO: auto-detect
-        "interface": "enp84s0u1",
+        "interface": "$PRIMARY_ETH",
         "interval": 5,
         "format-ethernet": " {bandwidthDownBits} [{ipaddr}/{cidr}]",
         "format-disconnected": "",
     },
 
     "network#wifi": {
-        "interface": "wlan*",
+        "interface": "$PRIMARY_WLAN",
         "interval": 5,
         "format-wifi": " {essid}",
         "format-disconnected": "",
@@ -119,7 +117,7 @@
     },
 
     "network#wifi_ip": {
-        "interface": "wlan*",
+        "interface": "$PRIMARY_WLAN",
         "interval": 5,
         "format-wifi": " {bandwidthDownBits} [{ipaddr}/{cidr}]",
         "format-disconnected": ""
