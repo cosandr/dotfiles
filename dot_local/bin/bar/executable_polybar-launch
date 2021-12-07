@@ -40,6 +40,14 @@ conf_dpi() {
             export FONT_3="Feather:size=22;4"
             export FONT_4="siji:size=24;4"
             ;;
+        120)
+            export HEIGHT="38"
+            export FONT_0="Noto Sans:size=14;3"
+            export FONT_1="Noto Color Emoji:pixelsize=14:style=Regular:scale=7;3"
+            export FONT_2="Symbols Nerd Font:size=19;4"
+            export FONT_3="Feather:size=19;4"
+            export FONT_4="siji:size=20;4"
+            ;;
         *)
             export HEIGHT="30"
             export FONT_0="Noto Sans:size=11;2"
