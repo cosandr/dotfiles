@@ -60,8 +60,11 @@ output {
     eDP-1 scale 2
     "Goldstar Company Ltd LG HDR 4K 0x00008DDC" scale 1.5
     "Goldstar Company Ltd LG HDR 4K 0x00000B9F" scale 1.5
-    "Acer Technologies XV273K 0x0000CFF9" scale 1.5
+    "Unknown Gigabyte M32U 21311B001327" scale 1.25
     "Samsung Electric Company U24E850 HTHH300363" scale 1.5
+{{- if .is.desktop }}
+    "Goldstar Company Ltd LG TV 0x00000101" disable
+{{- end }}
 }
 
 include /etc/sway/config.d/*
