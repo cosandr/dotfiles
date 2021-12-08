@@ -9,9 +9,9 @@ profile {
 }
 
 profile {
-    output eDP-1 scale 2 position 0,1800
-    output "Acer Technologies XV273K 0x0000CFF9" scale 1.5 position 1920,1440 mode 3840x2160@119.910Hz
-    output "Samsung Electric Company U24E850 HTHH300363" scale 1.5 position 1920,0
+    output eDP-1 scale 2 position 1664,2088
+    output "Unknown Gigabyte M32U 21311B001327" scale 1.25 position 3584,1440 mode 3840x2160@143.999Hz
+    output "Samsung Electric Company U24E850 HTHH300363" scale 1.5 position 3840,0
 }
 
 profile {
