@@ -24,6 +24,8 @@ for_window [app_id="thunar" title="File Operation Progress"] floating enable; bo
 # Java iKVM
 for_window [app_id=null title="^Java iKVM Viewer.*"] floating enable
 no_focus [app_id=null title="^Java iKVM Viewer.*"]
+# Cisco AnyConnect
+for_window [app_id="com\.cisco\.anyconnect\.gui"] floating enable
 
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
@@ -32,8 +34,8 @@ bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun
 # Needs wl-clipboard grim slurp
 bindsym $super+$shift+s exec grim -g "$(slurp)" - | tee $HOME/Pictures/Screenshots/$(date +%F_%T).png | wl-copy
 
-bindsym $super+Pause exec sleep 1 && swaymsg output '*' dpms off
-bindsym $super+KP_Subtract exec sleep 1 && swaymsg output '*' dpms off
+bindsym --locked $super+Pause exec sleep 1 && swaymsg output '*' dpms off
+bindsym --locked $super+KP_Subtract exec sleep 1 && swaymsg output '*' dpms off
 bindsym --locked $super+$shift+KP_Enter exec swaymsg output '*' dpms on
 
 # Needs swaybg
