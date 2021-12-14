@@ -44,6 +44,9 @@
       "use_agent": false,
       "no_autostart": {{ or $is_server $is_ws }}
     },
+    "kanshi": {
+      "home_no_edp": false
+    },
     "files": {
 {{- if $is_windows }}{{ $prefix := "//dresrv.hm/" }}
       "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
