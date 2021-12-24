@@ -204,7 +204,7 @@ format =  <label>
 {{- if .dresrv.use_domain }}
 exec = PYTHONUNBUFFERED=1 SERVER="localhost:8101" ~/.local/bin/bar/go-check-updates-ws.py
 {{- else }}
-exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hm:8100" ~/.local/bin/bar/go-check-updates-ws.py
+exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hlab.no:8100" ~/.local/bin/bar/go-check-updates-ws.py
 {{- end }}
 click-left = dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.notify >/dev/null
 click-right = dbus-send --session --dest=com.andrei.go-check-updates --print-reply / gcu.control.refresh >/dev/null

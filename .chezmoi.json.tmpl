@@ -48,7 +48,7 @@
       "home_no_edp": false
     },
     "files": {
-{{- if $is_windows }}{{ $prefix := "//dresrv.hm/" }}
+{{- if $is_windows }}{{ $prefix := "//dresrv.hlab.no/" }}
       "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
       "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
 {{- else if $is_mac }}{{ $prefix := print .chezmoi.homeDir "/dresrv/" }}
