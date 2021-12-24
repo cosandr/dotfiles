@@ -88,14 +88,14 @@ Host dresrv.com-gpg
     User andrei
     ExitOnForwardFailure yes
     TCPKeepAlive yes
-{{- if not .is.windows }}
     # Set in sshd_config too
     StreamLocalBindUnlink yes
 {{- if .is.mac }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent {{ print .chezmoi.homeDir "/.gnupg/S.gpg-agent.extra" }}
+{{- else if .is.windows }}
+    RemoteForward /run/user/1000/gnupg/S.gpg-agent 127.0.0.1:4742
 {{- else }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-{{- end }}
 {{- end }}
 {{- end }} {{/* and (lookPath "gpg-agent") (or .is.desktop .is.laptop) */}}
 {{- end }} {{/* {{- not .is.server }} */}}
@@ -159,14 +159,12 @@ Host ws-gpg
     User andrei
     ExitOnForwardFailure yes
     TCPKeepAlive yes
-{{- if not .is.windows }}
-    # Set in sshd_config too
-    StreamLocalBindUnlink yes
 {{- if .is.mac }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent {{ print .chezmoi.homeDir "/.gnupg/S.gpg-agent.extra" }}
+{{- else if .is.windows }}
+    RemoteForward /run/user/1000/gnupg/S.gpg-agent 127.0.0.1:4742
 {{- else }}
     RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-{{- end }}
 {{- end }}
 {{- end }}
 
