@@ -29,9 +29,6 @@ for_window [class="(k|Alacr)itty" title="\w+-monitoring"] border none
 # Don't need borders either
 for_window [class="Spotify"] border none
 for_window [class="discord"] border none
-{{- if lookPath "nextcloud" }}
-exec --no-startup-id nextcloud --background &
-{{- end }}
 
 {{- if lookPath "kdeconnect-cli" }}
 exec --no-startup-id /usr/lib/kdeconnectd

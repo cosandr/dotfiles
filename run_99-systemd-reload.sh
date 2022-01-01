@@ -13,7 +13,7 @@ systemctl --user daemon-reload
 
 # Ensure services are enabled
 services=(
-    "dresrv-gpg" "dresrv-tunnel" "dresrv-wait-online" "ws-gpg" "ws-proxy" "ws-wait-online"
+    "nextcloud" "dresrv-gpg" "dresrv-tunnel" "dresrv-wait-online" "ws-gpg" "ws-proxy" "ws-wait-online"
     "kanshi" "swayidle" "waybar"
     "auto-lock" "dunst" "picom" "polybar" "redshift-gtk"
 )

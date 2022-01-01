@@ -1,0 +1,11 @@
+[Unit]
+Description=Nextcloud client
+Documentation=man:nextcloud(1)
+BindsTo=graphical-session.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/nextcloud --background
+
+[Install]
+WantedBy=graphical-session.target
