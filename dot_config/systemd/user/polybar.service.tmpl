@@ -5,7 +5,7 @@ BindsTo=i3-session.target
 
 [Service]
 Type=forking
-ExecStart={{ .chezmoi.homeDir }}/.local/bin/bar/polybar-launch
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/bar/polybar-launch -q
 
 [Install]
 WantedBy=i3-session.target

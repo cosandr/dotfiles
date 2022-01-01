@@ -83,10 +83,10 @@ for i in "${!present_monitors[@]}"; do
     fi
     # Use override bar
     if [[ -n ${MONITOR_MAP[$MONITOR]} ]]; then
-        polybar "${MONITOR_MAP[$MONITOR]}" &
+        polybar "${MONITOR_MAP[$MONITOR]}" "$@" &
     elif [[ $i -eq 0 ]]; then
-        polybar main &
+        polybar main "$@" &
     else
-        polybar secondary &
+        polybar secondary "$@" &
     fi
 done
