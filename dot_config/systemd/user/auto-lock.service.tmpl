@@ -1,0 +1,10 @@
+[Unit]
+Description=Auto lock X session
+BindsTo=i3-session.target
+
+[Service]
+Type=simple
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/auto-lock
+
+[Install]
+WantedBy=i3-session.target

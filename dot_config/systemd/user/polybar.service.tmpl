@@ -1,0 +1,11 @@
+[Unit]
+Description=A fast and easy-to-use status bar
+Documentation=https://github.com/polybar/polybar
+BindsTo=i3-session.target
+
+[Service]
+Type=forking
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/bar/polybar-launch
+
+[Install]
+WantedBy=i3-session.target

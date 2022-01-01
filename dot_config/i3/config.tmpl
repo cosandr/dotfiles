@@ -18,11 +18,7 @@ for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$
 bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
 bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
 
-exec --no-startup-id systemctl --user start xsession.target
-exec --no-startup-id $HOME/.local/bin/auto-lock &
-exec --no-startup-id picom -b
-exec --no-startup-id redshift-gtk
-exec --no-startup-id dunst-launch
+exec_always --no-startup-id "systemctl --user import-environment; systemctl --user start i3-session.target"
 exec --no-startup-id ~/.fehbg
 
 # restart i3 inplace
@@ -38,8 +34,6 @@ bindsym $shift+Print exec "scrot -u $HOME/Pictures/Screenshots/$(date +%F_%T).pn
 
 # Turn off displays, delay for button release
 bindsym $super+Pause exec sleep 1 && xset dpms force off
-
-exec_always --no-startup-id $HOME/.local/bin/bar/polybar-launch
 
 # Restore workspaces
 exec --no-startup-id $HOME/.local/bin/i3-restore &

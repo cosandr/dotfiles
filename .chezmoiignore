@@ -53,6 +53,7 @@ Documents/
 {{- if not (eq .session_desktop "i3" "sway") }}
 .config/mimeapps.list
 .config/override
+.config/systemd/user/auto-lock.service
 .local/bin/*-launch
 .local/bin/auto-lock
 .local/bin/i3*

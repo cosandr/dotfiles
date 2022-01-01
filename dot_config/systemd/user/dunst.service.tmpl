@@ -1,0 +1,12 @@
+[Unit]
+Description=Dunst notification daemon
+Documentation=man:dunst(1)
+BindsTo=i3-session.target
+
+[Service]
+Type=dbus
+BusName=org.freedesktop.Notifications
+ExecStart={{ .chezmoi.homeDir }}/.local/bin/dunst-launch
+
+[Install]
+WantedBy=i3-session.target

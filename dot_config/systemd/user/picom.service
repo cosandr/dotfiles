@@ -1,0 +1,11 @@
+[Unit]
+Description=Picom X compositor
+Documentation=man:picom(1)
+BindsTo=i3-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/picom
+
+[Install]
+WantedBy=i3-session.target
