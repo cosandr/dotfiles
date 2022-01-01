@@ -73,7 +73,7 @@ class AudioInterface(ServiceInterface):
 
 async def main():
     name = 'com.andrei.audio'
-    path = '/'
+    path = os.getenv("BUS_PATH", "/")
     interface_name = 'input.toggle'
 
     bus = await MessageBus().connect()

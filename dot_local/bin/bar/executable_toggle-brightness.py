@@ -259,7 +259,7 @@ async def main():
         await asyncio.sleep(delay)
 
     name = 'com.andrei.brightness'
-    path = '/'
+    path = os.getenv("BUS_PATH", "/")
     interface_name = 'ddcci.control'
 
     bus = await MessageBus().connect()
