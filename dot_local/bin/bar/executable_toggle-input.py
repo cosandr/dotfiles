@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import asyncio
+import os
 import re
 import sys
 from asyncio.subprocess import DEVNULL, PIPE
