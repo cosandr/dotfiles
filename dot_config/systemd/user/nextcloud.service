@@ -4,7 +4,7 @@ Documentation=man:nextcloud(1)
 BindsTo=graphical-session.target
 
 [Service]
-Type=forking
+Type=simple
 ExecStart=/usr/bin/nextcloud --background
 
 [Install]
