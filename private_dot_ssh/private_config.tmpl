@@ -147,6 +147,28 @@ Host drepi
     User pi
     ForwardAgent yes
 {{- end }} {{/* {{- if not $is_pi }} */}}
+
+Host mt
+    HostName 10.0.50.1
+    User admin
+    PubkeyAcceptedKeyTypes +ssh-rsa
+
+Host 2960g
+    HostName 10.0.100.3
+    User andrei
+    PreferredAuthentications password
+    PubkeyAuthentication no
+    KexAlgorithms +diffie-hellman-group1-sha1
+    Ciphers aes128-cbc,3des-cbc
+    HostKeyAlgorithms +ssh-rsa
+
+Host a5800
+    HostName 10.0.100.4
+    User admin
+    PreferredAuthentications password
+    PubkeyAuthentication no
+    KexAlgorithms +diffie-hellman-group1-sha1
+    Ciphers aes128-cbc,3des-cbc
 {{ if .ssh.include_work }}
 Host ws
     HostName 192.168.1.43
