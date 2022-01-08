@@ -45,6 +45,16 @@ bindsym $super+$shift+r exec swaymsg reload && systemctl --user restart kanshi.s
 
 bindsym $super+$shift+e exec "swaynag -f 'pango:{{ $font_nag }}' -t warning -m 'Exit sway?' -b 'Yes' 'swaymsg exit'"
 
+mode "system" {
+    bindsym w exec systemctl --user restart waybar, mode "default"
+    bindsym k exec systemctl --user restart kanshi, mode "default"
+    bindsym a exec systemctl --user restart waybar swayidle kanshi, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $super+semicolon mode "system"
+
 input * {
     xkb_numlock enable
     xkb_layout "us,no"
