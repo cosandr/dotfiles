@@ -77,8 +77,9 @@ else
     unset PYENV_ROOT
 fi
 {{- if .is.wsl }}
-if [[ -z $SSH_AUTH_SOCK ]]; then
-  export SSH_AUTH_SOCK=${WSL_AUTH_SOCK}
+if [[ -n ${WSL_AGENT_HOME} ]]; then
+    export GNUPGHOME=${WSL_AGENT_HOME}
+    export SSH_AUTH_SOCK=${WSL_AGENT_HOME}/S.gpg-agent.ssh
 fi
 export GDK_SCALE=2
 export QT_SCREEN_SCALE_FACTORS=2
