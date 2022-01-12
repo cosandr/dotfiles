@@ -140,14 +140,14 @@ Host romvm
     ProxyJump romsto
     ForwardAgent yes
 {{- end }} {{/* {{- if .ssh.include_rom }} */}}
-{{- if not $is_pi }}
+{{- if and (not $is_pi) (not .is.ws) }}
 
 Host drepi
     HostName 10.0.50.21
     User pi
     ForwardAgent yes
-{{- end }} {{/* {{- if not $is_pi }} */}}
-
+{{- end }} {{/* {{- if and (not $is_pi) (not .is.ws) }} */}}
+{{ if not .is.ws }}
 Host mt
     HostName 10.0.50.1
     User admin
@@ -169,6 +169,7 @@ Host a5800
     PubkeyAuthentication no
     KexAlgorithms +diffie-hellman-group1-sha1
     Ciphers aes128-cbc,3des-cbc
+{{- end }}
 {{ if .ssh.include_work }}
 Host ws
     HostName 192.168.1.43
