@@ -50,7 +50,7 @@ Documents/
 .xprofile
 .Xresources
 {{- end }} {{/* if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) */}}
-{{- if not (eq .session_desktop "i3" "sway") }}
+{{- if or .is.wsl (not (eq .session_desktop "i3" "sway")) }}
 .config/mimeapps.list
 .config/override
 .config/systemd/user/auto-lock.service
@@ -67,7 +67,7 @@ Documents/
 .Xresources
 {{- else }}
 .config/autostart
-{{- end }} {{/* if not (eq .session_desktop "i3" "sway") */}}
+{{- end }} {{/* if or .is.wsl (not (eq .session_desktop "i3" "sway"))) */}}
 {{- $r := .is.root -}}
 {{- range $v := .ignore_config }}
 {{- if not (lookPath $v.exec) }}
@@ -112,3 +112,9 @@ Documents/
 .config/tmuxinator/hjd.yml
 {{- end }} {{/* if eq (get .files "mrbot") "" */}}
 {{- end }} {{/* if .is.windows */}}
+{{- if .is.wsl }}
+.local/bin/code
+.local/bin/discord
+.local/bin/google-chrome*
+.local/bin/slack
+{{- end }}
