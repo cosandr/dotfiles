@@ -15,7 +15,7 @@ systemctl --user daemon-reload
 services=(
     "dresrv-gpg" "dresrv-tunnel" "dresrv-wait-online" "ws-gpg" "ws-proxy" "ws-wait-online"
     "dunst" "nextcloud"
-    "kanshi" "swayidle" "waybar" "wlsunset"
+    "kanshi" "swayidle" "waybar"
     "auto-lock" "picom" "polybar" "redshift-gtk"
 )
 

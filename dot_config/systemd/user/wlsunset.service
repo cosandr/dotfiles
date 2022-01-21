@@ -1,7 +1,8 @@
 [Unit]
 Description=Day/night gamma adjustments for Wayland compositors
 Documentation=man:wlsunset(1)
-BindsTo=sway-session.target
+PartOf=sway-session.target
+After=sway-session.target
 
 [Service]
 Type=simple
