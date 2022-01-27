@@ -148,19 +148,17 @@ Host drepi
     ForwardAgent yes
 {{- end }} {{/* {{- if and (not $is_pi) (not .is.ws) }} */}}
 {{ if not .is.ws }}
-Host mt
+Host rb5009
     HostName 10.0.50.1
     User admin
-    PubkeyAcceptedKeyTypes +ssh-rsa
+    PubkeyAcceptedKeyTypes ssh-rsa
+    IdentityFile ~/.ssh/id_rsa
 
-Host 2960g
+Host crs226
     HostName 10.0.100.3
-    User andrei
-    PreferredAuthentications password
-    PubkeyAuthentication no
-    KexAlgorithms +diffie-hellman-group1-sha1
-    Ciphers aes128-cbc,3des-cbc
-    HostKeyAlgorithms +ssh-rsa
+    User admin
+    PubkeyAcceptedKeyTypes ssh-rsa
+    IdentityFile ~/.ssh/id_rsa
 
 Host a5800
     HostName 10.0.100.4
