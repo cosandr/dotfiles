@@ -202,9 +202,9 @@ format =  <label>
 format =  <label>
 {{- end }}
 {{- if .dresrv.use_domain }}
-exec = PYTHONUNBUFFERED=1 SERVER="localhost:8101" BUS_PATH="/dresrv" ~/.local/bin/bar/go-check-updates-ws.py
+exec = PYTHONUNBUFFERED=1 SERVER="localhost:8101" BUS_PATH="/dresrv" ~/.local/bin/bar/go-check-updates-ws.py 2>/dev/null
 {{- else }}
-exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hlab.no:8100" BUS_PATH="/dresrv" ~/.local/bin/bar/go-check-updates-ws.py
+exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hlab.no:8100" BUS_PATH="/dresrv" ~/.local/bin/bar/go-check-updates-ws.py 2>/dev/null
 {{- end }}
 click-left = dbus-send --session --dest=com.andrei.go-check-updates --print-reply /dresrv gcu.control.notify >/dev/null
 click-right = dbus-send --session --dest=com.andrei.go-check-updates --print-reply /dresrv gcu.control.refresh >/dev/null
@@ -226,7 +226,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock BUS_PATH="/self" ~/.local/bin/bar/go-check-updates-ws.py
+exec = PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock BUS_PATH="/self" ~/.local/bin/bar/go-check-updates-ws.py 2>/dev/null
 click-left = dbus-send --session --dest=com.andrei.go-check-updates --print-reply /self gcu.control.notify >/dev/null
 click-right = dbus-send --session --dest=com.andrei.go-check-updates --print-reply /self gcu.control.refresh >/dev/null
 tail = true
