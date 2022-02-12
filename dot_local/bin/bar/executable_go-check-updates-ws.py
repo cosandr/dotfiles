@@ -107,9 +107,9 @@ class UpdatesClient(ServiceInterface):
 
 
 async def main():
-    name = 'com.andrei.go-check-updates'
+    name = os.getenv("DEST_NAME", "com.andrei.go-check-updates")
     path = os.getenv("BUS_PATH", "/")
-    interface_name = 'gcu.control'
+    interface_name = os.getenv("INTERFACE_NAME", "gcu.control")
 
     bus = await MessageBus().connect()
     interface = UpdatesClient(interface_name, server=os.getenv("SERVER", "localhost:8100"))
