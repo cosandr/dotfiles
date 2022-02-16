@@ -93,6 +93,7 @@ alias pip-req='python3 -m pip install -U pip wheel setuptools && python3 -m pip 
 alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-nh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias scp-nh='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+alias ssh-nk='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no'
 alias tmux-ssh-sock='eval $(tmux showenv -s SSH_AUTH_SOCK)'
 {{- if and .is.linux (not .is.server) (not .is.root) (lookPath "bluetoothctl") }}
 alias bt-mx='bluetoothctl power on && bluetoothctl connect 04:5D:4B:52:86:4B'
