@@ -3,6 +3,9 @@
 {{- $work_keys := list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/mac_rsa.work" ".ssh/desktop_rsa" ".ssh/laptop_rsa" -}}
 {{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr" -}}
 {{- $atgb_keys := list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" ".ssh/mac_ed25519.atgb" -}}
+{{- if stat (joinPath $home ".ssh/conf.d") }}
+Include conf.d/*
+{{- end }}
 {{- if .is.windows }}
 XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 {{- else if .is.mac }}
