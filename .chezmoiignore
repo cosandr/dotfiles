@@ -111,6 +111,9 @@ Documents/
 {{- if eq (get .files "mrbot") "" }}
 .config/tmuxinator/hjd.yml
 {{- end }} {{/* if eq (get .files "mrbot") "" */}}
+{{- if not .ssh.include_work }}
+.config/tmuxinator/ws-fwd.yml
+{{- end }} {{/* if not .ssh.include_work */}}
 {{- end }} {{/* if .is.windows */}}
 {{- if .is.wsl }}
 .local/bin/code

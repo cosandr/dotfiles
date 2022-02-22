@@ -1,0 +1,11 @@
+# /home/andrei/.config/tmuxinator/ws-fwd.yml
+
+name: ws-fwd
+root: ~/
+
+windows:
+  - ws-fwd:
+      layout: even-vertical
+      panes:
+        - while true; do ssh -N ws-socks; done
+        - while true; do ssh -N ws-gpg; done
