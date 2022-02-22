@@ -5,7 +5,7 @@
 {{- $is_ws := eq .chezmoi.hostname "xaitedre" }}
 {{- $is_mac := eq .chezmoi.os "darwin" }}
 {{- $is_linux := eq .chezmoi.os "linux" }}
-{{- $is_laptop := or (eq .chezmoi.hostname "laptop" "mbp" "t15g2") $is_mac }}
+{{- $is_laptop := or (contains "laptop" .chezmoi.hostname) $is_mac }}
   "data": {
     "is": {
       "desktop": {{ $is_desktop }},
