@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-    exec /usr/bin/google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland "$@"
+    exec /usr/bin/google-chrome-stable --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland "$@"
 fi
 
 exec /usr/bin/google-chrome-stable "$@"

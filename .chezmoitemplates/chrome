@@ -2,6 +2,6 @@
 --use-gl={{ if lookPath "nvidia-smi" }}desktop{{ else }}egl{{ end }}
 --enable-accelerated-video-decode
 {{- if eq .type "wayland" }}
---enable-features=UseOzonePlatform
+--enable-features=UseOzonePlatform,WebRTCPipeWireCapturer
 --ozone-platform=wayland
 {{- end }}
