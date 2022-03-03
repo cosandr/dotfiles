@@ -36,7 +36,7 @@ bindsym $super+$shift+s exec grim -g "$(slurp)" - | tee $HOME/Pictures/Screensho
 
 bindsym --locked $super+Pause exec sleep 1 && swaymsg output '*' dpms off
 bindsym --locked $super+KP_Subtract exec sleep 1 && swaymsg output '*' dpms off
-bindsym --locked $super+$shift+KP_Enter exec swaymsg output '*' dpms on
+bindsym --locked $super+$shift+KP_Enter exec swaymsg output '*' dpms on && systemctl --user restart kanshi.service
 
 # Needs swaybg
 output "*" bg $HOME/.wallpaper fill
