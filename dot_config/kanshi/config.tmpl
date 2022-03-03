@@ -25,3 +25,22 @@ profile {
     output "Unknown Gigabyte M32U 21311B001327" scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
     output "Samsung Electric Company U24E850 HTHH300363" scale 1.5 position 256,0
 }
+
+# Always restart services when outputs change
+profile {
+    output *
+    exec systemctl --user restart swayidle waybar
+}
+
+profile {
+    output *
+    output *
+    exec systemctl --user restart swayidle waybar
+}
+
+profile {
+    output *
+    output *
+    output *
+    exec systemctl --user restart swayidle waybar
+}
