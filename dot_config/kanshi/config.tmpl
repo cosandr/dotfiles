@@ -29,18 +29,18 @@ profile {
 # Always restart services when outputs change
 profile {
     output *
-    exec systemctl --user restart swayidle waybar
+    exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
 }
 
 profile {
     output *
     output *
-    exec systemctl --user restart swayidle waybar
+    exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
 }
 
 profile {
     output *
     output *
     output *
-    exec systemctl --user restart swayidle waybar
+    exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
 }

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TEMP_FILE=~/.cache/.kanshi-reload
+
+if [ -f "$TEMP_FILE" ]; then
+    echo "$TEMP_FILE exists, exitting."
+    exit 0
+fi
+
+touch "$TEMP_FILE"
+
+trap 'rm -fv "$TEMP_FILE"' EXIT
+
+sleep 5
+
+systemctl --user restart swayidle waybar
