@@ -143,7 +143,9 @@
 
     "sway/window": {
         "format": "{}",
-        "max-length": 120
+        "max-length": 120,
+        // https://github.com/Alexays/Waybar/issues/1456#issuecomment-1060098328
+        "icon": false
     },
 
     "sway/workspaces": {
