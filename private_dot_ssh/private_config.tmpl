@@ -39,7 +39,7 @@ Host dresrv.com
 {{- end }}
 
 Host gitlab.dresrv.com
-    HostName {{ if .dresrv.use_domain }}{{ .dresrv.domain }}{{ else }}{{ .dresrv.local_ip }}{{ end }}
+    HostName gitlab.dresrv.com
     Port {{ .dresrv.ssh_port_gitlab }}
     User git
     PreferredAuthentications publickey
