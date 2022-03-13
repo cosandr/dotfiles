@@ -74,6 +74,16 @@ systemctl --global mask --now gpg-agent.service gpg-agent.socket gpg-agent-ssh.s
 
 On Mac `brew install gnu-getopt pinentry-mac`
 
+# sshfs Mac
+
+From [this GitHub issue](https://github.com/telepresenceio/telepresence/issues/1654#issuecomment-873538291)
+
+```sh
+brew install --cask macfuse
+brew install gromgit/fuse/sshfs-mac
+brew link --overwrite sshfs-mac
+```
+
 # AMDGPU
 
 ### Backlight
