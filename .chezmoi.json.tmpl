@@ -19,6 +19,7 @@
       "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
     },
     "session_desktop": {{ default "i3" (env "XDG_SESSION_DESKTOP") | quote }},
+    "default_browser": {{ if $is_laptop }}"google-chrome.desktop"{{ else }}"firefox.desktop"{{ end }},
 {{- if not $is_windows }}
     "less_mouse": {{ contains "--mouse" (output "less" "--help") }},
 {{- end }}
