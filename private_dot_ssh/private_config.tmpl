@@ -40,7 +40,6 @@ Host dresrv.com
 
 Host gitlab.dresrv.com
     HostName gitlab.dresrv.com
-    Port {{ .dresrv.ssh_port_gitlab }}
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
@@ -170,6 +169,16 @@ Host a5800
     PubkeyAuthentication no
     KexAlgorithms +diffie-hellman-group1-sha1
     Ciphers aes128-cbc,3des-cbc
+
+Host webgw01
+    HostName webgw01.hlab.no
+    Port 5622
+    User root
+
+Host localgw01
+    HostName 10.0.10.91
+    Port 5622
+    User root
 {{- end }}
 {{ if .ssh.include_work }}
 Host ws
