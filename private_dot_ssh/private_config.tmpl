@@ -43,12 +43,6 @@ Host gitlab.dresrv.com
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- range $k := $cosandr_keys }}
-{{- $fp := joinPath $home $k }}
-{{- if or (stat $fp) (stat (print $fp ".pub")) }}
-    IdentityFile ~/{{ $k }}
-{{- end }}
-{{- end }}
 
 {{ if not .is.server -}}
 Host srv-boot
