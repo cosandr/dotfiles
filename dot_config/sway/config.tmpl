@@ -26,6 +26,8 @@ for_window [app_id=null title="^Java iKVM Viewer.*"] floating enable
 no_focus [app_id=null title="^Java iKVM Viewer.*"]
 # Cisco AnyConnect
 for_window [app_id="com\.cisco\.anyconnect\.gui"] floating enable
+# Firefox sharing indicator
+for_window [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable; border none
 
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 

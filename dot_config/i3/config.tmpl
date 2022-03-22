@@ -13,6 +13,8 @@ for_window [class="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enabl
 for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; border normal
 # PiP
 for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
+# Firefox sharing indicator
+for_window [class="firefox" title="Firefox — Sharing Indicator"] floating enable; border none
 
 # Rofi binds
 bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
