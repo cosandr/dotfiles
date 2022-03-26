@@ -50,10 +50,15 @@ Documents/
 .xprofile
 .Xresources
 {{- end }} {{/* if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) */}}
+{{- if or .is.wsl .is.root (not (eq .session_desktop "gnome")) }}
+.config/environment.d
+{{- end }} {{/* if or .is.wsl (not (eq .session_desktop "gnome")) */}}
 {{- if or .is.wsl (not (eq .session_desktop "i3" "sway")) }}
 .config/mimeapps.list
 .config/override
 .config/systemd/user/auto-lock.service
+.config/systemd/user/dunst.service
+.config/systemd/user/nextcloud.service
 .local/bin/*-launch
 .local/bin/auto-lock
 .local/bin/i3*
@@ -61,6 +66,7 @@ Documents/
 .local/bin/pavolume
 .local/bin/rofi*
 .local/bin/start-gui
+.local/bin/sway*
 .local/bin/xorg*
 .xinitrc
 .xprofile
