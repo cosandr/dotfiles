@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 {{- if lookPath "nvtop" }}
-kitty --detach --title self-monitoring tmuxinator start hjn
+kitty -c kitty.conf -c pure.conf --detach --title self-monitoring tmuxinator start hjn
 {{- else }}
-kitty --detach --title self-monitoring tmuxinator start hj
+kitty -c kitty.conf -c pure.conf --detach --title self-monitoring tmuxinator start hj
 {{- end }}

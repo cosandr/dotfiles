@@ -19,6 +19,22 @@ gpg --passphrase-file .secrets.pass --batch -d secrets.json.gpg
 gpg --passphrase-file .secrets.pass --batch --yes -o .secrets.json -d secrets.json.gpg
 ```
 
+### VS Code Wayland GNOME
+
+Add to `settings.json`
+
+```json
+"window.titleBarStyle": "custom",
+```
+
+If using settings sync, it should probably be ignored
+
+```json
+"settingsSync.ignoredSettings":[
+    "window.titleBarStyle"
+]
+```
+
 ### Example
 
 Same structure as config file.
