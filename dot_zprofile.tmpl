@@ -36,13 +36,6 @@ typeset -gU cdpath fpath mailpath path
 #   $cdpath
 # )
 
-# Set the list of directories that Zsh searches for programs.
-path=(
-  /usr/local/{bin,sbin}
-  {/,/usr/}sbin
-  $path
-)
-
 # Set the default Less options.
 {{- if .less_mouse }}
 export LESS='-F -g -i -M -R -S -w -X -z-4 --mouse --wheel-lines 4'
@@ -57,16 +50,26 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 export PYENV_ROOT={{ if stat "/opt/pyenv/bin" }}"/opt/pyenv"{{ else }}"$HOME/.pyenv"{{ end }}
+
 _search_path=(
     "$HOME/.local/bin"
     "$HOME/.cargo/bin"
     "$HOME/go/bin"
     "$PYENV_ROOT/bin"
+    /usr/local/{bin,sbin}
+    {/,/usr/}{bin,sbin}
+    $path
 )
 
+# Reset PATH
+path=()
+
 for d in $_search_path; do
-    if [[ -d $d ]] && (( ! ${path[(I)$d]} )); then
-        path=($d $path)
+    [[ ! -d $d ]] && continue
+    # Resolve absolute path
+    d=$(cd "$d"; pwd -P)
+    if (( ! ${path[(I)$d]} )); then
+        path=($path $d)
     fi
 done
 unset _search_path
