@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-{{- if lookPath "nvtop" }}
-kitty -c kitty.conf -c pure.conf --detach --title self-monitoring tmuxinator start hjn
-{{- else }}
-kitty -c kitty.conf -c pure.conf --detach --title self-monitoring tmuxinator start hj
-{{- end }}
+_tmuxinator_sess={{ if lookPath "nvtop" }}hjn{{ else }}hj{{ end }}
+
+kitty -c ~/.config/kitty/kitty.conf -c ~/.config/kitty/pure.conf --detach --title self-monitoring tmuxinator start "$_tmuxinator_sess"
