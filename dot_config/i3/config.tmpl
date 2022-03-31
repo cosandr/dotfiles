@@ -5,7 +5,7 @@
 
 for_window [class="Pavucontrol"] floating enable; border normal
 for_window [class="jetbrains-toolbox"] floating enable; border none
-for_window [class="gnome-calculator"] floating enable; border none
+for_window [class="(g|G)nome-calculator"] floating enable; border none
 # Jetbrains splash window
 for_window [class="jetbrains-\w+" title="^win0$"] floating enable; border none
 for_window [class="jetbrains-\w+" title="^(?i)welcome\sto\s\w+$"] floating enable; border none
@@ -28,6 +28,14 @@ bindsym $super+$shift+r exec $HOME/.local/bin/i3-launch restart
 
 # exit i3
 bindsym $super+$shift+e exec "i3-nagbar -f 'pango:{{ $font_nag }}' -t warning -m 'Exit i3?' -b 'Yes' 'systemctl --user stop i3-session.target; i3-msg exit'"
+
+mode "system" {
+    bindsym b exec systemctl --user restart polybar, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $super+semicolon mode "system"
 
 # Screenshots
 bindsym $super+$shift+s --release exec "scrot -s $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
