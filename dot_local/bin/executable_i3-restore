@@ -2,6 +2,7 @@
 
 declare -A WS
 MONITOR_COUNT=${MONITOR_COUNT:-"1"}
+I3_NO_RESTORE=${I3_NO_RESTORE:-"0"}
 
 for i in $(seq 1 "$MONITOR_COUNT"); do
     # Initialize map
@@ -27,10 +28,13 @@ start() {
 }
 
 # Example content
+# I3_NO_RESTORE=1
 # WS["1"]="work"
 # WS["2"]="work"
 # shellcheck source=/dev/null
 [[ -f ~/.config/override/i3 ]] && source ~/.config/override/i3
+
+[[ $I3_NO_RESTORE -eq 1 ]] && exit 0
 
 for i in "${!WS[@]}"; do
     name="$i"
