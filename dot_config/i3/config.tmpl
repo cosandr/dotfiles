@@ -27,7 +27,7 @@ exec --no-startup-id ~/.fehbg
 bindsym $super+$shift+r exec $HOME/.local/bin/i3-launch restart
 
 # exit i3
-bindsym $super+$shift+e exec "i3-nagbar -f 'pango:{{ $font_nag }}' -t warning -m 'Exit i3?' -b 'Yes' 'i3-msg exit'"
+bindsym $super+$shift+e exec "i3-nagbar -f 'pango:{{ $font_nag }}' -t warning -m 'Exit i3?' -b 'Yes' 'systemctl --user stop i3-session.target; i3-msg exit'"
 
 # Screenshots
 bindsym $super+$shift+s --release exec "scrot -s $HOME/Pictures/Screenshots/$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
