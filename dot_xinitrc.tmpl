@@ -1,15 +1,26 @@
 #!/bin/bash
 
+USE_AUTORANDR=${USE_AUTORANDR:-1}
+
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
 [[ -f ~/.config/override/xinitrc ]] && source ~/.config/override/xinitrc
+
+if [[ ! -x /usr/bin/autorandr ]]; then
+    echo "xinitrc: autorandr not installed"
+    USE_AUTORANDR=0
+fi
 
 # Set mouse sensitivity
 if [[ -n $MOUSE_NAME && -n $MOUSE_SENS ]]; then
     xinput set-prop "$MOUSE_NAME" 'libinput Accel Speed' "$MOUSE_SENS"
 fi
 
-{{ .chezmoi.homeDir }}/.local/bin/xorg-conf
+[[ $USE_AUTORANDR -eq 1 ]]; then
+    /usr/bin/autorandr --batch --change --default default
+else
+    {{ .chezmoi.homeDir }}/.local/bin/xorg-conf
+fi
 
 setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
 exec $HOME/.local/bin/i3-launch

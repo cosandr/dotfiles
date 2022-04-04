@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+if systemctl --user -q is-active polybar.service; then
+    sleep 2
+    systemctl --user restart polybar.service
+fi
