@@ -75,6 +75,7 @@ class AudioInterface(ServiceInterface):
 async def main():
     name = 'com.andrei.audio'
     path = os.getenv("BUS_PATH", "/")
+    auto_refresh = int(os.getenv("AUTO_REFRESH", "5"))
     interface_name = 'input.toggle'
 
     bus = await MessageBus().connect()
@@ -82,7 +83,15 @@ async def main():
     bus.export(path, interface)
     await bus.request_name(name)
     print(f'dest: "{name}", path: "{path}", interface: "{interface_name}"', file=sys.stderr)
-    await interface.print_default()
+    if auto_refresh > 0:
+        async def __auto_refresh():
+            while True:
+                await interface.print_default()
+                await asyncio.sleep(auto_refresh)
+
+        asyncio.create_task(__auto_refresh())
+    else:
+        await interface.print_default()
     await bus.wait_for_disconnect()
 
 
