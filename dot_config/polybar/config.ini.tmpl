@@ -2,7 +2,7 @@
 {{- $nvidia := lookPath "nvidia-smi" -}}
 {{- $amd := lookPath "radeontop" }}
 [bar/main]
-include-file = ~/.config/polybar/baropts
+include-file = ~/.config/polybar/baropts.ini
 tray-position = right
 modules-left = i3
 modules-center = title
@@ -15,20 +15,20 @@ modules-right = cpu_usage sep aquaero cpu_temp sep updates srvupdates sep monito
 {{- end }}
 
 [bar/secondary]
-include-file = ~/.config/polybar/baropts
+include-file = ~/.config/polybar/baropts.ini
 modules-left = i3
 modules-center = title
 modules-right = cpu_clk {{ if $nvidia }}nv_gpu_clk{{ else if $amd }}amd_gpu_clk{{ end }} sep aquaerofans sep ethernet sep time
 
 [bar/laptop]
-include-file = ~/.config/polybar/baropts
+include-file = ~/.config/polybar/baropts.ini
 tray-position = right
 modules-left = i3 title
 modules-center =
 modules-right = cpu_usage cpu_temp sep updates sep volume sep backlight sep calendar datetime sep wifi bt_battery bat sep xkeyboard
 
 [bar/laptop-ext]
-include-file = ~/.config/polybar/baropts
+include-file = ~/.config/polybar/baropts.ini
 tray-position = right
 modules-left = i3
 modules-center = title
@@ -40,7 +40,7 @@ modules-right = cpu_usage nv_gpu_usage sep nv_mem_usage sep cpu_temp nv_temp sep
 modules-right = cpu_usage cpu_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
 {{- end }}
 [bar/laptop-ext-secondary]
-include-file = ~/.config/polybar/baropts
+include-file = ~/.config/polybar/baropts.ini
 modules-left = i3
 modules-center = title
 {{- if $amd }}
