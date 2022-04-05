@@ -16,8 +16,8 @@ if [[ -n $MOUSE_NAME && -n $MOUSE_SENS ]]; then
     xinput set-prop "$MOUSE_NAME" 'libinput Accel Speed' "$MOUSE_SENS"
 fi
 
-[[ $USE_AUTORANDR -eq 1 ]]; then
-    /usr/bin/autorandr --batch --change --default default
+if [[ $USE_AUTORANDR -eq 1 ]]; then
+    /usr/bin/autorandr --change --default default
 else
     {{ .chezmoi.homeDir }}/.local/bin/xorg-conf
 fi
