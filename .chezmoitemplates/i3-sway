@@ -35,6 +35,10 @@ exec --no-startup-id /usr/lib/kdeconnectd
 bindsym $super+$alt+m exec kdeconnect-sms
 {{- end }}
 
+{{- if lookPath "blueman-applet" }}
+exec --no-startup-id /usr/bin/blueman-applet
+{{- end }}
+
 # toggle border
 bindsym $super+b border toggle 2
 
