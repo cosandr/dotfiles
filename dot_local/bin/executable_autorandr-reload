@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+
+TEMP_FILE=~/.cache/.autorandr-reload
+
+if [ -f "$TEMP_FILE" ]; then
+    echo "$TEMP_FILE exists, exitting."
+    exit 0
+fi
+
+touch "$TEMP_FILE"
+
+trap 'rm -fv "$TEMP_FILE"' EXIT
+
+sleep 5
+
+if systemctl --user -q is-active polybar.service; then
+    systemctl --user restart polybar.service
+fi
+
+if pgrep -u "$USER" -x i3; then
+    "$HOME"/.local/bin/i3-launch restart
+fi
