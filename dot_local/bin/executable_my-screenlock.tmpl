@@ -50,15 +50,21 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     exit 0
 fi
 
-if [[ ! $idle_hook =~ screen_on ]]; then
-    default_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")
-    lock_timeout="30"
+default_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")
+lock_timeout="30"
 
-    revert() {
-        xset dpms "$default_timeout"
-    }
-    trap revert EXIT
-    xset dpms "$lock_timeout"
+revert() {
+    # Do nothing if timeout was disabled before
+    [[ $default_timeout -eq 0 ]] && exit 0
+    current_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")
+    if [[ $current_timeout -ne $default_timeout ]]; then
+        xset dpms "$default_timeout" "$default_timeout" "$default_timeout"
+    fi
+}
+trap revert EXIT
+
+if [[ $default_timeout -gt $lock_timeout ]]; then
+    xset dpms "$lock_timeout" "$lock_timeout" "$lock_timeout"
 fi
 
 # Check if we have i3lock-color
@@ -96,5 +102,3 @@ case "$LOCKER" in
             --noinput-text ''
         ;;
 esac
-
-revert

@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 idle_hook=${idle_hook:-"xidlehook"}
+dpms_time=${dpms_time:-600}
 
 [[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
 
 case $idle_hook in
     xidlehook)
+        xset dpms "$dpms_time" "$dpms_time" "$dpms_time"
         xidlehook \
             --not-when-fullscreen \
             --not-when-audio \
@@ -14,6 +16,7 @@ case $idle_hook in
             ''
         ;;
     xidlehook_lock)
+        xset dpms "$dpms_time" "$dpms_time" "$dpms_time"
         xidlehook \
             --not-when-fullscreen \
             --not-when-audio \
@@ -25,11 +28,12 @@ case $idle_hook in
             ''
         ;;
     xidlehook_lock_screen_on)
+        xset dpms 0 0 0
         xidlehook \
             --not-when-fullscreen \
             --not-when-audio \
             --timer 600 \
-            '"$HOME"/.local/bin/my-screenlock screen_on' \
+            '"$HOME"/.local/bin/my-screenlock' \
             ''
         ;;
     xidlehook_suspend)
