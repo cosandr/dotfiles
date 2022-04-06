@@ -8,6 +8,7 @@ dpms_time=${dpms_time:-600}
 case $idle_hook in
     xidlehook)
         xset dpms "$dpms_time" "$dpms_time" "$dpms_time"
+        xset s "$dpms_time" "$dpms_time"
         xidlehook \
             --not-when-fullscreen \
             --not-when-audio \
@@ -17,6 +18,7 @@ case $idle_hook in
         ;;
     xidlehook_lock)
         xset dpms "$dpms_time" "$dpms_time" "$dpms_time"
+        xset s "$dpms_time" "$dpms_time"
         xidlehook \
             --not-when-fullscreen \
             --not-when-audio \
@@ -29,6 +31,7 @@ case $idle_hook in
         ;;
     xidlehook_lock_screen_on)
         xset dpms 0 0 0
+        xset s off
         xidlehook \
             --not-when-fullscreen \
             --not-when-audio \

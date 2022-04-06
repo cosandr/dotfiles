@@ -59,12 +59,14 @@ revert() {
     current_timeout=$(cut -d ' ' -f4 <<< "$(xset q | sed -n '25p')")
     if [[ $current_timeout -ne $default_timeout ]]; then
         xset dpms "$default_timeout" "$default_timeout" "$default_timeout"
+        xset s "$default_timeout" "$default_timeout"
     fi
 }
 trap revert EXIT
 
 if [[ $default_timeout -gt $lock_timeout ]]; then
     xset dpms "$lock_timeout" "$lock_timeout" "$lock_timeout"
+    xset s "$lock_timeout" "$lock_timeout"
 fi
 
 # Check if we have i3lock-color
