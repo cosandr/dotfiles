@@ -1,6 +1,6 @@
 // vim:ts=4:sw=4:et
 {
-    // splitv split container with 1 children
+    // splitv split container with 2 children
     "border": "pixel",
     "floating": "auto_off",
     "layout": "splitv",
@@ -20,7 +20,7 @@
             },
             "marks": [],
             "name": "self-monitoring",
-            "percent": 1,
+            "percent": 0.5,
             "swallows": [
                {
                "class": "^kitty$",
@@ -29,6 +29,60 @@
                }
             ],
             "type": "con"
+        },
+        {
+            // tabbed split container with 2 children
+            "border": "pixel",
+            "floating": "auto_off",
+            "layout": "tabbed",
+            "marks": [],
+            "percent": 0.5,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "none",
+                    "current_border_width": 3,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 1296,
+                       "width": 1536,
+                       "x": 4992,
+                       "y": 432
+                    },
+                    "marks": [],
+                    "name": "Slack",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                       "class": "^Slack$",
+                       "instance": "^slack$",
+                       "window_role": "^browser\\-window$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "none",
+                    "current_border_width": 3,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 1026,
+                       "width": 1914,
+                       "x": 3,
+                       "y": 1092
+                    },
+                    "marks": [],
+                    "name": "Google Chat",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                       "class": "^Google\\-chrome$",
+                       "instance": "^chat\\.google\\.com$"
+                       }
+                    ],
+                    "type": "con"
+                }
+            ]
         }
     ]
 }
@@ -47,8 +101,8 @@
             "current_border_width": 0,
             "floating": "auto_off",
             "geometry": {
-               "height": 1151,
-               "width": 1321,
+               "height": 1351,
+               "width": 1561,
                "x": 0,
                "y": 0
             },

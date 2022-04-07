@@ -9,88 +9,59 @@
     "type": "con",
     "nodes": [
         {
-            // tabbed split container with 2 children
             "border": "pixel",
+            "current_border_width": 3,
             "floating": "auto_off",
-            "layout": "tabbed",
+            "geometry": {
+               "height": 878,
+               "width": 1596,
+               "x": 3402,
+               "y": 2282
+            },
             "marks": [],
+            "name": "Google Chrome",
             "percent": 1,
-            "type": "con",
-            "nodes": [
-                {
-                    "border": "pixel",
-                    "current_border_width": 3,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 2112,
-                       "width": 1914,
-                       "x": 0,
-                       "y": 0
-                    },
-                    "marks": [],
-                    "name": "Firefox",
-                    "percent": 0.333333333333333,
-                    "swallows": [
-                       {
-                       "class": "(?i)^firefox$",
-                       "instance": "(?i)^navigator$"
-                       }
-                    ],
-                    "type": "con"
-                },
-                {
-                    "border": "normal",
-                    "current_border_width": 3,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 2087,
-                       "width": 1914,
-                       "x": 3,
-                       "y": 2191
-                    },
-                    "marks": [],
-                    "name": "Firefox (Work)",
-                    "percent": 0.333333333333333,
-                    "swallows": [
-                       {
-                        "class": "(?i)^firefox\\-work$",
-                        "instance": "(?i)^navigator$"
-                       }
-                    ],
-                    "type": "con"
-                }
-            ]
+            "swallows": [
+               {
+               "class": "^Google\\-chrome$",
+               "instance": "^google\\-chrome$",
+               "window_role": "^browser$"
+               }
+            ],
+            "type": "con"
         }
     ]
 }
 
 {
-  // tabbed split container with 1 children
-  "border": "pixel",
-  "floating": "auto_off",
-  "layout": "tabbed",
-  "percent": 0.5,
-  "type": "con",
-  "nodes": [
-      {
-          "border": "normal",
-          "current_border_width": 3,
-          "floating": "auto_off",
-          "geometry": {
-             "height": 1351,
-             "width": 1561,
-             "x": 0,
-             "y": 0
-          },
-          "name": "Terminal",
-          "percent": 1,
-          "swallows": [
-             {
-                 "class": "^Alacritty$",
-                 "instance": "^Alacritty$"
-             }
-          ],
-          "type": "con"
-      }
-  ]
+    // tabbed split container with 2 children
+    "border": "pixel",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "marks": [],
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "normal",
+            "current_border_width": 3,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 600,
+               "width": 800,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "name": "Alacritty",
+            "percent": 0.5,
+            "swallows": [
+               {
+               "class": "^Alacritty$",
+               "instance": "^Alacritty$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
 }

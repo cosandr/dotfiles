@@ -1,0 +1,80 @@
+// vim:ts=4:sw=4:et
+
+{
+  "border": "none",
+  "current_border_width": 3,
+  "floating": "auto_off",
+  "geometry": {
+     "height": 1026,
+     "width": 1914,
+     "x": 3,
+     "y": 1092
+  },
+  "marks": [],
+  "name": "Google Chat",
+  "percent": 0.25,
+  "swallows": [
+     {
+     "class": "^Google\\-chrome$",
+     "instance": "^chat\\.google\\.com$"
+     }
+  ],
+  "type": "con"
+}
+
+{
+    "border": "none",
+    "current_border_width": 3,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 1296,
+       "width": 1536,
+       "x": 4992,
+       "y": 432
+    },
+    "marks": [],
+    "name": "Slack",
+    "percent": 0.25,
+    "swallows": [
+       {
+       "class": "^Slack$",
+       "instance": "^slack$"
+       }
+    ],
+    "type": "con"
+}
+
+{
+    // tabbed split container with 1 children
+    "border": "pixel",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "marks": [],
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 3,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 2118,
+               "width": 1915,
+               "x": 2175,
+               "y": 1695
+            },
+            "marks": [],
+            "name": "Google Chrome",
+            "percent": null,
+            "swallows": [
+               {
+               "class": "^Google\\-chrome$",
+               "instance": "^google\\-chrome$",
+               "window_role": "^browser$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
