@@ -1,11 +1,9 @@
 #!/usr/bin/bash
 
-if [[ $AUTORANDR_CURRENT_PROFILE =~ home ]]; then
-    DPI=120
-elif [[ $AUTORANDR_CURRENT_PROFILE = mobile ]]; then
+if [[ $AUTORANDR_CURRENT_PROFILE = mobile ]]; then
     DPI=192
 else
-    DPI=144
+    DPI=120
 fi
 
 # Override DPI if required
