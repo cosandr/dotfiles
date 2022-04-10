@@ -53,7 +53,7 @@ Documents/
 {{- if or .is.wsl .is.root (not (eq .session_desktop "gnome")) }}
 .config/environment.d
 {{- end }} {{/* if or .is.wsl (not (eq .session_desktop "gnome")) */}}
-{{- if or .is.wsl (not (eq .session_desktop "i3" "sway")) }}
+{{- if or .is.wsl .is.server (not (eq .session_desktop "i3" "sway")) }}
 .config/mimeapps.list
 .config/override
 .config/systemd/user/auto-lock.service
@@ -73,7 +73,7 @@ Documents/
 .Xresources
 {{- else }}
 .config/autostart
-{{- end }} {{/* if or .is.wsl (not (eq .session_desktop "i3" "sway"))) */}}
+{{- end }} {{/* if or .is.wsl .is.server (not (eq .session_desktop "i3" "sway")) */}}
 {{- $r := .is.root -}}
 {{- range $v := .ignore_config }}
 {{- if not (lookPath $v.exec) }}

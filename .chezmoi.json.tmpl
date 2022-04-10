@@ -1,7 +1,9 @@
 {
+{{- $servers := list "dresrv" "truenas" }}
 {{- $is_windows := eq .chezmoi.os "windows" }}
 {{- $is_desktop := eq .chezmoi.hostname "desktop" }}
-{{- $is_server := eq .chezmoi.hostname "DreSRV" }}
+{{- $is_server := has (lower .chezmoi.hostname) $servers }}
+{{- $is_truenas := eq .chezmoi.hostname "truenas" }}
 {{- $is_ws := eq .chezmoi.hostname "xaitedre" }}
 {{- $is_mac := eq .chezmoi.os "darwin" }}
 {{- $is_linux := eq .chezmoi.os "linux" }}
@@ -14,11 +16,12 @@
       "mac": {{ $is_mac }},
       "root": {{ eq .chezmoi.username "root" }},
       "server": {{ $is_server }},
+      "truenas": {{ $is_truenas }},
       "windows": {{ $is_windows }},
       "ws": {{ $is_ws }},
       "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
     },
-    "session_desktop": {{ default "i3" (env "XDG_SESSION_DESKTOP") | quote }},
+    "session_desktop": {{ if $is_server }}""{{ else }}{{ default "i3" (env "XDG_SESSION_DESKTOP") | quote }}{{ end }},
     "default_browser": {{ if $is_laptop }}"google-chrome.desktop"{{ else }}"firefox.desktop"{{ end }},
 {{- if not $is_windows }}
     "less_mouse": {{ contains "--mouse" (output "less" "--help") }},

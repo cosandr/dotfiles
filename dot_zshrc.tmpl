@@ -1,6 +1,9 @@
 {{ range .source }}{{ if stat . }}
 source {{ . -}}
 {{ end }}{{- end }}
+{{- if .is.truenas }}
+source ~/.zprofile
+{{- end }}
 
 [[ -d ~/.zsh/completion ]] && fpath=(~/.zsh/completion $fpath) && autoload -Uz compinit && compinit -i
 
