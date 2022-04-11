@@ -1,3 +1,30 @@
 #!/usr/bin/env bash
 
-hidutil property --matching '{"VendorID":0x5ac,"ProductID":0x27c}' --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000035,"HIDKeyboardModifierMappingDst":0x700000064},{"HIDKeyboardModifierMappingSrc":0x700000064,"HIDKeyboardModifierMappingDst":0x700000035}]}'
+set -euo pipefail
+
+UNDO=0
+PID=""
+[[ $# -ge 1 ]] && [[ $1 = "-u" ]] && UNDO=1
+
+# Find keyboard ProductID
+search_ids=(0x27c 0x341)
+for p in "${search_ids[@]}"; do
+    if hidutil list --matching "{\"VendorID\":0x5ac,\"ProductID\":$p}" | grep -q Devices; then
+        echo "Found PID $p"
+        PID="$p"
+        break
+    fi
+done
+
+if [[ -z $PID ]]; then
+    echo "Cannot determine built-in keyboard ProductID"
+    exit 1
+fi
+
+if [[ $UNDO -eq 1 ]]; then
+    hidutil property --matching "{\"VendorID\":0x5ac,\"ProductID\":$PID}" --set '{"UserKeyMapping":[]}' >/dev/null
+    echo "Removed user mappings"
+else
+    hidutil property --matching "{\"VendorID\":0x5ac,\"ProductID\":$PID}" --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000035,"HIDKeyboardModifierMappingDst":0x700000064},{"HIDKeyboardModifierMappingSrc":0x700000064,"HIDKeyboardModifierMappingDst":0x700000035}]}' >/dev/null
+    echo "Set tilde user mapping"
+fi
