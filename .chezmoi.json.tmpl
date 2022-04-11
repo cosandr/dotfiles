@@ -8,6 +8,9 @@
 {{- $is_mac := eq .chezmoi.os "darwin" }}
 {{- $is_linux := eq .chezmoi.os "linux" }}
 {{- $is_laptop := or (contains "laptop" .chezmoi.hostname) $is_mac }}
+  "diff": {
+    "exclude": ["scripts"]
+  },
   "data": {
     "is": {
       "desktop": {{ $is_desktop }},
