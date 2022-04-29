@@ -5,6 +5,8 @@ BindsTo=graphical-session.target
 
 [Service]
 Type=simple
+Restart=always
+RestartSec=5m
 ExecStart=/usr/bin/nextcloud --background
 
 [Install]
