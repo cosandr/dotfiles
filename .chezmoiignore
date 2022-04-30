@@ -102,6 +102,7 @@ Documents/
 {{- if or .is.root (not .ssh.include_work) .is.ws }}
 .local/bin/ws*
 .local/share/applications/*work*
+.config/autorandr/*work*
 .config/systemd/user/ws*
 {{- end }}
 {{- if or .is.root (not .ssh.include_dresrv) .is.server .is.ws }}
