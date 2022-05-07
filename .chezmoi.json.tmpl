@@ -57,6 +57,9 @@
     "kanshi": {
       "home_no_edp": true
     },
+    "sway": {
+      "hidpi": {{ eq (output "sh" "-c" "swaymsg -p xwayland scale 0.5 || true" | trim) "Error: Invalid scale." }}
+    },
     "files": {
 {{- if $is_windows }}{{ $prefix := "//dresrv.hlab.no/" }}
       "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",

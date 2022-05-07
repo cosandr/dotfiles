@@ -30,12 +30,20 @@ profile {
 profile {
     output *
     exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
+{{- if .sway.hidpi }}
+    exec swaymsg xwayland force scale 2
+    exec xrdb -override <<< "Xft.dpi: 192"
+{{- end }}
 }
 
 profile {
     output *
     output *
     exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
+{{- if .sway.hidpi }}
+    exec swaymsg xwayland force scale 2
+    exec xrdb -override <<< "Xft.dpi: 192"
+{{- end }}
 }
 
 profile {
@@ -43,4 +51,8 @@ profile {
     output *
     output *
     exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
+{{- if .sway.hidpi }}
+    exec swaymsg xwayland force scale 2
+    exec xrdb -override <<< "Xft.dpi: 192"
+{{- end }}
 }
