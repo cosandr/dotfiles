@@ -1,4 +1,7 @@
-{{- if contains "3.1" (output "htop" "--version") }}
+{{- $htop_version := output "htop" "--version" -}}
+{{- if contains "3.2" $htop_version }}
+{{- template "htoprc_3.2" dict "is" .is }}
+{{- else if contains "3.1" $htop_version }}
 {{- template "htoprc_3.1" dict "is" .is }}
 {{- else }}
 {{- template "htoprc_3.0" dict "is" .is }}
