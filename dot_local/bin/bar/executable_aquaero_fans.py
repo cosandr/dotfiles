@@ -6,8 +6,11 @@ import sys
 import requests
 
 SHOW_DICT = {
-    "fan1": "Pump",
-    "fan2": "Fans",
+    "fan1": "Front",
+    "fan2": "Side",
+    "fan3": "Top",
+    "fan4": "Bottom",
+    "aquastream1": "Pump",
 }
 RPM_SYM = os.getenv("RPM_SYM", "")
 SEP = os.getenv("SEP", " - ")

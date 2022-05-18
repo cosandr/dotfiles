@@ -9,24 +9,24 @@ FONT = os.getenv("FONT", "icomoon-feather")
 
 if FONT == "icomoon-feather":
     SHOW_DICT = {
-        "sensor2": " ",   # feather house
-        "sensor1": " ",   # feather droplet
+        "sensor1": " ",   # feather house
+        "aquastream1": " ",   # feather droplet
     }
 
 elif FONT == "nerd-font":
     SHOW_DICT = {
-        "sensor2": "ﮟ ",    # nerd home outline
-        "sensor1": " ",   # nerd drop
+        "sensor1": "ﮟ ",    # nerd home outline
+        "aquastream1": " ",   # nerd drop
     }
 elif FONT == "siji":
     SHOW_DICT = {
-        "sensor2": " ",
-        "sensor1": " ",
+        "sensor1": " ",
+        "aquastream1": " ",
     }
 else:
     SHOW_DICT = {
-        "sensor2": "Ambient: ",
-        "sensor1": "Water: ",
+        "sensor1": "Ambient: ",
+        "aquastream1": "Water: ",
     }
 
 DEGREES_SYM = os.getenv("DEGREES_SYM", "°C")
