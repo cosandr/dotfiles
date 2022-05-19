@@ -13,4 +13,4 @@ trap 'rm -fv "$TEMP_FILE"' EXIT
 
 sleep 5
 
-systemctl --user restart swayidle waybar
+systemctl --user restart swayidle waybar dunst

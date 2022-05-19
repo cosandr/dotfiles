@@ -17,6 +17,10 @@ if systemctl --user -q is-active polybar.service; then
     systemctl --user restart polybar.service
 fi
 
+if systemctl --user -q is-active dunst.service; then
+    systemctl --user restart dunst.service
+fi
+
 if pgrep -u "$USER" -x i3; then
     "$HOME"/.local/bin/i3-launch restart
 fi
