@@ -96,7 +96,7 @@
     "network#ethernet": {
         "interface": "$PRIMARY_ETH",
         "interval": 5,
-        "format-ethernet": " {bandwidthDownBits}",
+        "format-ethernet": " {bandwidthUpBytes} {bandwidthDownBytes}", // Icons: nf-mdi-arrow_up, nf-mdi-arrow_down
         "format-disconnected": "",
         "tooltip-format": "{ifname}: {ipaddr}/{cidr}"
     },
@@ -104,7 +104,7 @@
     "network#ethernet_ip": {
         "interface": "$PRIMARY_ETH",
         "interval": 5,
-        "format-ethernet": " {bandwidthDownBits} [{ipaddr}/{cidr}]",
+        "format-ethernet": " {bandwidthUpBytes} {bandwidthDownBytes} [{ipaddr}/{cidr}]",
         "format-disconnected": "",
     },
 
@@ -119,7 +119,7 @@
     "network#wifi_ip": {
         "interface": "$PRIMARY_WLAN",
         "interval": 5,
-        "format-wifi": " {bandwidthDownBits} [{ipaddr}/{cidr}]",
+        "format-wifi": " {bandwidthUpBytes} {bandwidthDownBytes} [{ipaddr}/{cidr}]",
         "format-disconnected": ""
     },
 
