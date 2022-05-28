@@ -813,7 +813,9 @@ map kitty_mod+alt+t  set_tab_title
 map kitty_mod+1 new_tab ssh andrei@DreSRV-A
 map kitty_mod+2 new_tab ssh root@DreSRV
 map kitty_mod+3 new_tab ssh andrei@dresrv.com-A
+{{- if .ssh.include_work }}
 map kitty_mod+4 new_tab ssh ws
+{{- end }}
 
 #: You can also create shortcuts to go to specific tabs, with 1 being
 #: the first tab, 2 the second tab and -1 being the previously active

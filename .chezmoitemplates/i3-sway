@@ -53,7 +53,9 @@ bindsym $super+Return exec alacritty
 bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@DreSRV-A
 bindsym $ctrl+$alt+2 exec alacritty -e ssh root@DreSRV
 bindsym $ctrl+$alt+3 exec alacritty -e ssh andrei@dresrv.com-A
+{{- if .work }}
 bindsym $ctrl+$alt+4 exec alacritty -e ssh ws
+{{- end }}
 
 # Common apps
 bindsym $super+$alt+b exec firefox
@@ -157,24 +159,24 @@ mode "resize" {
 bindsym $super+r mode "resize"
 
 ##### Pulse Audio controls #####
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86AudioRaiseVolume exec --no-startup-id pamixer -i 1
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86AudioLowerVolume exec --no-startup-id pamixer -d 1
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86AudioMute exec --no-startup-id pamixer -t
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86AudioRaiseVolume exec --no-startup-id pamixer -i 1
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86AudioLowerVolume exec --no-startup-id pamixer -d 1
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86AudioMute exec --no-startup-id pamixer -t
 
 ##### Media controls #####
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86AudioPlay exec "playerctl --ignore-player=chromium,firefox play-pause"
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86AudioNext exec "playerctl --ignore-player=chromium,firefox next"
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86AudioPlay exec "playerctl --ignore-player=chromium,firefox play-pause"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86AudioNext exec "playerctl --ignore-player=chromium,firefox next"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86AudioPrev exec "playerctl --ignore-player=chromium,firefox previous"
 
 {{- if lookPath "brightnessctl"}}
 {{- if stat "/sys/class/backlight/acpi_video0/brightness" }}
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -d acpi_video0 set 5%+"
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -d acpi_video0 set 5%-"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -d acpi_video0 set 5%+"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -d acpi_video0 set 5%-"
 {{- else if stat "/sys/class/backlight/intel_backlight/brightness" }}
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -d intel_backlight set 5%+"
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -d intel_backlight set 5%-"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -d intel_backlight set 5%+"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -d intel_backlight set 5%-"
 {{- else }}
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl set 5%+"
-bindsym {{ if eq . "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl set 5%-"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl set 5%+"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl set 5%-"
 {{- end }}
 {{- end }}

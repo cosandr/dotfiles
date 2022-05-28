@@ -1,5 +1,5 @@
 {{- $font_nag := default "Noto Sans 14" (env "FONT_NAG") -}}
-{{ template "i3-sway" "sway" }}
+{{ template "i3-sway" dict "wm" "sway" "work" .ssh.include_work }}
 
 ### Sway specific ###
 
