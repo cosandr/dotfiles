@@ -1,8 +1,9 @@
 {{- $is_pi :=  eq .chezmoi.hostname "drepi" -}}
 {{- $home := .chezmoi.homeDir -}}
-{{- $work_keys := list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/mac_rsa.work" ".ssh/desktop_rsa" ".ssh/laptop_rsa" -}}
-{{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" ".ssh/mac_ed25519.cosandr" -}}
-{{- $atgb_keys := list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" ".ssh/mac_ed25519.atgb" -}}
+{{- $work_keys := list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/desktop_rsa" ".ssh/laptop_rsa" -}}
+{{- $general_keys := list ".ssh/id_ed25519" ".ssh/desktop_ed25519" ".ssh/laptop_ed25519" -}}
+{{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" -}}
+{{- $atgb_keys := list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" -}}
 {{- if stat (joinPath $home ".ssh/conf.d") }}
 Include conf.d/*
 {{- end }}
@@ -30,6 +31,12 @@ Host gitlab.dresrv.com
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
+{{- range $k := $general_keys }}
+{{- $fp := joinPath $home $k }}
+{{- if or (stat $fp) (stat (print $fp ".pub")) }}
+    IdentityFile ~/{{ $k }}
+{{- end }}
+{{- end }}
 
 {{ if not .is.server -}}
 Host srv-boot
@@ -69,20 +76,6 @@ Host dresrv-gpg
 {{- end }} {{/* and (lookPath "gpg-agent") (or .is.desktop .is.laptop) */}}
 {{- end }} {{/* {{- not .is.server }} */}}
 
-Host srvsim
-    HostName 192.168.122.6
-    User root
-{{- if not .is.server }}
-    ProxyJump dresrv
-{{- end }}
-
-Host srvsim-boot
-    HostName 192.168.122.6
-    Port 2222
-    User root
-{{- if not .is.server }}
-    ProxyJump dresrv
-{{- end }}
 {{- end }} {{/* {{- if .ssh.include_dresrv }} */}}
 {{ if .ssh.include_rom }}
 Host romrt
@@ -100,13 +93,6 @@ Host romrt-socks
 
 Host romsto
     HostName {{ .romsto.domain }}
-    Port {{ .romsto.ssh_port }}
-    ForwardAgent yes
-    ProxyJump romrt
-
-Host romvm
-    HostName 10.1.1.33
-    ProxyJump romsto
     ForwardAgent yes
 {{- end }} {{/* {{- if .ssh.include_rom }} */}}
 {{- if and (not $is_pi) (not .is.ws) }}
@@ -129,13 +115,11 @@ Host crs226
     PubkeyAcceptedKeyTypes ssh-rsa
     IdentityFile ~/.ssh/id_rsa
 
-Host a5800
+Host crs309
     HostName 10.0.100.4
     User admin
-    PreferredAuthentications password
-    PubkeyAuthentication no
-    KexAlgorithms +diffie-hellman-group1-sha1
-    Ciphers aes128-cbc,3des-cbc
+    PubkeyAcceptedKeyTypes ssh-rsa
+    IdentityFile ~/.ssh/id_rsa
 
 Host webgw01
     HostName webgw01.hlab.no
