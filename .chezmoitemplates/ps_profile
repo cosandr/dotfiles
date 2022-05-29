@@ -43,7 +43,7 @@ function git-main {
 
 function ssh-dresrv-x {
     $env:DISPLAY="localhost:0.0"
-    ssh DreSRV-X
+    ssh dresrv-X
     Remove-Item env:DISPLAY
 }
 
@@ -58,7 +58,7 @@ function pip-req-dev {
 
 function ssh-mon([int] $x = 147, [int] $y = 36) {
     $extra = "--suppress-tmux-version-warning=SUPPRESS-TMUX-VERSION-WARNING"
-    Start-Process -FilePath alacritty.exe -ArgumentList "-t `"DreSRV Monitoring`" -d $x $y --hold -e ssh -t root@DreSRV tmuxinator start hjd $extra"
+    Start-Process -FilePath alacritty.exe -ArgumentList "-t `"DreSRV Monitoring`" -d $x $y --hold -e ssh -t root@dresrv tmuxinator start hjd $extra"
 }
 {{ end }}
 $HOSTS = "C:\Windows\System32\drivers\etc\hosts"

@@ -8,9 +8,9 @@ windows:
       layout: even-vertical
       panes:
         - htop -d10
-        - ssh {{ if .dresrv.use_domain }}andrei@dresrv.com{{ else }}root@DreSRV{{ end }} -t htop -d10
+        - ssh root@dresrv -t htop -d10
   - journal:
       layout: even-vertical
       panes:
         - journalctl -f
-        - ssh andrei@{{ if .dresrv.use_domain }}dresrv.com{{ else }}DreSRV{{ end }} -t journalctl -f
+        - ssh andrei@dresrv -t journalctl -f

@@ -201,11 +201,7 @@ format =  <label>
 {{- else if eq $font "siji" }}
 format =  <label>
 {{- end }}
-{{- if .dresrv.use_domain }}
-exec = PYTHONUNBUFFERED=1 SERVER="localhost:8101" DEST_NAME="com.andrei.go-check-updates.dresrv" ~/.local/bin/bar/go-check-updates-ws.py 2>/dev/null
-{{- else }}
 exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hlab.no:8100" DEST_NAME="com.andrei.go-check-updates.dresrv" ~/.local/bin/bar/go-check-updates-ws.py 2>/dev/null
-{{- end }}
 click-left = dbus-send --session --dest=com.andrei.go-check-updates.dresrv --print-reply / gcu.control.notify >/dev/null
 click-right = dbus-send --session --dest=com.andrei.go-check-updates.dresrv --print-reply / gcu.control.refresh >/dev/null
 tail = true

@@ -11,7 +11,7 @@ if grep -q "$mountpoint" /proc/mounts; then
     exit 0
 fi
 
-mountcmd=$(sshfs andrei@{{- if .dresrv.use_domain }}dresrv.com{{- else }}DreSRV{{- end }}:/ "$mountpoint")
+mountcmd=$(sshfs andrei@dresrv:/ "$mountpoint")
 if [[ $? -eq 0  ]]; then
     notify-send "$mountpoint mounted"
 else

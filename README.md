@@ -42,11 +42,6 @@ Same structure as config file.
 ```json
 {
     "data": {
-        "dresrv": {
-            "domain": "",
-            "local_ip": "",
-            "ssh_port": ""
-        },
         "git": {
             "main_email": "",
             "main_name": "",

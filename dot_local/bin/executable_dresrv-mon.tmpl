@@ -4,11 +4,7 @@
 while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
 
 # Start terminal
-{{- if .dresrv.use_domain }}
-SSH_LOGIN="andrei@dresrv.com"
-{{- else }}
-SSH_LOGIN="root@DreSRV"
-{{- end}}
+SSH_LOGIN="andrei@dresrv"
 
 # Wait for server
 while ! ssh -q -o "BatchMode=yes" "$SSH_LOGIN" exit &>/dev/null; do sleep 1; done

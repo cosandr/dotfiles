@@ -810,9 +810,8 @@ map kitty_mod+,    move_tab_backward
 map kitty_mod+alt+t  set_tab_title
 
 # SSH tabs
-map kitty_mod+1 new_tab ssh andrei@DreSRV-A
-map kitty_mod+2 new_tab ssh root@DreSRV
-map kitty_mod+3 new_tab ssh andrei@dresrv.com-A
+map kitty_mod+1 new_tab ssh andrei@dresrv-A
+map kitty_mod+2 new_tab ssh root@dresrv
 {{- if .ssh.include_work }}
 map kitty_mod+4 new_tab ssh ws
 {{- end }}

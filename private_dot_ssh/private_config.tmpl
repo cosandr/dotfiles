@@ -17,21 +17,8 @@ Host *
 {{- end }}
 
 {{- if .ssh.include_dresrv }}
-Host DreSRV
-    HostName {{ .dresrv.local_ip }}
-{{- if and (not .is.server) (not .is.windows) }}
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
-    ControlPersist 10m
-{{- end }}
-
-Host dresrv.com
-{{- if .dresrv.use_domain }}
-    HostName {{ .dresrv.domain }}
-    Port {{ .dresrv.ssh_port }}
-{{- else }}
-    HostName {{ .dresrv.local_ip }}
-{{- end }}
+Host dresrv
+    HostName dresrv.hlab.no
 {{- if and (not .is.server) (not .is.windows) }}
     ControlPath ~/.ssh/cm-%r@%h:%p
     ControlMaster auto
@@ -46,17 +33,17 @@ Host gitlab.dresrv.com
 
 {{ if not .is.server -}}
 Host srv-boot
-    HostName {{ .dresrv.local_ip }}
+    HostName dresrv.hlab.no
     User root
     Port 2222
 
-Host DreSRV-A
-    HostName {{ .dresrv.local_ip }}
+Host dresrv-A
+    HostName dresrv.hlab.no
     User andrei
     ForwardAgent yes
 
-Host DreSRV-X
-    HostName {{ .dresrv.local_ip }}
+Host dresrv-X
+    HostName dresrv.hlab.no
     ForwardX11 yes
     ForwardX11Trusted yes
 {{- if .is.windows }}
@@ -64,23 +51,9 @@ Host DreSRV-X
     RemoteCommand env GDK_SCALE=2 GDK_DPI_SCALE=0.75 QT_SCREEN_SCALE_FACTORS=2 QT_AUTO_SCREEN_SCALE_FACTOR=0 zsh
 {{- end }}
 
-Host dresrv.com-A
-{{- if .dresrv.use_domain }}
-    HostName {{ .dresrv.domain }}
-    Port {{ .dresrv.ssh_port }}
-{{- else }}
-    HostName {{ .dresrv.local_ip }}
-{{- end }}
-    User andrei
-    ForwardAgent yes
 {{ if and (lookPath "gpg-agent") (or .is.desktop .is.laptop) }}
-Host dresrv.com-gpg
-{{- if .dresrv.use_domain }}
-    HostName {{ .dresrv.domain }}
-    Port {{ .dresrv.ssh_port }}
-{{- else }}
-    HostName {{ .dresrv.local_ip }}
-{{- end }}
+Host dresrv-gpg
+    HostName dresrv.hlab.no
     User andrei
     ExitOnForwardFailure yes
     TCPKeepAlive yes
@@ -100,7 +73,7 @@ Host srvsim
     HostName 192.168.122.6
     User root
 {{- if not .is.server }}
-    ProxyJump DreSRV
+    ProxyJump dresrv
 {{- end }}
 
 Host srvsim-boot
@@ -108,7 +81,7 @@ Host srvsim-boot
     Port 2222
     User root
 {{- if not .is.server }}
-    ProxyJump DreSRV
+    ProxyJump dresrv
 {{- end }}
 {{- end }} {{/* {{- if .ssh.include_dresrv }} */}}
 {{ if .ssh.include_rom }}

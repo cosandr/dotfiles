@@ -37,9 +37,6 @@
       "font_size": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
       "remember_window_size": "no"
     },
-    "dresrv": {
-      "use_domain": {{ and (not $is_server) (not $is_desktop)}}
-    },
     "ssh": {
       "include_work": {{ or $is_laptop $is_ws }},
       "include_dresrv": true,
