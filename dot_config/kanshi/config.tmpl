@@ -1,14 +1,14 @@
-profile {
+profile mobile {
     output eDP-1 enable scale 2
 }
 
-profile {
+profile work {
     output eDP-1 enable scale 2 position 4512,1480
     output "Lenovo Group Limited L32p-30 U511BYFA" scale 1.25 position 1440,832
     output "LG Electronics LG HDR 4K 0x00000B9F" scale 1.5 position 0,0 transform 90
 }
 
-profile {
+profile home {
 {{- if .kanshi.home_no_edp }}
     output eDP-1 disable
     output "Gigabyte M32U 21311B001327" scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
@@ -20,14 +20,14 @@ profile {
 {{- end }}
 }
 
-profile {
+profile desktop {
     output "Goldstar Company Ltd LG TV 0x00000101" disable
     output "Gigabyte M32U 21311B001327" scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
     output "Samsung Electric Company U24E850 HTHH300363" scale 1.5 position 256,0
 }
 
 # Always restart services when outputs change
-profile {
+profile reload1 {
     output *
     exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
 {{- if .sway.hidpi }}
@@ -36,7 +36,7 @@ profile {
 {{- end }}
 }
 
-profile {
+profile reload2 {
     output *
     output *
     exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
@@ -46,7 +46,7 @@ profile {
 {{- end }}
 }
 
-profile {
+profile reload3 {
     output *
     output *
     output *
