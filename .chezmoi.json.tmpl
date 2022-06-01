@@ -54,9 +54,25 @@
     "kanshi": {
       "home_no_edp": true
     },
+{{- if lookPath "sway" }}
+{{- $sway_version := output "sway" "--version" | trimPrefix "sway version" | trim }}
     "sway": {
-      "hidpi": {{ eq (output "sh" "-c" "swaymsg -p xwayland scale 0.5 || true" | trim) "Error: Invalid scale." }}
+      "hidpi": {{ eq (output "sh" "-c" "swaymsg -p xwayland scale 0.5 || true" | trim) "Error: Invalid scale." }},
+      "monitors": {
+{{- if semverCompare "<1.8" $sway_version }}
+        "home1": "Unknown Gigabyte M32U 21311B001327",
+        "home3": "Goldstar Company Ltd LG TV 0x00000101",
+        "work2": "Goldstar Company Ltd LG HDR 4K 0x00000B9F",
+{{- else }}
+        "home1": "GIGA-BYTE TECHNOLOGY CO., LTD. Gigabyte M32U 21311B001327",
+        "home3": "LG Electronics LG TV 0x00000101",
+        "work2": "LG Electronics LG HDR 4K 0x00000B9F",
+{{- end }}
+        "home2": "Samsung Electric Company U24E850 HTHH300363",
+        "work1": "Lenovo Group Limited L32p-30 U511BYFA"
+      }
     },
+{{- end }}
     "files": {
 {{- if $is_windows }}{{ $prefix := "//dresrv.hlab.no/" }}
       "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",

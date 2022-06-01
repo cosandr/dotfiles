@@ -80,12 +80,12 @@ input "1133:49293:Logitech_G502_LIGHTSPEED_Wireless_Gaming_Mouse" {
 
 output {
     eDP-1 scale 2
-    "Lenovo Group Limited L32p-30 U511BYFA" scale 1.25
-    "LG Electronics LG HDR 4K 0x00000B9F" scale 1.5
-    "Gigabyte M32U 21311B001327" scale 1.25 mode 3840x2160@143.999Hz
-    "Samsung Electric Company U24E850 HTHH300363" scale 1.5
+    {{ .sway.monitors.work1 | quote }} scale 1.25
+    {{ .sway.monitors.work2 | quote }} scale 1.5 transform 90
+    {{ .sway.monitors.home1 | quote }} scale 1.25 mode 3840x2160@143.999Hz
+    {{ .sway.monitors.home2 | quote }} scale 1.5
 {{- if .is.desktop }}
-    "Goldstar Company Ltd LG TV 0x00000101" disable
+    {{ .sway.monitors.home3 | quote }} disable
 {{- end }}
 }
 
