@@ -26,6 +26,13 @@ class MissingMonitorException(Exception):
     pass
 
 
+KNOWN_MONITORS = {
+    "U24E850": dict(preset=Preset(day=25, night=5), selected=True,
+                    min_brightness=5, max_brigtness=70),
+    "Gigabyte M32U": dict(preset=Preset(day=35, night=0), selected=True),
+}
+
+
 class Display:
     def __init__(self, name, bus, preset=None, selected=False, min_brightness=0, max_brigtness=100):
         self.name: str = name
@@ -92,11 +99,7 @@ class Display:
 class DisplayInterface(ServiceInterface):
     def __init__(self, name, delay=5, increment=10):
         super().__init__(name)
-        self.displays: List[Display] = [
-            Display(name='Acer', bus=4, preset=Preset(day=35, night=0), selected=True),
-            Display(name='Samsung', bus=3, preset=Preset(day=25, night=5), selected=True,
-                    min_brightness=5, max_brigtness=70),
-        ]
+        self.displays: List[Display] = []
         self.delay: int = delay
         self.increment: int = increment
         self._counter = 0
@@ -107,16 +110,25 @@ class DisplayInterface(ServiceInterface):
         asyncio.create_task(self.delay_worker())
 
     async def async_init(self):
-        try:
-            await self.read_all()
-        except Exception as e:
-            print(e, file=sys.stderr)
+        while not self.displays:
             self.displays = await self.detect_displays()
-            while not self.displays:
-                print('N/A')
-                await asyncio.sleep(30)
-                self.displays = await self.detect_displays()
-            await self.read_all()
+            try:
+                await self.read_all()
+                continue
+            except Exception as e:
+                print(e, file=sys.stderr)
+            print('N/A')
+            await asyncio.sleep(30)
+
+    @staticmethod
+    def get_known(name: str) -> dict:
+        name_lower = name.lower()
+        for k, v in KNOWN_MONITORS.items():
+            k_lower = k.lower()
+            if name_lower in k_lower or k_lower in name_lower:
+                print(f'Matched "{name}" to "{k}"', file=sys.stderr)
+                return dict(name=k, **v)
+        return dict(name=name, selected=True)
 
     @staticmethod
     async def detect_displays() -> List[Display]:
@@ -124,11 +136,12 @@ class DisplayInterface(ServiceInterface):
         s = await asyncio.create_subprocess_exec('ddcutil', 'detect', '--terse', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
         stdout = (await s.communicate())[0].decode()
         print(f'detect_displays:\n{stdout}', file=sys.stderr)
-        for m in re.finditer(r"I2C bus:\s+\/dev\/i2c-(\d+)\s+Monitor:\s+\w+:(\w+):?", stdout, re.S):
+        for m in re.finditer(r"I2C bus:\s+\/dev\/i2c-(\d+)\s+Monitor:\s+\w+:([^:]+):", stdout, re.S):
             bus = int(m.group(1))
             name = m.group(2)
             print(f'Found {name} on bus {bus}', file=sys.stderr)
-            displays.append(Display(name=name, bus=bus, selected=True))
+            kwargs = DisplayInterface.get_known(name)
+            displays.append(Display(bus=bus, **kwargs))
         return displays
 
     @method()
