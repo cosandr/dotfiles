@@ -55,7 +55,7 @@
       "home_no_edp": true
     },
 {{- if lookPath "sway" }}
-{{- $sway_version := index (output "sway" "--version" | splitList " ") 2 }}
+{{- $sway_version := (index (output "sway" "--version" | splitList " ") 2) | trim }}
     "sway": {
       "hidpi": {{ eq (output "sh" "-c" "swaymsg -p xwayland scale 0.5 || true" | trim) "Error: Invalid scale." }},
       "monitors": {
@@ -93,6 +93,7 @@
       {"exec": "autorandr",            "skip_root": true,  "path": ".config/autorandr\n.local/bin/autorandr*"},
       {"exec": "caddy",                "skip_root": true,  "path": ".config/caddy"},
       {"exec": "chromium",             "skip_root": true,  "path": ".config/chromium-flags*.conf"},
+      {"exec": "clipman",              "skip_root": true,  "path": ".config/systemd/user/clipman.service"},
       {"exec": "code",                 "skip_root": true,  "path": ".local/bin/code\n.local/share/applications/visual-studio-code.desktop"},
       {"exec": "discord",              "skip_root": true,  "path": ".local/share/applications/discord*\n.local/bin/discord"},
       {"exec": "dunst",                "skip_root": true,  "path": ".config/dunst\n.local/bin/dunst*\n.config/systemd/user/dunst.service"},
