@@ -1,0 +1,11 @@
+[Unit]
+Description=A basic clipboard manager for Wayland
+Documentation=https://github.com/yory8/clipman
+BindsTo=sway-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wl-paste -t text --watch clipman store
+
+[Install]
+WantedBy=sway-session.target

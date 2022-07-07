@@ -32,6 +32,7 @@ for_window [app_id="firefox" title="Firefox — Sharing Indicator"] floating ena
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
 bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun
+bindsym $super+c exec clipman pick -t wofi -T'--gtk-dark'
 
 # Needs wl-clipboard grim slurp
 bindsym $super+$shift+s exec grim -g "$(slurp)" - | tee $HOME/Pictures/Screenshots/$(date +%F_%T).png | wl-copy
