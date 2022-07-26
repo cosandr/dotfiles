@@ -5,7 +5,7 @@
 monitor = 0
 follow = mouse
 width = (0, 300)
-height = (0, 300)
+height = 300
 origin = bottom-right
 offset = 20x10
 indicate_hidden = yes
@@ -42,6 +42,8 @@ max_icon_size = 50
 mouse_left_click = do_action
 mouse_middle_click = close_all
 mouse_right_click = close_current
+icon_theme = Adwaita
+enable_recursive_icon_lookup = true
 
 [urgency_low]
 timeout = 2
