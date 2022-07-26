@@ -94,6 +94,8 @@ eval $(/usr/local/bin/brew shellenv)
 {{- else if stat "/opt/homebrew/bin/brew" }}
 eval $(/opt/homebrew/bin/brew shellenv)
 {{- end }}
+# Fix Ansible crash
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 {{- else if not .is.root }}
 {{- if and (lookPath "vagrant") (lookPath "libvirtd") }}
 export VAGRANT_DEFAULT_PROVIDER=libvirt
