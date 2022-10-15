@@ -26,6 +26,14 @@ Host dresrv
     ControlPersist 10m
 {{- end }}
 
+Host theia
+    HostName theia.hlab.no
+{{- if and (not .is.server) (not .is.windows) }}
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
+{{- end }}
+
 Host gitlab.dresrv.com
     HostName gitlab.dresrv.com
     User git

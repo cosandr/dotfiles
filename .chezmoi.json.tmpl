@@ -1,5 +1,5 @@
 {
-{{- $servers := list "dresrv" "truenas" }}
+{{- $servers := list "dresrv" "truenas" "theia" }}
 {{- $is_windows := eq .chezmoi.os "windows" }}
 {{- $is_desktop := eq .chezmoi.hostname "desktop" }}
 {{- $is_server := has (lower .chezmoi.hostname) $servers }}
