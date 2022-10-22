@@ -48,6 +48,14 @@
     color: lightgray;
 }
 
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+button:hover {
+    background: inherit;
+    border: inherit;
+    box-shadow: inherit;
+    text-shadow: inherit;
+}
+
 /* The whole bar */
 #waybar {
     background-color: #212121;
