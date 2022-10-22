@@ -31,6 +31,8 @@ for_window [app_id="firefox" title="Firefox — Sharing Indicator"] floating ena
 # Fix chrome apps keyboard inhibit
 # https://www.reddit.com/r/swaywm/comments/vkgfza/chromium_v103_application_mode_app_and_weird/
 for_window [app_id="^chrome-.*"] shortcuts_inhibitor disable
+# Bluetooth Manager
+for_window [app_id="blueman-manager"] floating enable
 
 exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 
