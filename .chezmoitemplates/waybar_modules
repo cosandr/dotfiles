@@ -40,9 +40,8 @@
         "interval": 10
     },
 
-    "custom/clock": {
-        "exec": "date +'%a %d %b   %H:%M'",
-        "interval": 60
+    "clock": {
+        "format": "{:%a %d %b   %H:%M}"
     },
 
     "custom/updates": {
