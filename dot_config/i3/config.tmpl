@@ -20,6 +20,10 @@ for_window [class="firefox" title="Firefox — Sharing Indicator"] floating enab
 bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
 bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
 
+{{- if lookPath "xvkbd" }}
+bindsym $super+$shift+v exec xvkbd -delay 50 -text "$(xclip -o)"
+{{- end }}
+
 exec_always --no-startup-id "systemctl --user import-environment; systemctl --user start i3-session.target"
 exec --no-startup-id ~/.fehbg
 
