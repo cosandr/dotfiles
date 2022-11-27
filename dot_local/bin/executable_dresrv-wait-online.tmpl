@@ -19,6 +19,7 @@ run() {
     # Wait for offline
     while is_online; do sleep 10; done
     echo "DreSRV is offline"
+    systemctl --user stop dresrv-online.target
 }
 
 while true; do run; done

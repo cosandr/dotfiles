@@ -19,6 +19,7 @@ run() {
     # Wait for offline
     while is_online; do sleep 10; done
     echo "ws is offline"
+    systemctl --user stop ws-online.target
 }
 
 while true; do run; done
