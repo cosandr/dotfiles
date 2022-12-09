@@ -1,5 +1,7 @@
 #!/bin/bash
 
+TITLE=${TITLE:-"theia-monitoring"}
+
 # Wait for SSH agent
 while [[ -z $SSH_AUTH_SOCK ]]; do sleep 1; done
 
@@ -10,4 +12,4 @@ SSH_LOGIN="andrei@theia"
 while ! ssh -q -o "BatchMode=yes" "$SSH_LOGIN" exit &>/dev/null; do sleep 1; done
 
 # Start terminal
-kitty -c ~/.config/kitty/kitty.conf -c ~/.config/kitty/pure.conf --detach --title theia-monitoring ssh -t "$SSH_LOGIN" 'tmuxinator start hj'
+kitty -c ~/.config/kitty/kitty.conf -c ~/.config/kitty/pure.conf --detach --title "$TITLE" ssh -t "$SSH_LOGIN" 'tmuxinator start hj'

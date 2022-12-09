@@ -22,7 +22,7 @@ start() {
         self-mon) "$HOME"/.local/bin/self-mon ;;
         slack) gtk-launch slack ;;
         spotify) gtk-launch spotify ;;
-        srv-mon) "$HOME"/.local/bin/theia-mon ;;
+        srv-mon) TITLE=server-monitoring "$HOME"/.local/bin/theia-mon ;;
         ws-mon) "$HOME"/.local/bin/ws-mon ;;
     esac
 }
