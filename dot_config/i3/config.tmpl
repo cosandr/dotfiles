@@ -15,6 +15,8 @@ for_window [class="jetbrains-\w+" title="\w+\sEvaluation"] floating enable; bord
 for_window [class="(firefox|chromium)" title="(?i)^Picture(\s|-)in(\s|-)Picture$"] border none
 # Firefox sharing indicator
 for_window [class="firefox" title="Firefox — Sharing Indicator"] floating enable; border none
+# Blanket for all popups
+for_window [window_role="dialog"] floating enable
 
 # Rofi binds
 bindsym $super+d exec $HOME/.local/bin/rofi-launch -show drun
