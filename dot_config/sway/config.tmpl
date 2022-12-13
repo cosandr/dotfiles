@@ -38,6 +38,9 @@ exec_always "systemctl --user import-environment; systemctl --user start sway-se
 
 bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun
 bindsym $super+c exec clipman pick -t wofi -T'--gtk-dark'
+{{- if lookPath "swayr" }}
+bindsym $alt+Tab exec swayr switch-window
+{{- end }}
 
 {{- if lookPath "wtype" }}
 bindsym $super+$shift+v exec wl-paste | wtype -d 50 -
