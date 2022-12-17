@@ -49,6 +49,12 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
+{{- if stat "/usr/local/bin/brew" }}
+eval $(/usr/local/bin/brew shellenv)
+{{- else if stat "/opt/homebrew/bin/brew" }}
+eval $(/opt/homebrew/bin/brew shellenv)
+{{- end }}
+
 export PYENV_ROOT={{ if stat "/opt/pyenv/bin" }}"/opt/pyenv"{{ else }}"$HOME/.pyenv"{{ end }}
 
 _search_path=(
@@ -56,6 +62,7 @@ _search_path=(
     "$HOME/.cargo/bin"
     "$HOME/go/bin"
     "$PYENV_ROOT/bin"
+    "/opt/homebrew/bin"
     "$(python3 -m site --user-base)/bin"
     /usr/local/{bin,sbin}
     {/,/usr/}{bin,sbin}
@@ -74,6 +81,7 @@ for d in $_search_path; do
     fi
 done
 unset _search_path
+
 if command -v pyenv &>/dev/null; then
     [[ $(pyenv --version) =~ "pyenv 2." ]] && eval "$(pyenv init --path)"
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
@@ -90,11 +98,6 @@ export QT_SCREEN_SCALE_FACTORS=2
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export DISPLAY=localhost:0.0
 {{- else if .is.mac }}
-{{- if stat "/usr/local/bin/brew" }}
-eval $(/usr/local/bin/brew shellenv)
-{{- else if stat "/opt/homebrew/bin/brew" }}
-eval $(/opt/homebrew/bin/brew shellenv)
-{{- end }}
 # Fix Ansible crash
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 {{- else if not .is.root }}
