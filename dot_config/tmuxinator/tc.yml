@@ -1,0 +1,12 @@
+# /home/andrei/.config/tmuxinator/tc.yml
+
+name: tc
+root: ~/
+
+windows:
+  - tc:
+      layout: even-vertical
+      panes:
+        - ssh root@aegir.hlab.no
+        - ssh root@gerd.hlab.no
+        - ssh root@ymir.hlab.no
