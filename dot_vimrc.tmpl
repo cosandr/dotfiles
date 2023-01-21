@@ -51,10 +51,8 @@ set exrc
 set secure
 " Toggle line numbers with ,l
 map <leader>l <ESC>:exec &number==1 ? "set nonumber" : "set number"<CR>
-{{- if not .is.truenas }}
 " Enable syntax highlighting
 syntax on
-{{- end }}
 " Make tabs as wide as four spaces
 set tabstop=4
 " Show tabs and spaces
