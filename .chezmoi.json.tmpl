@@ -1,12 +1,11 @@
 {
-{{- $servers := list "dresrv" "theia" }}
 {{- $is_windows := eq .chezmoi.os "windows" }}
 {{- $is_desktop := eq .chezmoi.hostname "desktop" }}
-{{- $is_server := has (lower .chezmoi.hostname) $servers }}
 {{- $is_ws := eq .chezmoi.hostname "xaitedre" }}
 {{- $is_mac := eq .chezmoi.os "darwin" }}
 {{- $is_linux := eq .chezmoi.os "linux" }}
 {{- $is_laptop := or (contains "laptop" .chezmoi.hostname) $is_mac }}
+{{- $is_server := and (not $is_desktop) (not $is_mac) (not $is_laptop) }}
   "diff": {
     "exclude": ["scripts"]
   },
