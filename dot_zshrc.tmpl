@@ -32,11 +32,24 @@ _dotnet_zsh_complete()
 compctl -K _dotnet_zsh_complete dotnet
 {{- end }}
 
+{{ if lookPath "tmux" }}
+tmux-vertical() {
+    if [[ $# -lt 3 ]]; then
+        echo "Usage: NAME COMMAND COMMAND ..."
+        return 1
+    fi
+    local name="$1"
+    shift
+    local cmd_one="$1"
+    shift
+    tmux new -s "$name" "$cmd_one" \; $(for c in "$@"; do printf ' split-window "%s" ;' "$c"; done) select-layout even-vertical || tmux attach -t "$name"
+}
+{{ end }}
+
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 
 if command -v pyenv &>/dev/null; then
     eval "$(pyenv init -)"
@@ -150,9 +163,6 @@ alias gita='sudo -u andrei git'
 alias logs-nginx='tail $(find /var/log/nginx -type f -printf " -f %p")'
 {{- end }}
 alias cd-chezmoi="cd $(chezmoi source-path)"
-{{- if .is.ws }}
-alias self-mon='tmux new -s mon "htop -d10" \; split-window "journalctl -f" \; select-layout even-vertical || tmux attach -t mon'
-{{- end }}
 
 [ ! $DISPLAY ] && export GPG_TTY=$(tty)
 
