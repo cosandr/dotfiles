@@ -1,0 +1,6 @@
+{{- if not .is.desktop }}
+{{ include "private_dot_ssh/private_desktop_ed25519.pub" | trim }}
+{{- end }}
+{{- if not .is.laptop }}
+{{ include "private_dot_ssh/private_laptop_ed25519.pub" | trim }}
+{{- end }}
