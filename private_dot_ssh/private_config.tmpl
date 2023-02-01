@@ -1,6 +1,5 @@
 {{- $is_pi :=  eq .chezmoi.hostname "drepi" -}}
 {{- $home := .chezmoi.homeDir -}}
-{{- $work_keys := list ".ssh/id_rsa.work" ".ssh/id_rsa" ".ssh/desktop_rsa" ".ssh/laptop_rsa" -}}
 {{- $general_keys := list ".ssh/id_ed25519" ".ssh/desktop_ed25519" ".ssh/laptop_ed25519" -}}
 {{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" -}}
 {{- $atgb_keys := list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" -}}
@@ -103,14 +102,14 @@ Host romsto
     HostName {{ .romsto.domain }}
     ForwardAgent yes
 {{- end }} {{/* {{- if .ssh.include_rom }} */}}
-{{- if and (not $is_pi) (not .is.ws) }}
+{{- if not $is_pi }}
 
 Host drepi
     HostName 10.0.50.21
     User andrei
     ForwardAgent yes
-{{- end }} {{/* {{- if and (not $is_pi) (not .is.ws) }} */}}
-{{ if not .is.ws }}
+{{- end }} {{/* {{- if not $is_pi }} */}}
+
 Host rb5009
     HostName 10.0.50.1
     User admin
@@ -138,63 +137,7 @@ Host localgw01
     HostName 10.0.10.91
     Port 5622
     User root
-{{- end }}
-{{ if .ssh.include_work }}
-Host ws
-    HostName 192.168.1.43
-    User andrei
-    ForwardAgent yes
-    TCPKeepAlive yes
-{{ if and (lookPath "gpg-agent") (or .is.desktop .is.laptop) }}
-Host ws-gpg
-    HostName 192.168.1.43
-    User andrei
-    ExitOnForwardFailure yes
-    TCPKeepAlive yes
-{{- if .is.mac }}
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent {{ print .chezmoi.homeDir "/.gnupg/S.gpg-agent.extra" }}
-{{- else if .is.windows }}
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent 127.0.0.1:4742
-{{- else }}
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-{{- end }}
-{{- end }}
 
-Host ws-socks
-    HostName 192.168.1.43
-    User andrei
-    DynamicForward 5555
-    ExitOnForwardFailure yes
-    TCPKeepAlive yes
-
-Host ws-boot
-    HostName 192.168.1.43
-    Port 2222
-    User root
-    IdentityFile ~/.ssh/id_rsa
-
-Host {{ .work.git_url }}
-    HostName {{ .work.git_url }}
-    User git
-    PreferredAuthentications publickey
-    IdentitiesOnly yes
-{{- range $k := $work_keys }}
-{{- $fp := joinPath $home $k }}
-{{- if or (stat $fp) (stat (print $fp ".pub")) }}
-    IdentityFile ~/{{ $k }}
-{{- end }}
-{{- end }}
-{{ range $h := .work.hosts }}
-Host {{ $h }}
-    User root
-{{- range $k := $work_keys }}
-{{- $fp := joinPath $home $k }}
-{{- if or (stat $fp) (stat (print $fp ".pub")) }}
-    IdentityFile ~/{{ $k }}
-{{- end }}
-{{- end }}
-{{ end }}
-{{- end }} {{/* {{- if .ssh.include_work }} */}}
 Host github.com
     HostName github.com
     User git

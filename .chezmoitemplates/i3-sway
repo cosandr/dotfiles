@@ -52,9 +52,6 @@ bindsym $super+Return exec alacritty
 # Alacritty shortcuts
 bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@dresrv-A
 bindsym $ctrl+$alt+2 exec alacritty -e ssh root@dresrv
-{{- if .work }}
-bindsym $ctrl+$alt+4 exec alacritty -e ssh ws
-{{- end }}
 
 # Common apps
 bindsym $super+$alt+b exec firefox

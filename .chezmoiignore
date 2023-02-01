@@ -99,13 +99,12 @@ Documents/
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }}
-{{- if or .is.root (not .ssh.include_work) .is.ws }}
-.local/bin/ws*
+{{- if or .is.root (not .ssh.include_work) }}
 .local/share/applications/*work*
 .config/autorandr/*work*
 .config/systemd/user/ws*
 {{- end }}
-{{- if or .is.root (not .ssh.include_dresrv) .is.server .is.ws }}
+{{- if or .is.root (not .ssh.include_dresrv) .is.server }}
 .local/bin/dresrv*
 .config/systemd/user/dresrv*
 {{- end }}
@@ -118,9 +117,6 @@ Documents/
 {{- if eq (get .files "mrbot") "" }}
 .config/tmuxinator/hjd.yml
 {{- end }} {{/* if eq (get .files "mrbot") "" */}}
-{{- if not .ssh.include_work }}
-.config/tmuxinator/ws-fwd.yml
-{{- end }} {{/* if not .ssh.include_work */}}
 {{- end }} {{/* if .is.windows */}}
 {{- if .is.wsl }}
 .local/bin/code

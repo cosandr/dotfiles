@@ -1,7 +1,6 @@
 {
 {{- $is_windows := eq .chezmoi.os "windows" }}
 {{- $is_desktop := eq .chezmoi.hostname "desktop" }}
-{{- $is_ws := eq .chezmoi.hostname "xaitedre" }}
 {{- $is_mac := eq .chezmoi.os "darwin" }}
 {{- $is_linux := eq .chezmoi.os "linux" }}
 {{- $is_laptop := or (contains "laptop" .chezmoi.hostname) $is_mac }}
@@ -18,11 +17,10 @@
       "root": {{ eq .chezmoi.username "root" }},
       "server": {{ $is_server }},
       "windows": {{ $is_windows }},
-      "ws": {{ $is_ws }},
       "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
     },
     "session_desktop": {{ if $is_server }}""{{ else }}{{ default "i3" (env "XDG_SESSION_DESKTOP") | quote }}{{ end }},
-    "default_browser": {{ if $is_laptop }}"google-chrome.desktop"{{ else }}"firefox.desktop"{{ end }},
+    "default_browser": {{ if $is_laptop }}"firefox-work.desktop"{{ else }}"firefox.desktop"{{ end }},
 {{- if not $is_windows }}
     "less_mouse": {{ contains "--mouse" (output "less" "--help") }},
 {{- end }}
@@ -35,18 +33,18 @@
       "remember_window_size": "no"
     },
     "ssh": {
-      "include_work": {{ or $is_laptop $is_ws }},
+      "include_work": {{ $is_laptop }},
       "include_dresrv": true,
       "include_rom": {{ or $is_laptop $is_desktop $is_server }},
-      "use_work": {{ or $is_laptop $is_ws }}
+      "use_work": {{ $is_laptop }}
     },
     "gpg": {
-      "default_key": {{ if $is_ws }}"work"{{ else }}"main"{{ end }},
+      "default_key": "main",
       "main": "273D94492E01567B",
-      "work": "2C076B5CE4421C50",
+      "work": "E722A2976226F594",
       "keyserver": "hkp://keyserver.ubuntu.com",
       "use_agent": false,
-      "no_autostart": {{ or $is_server $is_ws }}
+      "no_autostart": {{ $is_server }}
     },
     "kanshi": {
       "home_no_edp": true
@@ -59,14 +57,13 @@
 {{- if semverCompare "<1.8" $sway_version }}
         "home1": "Unknown Gigabyte M32U 21311B001327",
         "home3": "Goldstar Company Ltd LG TV 0x00000101",
-        "work2": "Goldstar Company Ltd LG HDR 4K 0x00000B9F",
 {{- else }}
         "home1": "GIGA-BYTE TECHNOLOGY CO., LTD. Gigabyte M32U 21311B001327",
         "home3": "LG Electronics LG TV 0x00000101",
-        "work2": "LG Electronics LG HDR 4K 0x00000B9F",
+        "work2": "Samsung Electric Company LS27A800U HNMTA00225",
 {{- end }}
         "home2": "Samsung Electric Company U24E850 HTHH300363",
-        "work1": "Lenovo Group Limited L32p-30 U511BYFA"
+        "work1": "Lenovo Group Limited L32p-30 U511L1X2"
       }
     },
 {{- end }}

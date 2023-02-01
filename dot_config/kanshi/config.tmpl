@@ -1,9 +1,9 @@
 profile mobile {
-    output eDP-1 enable scale 2
+    output eDP-1 enable scale 1.25
 }
 
 profile work {
-    output eDP-1 enable scale 2 position 4512,1480
+    output eDP-1 enable scale 1.25 position 4512,1480
     output {{ .sway.monitors.work1 | quote }} scale 1.25 position 1440,832
     output {{ .sway.monitors.work2 | quote }} scale 1.5 position 0,0 transform 90
 }
@@ -14,7 +14,7 @@ profile home {
     output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
     output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
 {{- else }}
-    output eDP-1 scale 2 position 1664,2088
+    output eDP-1 scale 1.25 position 1664,2088
     output {{ .sway.monitors.home1 | quote }} scale 1.25 position 3584,1440 mode 3840x2160@143.999Hz
     output {{ .sway.monitors.home2 | quote }} scale 1.5 position 3840,0
 {{- end }}
