@@ -1,10 +1,6 @@
 #!/usr/bin/bash
 
-if [[ $AUTORANDR_CURRENT_PROFILE = mobile ]]; then
-    DPI=192
-else
-    DPI=120
-fi
+DPI=120
 
 # Override DPI if required
 [[ $(xrdb -query) =~ dpi.*"$DPI" ]] || xrdb -override <<< "Xft.dpi: $DPI"
