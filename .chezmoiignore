@@ -104,6 +104,8 @@ Documents/
 .local/share/applications/*work*
 .config/autorandr/*work*
 .config/systemd/user/ws*
+.ssh/config_work
+.gitconfig_work
 {{- end }}
 {{- if or .is.root (not .ssh.include_dresrv) .is.server }}
 .local/bin/dresrv*
