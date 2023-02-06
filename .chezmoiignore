@@ -95,7 +95,8 @@ Documents/
 {{- end }} {{/* if .is.root */}}
 {{- if or .is.root (not (lookPath "nvidia-smi")) }}
 .local/bin/bar/nvidia*
-# No Nvidia GPUs
+{{- end }}
+{{- if (not (lookPath "nvtop")) }}
 .config/tmuxinator/hnvtop.yml
 .config/tmuxinator/hjn.yml
 {{- end }}
