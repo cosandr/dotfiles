@@ -19,12 +19,12 @@
                "y": 2282
             },
             "marks": [],
-            "name": "Google Chrome",
-            "percent": 1,
+            "name": "Mozilla Firefox",
+            "percent": null,
             "swallows": [
                {
-               "class": "^Google\\-chrome$",
-               "instance": "^google\\-chrome$",
+               "class": "^firefox\\-work$",
+               "instance": "^Navigator$",
                "window_role": "^browser$"
                }
             ],
@@ -34,7 +34,7 @@
 }
 
 {
-    // tabbed split container with 2 children
+    // tabbed split container with 1 children
     "border": "pixel",
     "floating": "auto_off",
     "layout": "tabbed",

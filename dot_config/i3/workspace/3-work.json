@@ -1,28 +1,6 @@
 // vim:ts=4:sw=4:et
 
 {
-  "border": "none",
-  "current_border_width": 3,
-  "floating": "auto_off",
-  "geometry": {
-     "height": 1026,
-     "width": 1914,
-     "x": 3,
-     "y": 1092
-  },
-  "marks": [],
-  "name": "Google Chat",
-  "percent": 0.25,
-  "swallows": [
-     {
-     "class": "^Google\\-chrome$",
-     "instance": "^chat\\.google\\.com$"
-     }
-  ],
-  "type": "con"
-}
-
-{
     "border": "none",
     "current_border_width": 3,
     "floating": "auto_off",
@@ -50,7 +28,7 @@
     "floating": "auto_off",
     "layout": "tabbed",
     "marks": [],
-    "percent": 0.5,
+    "percent": 0.75,
     "type": "con",
     "nodes": [
         {
@@ -64,12 +42,12 @@
                "y": 1695
             },
             "marks": [],
-            "name": "Google Chrome",
+            "name": "Mozilla Firefox",
             "percent": null,
             "swallows": [
                {
-               "class": "^Google\\-chrome$",
-               "instance": "^google\\-chrome$",
+               "class": "^firefox\\-work$",
+               "instance": "^Navigator$",
                "window_role": "^browser$"
                }
             ],
