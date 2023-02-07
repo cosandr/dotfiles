@@ -1,5 +1,7 @@
 #!/bin/bash
 
+{{ template "ssh_auth_sock" }}
+
 [[ -f ~/.config/override/gui ]] && source ~/.config/override/gui
 
 START_CMD=${1:-"$START_CMD"}

@@ -107,9 +107,5 @@ export VAGRANT_DEFAULT_PROVIDER=libvirt
 {{- if or (lookPath "startx") (lookPath "sway") }}
 [[ -z "$DISPLAY" && $(systemctl get-default) = "graphical.target" && "$(tty)" = /dev/tty1 ]] && exec ~/.local/bin/start-gui &> ~/.cache/start-gui.log
 {{- end }}
-{{- if stat "/usr/lib/systemd/user/gcr-ssh-agent.service" }}
-if [[ -z $SSH_AUTH_SOCK ]]; then
-  export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gcr/ssh"
-fi
-{{- end }}
+{{ template "ssh_auth_sock" }}
 {{- end }}
