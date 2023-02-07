@@ -107,10 +107,9 @@ export VAGRANT_DEFAULT_PROVIDER=libvirt
 {{- if or (lookPath "startx") (lookPath "sway") }}
 [[ -z "$DISPLAY" && $(systemctl get-default) = "graphical.target" && "$(tty)" = /dev/tty1 ]] && exec ~/.local/bin/start-gui &> ~/.cache/start-gui.log
 {{- end }}
-{{- if lookPath "gnome-keyring-daemon" }}
+{{- if stat "/usr/lib/systemd/user/gcr-ssh-agent.service" }}
 if [[ -z $SSH_AUTH_SOCK ]]; then
-  eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-  export SSH_AUTH_SOCK
+  export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gcr/ssh"
 fi
 {{- end }}
 {{- end }}
