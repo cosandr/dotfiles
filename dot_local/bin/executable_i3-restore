@@ -52,13 +52,16 @@ for i in "${!WS[@]}"; do
     # Launch stuff if needed
     grep -qi "alacritty" "${file_name}" && start alacritty &
     grep -qi "discord" "${file_name}" && start discord &
-    grep -qi "firefox" "${file_name}" && start firefox &
+    if grep -qiE 'class.*firefox\S+work' "${file_name}"; then
+        start firefox-work &
+    elif grep -qi "firefox" "${file_name}"; then
+        start firefox &
+    fi
     grep -qi "self-monitoring" "${file_name}" && start self-mon &
     grep -qi "server-monitoring" "${file_name}" && start srv-mon &
     grep -qi "slack" "${file_name}" && start slack &
     grep -qi "spotify" "${file_name}" && start spotify &
     grep -qi "workstation-monitoring" "${file_name}" && start ws-mon &
-    grep -qiE 'class.*firefox\S+work' "${file_name}" && start firefox-work &
     grep -qiE 'name.*google\s+chrome' "${file_name}" && start chrome &
     grep -qiE 'name.*google\s+chat' "${file_name}" && start google-chat &
 done
