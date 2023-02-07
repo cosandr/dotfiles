@@ -34,9 +34,9 @@ x-prop-max_bpc 12
 x-prop-non_desktop 0
 output eDP-1
 crtc 0
-mode 3840x2160
-pos 6000x1680
-rate 60.00
+mode 1920x1200
+pos 6000x2640
+rate 60.03
 x-prop-broadcast_rgb Automatic
 x-prop-colorspace Default
 x-prop-max_bpc 12
