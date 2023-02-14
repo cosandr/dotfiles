@@ -55,7 +55,6 @@ case "$START_CMD" in
     startx)
         export XDG_SESSION_DESKTOP=i3
         export XDG_SESSION_TYPE=x11
-        dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE
         {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
         exec systemd-cat -t startx startx "${@:2}"
         ;;
@@ -66,7 +65,6 @@ case "$START_CMD" in
         export XDG_SESSION_TYPE=wayland
         # https://github.com/swaywm/sway/issues/595#issuecomment-214131422
         export _JAVA_AWT_WM_NONREPARENTING=1
-        dbus-update-activation-environment --systemd DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE XDG_CURRENT_DESKTOP
         {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
         if command -v nvidia-smi &>/dev/null; then
             export GBM_BACKEND=nvidia-drm __GLX_VENDOR_LIBRARY_NAME=nvidia LIBVA_DRIVER_NAME=vdpau WLR_NO_HARDWARE_CURSORS=1

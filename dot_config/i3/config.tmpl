@@ -26,7 +26,7 @@ bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
 bindsym $super+$shift+v exec xvkbd -delay 50 -text "$(xclip -o)"
 {{- end }}
 
-exec_always --no-startup-id "systemctl --user import-environment; systemctl --user start i3-session.target"
+exec_always --no-startup-id "dbus-update-activation-environment --systemd I3SOCK DBUS_SESSION_BUS_ADDRESS DISPLAY PATH XDG_SESSION_ID XAUTHORITY SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE; systemctl --user start i3-session.target"
 exec --no-startup-id ~/.fehbg
 
 # restart i3 inplace

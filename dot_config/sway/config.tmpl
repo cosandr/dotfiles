@@ -34,7 +34,7 @@ for_window [app_id="^chrome-.*"] shortcuts_inhibitor disable
 # Bluetooth Manager
 for_window [app_id="blueman-manager"] floating enable
 
-exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
+exec_always "dbus-update-activation-environment --systemd DISPLAY PATH I3SOCK XDG_SESSION_ID SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE XDG_CURRENT_DESKTOP WAYLAND_DISPLAY; systemctl --user start sway-session.target"
 
 bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun
 bindsym $super+c exec clipman pick -t wofi -T'--gtk-dark'
