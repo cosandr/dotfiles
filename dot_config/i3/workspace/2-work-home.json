@@ -31,64 +31,32 @@
             "type": "con"
         },
         {
-            // tabbed split container with 2 children
-            "border": "pixel",
+            "border": "none",
+            "current_border_width": 3,
             "floating": "auto_off",
-            "layout": "tabbed",
+            "geometry": {
+               "height": 1296,
+               "width": 1536,
+               "x": 4992,
+               "y": 432
+            },
             "marks": [],
+            "name": "Slack",
             "percent": 0.5,
-            "type": "con",
-            "nodes": [
-                {
-                    "border": "none",
-                    "current_border_width": 3,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 1296,
-                       "width": 1536,
-                       "x": 4992,
-                       "y": 432
-                    },
-                    "marks": [],
-                    "name": "Slack",
-                    "percent": 0.5,
-                    "swallows": [
-                       {
-                       "class": "^Slack$",
-                       "instance": "^slack$",
-                       "window_role": "^browser\\-window$"
-                       }
-                    ],
-                    "type": "con"
-                },
-                {
-                    "border": "none",
-                    "current_border_width": 3,
-                    "floating": "auto_off",
-                    "geometry": {
-                       "height": 1026,
-                       "width": 1914,
-                       "x": 3,
-                       "y": 1092
-                    },
-                    "marks": [],
-                    "name": "Google Chat",
-                    "percent": 0.5,
-                    "swallows": [
-                       {
-                       "class": "^Google\\-chrome$",
-                       "instance": "^chat\\.google\\.com$"
-                       }
-                    ],
-                    "type": "con"
-                }
-            ]
+            "swallows": [
+               {
+               "class": "^Slack$",
+               "instance": "^slack$",
+               "window_role": "^browser\\-window$"
+               }
+            ],
+            "type": "con"
         }
     ]
 }
 
 {
-    // splitv split container with 2 children
+    // splitv split container with 1 children
     "border": "pixel",
     "floating": "auto_off",
     "layout": "splitv",
@@ -101,28 +69,6 @@
             "current_border_width": 0,
             "floating": "auto_off",
             "geometry": {
-               "height": 1351,
-               "width": 1561,
-               "x": 0,
-               "y": 0
-            },
-            "marks": [],
-            "name": "workstation-monitoring",
-            "percent": 0.5,
-            "swallows": [
-               {
-               "class": "^kitty$",
-               "instance": "^kitty$",
-               "title": "^workstation\\-monitoring$"
-               }
-            ],
-            "type": "con"
-        },
-        {
-            "border": "none",
-            "current_border_width": 0,
-            "floating": "auto_off",
-            "geometry": {
                "height": 600,
                "width": 800,
                "x": 0,
@@ -130,7 +76,7 @@
             },
             "marks": [],
             "name": "Spotify",
-            "percent": 0.5,
+            "percent": 1,
             "swallows": [
                {
                "class": "^Spotify$",
@@ -141,4 +87,3 @@
         }
     ]
 }
-
