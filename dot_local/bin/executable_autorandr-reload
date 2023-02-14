@@ -24,3 +24,7 @@ fi
 if pgrep -u "$USER" -x i3; then
     "$HOME"/.local/bin/i3-launch restart
 fi
+
+if [[ -f ~/.fehbg ]]; then
+    ~/.fehbg
+fi
