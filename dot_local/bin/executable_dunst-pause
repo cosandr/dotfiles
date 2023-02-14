@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -eu
+
+case "$(dunstctl is-paused)" in
+    true )
+        notify-send --app-name="dunst-pause" --urgency=low "Resuming notifications"
+        dunstctl set-paused "false"
+        ;;
+    false )
+        notify-send --app-name="dunst-pause" --urgency=low "Pausing notifications"
+        # Sleep so the notification remains visible and fades away
+        sleep 3 && dunstctl set-paused "true" &
+        ;;
+esac
