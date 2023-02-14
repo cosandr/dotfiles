@@ -40,6 +40,9 @@ DETECT_REGEX = {
 }
 
 
+DDCUTIL_SLEEP_MULTIPLIER = os.getenv("DDCUTIL_SLEEP_MULTIPLIER", "0")
+
+
 class Display:
     def __init__(self, name, bus, preset=None, selected=False, min_brightness=0, max_brigtness=100):
         self.name: str = name
@@ -66,7 +69,7 @@ class Display:
 
     async def read_brightness(self):
         s = await asyncio.create_subprocess_exec(
-            'ddcutil', '--bus', str(self.bus), '--terse', 'getvcp', '10',
+            'ddcutil', '--sleep-multiplier', DDCUTIL_SLEEP_MULTIPLIER, '--bus', str(self.bus), '--terse', 'getvcp', '10',
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL,
         )
         stdout = (await s.communicate())[0].decode()
@@ -88,7 +91,7 @@ class Display:
             val = 0
         elif val > 100:
             val = 100
-        s = await asyncio.create_subprocess_exec('ddcutil', '--bus', str(self.bus), 'setvcp', '10', str(val))
+        s = await asyncio.create_subprocess_exec('ddcutil', '--sleep-multiplier', DDCUTIL_SLEEP_MULTIPLIER, '--bus', str(self.bus), 'setvcp', '10', str(val))
         await s.wait()
         self.brightness = val
         self.next_brightness = val
@@ -144,17 +147,17 @@ class DisplayInterface(ServiceInterface):
     async def get_ddcutil_version() -> Optional[version.Version]:
         s = await asyncio.create_subprocess_exec('ddcutil', '--version', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
         stdout = (await s.communicate())[0].decode()
-        m = re.match(r'^ddcutil (\d+\.?)+', stdout)
+        m = re.match(r'^ddcutil ((\d+\.?)+)', stdout)
         if not m:
             print(f'Could not detect ddcutil version', file=sys.stderr)
             # Default to 1.3.0
             return version.Version('1.3.0')
-        return version.parse(m.group())
+        return version.parse(m.group(1))
 
     @staticmethod
     async def detect_displays(ddcutil_version: version.Version) -> List[Display]:
         displays = []
-        s = await asyncio.create_subprocess_exec('ddcutil', 'detect', '--terse', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
+        s = await asyncio.create_subprocess_exec('ddcutil', '--sleep-multiplier', DDCUTIL_SLEEP_MULTIPLIER, 'detect', '--terse', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
         stdout = (await s.communicate())[0].decode()
         print(f'detect_displays:\n{stdout}', file=sys.stderr)
         # Default to 1.3.0
