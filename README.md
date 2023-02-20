@@ -19,6 +19,15 @@ gpg --passphrase-file .secrets.pass --batch -d secrets.json.gpg
 gpg --passphrase-file .secrets.pass --batch --yes -o .secrets.json -d secrets.json.gpg
 ```
 
+### Git config per host
+
+Place host specific configs in `~/.config/override/git`, i.e.
+
+```ini
+[safe]
+    directory = /mnt/ceph/swarm
+```
+
 ### VS Code Wayland GNOME
 
 Add to `settings.json`
