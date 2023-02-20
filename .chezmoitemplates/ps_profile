@@ -1,4 +1,4 @@
-{{- $is_core := eq .ps "core" -}}
+﻿{{- $is_core := eq .ps "core" -}}
 # Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 # if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
 {{- if $is_core }}
@@ -41,12 +41,6 @@ function git-main {
     git config user.name "{{ .data.git.main_name }}"
 }
 
-function ssh-dresrv-x {
-    $env:DISPLAY="localhost:0.0"
-    ssh dresrv-X
-    Remove-Item env:DISPLAY
-}
-
 function pip-req {
     pip install -U pip wheel setuptools
     pip install -U -r requirements.txt
@@ -58,7 +52,7 @@ function pip-req-dev {
 
 function ssh-mon([int] $x = 147, [int] $y = 36) {
     $extra = "--suppress-tmux-version-warning=SUPPRESS-TMUX-VERSION-WARNING"
-    Start-Process -FilePath alacritty.exe -ArgumentList "-t `"DreSRV Monitoring`" -d $x $y --hold -e ssh -t root@dresrv tmuxinator start hjd $extra"
+    Start-Process -FilePath alacritty.exe -ArgumentList "-t `"Server Monitoring`" -d $x $y --hold -e ssh -t root@theia tmuxinator start hj $extra"
 }
 {{ end }}
 $HOSTS = "C:\Windows\System32\drivers\etc\hosts"

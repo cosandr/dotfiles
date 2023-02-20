@@ -49,9 +49,6 @@ bindsym --release button2 kill
 # start a terminal
 bindsym $super+$shift+Return exec kitty
 bindsym $super+Return exec alacritty
-# Alacritty shortcuts
-bindsym $ctrl+$alt+1 exec alacritty -e ssh andrei@dresrv-A
-bindsym $ctrl+$alt+2 exec alacritty -e ssh root@dresrv
 
 # Common apps
 bindsym $super+$alt+b exec firefox
@@ -67,8 +64,6 @@ mode "launcher" {
     bindsym d exec discord, mode "default"
     bindsym g exec goland dontReopenProjects, mode "default"
     bindsym p exec pycharm dontReopenProjects, mode "default"
-    bindsym w exec firefox -P ws --no-remote, mode "default"
-    bindsym r exec firefox -P romrt --no-remote, mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"

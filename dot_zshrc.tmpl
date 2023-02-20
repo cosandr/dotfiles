@@ -152,8 +152,6 @@ if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
         fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
     fi
 fi
-alias ff-ws='/Applications/Firefox.app/Contents/MacOS/firefox -P ws --no-remote'
-alias ff-romrt='/Applications/Firefox.app/Contents/MacOS/firefox -P romrt --no-remote'
 {{- end }}
 {{- if .is.root }}
 alias chezmoi='chezmoi --source "/home/andrei/.local/share/chezmoi"'

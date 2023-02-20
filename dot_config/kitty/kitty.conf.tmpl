@@ -809,13 +809,6 @@ map kitty_mod+.    move_tab_forward
 map kitty_mod+,    move_tab_backward
 map kitty_mod+alt+t  set_tab_title
 
-# SSH tabs
-map kitty_mod+1 new_tab ssh andrei@dresrv-A
-map kitty_mod+2 new_tab ssh root@dresrv
-{{- if .ssh.include_work }}
-map kitty_mod+4 new_tab ssh ws
-{{- end }}
-
 #: You can also create shortcuts to go to specific tabs, with 1 being
 #: the first tab, 2 the second tab and -1 being the previously active
 #: tab::

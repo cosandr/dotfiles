@@ -15,15 +15,7 @@ Host *
    UseKeychain yes
    AddKeysToAgent yes
 {{- end }}
-
-{{- if .ssh.include_dresrv }}
-Host dresrv
-    HostName dresrv.hlab.no
-{{- if and (not .is.server) (not .is.windows) }}
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
-    ControlPersist 10m
-{{- end }}
+{{ if .ssh.include_servers -}}
 
 Host theia
     HostName theia.hlab.no
@@ -33,77 +25,7 @@ Host theia
     ControlPersist 10m
 {{- end }}
 
-Host gitlab.dresrv.com
-    HostName gitlab.dresrv.com
-    User git
-    PreferredAuthentications publickey
-    IdentitiesOnly yes
-{{- range $k := $general_keys }}
-{{- $fp := joinPath $home $k }}
-{{- if or (stat $fp) (stat (print $fp ".pub")) }}
-    IdentityFile ~/{{ $k }}
-{{- end }}
-{{- end }}
-
-{{ if not .is.server -}}
-Host srv-boot
-    HostName dresrv.hlab.no
-    User root
-    Port 2222
-
-Host dresrv-A
-    HostName dresrv.hlab.no
-    User andrei
-    ForwardAgent yes
-
-Host dresrv-X
-    HostName dresrv.hlab.no
-    ForwardX11 yes
-    ForwardX11Trusted yes
-{{- if .is.windows }}
-    RequestTTY yes
-    RemoteCommand env GDK_SCALE=2 GDK_DPI_SCALE=0.75 QT_SCREEN_SCALE_FACTORS=2 QT_AUTO_SCREEN_SCALE_FACTOR=0 zsh
-{{- end }}
-
-{{ if and (lookPath "gpg-agent") (or .is.desktop .is.laptop) }}
-Host dresrv-gpg
-    HostName dresrv.hlab.no
-    User andrei
-    ExitOnForwardFailure yes
-    TCPKeepAlive yes
-    # Set in sshd_config too
-    StreamLocalBindUnlink yes
-{{- if .is.mac }}
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent {{ print .chezmoi.homeDir "/.gnupg/S.gpg-agent.extra" }}
-{{- else if .is.windows }}
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent 127.0.0.1:4742
-{{- else }}
-    RemoteForward /run/user/1000/gnupg/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-{{- end }}
-{{- end }} {{/* and (lookPath "gpg-agent") (or .is.desktop .is.laptop) */}}
-{{- end }} {{/* {{- not .is.server }} */}}
-
-{{- end }} {{/* {{- if .ssh.include_dresrv }} */}}
-{{ if .ssh.include_rom }}
-Host romrt
-    HostName {{ .romrt.domain }}
-    User {{ .romrt.ssh_user }}
-    Port {{ .romrt.ssh_port }}
-
-Host romrt-socks
-    HostName {{ .romrt.domain }}
-    User {{ .romrt.ssh_user }}
-    Port {{ .romrt.ssh_port }}
-    DynamicForward 4321
-    ExitOnForwardFailure yes
-    TCPKeepAlive yes
-
-Host romsto
-    HostName {{ .romsto.domain }}
-    ForwardAgent yes
-{{- end }} {{/* {{- if .ssh.include_rom }} */}}
-{{- if not $is_pi }}
-
+{{ if not $is_pi -}}
 Host drepi
     HostName 10.0.50.21
     User andrei
@@ -137,6 +59,24 @@ Host localgw01
     HostName 10.0.10.91
     Port 5622
     User root
+
+Host romsto
+    HostName {{ .romsto.domain }}
+    ForwardAgent yes
+
+{{- end }} {{/* {{- if .ssh.include_servers }} */}}
+
+Host gitlab.dresrv.com
+    HostName gitlab.dresrv.com
+    User git
+    PreferredAuthentications publickey
+    IdentitiesOnly yes
+{{- range $k := $general_keys }}
+{{- $fp := joinPath $home $k }}
+{{- if or (stat $fp) (stat (print $fp ".pub")) }}
+    IdentityFile ~/{{ $k }}
+{{- end }}
+{{- end }}
 
 Host github.com
     HostName github.com

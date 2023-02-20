@@ -34,8 +34,7 @@
     },
     "ssh": {
       "include_work": {{ $is_laptop }},
-      "include_dresrv": true,
-      "include_rom": {{ or $is_laptop $is_desktop $is_server }},
+      "include_servers": {{ or $is_laptop $is_desktop $is_server }},
       "use_work": {{ $is_laptop }}
     },
     "gpg": {

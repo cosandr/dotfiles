@@ -1,9 +1,0 @@
-[Unit]
-Description=Wait for DreSRV to come up
-
-[Service]
-Type=simple
-ExecStart=sh -c 'exec ${HOME}/.local/bin/dresrv-wait-online'
-
-[Install]
-WantedBy=default.target
