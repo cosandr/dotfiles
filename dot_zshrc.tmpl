@@ -117,9 +117,6 @@ alias bt-edifier='bluetoothctl power on && bluetoothctl connect 60:F4:3A:71:1A:B
 alias bt-on='bluetoothctl power on'
 alias bt-off='bluetoothctl power off'
 {{- end }}
-{{- range $k, $v := .files }}
-alias logs-{{ $k }}='tail -f {{ $v }}'
-{{- end }}
 {{- if lookPath "docker" }}
 alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
 alias dports='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Ports}}" }}"'

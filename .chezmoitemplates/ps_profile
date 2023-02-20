@@ -1,4 +1,4 @@
-﻿{{- $is_core := eq .ps "core" -}}
+{{- $is_core := eq .ps "core" -}}
 # Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 # if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
 {{- if $is_core }}
@@ -66,9 +66,6 @@ $env:EDITOR="vim"
 
 # Aliases (and functions acting as aliases)
 {{ if $is_core }}
-{{- range $k, $v := .data.files }}
-function logs-{{ $k }} { Get-Content {{ $v }} -Wait -Tail 10 }
-{{- end }}
 
 {{- if lookPath "docker" }}
 function dls { docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t" }

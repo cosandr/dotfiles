@@ -67,21 +67,6 @@
       }
     },
 {{- end }}
-    "files": {
-{{- if $is_windows }}{{ $prefix := "//dresrv.hlab.no/" }}
-      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
-      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
-{{- else if $is_mac }}{{ $prefix := print .chezmoi.homeDir "/dresrv/" }}
-      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
-      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
-{{- else if not $is_server }}{{ $prefix := "/dresrv/" }}
-      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
-      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
-{{- else }}{{ $prefix := "/" }}
-      "mrbot": "{{ $prefix }}srv/containers/mrbot/src/mrbot.log",
-      "twitch": "{{ $prefix }}srv/containers/twitch/src/log/twitch.log"
-{{- end }}
-    },
     "ignore_config": [
       {"exec": "alacritty",            "skip_root": true,  "path": ".config/alacritty"},
       {"exec": "autorandr",            "skip_root": true,  "path": ".config/autorandr\n.local/bin/autorandr*"},

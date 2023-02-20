@@ -117,9 +117,6 @@ Documents/
 {{- if not (or (lookPath "polybar") (lookPath "waybar")) }}
 .local/bin/bar
 {{- end }}
-{{- if eq (get .files "mrbot") "" }}
-.config/tmuxinator/hjd.yml
-{{- end }} {{/* if eq (get .files "mrbot") "" */}}
 {{- end }} {{/* if .is.windows */}}
 {{- if .is.wsl }}
 .local/bin/code
