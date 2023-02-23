@@ -7,11 +7,11 @@ tray-position = right
 modules-left = i3
 modules-center = title
 {{- if $amd }}
-modules-right = cpu_usage amd_gpu_usage sep aquaero cpu_temp amd_temp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+modules-right = cpu_usage amd_gpu_usage sep aquaero cpu_temp amd_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
 {{- else if $nvidia }}
-modules-right = cpu_usage nv_gpu_usage sep aquaero cpu_temp nv_temp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+modules-right = cpu_usage nv_gpu_usage sep aquaero cpu_temp nv_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
 {{- else }}
-modules-right = cpu_usage sep aquaero cpu_temp sep updates srvupdates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
+modules-right = cpu_usage sep aquaero cpu_temp sep updates sep monitor_brightness sep xkeyboard sep volume switchaudio sep calendar datetime
 {{- end }}
 
 [bar/secondary]
@@ -191,21 +191,6 @@ type = custom/text
 content = |
 content-padding = 0
 content-foreground = "#424242"
-
-[module/srvupdates]
-type = custom/script
-{{- if eq $font "icomoon-feather" }}
-format =  <label>
-{{- else if eq $font "nerd-font" }}
-format =  <label>
-{{- else if eq $font "siji" }}
-format =  <label>
-{{- end }}
-exec = PYTHONUNBUFFERED=1 SERVER="dresrv.hlab.no:8100" DEST_NAME="com.andrei.go-check-updates.dresrv" ~/.local/bin/bar/go-check-updates-ws.py 2>/dev/null
-click-left = dbus-send --session --dest=com.andrei.go-check-updates.dresrv --print-reply / gcu.control.notify >/dev/null
-click-right = dbus-send --session --dest=com.andrei.go-check-updates.dresrv --print-reply / gcu.control.refresh >/dev/null
-tail = true
-interval = 0
 
 [module/title]
 type = internal/xwindow
