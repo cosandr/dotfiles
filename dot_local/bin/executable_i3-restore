@@ -3,6 +3,7 @@
 declare -A WS
 MONITOR_COUNT=${MONITOR_COUNT:-"1"}
 I3_NO_RESTORE=${I3_NO_RESTORE:-"0"}
+I3_NO_AUTOLAUNCH=${I3_NO_AUTOLAUNCH:-"0"}
 
 for i in $(seq 1 "$MONITOR_COUNT"); do
     # Initialize map
@@ -48,8 +49,10 @@ for i in "${!WS[@]}"; do
             notify-send -a "Restore workspace ${name}" "File not found: ${file_name_opt}"
         fi
     fi
+    echo "Restoring WS ${name} with layout '${file_name}'"
     i3-msg "workspace ${name}; append_layout ${file_name}"
     # Launch stuff if needed
+    [[ $I3_NO_AUTOLAUNCH -eq 1 ]] && continue
     grep -qi "alacritty" "${file_name}" && start alacritty &
     grep -qi "discord" "${file_name}" && start discord &
     if grep -qiE 'class.*firefox\S+work' "${file_name}"; then

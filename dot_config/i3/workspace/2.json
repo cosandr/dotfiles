@@ -94,7 +94,8 @@
             "percent": 0.5,
             "swallows": [
                {
-               "class": "^discord$"
+               "class": "^discord$",
+               "title": "^(?!Discord Updater).*$"
                }
             ],
             "type": "con"
