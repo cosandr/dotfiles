@@ -1,0 +1,5 @@
+#!/bin/bash
+
+{{ if and .is.linux (not .is.server) }}
+systemctl --user enable gnome-keyring-daemon.service gcr-ssh-agent.service
+{{ end }}

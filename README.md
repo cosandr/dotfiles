@@ -77,9 +77,7 @@ On Windows start `"C:\Program Files (x86)\GnuPG\bin\gpgconf.exe" --launch gpg-ag
 
 See [this](https://superuser.com/a/1329299) post.
 
-- Export public key `gpg --export <public key> > pub`
-- Copy to server
-- Import `gpg --import pub`
+- Import public key on target, i.e. `gpg --export 273D94492E01567B | ssh andrei@theia gpg --import -`
 - Set trust `gpg --edit-key <public key>`, trust, 5, save
 - Edit `sshd_config` on server
 ```

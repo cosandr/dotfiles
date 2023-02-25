@@ -1,3 +1,11 @@
+{{- $gpg_path := "" -}}
+{{- if .is.mac -}}
+{{- $gpg_path = print .chezmoi.homeDir "/.gnupg/S.gpg-agent.extra" -}}
+{{- else if .is.windows -}}
+{{- $gpg_path = "127.0.0.1:4742" -}}
+{{- else -}}
+{{- $gpg_path = print "/run/user/" .chezmoi.uid "/gnupg/S.gpg-agent.extra" -}}
+{{- end -}}
 {{ range .source }}{{ if stat . }}
 source {{ . -}}
 {{ end }}{{- end }}
@@ -108,6 +116,7 @@ alias pip-req-dev='python3 -m pip install -U -r requirements_dev.txt'
 alias ssh-nh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias scp-nh='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias ssh-nk='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no'
+alias ssh-gpg='ssh -A -o ControlMaster=auto -o ControlPath=~/.ssh/cm-gpg-%r@%h:%p -R /run/user/1000/gnupg/S.gpg-agent:{{ $gpg_path }}'
 alias tmux-ssh-sock='eval $(tmux showenv -s SSH_AUTH_SOCK)'
 {{- if and .is.linux (not .is.server) (not .is.root) (lookPath "bluetoothctl") }}
 alias bt-mx='bluetoothctl power on && bluetoothctl connect 04:5D:4B:52:86:4B'
