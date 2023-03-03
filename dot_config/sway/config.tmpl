@@ -70,7 +70,7 @@ mode "system" {
 }
 bindsym $super+semicolon mode "system"
 
-input * {
+input type:keyboard {
     xkb_numlock enable
     xkb_layout "us,no"
     xkb_options "grp:rctrl_rshift_toggle"
@@ -83,11 +83,7 @@ input type:touchpad {
     scroll_factor 0.5
 }
 
-input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
-    accel_profile flat
-}
-
-input "1133:49293:Logitech_G502_LIGHTSPEED_Wireless_Gaming_Mouse" {
+input type:pointer {
     accel_profile flat
 }
 
