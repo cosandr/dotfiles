@@ -11,11 +11,6 @@ if [[ ! -x /usr/bin/autorandr ]]; then
     USE_AUTORANDR=0
 fi
 
-# Set mouse sensitivity
-if [[ -n $MOUSE_NAME && -n $MOUSE_SENS ]]; then
-    xinput set-prop "$MOUSE_NAME" 'libinput Accel Speed' "$MOUSE_SENS"
-fi
-
 if [[ $USE_AUTORANDR -eq 1 ]]; then
     /usr/bin/autorandr --change --default default
 else
