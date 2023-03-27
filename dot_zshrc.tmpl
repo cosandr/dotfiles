@@ -137,9 +137,6 @@ alias dex='docker exec -t'
 alias dsti='docker container start -i'
 {{- end }}
 {{- if lookPath "podman" }}
-{{- if not .is.root }}
-alias podman='sudo podman'
-{{- end }}
 alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}" }}  {{ "{{.Status}}" }}  {{ "{{.Created}}" }}"'
 alias podlog='podman logs -f'
 alias podex='podman exec -t'
