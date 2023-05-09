@@ -54,6 +54,25 @@ tmux-vertical() {
 }
 {{ end }}
 
+{{ if lookPath "paru" }}
+paru-rebuild-py() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: VERSION"
+        return 1
+    fi
+    paru -S --rebuild --noconfirm $(paru -Qqo /usr/lib/python"$1"/)
+}
+{{ end }}
+
+# https://www.reddit.com/r/archlinux/comments/13apva0/after_upgrading_to_python_3113_all_my_user_global/jj7ssmy/
+pip-reinstall-old() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: VERSION"
+        return 1
+    fi
+    pip install $(pip list --path $HOME/.local/lib/python"$1"/site-packages --format=freeze | sed 's/==.*//') -U
+}
+
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 [[ $commands[minikube] ]] && source <(minikube completion zsh)
 
