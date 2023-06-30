@@ -1,13 +1,15 @@
 {{- if .is.windows }}
+[gpg]
+    program = C:\\Program Files (x86)\\gnupg\\bin\\gpg.exe
+{{- end }}
 [core]
+{{- if .is.windows }}
     eol = lf
     sshCommand = C:/Program\\ Files/OpenSSH-Win64/ssh.exe
     autocrlf = false
     symlinks = true
-
-[gpg]
-    program = C:\\Program Files (x86)\\gnupg\\bin\\gpg.exe
 {{- end }}
+    editor = vim
 [user]
     email = {{ .git.main_email }}
     name = {{ .git.main_name }}
@@ -35,6 +37,11 @@
     rebase = true
 [push]
     default = current
+[init]
+    defaultBranch = master
+[fetch]
+    prune = true
+    parallel = 0
 [include]
     path = ~/.config/override/git
 [includeIf "gitdir:~/work/**/.git"]
