@@ -1,7 +1,15 @@
 #!/bin/sh
 
+extra_args=""
+
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-    exec /usr/bin/code --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland "$@"
+    extra_args="$extra_args --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland"
 fi
 
-exec /usr/bin/code "$@"
+# https://code.visualstudio.com/docs/editor/settings-sync#_troubleshooting-keychain-issues
+if [ "$XDG_SESSION_DESKTOP" = "i3" ] || [ "$XDG_SESSION_DESKTOP" = "sway" ]; then
+    extra_args="$extra_args --password-store=gnome"
+fi
+
+# shellcheck disable=SC2086
+exec /usr/bin/code $extra_args "$@"
