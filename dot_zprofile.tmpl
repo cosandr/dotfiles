@@ -58,6 +58,8 @@ eval $(/opt/homebrew/bin/brew shellenv)
 export PYENV_ROOT={{ if stat "/opt/pyenv/bin" }}"/opt/pyenv"{{ else }}"$HOME/.pyenv"{{ end }}
 
 _search_path=(
+    "$HOME/.local/share/JetBrains/Toolbox/scripts"
+    "${KREW_ROOT:-$HOME/.krew}/bin"
     "$HOME/.local/bin"
     "$HOME/.cargo/bin"
     "$HOME/go/bin"
