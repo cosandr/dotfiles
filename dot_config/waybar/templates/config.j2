@@ -20,7 +20,11 @@
         "modules-center": [
             "sway/window"
         ],
+        {% if 'alone_modules-right' in cfg and present_monitors | length == 1 %}
+        "modules-right": {{ cfg['alone_modules-right'] | to_json }},
+        {% else %}
         "modules-right": {{ cfg['modules-right'] | to_json }},
+        {% endif %}
 {% include "waybar_modules.j2" %}
     }{% if not loop.last %},{% endif %}
 {% endfor %}

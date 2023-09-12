@@ -49,6 +49,10 @@
         "format": "{:%a %d %b   %H:%M}"
     },
 
+    "clock#short": {
+        "format": "{: %H:%M %d/%m/%y}"
+    },
+
     "custom/updates": {
         "format": " {}",
         "exec": "PYTHONUNBUFFERED=1 SERVER=/run/go-check-updates.sock $HOME/.local/bin/bar/go-check-updates-ws.py",
