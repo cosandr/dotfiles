@@ -44,13 +44,36 @@
         "format": " {}",
         "interval": 10
     },
-
+{% set calendar_config %}
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+                    "mode"          : "month",
+                    "mode-mon-col"  : 3,
+                    "weeks-pos"     : "right",
+                    "on-scroll"     : 1,
+                    "on-click": "mode",
+                    "format": {
+                              "months":     "<span color='#ffead3'><b>{}</b></span>",
+                              "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                              "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                              "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                              "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+                              }
+                    },
+        "actions":  {
+                    "on-click": "mode",
+                    "on-scroll-up": "shift_up",
+                    "on-scroll-down": "shift_down"
+                    }
+{% endset %}
     "clock": {
-        "format": "{:%a %d %b   %H:%M}"
+        "format": "{:%a %d %b   %H:%M}",
+    {{- calendar_config }}
     },
 
     "clock#short": {
-        "format": "{: %H:%M %d/%m/%y}"
+        "format": "{: %H:%M %d/%m/%y}",
+    {{- calendar_config }}
     },
 
     "custom/updates": {
