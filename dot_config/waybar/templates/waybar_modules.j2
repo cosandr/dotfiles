@@ -26,12 +26,17 @@
           "critical": 90
         }
     },
-
+{% set backlight_dev = get_env('BACKLIGHT_DEV') %}
     "backlight": {
-        "device": "$BACKLIGHT_DEV",
         "format": " {percent}%",
-        "on-scroll-up": "brightnessctl -d $BACKLIGHT_DEV set 1%+",
-        "on-scroll-down": "brightnessctl -d $BACKLIGHT_DEV set 1%-"
+{% if backlight_dev %}
+        "device": "{{ backlight_dev }}",
+        "on-scroll-up": "brightnessctl -d {{ backlight_dev }} set 1%+",
+        "on-scroll-down": "brightnessctl -d {{ backlight_dev }} set 1%-"
+{% else %}
+        "on-scroll-up": "brightnessctl set 1%+",
+        "on-scroll-down": "brightnessctl set 1%-"
+{% endif %}
     },
 
     "custom/cpu_clk": {
@@ -90,7 +95,7 @@
     },
 
     "network#ethernet": {
-        "interface": "$PRIMARY_ETH",
+        "interface": "{{ get_env('PRIMARY_ETH', 'e*') }}",
         "interval": 5,
         "format-ethernet": " {bandwidthTotalBytes}",
         "format-disconnected": "",
@@ -98,14 +103,14 @@
     },
 
     "network#ethernet_ip": {
-        "interface": "$PRIMARY_ETH",
+        "interface": "{{ get_env('PRIMARY_ETH', 'e*') }}",
         "interval": 5,
         "format-ethernet": " {bandwidthTotalBytes} [{ipaddr}/{cidr}]",
         "format-disconnected": "",
     },
 
     "network#wifi": {
-        "interface": "$PRIMARY_WLAN",
+        "interface": "{{ get_env('PRIMARY_WLAN', 'w*') }}",
         "interval": 5,
         "format-wifi": " {essid}",
         "format-disconnected": "",
@@ -113,7 +118,7 @@
     },
 
     "network#wifi_ip": {
-        "interface": "$PRIMARY_WLAN",
+        "interface": "{{ get_env('PRIMARY_WLAN', 'w*') }}",
         "interval": 5,
         "format-wifi": " {bandwidthTotalBytes} [{ipaddr}/{cidr}]",
         "format-disconnected": ""

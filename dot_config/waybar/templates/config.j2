@@ -1,0 +1,27 @@
+// =============================================================================
+//
+// Waybar configuration
+//
+// Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+//
+// =============================================================================
+
+[
+{% for cfg in bars.values() if cfg.outputs %}
+    {
+        "layer": "top",
+        "position": "bottom",
+        "height": 30,
+        "output": {{ cfg.outputs | to_json }},
+        "modules-left": [
+            "sway/workspaces",
+            "sway/mode"
+        ],
+        "modules-center": [
+            "sway/window"
+        ],
+        "modules-right": {{ cfg['modules-right'] | to_json }},
+{% include "waybar_modules.j2" %}
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+]

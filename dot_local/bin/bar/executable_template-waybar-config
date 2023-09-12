@@ -1,0 +1,180 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import sys
+from pathlib import Path
+
+import jinja2
+import yaml
+from i3ipc import Connection
+
+OVERRIDE_FILE = os.path.join(Path.home(), ".config", "override" ,"waybar.yaml")
+WAYBAR_CONFIG = os.path.join(Path.home(), ".config", "waybar" ,"config")
+WAYBAR_CONFIG_TMPL = os.path.join(Path.home(), ".config", "waybar" ,"templates")
+CONFIG = {
+    "bars": {
+        "main": {
+            "outputs": [],
+            "default_outputs": ["eDP-1"],
+            "modules-right": [
+                "cpu",
+                "temperature",
+                "custom/sep",
+                "memory",
+                "custom/sep",
+                "pulseaudio",
+                "custom/sep",
+                "network#wifi",
+                "custom/sep",
+                "backlight",
+                "custom/sep",
+                "clock",
+                "custom/sep",
+                "battery",
+                "custom/sep",
+                "sway/language",
+                "custom/sep",
+                "custom/scratchpad-indicator",
+            ],
+        },
+        "laptop_ext": {
+            "outputs": [],
+            "modules-right": [
+                "cpu",
+                "temperature",
+                "custom/sep",
+                "memory",
+                "custom/sep",
+                "custom/updates",
+                "custom/sep",
+                "pulseaudio",
+                "custom/switchaudio",
+                "custom/sep",
+                "custom/monitor_brightness",
+                "custom/sep",
+                "clock",
+            ],
+        },
+        "laptop_ext_secondary": {
+            "outputs": [],
+            "modules-right": [
+                "custom/cpu_clk",
+                "custom/sep",
+                "network#ethernet_ip",
+                "network#wifi_ip",
+                "custom/sep",
+                "battery",
+                "custom/sep",
+                "clock",
+            ],
+        },
+        "default": {
+            "outputs": [],
+            "modules-right": [
+                "pulseaudio",
+                "custom/sep",
+                "clock",
+            ],
+        },
+    }
+}
+
+
+def get_env(name, default=None, skip_missing=True):
+    if not skip_missing and name not in os.environ:
+        raise jinja2.exceptions.TemplateRuntimeError(f"'{name}' is not set")
+    return os.getenv(name, default=default)
+
+
+def have_env(name):
+    return name in os.environ
+
+
+def to_json(obj, *args, **kwargs):
+    return json.dumps(obj, *args, **kwargs)
+
+
+def load_overrides():
+    if os.path.exists(OVERRIDE_FILE):
+        with open(OVERRIDE_FILE, 'r') as f:
+            overrides = yaml.safe_load(f)
+        if not overrides or 'monitor_map' not in overrides:
+            print(f"Ignoring override file '{OVERRIDE_FILE}': No bars configured", file=sys.stderr)
+            return {}
+    for name in overrides["monitor_map"].keys():
+        if name not in CONFIG["bars"]:
+            raise Exception(f"Unknown bar '{name}'")
+    return overrides
+
+
+def output_configured(name):
+    for config in CONFIG["bars"].values():
+        if name in config["outputs"]:
+            return True
+    return False
+
+
+def configure_outputs(present_monitors):
+    global CONFIG
+
+    overrides = load_overrides()
+    monitor_map = overrides.get("monitor_map", {})
+    bar_names = list(CONFIG["bars"].keys())
+    # Set overrides
+    for output, name in present_monitors.items():
+        for bar in bar_names:
+            bar_outputs = []
+            bar_overrides = monitor_map.get(bar, [])
+            # Check if overriden monitors are present
+            if name in bar_overrides or output in bar_overrides:
+                print(f"Adding '{bar}' output from override: {output}", file=sys.stderr)
+                CONFIG["bars"][bar]["outputs"].append(output)
+    # Set defaults
+    for output, name in present_monitors.items():
+        if output_configured(output):
+            continue
+        for bar in bar_names:
+            # Only add one output per bar, unless it's the last one
+            if CONFIG["bars"][bar]["outputs"] and bar != bar_names[-1]:
+                continue
+            default_bar_outputs = CONFIG["bars"][bar].get("default_outputs", [])
+            if output in default_bar_outputs or name in default_bar_outputs:
+                bar_outputs = default_bar_outputs
+                print(f"Adding '{bar}' outputs from configured defaults: {', '.join(bar_outputs)}", file=sys.stderr)
+            else:
+                bar_outputs = [output]
+                print(f"Adding '{bar}' outputs: {', '.join(bar_outputs)}", file=sys.stderr)
+            CONFIG["bars"][bar]["outputs"] += bar_outputs
+            break
+    # Print what we did
+    for name, config in CONFIG["bars"].items():
+        if not config['outputs']:
+            continue
+        print(f"Final '{name}' outputs: {', '.join(config['outputs'])}", file=sys.stderr)
+
+def main():
+    loader = jinja2.FileSystemLoader(WAYBAR_CONFIG_TMPL)
+
+    environment = jinja2.Environment(undefined=jinja2.StrictUndefined, loader=loader)
+    environment.filters['to_json'] = to_json
+    environment.globals['get_env'] = get_env
+    environment.globals['have_env'] = have_env
+
+    template = environment.get_template('config.j2')
+
+    i3 = Connection()
+    outputs = i3.get_outputs()
+    i3.main_quit()
+    present_monitors = {}
+    for o in outputs:
+        present_monitors[o.name] = f"{o.make} {o.model} {o.serial}"
+
+    configure_outputs(present_monitors)
+
+    with open(WAYBAR_CONFIG, 'w') as f:
+        f.write(template.render(**CONFIG, present_monitors=present_monitors))
+
+
+if __name__ == '__main__':
+    main()

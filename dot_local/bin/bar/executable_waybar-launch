@@ -3,59 +3,14 @@
 # shellcheck source=/dev/null
 source ~/.local/bin/bar/bar-env.sh
 
-declare -A MONITOR_MAP
-# Example, launch laptop bar on "Acer Technologies XV273K 0x0000CFF9"
-# MONITOR_MAP["Acer Technologies XV273K 0x0000CFF9"]=laptop_ext
-
-# Declare bars
-OUTPUTS_LAPTOP=""
-OUTPUTS_LAPTOP_EXT=""
-OUTPUTS_LAPTOP_EXT_SECONDARY=""
-
-# shellcheck disable=SC2016
-SUBST_VARS='$HWMON_PATH:$HWMON_AMDGPU:$BACKLIGHT_DEV:$PRIMARY_ETH:$PRIMARY_WLAN:$OUTPUTS_LAPTOP:$OUTPUTS_LAPTOP_EXT:$OUTPUTS_LAPTOP_EXT_SECONDARY'
-
 # shellcheck source=/dev/null
 # Load specific config if present
 [[ -f ~/.config/override/waybar ]] && source ~/.config/override/waybar
 
-mapfile -t present_monitors < <(swaymsg -r -t get_outputs | jq -r '.[] | (.name + "\t" + .make + " " + .model + " " +  .serial)')
-for i in "${!present_monitors[@]}"; do
-    IFS=$'\t' read -ra MON <<< "${present_monitors[$i]}"
-    MONITOR_NAME="${MON[1]}"
-    MONITOR_OUTPUT="${MON[0]}"
-    # Skip internal display
-    [[ $MONITOR_OUTPUT = "eDP-1" ]] && continue
-
-    echo "$MONITOR_OUTPUT: $MONITOR_NAME"
-    if [[ -n ${MONITOR_MAP[$MONITOR_NAME]} ]]; then
-        case ${MONITOR_MAP[$MONITOR_NAME]} in
-            laptop_ext) OUTPUTS_LAPTOP_EXT+="\"$MONITOR_OUTPUT\" ";;
-            laptop_ext_secondary) OUTPUTS_LAPTOP_EXT_SECONDARY+="\"$MONITOR_OUTPUT\" ";;
-            *) echo "Unknown bar ${MONITOR_MAP[$MONITOR_NAME]}";;
-        esac
-    elif [[ -z $OUTPUTS_LAPTOP_EXT ]]; then
-        OUTPUTS_LAPTOP_EXT+="\"$MONITOR_OUTPUT\" "
-    else
-        OUTPUTS_LAPTOP_EXT_SECONDARY+="\"$MONITOR_OUTPUT\" "
-    fi
-done
-
-[[ -z $OUTPUTS_LAPTOP ]] && OUTPUTS_LAPTOP='"eDP-1"'
-
-# Replace spaces with commas
-OUTPUTS_LAPTOP="${OUTPUTS_LAPTOP//\" \"/\", \"}"
-OUTPUTS_LAPTOP_EXT="${OUTPUTS_LAPTOP_EXT//\" \"/\", \"}"
-OUTPUTS_LAPTOP_EXT_SECONDARY="${OUTPUTS_LAPTOP_EXT_SECONDARY//\" \"/\", \"}"
-
-echo "$SUBST_VARS"
-eval "echo $SUBST_VARS"
-echo "Laptop: $OUTPUTS_LAPTOP"
-[[ -n $OUTPUTS_LAPTOP_EXT ]] && echo "Laptop ext: $OUTPUTS_LAPTOP_EXT"
-[[ -n $OUTPUTS_LAPTOP_EXT_SECONDARY ]] && echo "Laptop ext secondary: $OUTPUTS_LAPTOP_EXT_SECONDARY"
-
-export OUTPUTS_LAPTOP OUTPUTS_LAPTOP_EXT OUTPUTS_LAPTOP_EXT_SECONDARY
-
-envsubst "$SUBST_VARS" < ~/.config/waybar/config_tmpl > ~/.config/waybar/config
+if [[ -z $DEBUG ]]; then
+    ~/.local/bin/bar/template-waybar-config 2>/dev/null
+else
+    ~/.local/bin/bar/template-waybar-config
+fi
 
 exec /usr/bin/waybar
