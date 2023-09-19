@@ -42,6 +42,9 @@
 [fetch]
     prune = true
     parallel = 0
+[diff "ansible-vault"]
+    textconv = ansible-vault view
+    cachetextconv = false
 [include]
     path = ~/.config/override/git
 [includeIf "gitdir:~/work/**/.git"]
