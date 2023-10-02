@@ -9,23 +9,22 @@
     "type": "con",
     "nodes": [
         {
-            "border": "pixel",
+            "border": "normal",
             "current_border_width": 3,
             "floating": "auto_off",
             "geometry": {
-               "height": 878,
-               "width": 1596,
-               "x": 3402,
-               "y": 2282
+               "height": 600,
+               "width": 800,
+               "x": 0,
+               "y": 0
             },
             "marks": [],
-            "name": "Mozilla Firefox",
+            "name": "Alacritty",
             "percent": null,
             "swallows": [
                {
-               "class": "^firefox\\-work$",
-               "instance": "^Navigator$",
-               "window_role": "^browser$"
+               "class": "^Alacritty$",
+               "instance": "^Alacritty$"
                }
             ],
             "type": "con"
@@ -54,7 +53,7 @@
             },
             "marks": [],
             "name": "Alacritty",
-            "percent": 0.5,
+            "percent": null,
             "swallows": [
                {
                "class": "^Alacritty$",

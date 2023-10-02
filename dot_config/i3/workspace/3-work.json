@@ -1,14 +1,13 @@
 // vim:ts=4:sw=4:et
-
 {
     "border": "none",
     "current_border_width": 3,
     "floating": "auto_off",
     "geometry": {
-       "height": 1296,
-       "width": 1536,
-       "x": 4992,
-       "y": 432
+       "height": 1158,
+       "width": 1916,
+       "x": 1,
+       "y": 1
     },
     "marks": [],
     "name": "Slack",
@@ -36,10 +35,10 @@
             "current_border_width": 3,
             "floating": "auto_off",
             "geometry": {
-               "height": 2118,
-               "width": 1915,
-               "x": 2175,
-               "y": 1695
+               "height": 1131,
+               "width": 1914,
+               "x": 0,
+               "y": 0
             },
             "marks": [],
             "name": "Mozilla Firefox",
@@ -47,12 +46,10 @@
             "swallows": [
                {
                "class": "^firefox\\-work$",
-               "instance": "^Navigator$",
-               "window_role": "^browser$"
+               "instance": "^Navigator$"
                }
             ],
             "type": "con"
         }
     ]
 }
-
