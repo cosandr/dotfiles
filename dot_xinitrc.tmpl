@@ -17,5 +17,4 @@ else
     systemd-cat -t xorg-conf {{ .chezmoi.homeDir }}/.local/bin/xorg-conf
 fi
 
-setxkbmap -layout us,no -option grp:rctrl_rshift_toggle
 exec systemd-cat -t i3 $HOME/.local/bin/i3-launch
