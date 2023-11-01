@@ -30,6 +30,10 @@
     cpc = cherry-pick --continue
     cpa = cherry-pick --abort
     sbu = submodule update --recursive --init
+    # https://stackoverflow.com/a/31776247
+    local-branches = "!git branch --format '%(refname:short) %(upstream:short)' | awk '{if (!$2) print $1;}'"
+    gone-branches = "!git branch -vv | awk '/: gone]/{print $1}'"
+    gone-branches-del = "!git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D"
 [commit]
     verbose = true
     gpgsign = true
