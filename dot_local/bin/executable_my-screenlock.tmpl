@@ -48,11 +48,11 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
             else
                 WAYLAND_OPTS=${WAYLAND_OPTS:-"-f -i $HOME/.wallpaper"}
             fi
-            exec swaylock $WAYLAND_OPTS
+            swaylock $WAYLAND_OPTS
             ;;
         waylock)
             WAYLAND_OPTS=${WAYLAND_OPTS:-"--init-color 0x002b36 --input-color 0x586e75 --fail-color 0x002b36"}
-            exec waylock $WAYLAND_OPTS
+            waylock $WAYLAND_OPTS
             ;;
     esac
     exit 0
@@ -80,28 +80,23 @@ fi
 # Check if we have i3lock-color
 if [[ $(i3lock --version 2>&1) =~ "Raymond Li" ]]; then
     i3lock_color="303030ff"
-    i3lock_args="--ignore-empty-password --pass-media-keys $OPTS"
+    i3lock_args="--ignore-empty-password --pass-media-keys --nofork $OPTS"
 else
     i3lock_color="303030"
-    i3lock_args="--ignore-empty-password $OPTS"
-fi
-
-# Fork if systemd is suspending
-if [[ $SYSTEMD_SUSPEND -eq 0 ]]; then
-    i3lock_args="$i3lock_args --nofork"
+    i3lock_args="--ignore-empty-password --nofork $OPTS"
 fi
 
 case "$LOCKER" in
     sxlock)
-        exec sxlock -d
+        sxlock -d
         ;;
     i3lock)
-        exec i3lock $i3lock_args --color "$i3lock_color"
+        i3lock $i3lock_args --color "$i3lock_color"
         ;;
     i3lock-fancy-rapid)
         radius=6
         times=3
-        exec i3lock-fancy-rapid "$radius" "$times" \
+        i3lock-fancy-rapid "$radius" "$times" \
             $i3lock_args \
             --tiling \
             --time-pos "$xpos+110:$ypos-70" \
