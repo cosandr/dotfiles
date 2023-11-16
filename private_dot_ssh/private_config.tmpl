@@ -27,7 +27,7 @@ Host theia
 
 {{ if not $is_pi -}}
 Host drepi
-    HostName 10.0.50.21
+    HostName drepi.hlab.no
     User andrei
     ForwardAgent yes
 {{- end }} {{/* {{- if not $is_pi }} */}}
@@ -39,13 +39,13 @@ Host rb5009
     IdentityFile ~/.ssh/id_rsa
 
 Host crs226
-    HostName 10.0.100.3
+    HostName crs226.man.hlab.no
     User admin
     PubkeyAcceptedKeyTypes ssh-rsa,rsa-sha2-256
     IdentityFile ~/.ssh/id_rsa
 
 Host crs309
-    HostName 10.0.100.4
+    HostName crs309.man.hlab.no
     User admin
     PubkeyAcceptedKeyTypes ssh-rsa,rsa-sha2-256
     IdentityFile ~/.ssh/id_rsa
@@ -56,7 +56,7 @@ Host webgw01
     User andrei
 
 Host localgw01
-    HostName 10.0.10.91
+    HostName localgw01.hlab.no
     Port 5622
     User root
 
