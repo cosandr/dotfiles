@@ -12,7 +12,7 @@ if [[ ! -x /usr/bin/autorandr ]]; then
 fi
 
 if [[ $USE_AUTORANDR -eq 1 ]]; then
-    /usr/bin/autorandr --change --default default
+    /usr/bin/autorandr --change --default default --force
 else
     systemd-cat -t xorg-conf {{ .chezmoi.homeDir }}/.local/bin/xorg-conf
 fi
