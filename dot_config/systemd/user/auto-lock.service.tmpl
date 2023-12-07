@@ -4,6 +4,7 @@ BindsTo=i3-session.target
 
 [Service]
 Type=simple
+Restart=always
 ExecStart={{ .chezmoi.homeDir }}/.local/bin/auto-lock
 
 [Install]

@@ -32,6 +32,11 @@ ypos={{- if .is.desktop }}"y+h"{{- else }}"h"{{- end }}
 
 [[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
 
+if [[ $idle_hook = "xss-lock" ]] && [[ $LOCKER = "xsecurelock" ]]; then
+    xset s activate
+    exit 0
+fi
+
 # Exit if locked already
 if pgrep -u {{ .chezmoi.username }} "$WAYLAND_LOCKER" || pgrep -u {{ .chezmoi.username }} "$LOCKER"; then
     echo "Already locked"

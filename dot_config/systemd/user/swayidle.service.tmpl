@@ -4,6 +4,7 @@ BindsTo=sway-session.target
 
 [Service]
 Type=simple
+Restart=always
 ExecStart={{ .chezmoi.homeDir }}/.local/bin/swayidle
 
 [Install]

@@ -60,6 +60,29 @@ case $idle_hook in
     xfce4_power_manager)
         xfce4-power-manager &
         ;;
+    xss-lock)
+        xset dpms "$dpms_time" "$dpms_time" "$dpms_time"
+        xset s "$dpms_time" "$dpms_time"
+        case "$LOCKER" in
+            xsecurelock)
+                xss-lock -n /usr/lib/xsecurelock/dimmer -l -- env \
+                    XSECURELOCK_BLANK_TIMEOUT=30 \
+                    XSECURELOCK_BLANK_DPMS_STATE=off \
+                    XSECURELOCK_SHOW_HOSTNAME=0 \
+                    XSECURELOCK_SHOW_USERNAME=0 \
+                    XSECURELOCK_KEY_XF86AudioPlay_COMMAND="playerctl play-pause" \
+                    XSECURELOCK_KEY_XF86AudioNext_COMMAND="playerctl next" \
+                    XSECURELOCK_KEY_XF86AudioPrev_COMMAND="playerctl previous" \
+                    XSECURELOCK_KEY_XF86AudioRaiseVolume_COMMAND="pamixer -i 1" \
+                    XSECURELOCK_KEY_XF86AudioLowerVolume_COMMAND="pamixer -d 1" \
+                    XSECURELOCK_KEY_XF86AudioMute_COMMAND="pamixer -t" \
+                    xsecurelock
+                ;;
+            *)
+                xss-lock -- "$HOME/.local/bin/my-screenlock"
+                ;;
+        esac
+        ;;
     none)
         echo "No screen locker"
         exit 0
