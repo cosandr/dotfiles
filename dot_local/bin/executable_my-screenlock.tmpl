@@ -12,24 +12,6 @@ OPTS=""
 LOCKER=${LOCKER:-{{ if lookPath "i3lock-fancy-rapid"}}i3lock-fancy-rapid{{ else }}i3lock{{ end }}}
 WAYLAND_LOCKER=${WAYLAND_LOCKER:-swaylock}
 
-insidecolor='00000000'
-ringcolor='ffffffff'
-keyhlcolor='d23c3dff'
-bshlcolor='d23c3dff'
-separatorcolor='00000000'
-insidevercolor='00000000'
-insidewrongcolor='d23c3dff'
-ringvercolor='ffffffff'
-ringwrongcolor='ffffffff'
-verifcolor='ffffffff'
-timecolor='ffffffff'
-datecolor='ffffffff'
-font='Noto Sans'
-locktext='Type password to unlock...'
-# Adding width and height for multiple monitors
-xpos={{- if .is.desktop }}"w+x"{{- else }}"x"{{- end }}
-ypos={{- if .is.desktop }}"y+h"{{- else }}"h"{{- end }}
-
 [[ -f ~/.config/override/lock ]] && source ~/.config/override/lock
 
 if [[ $idle_hook = "xss-lock" ]] && [[ $LOCKER = "xsecurelock" ]]; then
@@ -99,21 +81,22 @@ case "$LOCKER" in
         i3lock $i3lock_args --color "$i3lock_color"
         ;;
     i3lock-fancy-rapid)
-        radius=6
-        times=3
+        radius=8
+        times=pixel
+        locktext='Type password to unlock...'
         i3lock-fancy-rapid "$radius" "$times" \
             $i3lock_args \
-            --tiling \
-            --time-pos "$xpos+110:$ypos-70" \
-            --date-pos "$xpos+43:$ypos-45" \
-            --clock --date-align 1 --date-str "$locktext" \
-            --inside-color "$insidecolor" --ring-color "$ringcolor" --line-uses-inside \
-            --keyhl-color "$keyhlcolor" --bshl-color "$bshlcolor" --separator-color "$separatorcolor" \
-            --insidever-color "$insidevercolor" --insidewrong-color "$insidewrongcolor" \
-            --ringver-color "$ringvercolor" --ringwrong-color "$ringwrongcolor" --ind-pos "$xpos+280:$ypos-70" \
-            --radius "20" --ring-width "4" --verif-text '' --wrong-text '' \
-            --verif-color "$verifcolor" --time-color "$timecolor" --date-color "$datecolor" \
-            --time-font "$font" --date-font "$font" --layout-font "$font" --verif-font "$font" --wrong-font "$font" \
-            --noinput-text ''
+            --clock --date-str="%A, %d %B %Y" \
+            --greeter-text "$locktext" --verif-text '' --wrong-text '' --noinput-text '' \
+            --radius "20" --ring-width "4" --line-uses-inside \
+            --time-pos "ix+0:iy-500" --date-pos "tx+0:ty+40" --greeter-pos "ix+0:iy+500" \
+            --{layout,verif,wrong,greeter}-size=32 \
+            --time-size=48 --date-size=24 \
+            --{time,layout,verif,wrong,greeter,modifier}outline-width=0.5 --dateoutline-width=0.275 \
+            --{inside,insidever,separator}-color=00000000 \
+            --{keyhl,bshl,insidewrong}-color=d23c3dff \
+            --{ring,ringver,ringwrong,verif,time,date,greeter}-color=ffffffff \
+            --{time,date,layout,verif,wrong,greeter,modif}outline-color=000000ff \
+            --{time,date,layout,verif,wrong,greeter}-font='Noto Sans'
         ;;
 esac
