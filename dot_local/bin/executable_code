@@ -3,7 +3,7 @@
 extra_args=""
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-    extra_args="$extra_args --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland"
+    extra_args="$extra_args --ozone-platform-hint=auto"
 fi
 
 # https://code.visualstudio.com/docs/editor/settings-sync#_troubleshooting-keychain-issues

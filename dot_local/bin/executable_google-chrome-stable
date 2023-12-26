@@ -1,7 +1,14 @@
 #!/bin/sh
 
+extra_args=""
+
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-    exec /usr/bin/google-chrome-stable --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland "$@"
+    extra_args="$extra_args --ozone-platform-hint=auto --enable-webrtc-pipewire-capturer --enable-features=TouchpadOverscrollHistoryNavigation"
 fi
 
-exec /usr/bin/google-chrome-stable "$@"
+if [ "$XDG_SESSION_DESKTOP" = "i3" ] || [ "$XDG_SESSION_DESKTOP" = "sway" ]; then
+    extra_args="$extra_args --password-store=gnome"
+fi
+
+# shellcheck disable=SC2086
+exec /usr/bin/google-chrome-stable $extra_args "$@"
