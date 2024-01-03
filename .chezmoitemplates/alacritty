@@ -1,135 +1,181 @@
-# https://github.com/alacritty/alacritty/blob/master/alacritty.yml
-env:
-  TERM: xterm-256color
+{{- $mods := "Control|Shift" -}}
+{{- if .is.mac }}{{ $mods := "Command" }}{{ end -}}
 
-window:
-  decorations: {{ if or .is.windows .is.mac (not (eq .sess "i3" "sway")) }}full{{ else }}none{{ end }}
-  dynamic_title: true
-  opacity: 1.0
+live_config_reload = false
 
-scrolling:
-  history: 50000
-  multiplier: 3
+[bell]
+animation = "EaseOutExpo"
+color = "#ffffff"
 
-hints:
-  enabled:
-    - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
-              [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
-      command: {{ if .is.windows }}explorer{{ else if .is.mac }}open{{ else }}xdg-open{{ end }}
-      post_processing: true
-      mouse:
-        enabled: true
-        mods: Control
+[colors.bright]
+black = "#7f8c8d"
+blue = "#3daee9"
+cyan = "#16a085"
+green = "#1cdc9a"
+magenta = "#8e44ad"
+red = "#c0392b"
+white = "#ffffff"
+yellow = "#fdbc4b"
 
-font:
-  normal:
-    family: Fira Code
-    style: Regular
+[colors.dim]
+black = "#31363b"
+blue = "#1b668f"
+cyan = "#186c60"
+green = "#17a262"
+magenta = "#614a73"
+red = "#783228"
+white = "#63686d"
+yellow = "#b65619"
 
-  bold:
-    family: Fira Code
-    style: Bold
+[colors.normal]
+black = "#232627"
+blue = "#1d99f3"
+cyan = "#1abc9c"
+green = "#11d116"
+magenta = "#9b59b6"
+red = "#ed1515"
+white = "#fcfcfc"
+yellow = "#f67400"
 
-  italic:
-    family: Fira Code
-    style: Italic
+[colors.primary]
+background = "#232627"
+bright_foreground = "#ffffff"
+dim_foreground = "#eff0f1"
+foreground = "#fcfcfc"
 
-  bold_italic:
-    family: Fira Code
-    style: Bold Italic
+[cursor]
+unfocused_hollow = true
+vi_mode_style = "Block"
 
-  size: {{ .font_size }}
+[cursor.style]
+blinking = "On"
+shape = "Beam"
 
-# KDE Breeze (Ported from Konsole)
-colors:
-  primary:
-    background: '#232627'
-    foreground: '#fcfcfc'
+[env]
+TERM = "xterm-256color"
 
-    dim_foreground: '#eff0f1'
-    bright_foreground: '#ffffff'
-    dim_background: '#31363b'
-    bright_background: '#000000'
+[font]
+size = {{ .font_size }}
 
-  normal:
-    black: '#232627'
-    red: '#ed1515'
-    green: '#11d116'
-    yellow: '#f67400'
-    blue: '#1d99f3'
-    magenta: '#9b59b6'
-    cyan: '#1abc9c'
-    white: '#fcfcfc'
+[font.bold]
+family = "Fira Code"
+style = "Bold"
 
-  bright:
-    black: '#7f8c8d'
-    red: '#c0392b'
-    green: '#1cdc9a'
-    yellow: '#fdbc4b'
-    blue: '#3daee9'
-    magenta: '#8e44ad'
-    cyan: '#16a085'
-    white: '#ffffff'
+[font.bold_italic]
+family = "Fira Code"
+style = "Bold Italic"
 
-  dim:
-    black: '#31363b'
-    red: '#783228'
-    green: '#17a262'
-    yellow: '#b65619'
-    blue: '#1b668f'
-    magenta: '#614a73'
-    cyan: '#186c60'
-    white: '#63686d'
+[font.italic]
+family = "Fira Code"
+style = "Italic"
 
-bell:
- animation: EaseOutExpo
-# duration: 0
- color: '#ffffff'
+[font.normal]
+family = "Fira Code"
+style = "Regular"
 
-selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
-  save_to_clipboard: false
+[[hints.enabled]]
+command = "{{ if .is.windows }}explorer{{ else if .is.mac }}open{{ else }}xdg-open{{ end }}"
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
 
-cursor:
-  # Values for `shape`:
-  #   - ▇ Block
-  #   - _ Underline
-  #   - | Beam
-  style: Beam
-  vi_mode_style: Block
-  # Values for `blinking`:
-  #   - Never: Prevent the cursor from ever blinking
-  #   - Off: Disable blinking by default
-  #   - On: Enable blinking by default
-  #   - Always: Force the cursor to always blink
-  blinking: On
-  unfocused_hollow: true
+[hints.enabled.mouse]
+enabled = true
+mods = "Control"
 
-live_config_reload: false
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "{{ $mods }}"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "{{ $mods }}"
+
+[[keyboard.bindings]]
+action = "Quit"
+key = "Q"
+mods = "{{ $mods }}"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "{{ $mods }}"
+
+[[keyboard.bindings]]
+action = "ScrollPageUp"
+key = "PageUp"
+mods = "{{ $mods }}"
+
+[[keyboard.bindings]]
+action = "ScrollPageDown"
+key = "PageDown"
+mods = "{{ $mods }}"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Plus"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "NumpadAdd"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "NumpadSubtract"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Numpad0"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ToggleViMode"
+key = "Space"
+mode = "~Search"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "SearchForward"
+key = "Slash"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
+action = "SearchBackward"
+key = "Slash"
+mode = "Vi|~Search"
+mods = "Shift"
+
+[mouse]
+hide_when_typing = false
+
+[scrolling]
+history = 50000
+multiplier = 3
+
+[selection]
+save_to_clipboard = false
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
 
 {{- if .is.windows }}
-shell:
-  program: pwsh.exe
+[shell]
+  program = "pwsh.exe"
 {{- end }}
 
-mouse:
-  hide_when_typing: false
-
-key_bindings:
-{{- $mods := "Control|Shift" -}}
-{{ if .is.mac }}{{ $mods := "Command" }}{{ end }}
-  - { key: V,        mods: {{ $mods }}, action: Paste            }
-  - { key: C,        mods: {{ $mods }}, action: Copy             }
-  - { key: Q,        mods: {{ $mods }}, action: Quit             }
-  - { key: N,        mods: {{ $mods }}, action: SpawnNewInstance }
-  - { key: PageUp,   mods: {{ $mods }}, action: ScrollPageUp     }
-  - { key: PageDown, mods: {{ $mods }}, action: ScrollPageDown   }
-  - { key: Plus,           mods: Control, action: IncreaseFontSize }
-  - { key: NumpadAdd,      mods: Control, action: IncreaseFontSize }
-  - { key: Minus,          mods: Control, action: DecreaseFontSize }
-  - { key: NumpadSubtract, mods: Control, action: DecreaseFontSize }
-  - { key: Key0,           mods: Control, action: ResetFontSize    }
-  - { key: Numpad0,        mods: Control, action: ResetFontSize    }
-  - { key: Space,    mods: Control|Shift, mode: ~Search,    action: ToggleViMode   }
-  - { key: Slash,                         mode: Vi|~Search, action: SearchForward  }
-  - { key: Slash,    mods: Shift,         mode: Vi|~Search, action: SearchBackward }
+[window]
+decorations = "{{ if or .is.windows .is.mac (not (eq .sess "i3" "sway")) }}full{{ else }}none{{ end }}"
+dynamic_title = true
+opacity = 1.0
