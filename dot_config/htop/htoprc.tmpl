@@ -1,7 +1,9 @@
-{{- $htop_version := output "htop" "--version" -}}
-{{- if contains "3.2" $htop_version }}
+{{- $htop_version := (index (output "htop" "--version" | splitList " ") 1) | trim -}}
+{{- if semverCompare ">=3.3" $htop_version }}
+{{- template "htoprc_3.3" dict "is" .is }}
+{{- else if semverCompare ">=3.2" $htop_version }}
 {{- template "htoprc_3.2" dict "is" .is }}
-{{- else if contains "3.1" $htop_version }}
+{{- else if semverCompare ">=3.1" $htop_version }}
 {{- template "htoprc_3.1" dict "is" .is }}
 {{- else }}
 {{- template "htoprc_3.0" dict "is" .is }}
