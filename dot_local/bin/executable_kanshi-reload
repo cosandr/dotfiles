@@ -1,16 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
-TEMP_FILE=~/.cache/.kanshi-reload
-
-if [ -f "$TEMP_FILE" ]; then
-    echo "$TEMP_FILE exists, exitting."
-    exit 0
-fi
-
-touch "$TEMP_FILE"
-
-trap 'rm -fv "$TEMP_FILE"' EXIT
+[ "${FLOCKER}" != "$0" ] && exec env FLOCKER="$0" flock -enE0 "$0" "$0" "$@" || :
 
 sleep 5
 
-systemctl --user restart swayidle waybar dunst
+services=(swayidle waybar dunst)
+
+for svc in "${services[@]}"; do
+    systemctl --user -q is-active "$svc" && systemctl --user restart "$svc"
+done

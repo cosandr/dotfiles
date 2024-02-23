@@ -1,25 +1,14 @@
 #!/usr/bin/bash
 
-TEMP_FILE=~/.cache/.autorandr-reload
-
-if [ -f "$TEMP_FILE" ]; then
-    echo "$TEMP_FILE exists, exitting."
-    exit 0
-fi
-
-touch "$TEMP_FILE"
-
-trap 'rm -fv "$TEMP_FILE"' EXIT
+[ "${FLOCKER}" != "$0" ] && exec env FLOCKER="$0" flock -enE0 "$0" "$0" "$@" || :
 
 sleep 5
 
-if systemctl --user -q is-active polybar.service; then
-    systemctl --user restart polybar.service
-fi
+services=(polybar dunst)
 
-if systemctl --user -q is-active dunst.service; then
-    systemctl --user restart dunst.service
-fi
+for svc in "${services[@]}"; do
+    systemctl --user -q is-active "$svc" && systemctl --user restart "$svc"
+done
 
 if pgrep -u "$USER" -x i3; then
     "$HOME"/.local/bin/i3-launch restart
