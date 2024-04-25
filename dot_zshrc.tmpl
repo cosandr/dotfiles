@@ -118,6 +118,20 @@ fgh() {
 FZF-EOF" --preview-window=right:60%
 }
 
+ansible-only-changed() {
+    case $1 in
+        [Nn]*)
+            unset ANSIBLE_DISPLAY_OK_HOSTS ANSIBLE_DISPLAY_SKIPPED_HOSTS
+            echo "Ansible defaults restored"
+            ;;
+        *)
+            export ANSIBLE_DISPLAY_OK_HOSTS=false
+            export ANSIBLE_DISPLAY_SKIPPED_HOSTS=false
+            echo "Only changes will be displayed"
+            ;;
+    esac
+}
+
 # Aliases
 
 alias reboot='confirm reboot'
