@@ -26,6 +26,16 @@ profile desktop {
     output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
 }
 
+profile desktop_no_tv {
+    output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
+    output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
+}
+
+profile desktop_tv {
+    output "Goldstar Company Ltd LG TV 0x00000101" disable
+    output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
+}
+
 # Always restart services when outputs change
 profile reload1 {
     output *
