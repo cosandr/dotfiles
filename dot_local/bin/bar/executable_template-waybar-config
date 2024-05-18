@@ -9,9 +9,9 @@ import jinja2
 import yaml
 from i3ipc import Connection
 
-OVERRIDE_FILE = os.path.join(Path.home(), ".config", "override" ,"waybar.yaml")
-WAYBAR_CONFIG = os.path.join(Path.home(), ".config", "waybar" ,"config")
-WAYBAR_CONFIG_TMPL = os.path.join(Path.home(), ".config", "waybar" ,"templates")
+OVERRIDE_FILE = os.path.join(Path.home(), ".config", "override", "waybar.yaml")
+WAYBAR_CONFIG = os.path.join(Path.home(), ".config", "waybar", "config")
+WAYBAR_CONFIG_TMPL = os.path.join(Path.home(), ".config", "waybar", "templates")
 CONFIG = {
     "bars": {
         "main": {
@@ -108,12 +108,16 @@ def to_json(obj, *args, **kwargs):
 
 
 def load_overrides():
-    if os.path.exists(OVERRIDE_FILE):
-        with open(OVERRIDE_FILE, 'r') as f:
-            overrides = yaml.safe_load(f)
-        if not overrides or 'monitor_map' not in overrides:
-            print(f"Ignoring override file '{OVERRIDE_FILE}': No bars configured", file=sys.stderr)
-            return {}
+    if not os.path.exists(OVERRIDE_FILE):
+        return {}
+    with open(OVERRIDE_FILE, "r") as f:
+        overrides = yaml.safe_load(f)
+    if not overrides or "monitor_map" not in overrides:
+        print(
+            f"Ignoring override file '{OVERRIDE_FILE}': No bars configured",
+            file=sys.stderr,
+        )
+        return {}
     for name in overrides["monitor_map"].keys():
         if name not in CONFIG["bars"]:
             raise Exception(f"Unknown bar '{name}'")
@@ -153,27 +157,35 @@ def configure_outputs(present_monitors):
             default_bar_outputs = CONFIG["bars"][bar].get("default_outputs", [])
             if output in default_bar_outputs or name in default_bar_outputs:
                 bar_outputs = default_bar_outputs
-                print(f"Adding '{bar}' outputs from configured defaults: {', '.join(bar_outputs)}", file=sys.stderr)
+                print(
+                    f"Adding '{bar}' outputs from configured defaults: {', '.join(bar_outputs)}",
+                    file=sys.stderr,
+                )
             else:
                 bar_outputs = [output]
-                print(f"Adding '{bar}' outputs: {', '.join(bar_outputs)}", file=sys.stderr)
+                print(
+                    f"Adding '{bar}' outputs: {', '.join(bar_outputs)}", file=sys.stderr
+                )
             CONFIG["bars"][bar]["outputs"] += bar_outputs
             break
     # Print what we did
     for name, config in CONFIG["bars"].items():
-        if not config['outputs']:
+        if not config["outputs"]:
             continue
-        print(f"Final '{name}' outputs: {', '.join(config['outputs'])}", file=sys.stderr)
+        print(
+            f"Final '{name}' outputs: {', '.join(config['outputs'])}", file=sys.stderr
+        )
+
 
 def main():
     loader = jinja2.FileSystemLoader(WAYBAR_CONFIG_TMPL)
 
     environment = jinja2.Environment(undefined=jinja2.StrictUndefined, loader=loader)
-    environment.filters['to_json'] = to_json
-    environment.globals['get_env'] = get_env
-    environment.globals['have_env'] = have_env
+    environment.filters["to_json"] = to_json
+    environment.globals["get_env"] = get_env
+    environment.globals["have_env"] = have_env
 
-    template = environment.get_template('config.j2')
+    template = environment.get_template("config.j2")
 
     i3 = Connection()
     outputs = i3.get_outputs()
@@ -184,9 +196,9 @@ def main():
 
     configure_outputs(present_monitors)
 
-    with open(WAYBAR_CONFIG, 'w') as f:
+    with open(WAYBAR_CONFIG, "w") as f:
         f.write(template.render(**CONFIG, present_monitors=present_monitors))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
