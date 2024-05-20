@@ -98,8 +98,16 @@ output {
 {{- end }}
 }
 
+{{- if .is.desktop }}
+workspace 1 output {{ .sway.monitors.home1 | quote }}
+workspace 2 output {{ .sway.monitors.home2 | quote }}
+{{- end }}
+
 # Only disable laptop display if it isn't the only display
 bindswitch --locked lid:on exec [ "$(swaymsg -r -t get_outputs | jq -r '.[].name')" = "eDP-1" ] || swaymsg output eDP-1 disable
 bindswitch --locked lid:off exec [ "$(swaymsg -r -t get_outputs | jq -r '.[].name')" = "eDP-1" ] || swaymsg output eDP-1 enable
+
+# Restore workspaces
+exec $HOME/.local/bin/sway-restore &
 
 include /etc/sway/config.d/*

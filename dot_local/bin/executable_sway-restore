@@ -1,0 +1,47 @@
+#!/bin/bash
+
+declare -A WS
+MONITOR_COUNT="$(swaymsg -t get_outputs -r | jq '. | length')"
+SWAY_NO_RESTORE=${SWAY_NO_RESTORE:-"0"}
+SWAY_WS_DIR=${SWAY_WS_DIR:-"$HOME/.config/sway/workspace"}
+SWAY_RESTORE_DELAY=${SWAY_RESTORE_DELAY:-"0.5"}
+
+for i in $(seq 1 "$MONITOR_COUNT"); do
+    # Initialize map
+    WS[$i]=""
+done
+
+# Example content
+# SWAY_NO_RESTORE=1
+# WS["1"]="work"
+# WS["2"]="work"
+# shellcheck source=/dev/null
+[[ -f ~/.config/override/sway ]] && source ~/.config/override/sway
+
+[[ $SWAY_NO_RESTORE -eq 1 ]] && exit 0
+
+for i in "${!WS[@]}"; do
+    opt="${WS[$i]}"
+    # Use specific file if it was provided
+    if [[ -n $opt ]]; then
+        file_name="$SWAY_WS_DIR/${i}-${opt}.sh"
+        if [[ ! -x $file_name ]]; then
+            notify-send -a "Restore workspace ${i}" "File not found or not executable: ${file_name}"
+            continue
+        fi
+    else
+        # Try host specific file
+        file_name="$SWAY_WS_DIR/${i}-$HOSTNAME.sh"
+        if [[ ! -x $file_name ]]; then
+            # Fallback to generic file
+            file_name="$SWAY_WS_DIR/${i}.sh"
+        fi
+        if [[ -x $file_name ]]; then
+            echo "Running restore script '$file_name'"
+            # Sleep a bit before and after for "stabilty"
+            sleep "$SWAY_RESTORE_DELAY"
+            "$file_name"
+            sleep "$SWAY_RESTORE_DELAY"
+        fi
+    fi
+done
