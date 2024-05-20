@@ -1,11 +1,21 @@
+{{- define "kanshi_reload" -}}
+    exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
+{{- if .sway.hidpi }}
+    exec swaymsg xwayland force scale 2
+    exec xrdb -override <<< "Xft.dpi: 192"
+{{- end -}}
+{{- end -}}
+
 profile mobile {
     output eDP-1 enable scale 1.25
+    {{ template "kanshi_reload" . }}
 }
 
 profile work {
     output eDP-1 enable scale 1.25 position 4512,1480
     output {{ .sway.monitors.work1 | quote }} scale 1.25 position 1440,832
     output {{ .sway.monitors.work2 | quote }} scale 1.5 position 0,0 transform 90
+    {{ template "kanshi_reload" . }}
 }
 
 profile home {
@@ -18,51 +28,43 @@ profile home {
     output {{ .sway.monitors.home1 | quote }} scale 1.25 position 3584,1440 mode 3840x2160@143.999Hz
     output {{ .sway.monitors.home2 | quote }} scale 1.5 position 3840,0
 {{- end }}
+    {{ template "kanshi_reload" . }}
 }
 
 profile desktop {
     output "Goldstar Company Ltd LG TV 0x00000101" disable
     output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
     output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
+    {{ template "kanshi_reload" . }}
 }
 
 profile desktop_no_tv {
     output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
     output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
+    {{ template "kanshi_reload" . }}
 }
 
 profile desktop_tv {
     output "Goldstar Company Ltd LG TV 0x00000101" disable
     output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
+    {{ template "kanshi_reload" . }}
 }
 
 # Always restart services when outputs change
 profile reload1 {
     output *
-    exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
-{{- if .sway.hidpi }}
-    exec swaymsg xwayland force scale 2
-    exec xrdb -override <<< "Xft.dpi: 192"
-{{- end }}
+    {{ template "kanshi_reload" . }}
 }
 
 profile reload2 {
     output *
     output *
-    exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
-{{- if .sway.hidpi }}
-    exec swaymsg xwayland force scale 2
-    exec xrdb -override <<< "Xft.dpi: 192"
-{{- end }}
+    {{ template "kanshi_reload" . }}
 }
 
 profile reload3 {
     output *
     output *
     output *
-    exec {{ .chezmoi.homeDir }}/.local/bin/kanshi-reload
-{{- if .sway.hidpi }}
-    exec swaymsg xwayland force scale 2
-    exec xrdb -override <<< "Xft.dpi: 192"
-{{- end }}
+    {{ template "kanshi_reload" . }}
 }
