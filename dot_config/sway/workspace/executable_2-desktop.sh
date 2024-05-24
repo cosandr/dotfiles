@@ -1,22 +1,16 @@
 #!/bin/bash
 
 swaymsg workspace 2
-
 sleep 0.2
 
-self-mon &
+launch_app_silent self-mon
+wait_name self-monitoring
+wtype_sway_cmd set_h
 
-while ! swaymsg -t get_tree | jq -e -r '..|try select(.name == "self-monitoring")'; do sleep 0.1; done
+launch_app_silent srv-mon
+wait_name server-monitoring
 
-wtype -M win -k h
+wtype_sway_cmd move_left
+wtype_sway_cmd set_v
 
-TITLE=server-monitoring theia-mon &
-
-while ! swaymsg -t get_tree | jq -e -r '..|try select(.name == "server-monitoring")'; do sleep 0.1; done
-
-# Back to self-mon and set vertical mode
-wtype -M win -k left -s 500 -M win -k v
-
-sleep 0.2
-
-gtk-launch spotify
+launch_app_silent spotify

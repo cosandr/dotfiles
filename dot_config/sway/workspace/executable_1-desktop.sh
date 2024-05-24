@@ -3,27 +3,16 @@
 set -eo pipefail
 
 swaymsg workspace 1
-
 sleep 0.2
 
-gtk-launch firefox
+launch_app_silent firefox
+wait_app_id firefox
+wtype_sway_cmd set_h
 
-# Wait for firefox to launch
-while ! swaymsg -t get_tree | jq -e -r '..|try select(.app_id | ascii_downcase == "firefox")'; do sleep 0.1; done
-
-wtype -M win -k h
-
-sleep 0.2
-
-alacritty &
-
-# Wait for alacritty
-while ! swaymsg -t get_tree | jq -e -r '..|try select(.app_id | ascii_downcase == "alacritty")'; do sleep 0.1; done
-
-# Set alacritty to tabbed
-wtype -M win -k v -s 500 -M win -k w
-
-sleep 0.2
+launch_app_silent alacritty
+wait_app_id alacritty
+wtype_sway_cmd set_tabbed
 
 # Set next window on Firefox to vertical
-wtype -M win -k left -s 500 -M win -k v
+wtype_sway_cmd move_left
+wtype_sway_cmd set_v
