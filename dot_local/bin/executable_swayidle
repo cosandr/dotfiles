@@ -1,13 +1,15 @@
 #!/bin/sh
 
 SCREEN_ON=${SCREEN_ON:-"auto"}
+SWAYIDLE_MODE=${SWAYIDLE_MODE:-"auto"}
 
 [ -f ~/.config/override/swayidle ] && . ~/.config/override/swayidle
 
+IS_LAPTOP="$(swaymsg -r -t get_outputs | jq '. | map(select(.name == "eDP-1")) | length')"
+
 if [ "$SCREEN_ON" = "auto" ]; then
-    if [ "$(swaymsg -r -t get_outputs | jq length)" -eq 1 ]; then
-        SCREEN_ON=0
-    else
+    SCREEN_ON=0
+    if [ "$IS_LAPTOP" -eq 1 ] && [ "$(swaymsg -r -t get_outputs | jq length)" -gt 1 ]; then
         SCREEN_ON=1
     fi
 fi
@@ -17,7 +19,7 @@ if [ "$SCREEN_ON" -eq 1 ]; then
     exec /usr/bin/swayidle -w \
         timeout 600 '${HOME}/.local/bin/my-screenlock' \
         before-sleep '${HOME}/.local/bin/my-screenlock'
-else
+elif [ "$IS_LAPTOP" -eq 1 ]; then
     exec /usr/bin/swayidle -w \
         timeout 10 'if pgrep -x swaylock; then brightnessctl --save; brightnessctl set 5%; fi' \
             resume 'if pgrep -x swaylock; then brightnessctl --restore; fi' \
@@ -26,6 +28,21 @@ else
         timeout 60 'if pgrep -x swaylock; then [ "$(cat /sys/class/power_supply/AC*/online | head)" -eq 0 ] && systemctl suspend; fi' \
         timeout 570 'brightnessctl --save; brightnessctl set 5%' \
             resume 'brightnessctl --restore' \
+        timeout 590 '${HOME}/.local/bin/my-screenlock' \
+        timeout 600 'swaymsg output "*" dpms off' \
+            resume 'swaymsg output "*" dpms on' \
+        before-sleep '${HOME}/.local/bin/my-screenlock'
+elif [ "$SWAYIDLE_MODE" = "nolock" ]; then
+    exec /usr/bin/swayidle -w \
+        timeout 10 'if pgrep -x swaylock; then swaymsg output "*" dpms off; fi' \
+            resume 'if pgrep -x swaylock; then swaymsg output "*" dpms on; fi' \
+        timeout 600 'swaymsg output "*" dpms off' \
+            resume 'swaymsg output "*" dpms on' \
+        before-sleep '${HOME}/.local/bin/my-screenlock'
+else
+    exec /usr/bin/swayidle -w \
+        timeout 10 'if pgrep -x swaylock; then swaymsg output "*" dpms off; fi' \
+            resume 'if pgrep -x swaylock; then swaymsg output "*" dpms on; fi' \
         timeout 590 '${HOME}/.local/bin/my-screenlock' \
         timeout 600 'swaymsg output "*" dpms off' \
             resume 'swaymsg output "*" dpms on' \

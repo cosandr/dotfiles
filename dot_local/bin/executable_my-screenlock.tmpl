@@ -37,9 +37,19 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
             fi
             swaylock $WAYLAND_OPTS
             ;;
+        swaylock_screenshot)
+            if ! [[ $(swaylock --help 2>&1) =~ "--screenshots" ]]; then
+                notify-send -u critical -a "Screen locker" "swaylock-effects is not installed"
+            fi
+            WAYLAND_OPTS=${WAYLAND_OPTS:-"-f -S --grace 2 --clock --indicator --effect-pixelate 15"}
+            swaylock $WAYLAND_OPTS
+            ;;
         waylock)
             WAYLAND_OPTS=${WAYLAND_OPTS:-"--init-color 0x002b36 --input-color 0x586e75 --fail-color 0x002b36"}
             waylock $WAYLAND_OPTS
+            ;;
+        *)
+            notify-send -u critical -a "Screen locker" "Unknown WAYLAND_LOCKER '$WAYLAND_LOCKER'"
             ;;
     esac
     exit 0
