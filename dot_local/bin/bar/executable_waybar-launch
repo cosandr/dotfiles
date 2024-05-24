@@ -7,6 +7,8 @@ source ~/.local/bin/bar/bar-env.sh
 # Load specific config if present
 [[ -f ~/.config/override/waybar ]] && source ~/.config/override/waybar
 
+set -e
+
 if [[ -z $DEBUG ]]; then
     ~/.local/bin/bar/template-waybar-config 2>/dev/null
 else

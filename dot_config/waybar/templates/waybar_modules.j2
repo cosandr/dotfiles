@@ -208,4 +208,71 @@
 
     "custom/sep": {
         "format": " | "
+    },
+
+    "custom/space": {
+        "format": " "
+    },
+
+    "custom/aquaero": {
+        "exec": "PYTHONUNBUFFERED=1 FONT=icomoon-feather ~/.local/bin/bar/aquaero.py",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 10
+    },
+
+    "custom/aquaerofans": {
+        "format": " {}",
+        "exec": "PYTHONUNBUFFERED=1 ~/.local/bin/bar/aquaero_fans.py",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 10
+    },
+
+    "custom/nv_gpu_clk": {
+        "format": " {}",
+        "exec": "QUERY=clocks.gr UNIT=MHz  ~/.local/bin/bar/nvidia.sh",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 10
+    },
+
+    "custom/nv_mem_clk": {
+        "format": " {}",
+        "exec": "QUERY=clocks.mem UNIT=MHz  ~/.local/bin/bar/nvidia.sh",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 10
+    },
+
+    "custom/nv_temp": {
+        "format": " {}",
+        "exec": "QUERY=temperature.gpu UNIT=°C  ~/.local/bin/bar/nvidia.sh",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 3
+    },
+
+    "custom/nv_gpu_usage": {
+        "format": " {}",
+        "exec": "QUERY=utilization.gpu UNIT=%  ~/.local/bin/bar/nvidia.sh",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 3
+    },
+
+    "custom/nv_mem_usage": {
+        "format": " {}",
+        "exec": "QUERY=utilization.memory UNIT=%  ~/.local/bin/bar/nvidia.sh",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 3
+    },
+
+    "custom/nv_power": {
+        "format": " {}",
+        "exec": "QUERY=power.draw UNIT=W  ~/.local/bin/bar/nvidia.sh",
+        "exec-on-event": false,
+        "tooltip": false,
+        "interval": 3
     }
