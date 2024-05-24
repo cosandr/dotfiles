@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -eo pipefail
+
+# shellcheck source=$HOME/.local/share/chezmoi/dot_config/sway/workspace/utils.sh
+source "$HOME/.config/sway/workspace/utils.sh"
+
 swaymsg workspace 2
 sleep 0.2
 
