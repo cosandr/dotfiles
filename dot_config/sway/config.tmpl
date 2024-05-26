@@ -36,10 +36,14 @@ for_window [app_id="blueman-manager"] floating enable
 
 exec_always "dbus-update-activation-environment --systemd DISPLAY PATH I3SOCK XDG_SESSION_ID SSH_AUTH_SOCK XDG_SESSION_DESKTOP XDG_SESSION_TYPE XDG_CURRENT_DESKTOP WAYLAND_DISPLAY; systemctl --user start sway-session.target"
 
+{{- if not (contains "wayland" (output "rofi" "-version")) }}
 bindsym $super+d exec wofi --gtk-dark --allow-images --allow-markup --show drun
-bindsym $super+c exec clipman pick -t wofi -T'--gtk-dark'
 {{- if lookPath "swayr" }}
 bindsym $alt+Tab exec swayr switch-window
+{{- end }}
+{{- end }}
+{{- if lookPath "clipman" }}
+bindsym $super+c exec clipman pick -t wofi -T'--gtk-dark'
 {{- end }}
 
 {{- if lookPath "wtype" }}

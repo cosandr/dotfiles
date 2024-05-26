@@ -18,10 +18,6 @@ for_window [class="firefox" title="Firefox — Sharing Indicator"] floating enab
 # Blanket for all popups
 for_window [window_role="dialog"] floating enable
 
-# Rofi binds
-bindsym $super+d exec "$HOME/.local/bin/rofi-launch -show drun -modes drun -theme-str 'mode-switcher { enabled: false; }'"
-bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
-
 {{- if lookPath "xvkbd" }}
 bindsym $super+$shift+v exec xvkbd -delay 50 -text "$(xclip -o)"
 {{- end }}
