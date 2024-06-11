@@ -6,65 +6,66 @@
 {{- end -}}
 {{- end -}}
 
-profile mobile {
-    output eDP-1 enable scale 1.25
+# Output defaults
+{{- if .is.laptop }}
+output eDP-1 scale 1.25 alias $laptop
+output {{ .sway.monitors.work1 | quote }} scale 1.25 alias $work_main
+output {{ .sway.monitors.work2 | quote }} scale 1.5 alias $work_secondary
+{{- end }}
+output {{ .sway.monitors.home1 | quote }} scale 1.25 mode 3840x2160@143.999Hz alias $home_main
+output {{ .sway.monitors.home2 | quote }} scale 1.5 alias $home_secondary
+output {{ .sway.monitors.home3 | quote }} scale 3 alias $home_tv
+{{- if .is.laptop }}
+
+profile laptop_solo {
+    output $laptop enable
     {{ template "kanshi_reload" . }}
 }
 
-profile work {
-    output eDP-1 enable scale 1.25 position 4512,1480
-    output {{ .sway.monitors.work1 | quote }} scale 1.25 position 1440,832
-    output {{ .sway.monitors.work2 | quote }} scale 1.5 position 0,0 transform 90
+profile laptop_office {
+    output $laptop enable position 4512,1480
+    output $work_main position 1440,832
+    output $work_secondary position 0,0 transform 90
     {{ template "kanshi_reload" . }}
 }
 
-profile home {
+profile laptop_home_2 {
+    output $laptop position 0,768
+    output $home_main position 1536,0
+    {{ template "kanshi_reload" . }}
+}
+
+profile laptop_home_3 {
 {{- if .kanshi.home_no_edp }}
-    output eDP-1 disable
-    output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
-    output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
+    output $laptop disable
+    output $home_main position 0,1440
+    output $home_secondary position 256,0
 {{- else }}
-    output eDP-1 scale 1.25 position 1664,2088
-    output {{ .sway.monitors.home1 | quote }} scale 1.25 position 3584,1440 mode 3840x2160@143.999Hz
-    output {{ .sway.monitors.home2 | quote }} scale 1.5 position 3840,0
+    output $laptop position 1664,2088
+    output $home_main position 3584,1440
+    output $home_secondary position 3840,0
 {{- end }}
     {{ template "kanshi_reload" . }}
 }
 
+{{- else if .is.desktop }}
+
 profile desktop {
-    output "Goldstar Company Ltd LG TV 0x00000101" disable
-    output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
-    output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
+    output $home_tv disable
+    output $home_main position 0,1440
+    output $home_secondary position 256,0
     {{ template "kanshi_reload" . }}
 }
 
 profile desktop_no_tv {
-    output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
-    output {{ .sway.monitors.home2 | quote }} scale 1.5 position 256,0
+    output $home_main position 0,1440
+    output $home_secondary position 256,0
     {{ template "kanshi_reload" . }}
 }
 
 profile desktop_tv {
-    output "Goldstar Company Ltd LG TV 0x00000101" disable
-    output {{ .sway.monitors.home1 | quote }} scale 1.25 position 0,1440 mode 3840x2160@143.999Hz
+    output $home_tv disable
+    output $home_main position 0,1440
     {{ template "kanshi_reload" . }}
 }
-
-# Always restart services when outputs change
-profile reload1 {
-    output *
-    {{ template "kanshi_reload" . }}
-}
-
-profile reload2 {
-    output *
-    output *
-    {{ template "kanshi_reload" . }}
-}
-
-profile reload3 {
-    output *
-    output *
-    output *
-    {{ template "kanshi_reload" . }}
-}
+{{- end }}
