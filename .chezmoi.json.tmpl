@@ -26,7 +26,8 @@
 {{- end }}
     "font_size": {
       "alacritty": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
-      "sublime": {{ if $is_mac }}15{{ else }}12{{ end }}
+      "sublime": {{ if $is_mac }}15{{ else }}12{{ end }},
+      "zed": {{ if $is_mac }}15{{ else }}12{{ end }}
     },
     "kitty": {
       "font_size": {{ if $is_mac }}14.0{{ else }}11.0{{ end }},
@@ -95,12 +96,13 @@
       {"exec": "subl",                 "skip_root": true,  "path": ".config/sublime-text"},
       {"exec": "sublime_text",         "skip_root": true,  "path": ".config/sublime-text-3"},
       {"exec": "sway",                 "skip_root": true,  "path": ".config/sway\n.config/systemd/user/sway-session.target\n.local/bin/sway*"},
-      {"exec": "swayr",                "skip_root": true,  "path": ".config/swayr"},
       {"exec": "swayidle",             "skip_root": true,  "path": ".config/systemd/user/swayidle.service\n.local/bin/swayidle"},
+      {"exec": "swayr",                "skip_root": true,  "path": ".config/swayr"},
       {"exec": "tmuxinator",           "skip_root": false, "path": ".config/tmuxinator"},
       {"exec": "waybar",               "skip_root": true,  "path": ".config/waybar\n.config/systemd/user/waybar.service\n.config/systemd/user/toggle-input.service"},
       {"exec": "wlsunset",             "skip_root": true,  "path": ".config/systemd/user/wlsunset.service"},
-      {"exec": "xrandr",               "skip_root": true,  "path": ".local/bin/xorg*"}
+      {"exec": "xrandr",               "skip_root": true,  "path": ".local/bin/xorg*"},
+      {"exec": "zed",                  "skip_root": true,  "path": ".config/zed"}
     ],
     "source": [
 {{- if not $is_windows }}

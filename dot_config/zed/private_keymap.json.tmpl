@@ -1,0 +1,23 @@
+{{- $mod_key := "ctrl" -}}
+{{- if .is.mac -}}
+{{- $mod_key = "cmd" -}}
+{{- end -}}
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "{{ $mod_key }}-r": "projects::OpenRecent",
+      "{{ $mod_key }}-e": "file_finder::Toggle",
+      "{{ $mod_key }}-p": "workspace::ToggleRightDock",
+      "{{ $mod_key }}-alt-v": "workspace::ToggleVimMode"
+    }
+  },
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "{{ $mod_key }}-r": "projects::OpenRecent",
+      "{{ $mod_key }}-e": "file_finder::Toggle",
+      "alt-s": "editor::SortLinesCaseInsensitive"
+    }
+  }
+]
