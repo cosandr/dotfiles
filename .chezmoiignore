@@ -1,3 +1,5 @@
+{{- $ignore_config := include "ignore_config.yml" | fromYaml -}}
+ignore_config.yml
 symlinks
 LICENSE
 README.md
@@ -74,13 +76,24 @@ Documents/
 {{- else }}
 .config/autostart
 {{- end }} {{/* if or .is.wsl .is.server (not (eq .session_desktop "i3" "sway")) */}}
-{{- $r := .is.root -}}
-{{- range $v := .ignore_config }}
-{{- if not (lookPath $v.exec) }}
-{{ $v.path }}
-{{- else if and $r $v.skip_root }}
-{{ $v.path }}
-{{- end }} {{/* if not (lookPath $v.exec) */}}
+{{- $is_root := .is.root -}}
+{{- range $v := $ignore_config }}
+{{- if and $is_root $v.skip_root }}
+{{ $v.path | join "\n" }}
+{{- else }}
+{{- $found_exec := false -}}
+{{- if eq (printf "%T" $v.exec) "string" -}}
+{{- $found_exec = lookPath $v.exec -}}
+{{- else -}}
+{{- range $e := $v.exec -}}
+{{- $found_exec = or $found_exec (lookPath $e) -}}
+{{- end -}}{{/* range $e := $v.exec */}}
+{{- end -}} {{/* if eq (printf "%T" $v.exec) "string" */}}
+{{- $exec := $v.exec | join "\n" -}}
+{{- if not $found_exec }}
+{{ $v.path | join "\n" }}
+{{- end }} {{/* if not $found_exec */}}
+{{- end }} {{/* if and $is_root $v.skip_root */}}
 {{- end }} {{/* range $v */}}
 {{- if or (not .is.desktop) .is.wsl .is.mac }}
 # Ignore desktop config on laptop and server
