@@ -33,5 +33,16 @@ if [[ $MONITOR_COUNT -eq 3 ]]; then
 # At home
 # Maybe TODO: Check models and handle 2 monitors at work too
 elif [[ $MONITOR_COUNT -eq 2 ]]; then
-    echo "Not implemented"
+    launch_app_silent alacritty
+    wait_app_id alacritty
+
+    wtype_sway_cmd set_h
+
+    launch_app_silent alacritty
+    wait_app_id alacritty
+
+    wtype_sway_cmd set_tabbed
+
+    wtype_sway_cmd move_left
+    wtype_sway_cmd set_tabbed
 fi

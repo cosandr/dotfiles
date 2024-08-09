@@ -3,6 +3,7 @@
 launch_app() {
     case $1 in
         alacritty) alacritty ;;
+        awsvpnclient) gtk-launch awsvpnclient ;;
         chrome) gtk-launch google-chrome ;;
         discord) gtk-launch discord ;;
         firefox) gtk-launch firefox ;;
