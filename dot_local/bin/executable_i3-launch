@@ -12,7 +12,7 @@ FONT_NAG="Noto Sans 14"
 
 export FONT FONT_NAG MONITOR_COUNT
 # Update config
-chezmoi apply ~/.config/i3/config
+chezmoi apply --no-pager --no-tty --force ~/.config/i3/config
 # Don't pass env vars to i3
 unset FONT FONT_NAG
 
