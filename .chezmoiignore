@@ -23,6 +23,7 @@ Library/
 .config/chrome-flags*.conf
 .config/chromium-flags*.conf
 .config/electron-flags*.conf
+.config/spotify-flags*.conf
 .local/bin/*-sshfs
 .local/bin/*-wait-online
 .local/bin/code
