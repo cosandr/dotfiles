@@ -1,6 +1,7 @@
 {{- $mods := "Control|Shift" -}}
 {{- if .is.mac }}{{ $mods := "Command" }}{{ end -}}
 
+[general]
 live_config_reload = false
 
 [bell]
