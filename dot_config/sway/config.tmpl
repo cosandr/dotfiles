@@ -3,6 +3,16 @@
 
 ### Sway specific ###
 
+# Output defaults
+{{- if .is.laptop }}
+set $laptop eDP-1
+set $work_main {{ .sway.monitors.work1 | quote }}
+set $work_secondary {{ .sway.monitors.work2 | quote }}
+{{- end }}
+set $home_main {{ .sway.monitors.home1 | quote }}
+set $home_secondary {{ .sway.monitors.home2 | quote }}
+set $home_tv {{ .sway.monitors.home3 | quote }}
+
 titlebar_border_thickness 1
 titlebar_padding 5 2
 smart_borders on
@@ -91,20 +101,24 @@ input type:pointer {
     accel_profile flat
 }
 
-output {
-    eDP-1 scale 1.25
-    {{ .sway.monitors.work1 | quote }} scale 1.25
-    {{ .sway.monitors.work2 | quote }} scale 1.5 transform 90
-    {{ .sway.monitors.home1 | quote }} scale 1.25 mode 3840x2160@143.999Hz
-    {{ .sway.monitors.home2 | quote }} scale 1.5
-{{- if .is.desktop }}
-    {{ .sway.monitors.home3 | quote }} disable
+{{- if .is.laptop }}
+output $laptop scale 1.25
+output $work_main scale 1.25
+output $work_secondary scale 1.5 transform 270
+workspace 1 output $laptop
+workspace 2 output $work_main $home_main
+workspace 3 output $work_secondary $laptop
+workspace 4 output $laptop
+workspace 5 output $work_main $home_main
 {{- end }}
-}
+
+output $home_main scale 1.25 mode 3840x2160@143.999Hz
+output $home_secondary scale 1.5
 
 {{- if .is.desktop }}
-workspace 1 output {{ .sway.monitors.home1 | quote }}
-workspace 2 output {{ .sway.monitors.home2 | quote }}
+output $home_tv disable
+workspace 1 output $home_main
+workspace 2 output $home_secondary
 {{- end }}
 
 # Only disable laptop display if it isn't the only display
