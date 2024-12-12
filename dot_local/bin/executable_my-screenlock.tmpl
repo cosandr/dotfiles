@@ -26,7 +26,7 @@ if pgrep -u {{ .chezmoi.username }} "$WAYLAND_LOCKER" || pgrep -u {{ .chezmoi.us
 fi
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-    trap 'swaymsg output "*" dpms on' EXIT
+    trap 'swaymsg output "*" power on' EXIT
     case "$WAYLAND_LOCKER" in
         swaylock)
             # We have swaylock-effects
