@@ -11,11 +11,10 @@ import asyncio
 import os
 import re
 import sys
-from typing import List, NamedTuple, Optional
+from typing import List, NamedTuple
 
 from dbus_next.aio.message_bus import MessageBus
 from dbus_next.service import ServiceInterface, method
-from packaging import version
 
 
 class Preset(NamedTuple):
@@ -34,10 +33,10 @@ KNOWN_MONITORS = {
 }
 
 
-DETECT_REGEX = {
-    "1.3.0": r"Display \d+\s+I2C bus:\s+\/dev\/i2c-(\d+)\s+DRM connector:\s+\S+\s+Monitor:\s+\w+:([^:]+):",
-    "1.2.3": r"I2C bus:\s+\/dev\/i2c-(\d+)\s+Monitor:\s+\w+:([^:]+):",
-}
+DETECT_REGEX = [
+    r"Display \d+\s+I2C bus:\s+\/dev\/i2c-(\d+)\s+DRM connector:\s+\S+\s+(?:\s+drm_connector_id:\s+\S+\s+)?Monitor:\s+\w+:([^:]+):",
+    r"I2C bus:\s+\/dev\/i2c-(\d+)\s+Monitor:\s+\w+:([^:]+):",
+]
 
 
 DDCUTIL_SLEEP_MULTIPLIER = os.getenv("DDCUTIL_SLEEP_MULTIPLIER", "1")
@@ -116,15 +115,12 @@ class DisplayInterface(ServiceInterface):
         self.selected_event = asyncio.Event()
         self.selected_task: asyncio.Task = None
         self.delay_event = asyncio.Event()
-        self.__ddcutil_version = None
         asyncio.create_task(self.async_init())
         asyncio.create_task(self.delay_worker())
 
     async def async_init(self):
-        self.__ddcutil_version = await self.get_ddcutil_version()
-        print(f'Using ddcutil version {self.__ddcutil_version}', file=sys.stderr)
         while not self.displays:
-            self.displays = await self.detect_displays(self.__ddcutil_version)
+            self.displays = await self.detect_displays()
             try:
                 await self.read_all()
                 continue
@@ -144,37 +140,24 @@ class DisplayInterface(ServiceInterface):
         return dict(name=name, selected=True)
 
     @staticmethod
-    async def get_ddcutil_version() -> Optional[version.Version]:
-        s = await asyncio.create_subprocess_exec('ddcutil', '--version', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
-        stdout = (await s.communicate())[0].decode()
-        m = re.match(r'^ddcutil ((\d+\.?)+)', stdout)
-        if not m:
-            print(f'Could not detect ddcutil version', file=sys.stderr)
-            # Default to 1.3.0
-            return version.Version('1.3.0')
-        return version.parse(m.group(1))
-
-    @staticmethod
-    async def detect_displays(ddcutil_version: version.Version) -> List[Display]:
+    async def detect_displays() -> List[Display]:
         displays = []
         s = await asyncio.create_subprocess_exec('ddcutil', '--sleep-multiplier', DDCUTIL_SLEEP_MULTIPLIER, 'detect', '--terse', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
         stdout = (await s.communicate())[0].decode()
         print(f'detect_displays:\n{stdout}', file=sys.stderr)
-        # Default to 1.3.0
-        det_re = DETECT_REGEX['1.3.0']
-        # Search for better match
-        for k, v in DETECT_REGEX.items():
-            k_ver = version.parse(k)
-            if ddcutil_version >= k_ver:
-                det_re = v
-                print(f'Using detection regex for version {k}', file=sys.stderr)
+        re_matched = False
+        for det_re in DETECT_REGEX:
+            for m in re.finditer(det_re, stdout, re.S):
+                re_matched = True
+                bus = int(m.group(1))
+                name = m.group(2)
+                print(f'Found {name} on bus {bus}', file=sys.stderr)
+                kwargs = DisplayInterface.get_known(name)
+                displays.append(Display(bus=bus, **kwargs))
+            if re_matched:
                 break
-        for m in re.finditer(det_re, stdout, re.S):
-            bus = int(m.group(1))
-            name = m.group(2)
-            print(f'Found {name} on bus {bus}', file=sys.stderr)
-            kwargs = DisplayInterface.get_known(name)
-            displays.append(Display(bus=bus, **kwargs))
+        if not re_matched:
+            print(f'No regex matched ddcutil output', file=sys.stderr)
         return displays
 
     @method()
