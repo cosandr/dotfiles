@@ -35,6 +35,12 @@ if command -v nvidia-settings &>/dev/null; then
         -a "[gpu:0]/GPUMemoryTransferRateOffsetAllPerformanceLevels=$NVIDIA_MEM_OFFSET"
 fi
 
+if [[ -f /usr/lib/dri/nvidia_drv_video.so ]]; then
+    export LIBVA_DRIVER_NAME=nvidia
+    export MOZ_DISABLE_RDD_SANDBOX=1
+    export MOZ_X11_EGL=1
+fi
+
 export HOSTNAME
 export LANG
 export LC_TIME
@@ -67,7 +73,7 @@ case "$START_CMD" in
         export _JAVA_AWT_WM_NONREPARENTING=1
         {{ .chezmoi.homeDir }}/.local/bin/make-x11-wayland-links
         if command -v nvidia-smi &>/dev/null; then
-            export GBM_BACKEND=nvidia-drm __GLX_VENDOR_LIBRARY_NAME=nvidia LIBVA_DRIVER_NAME=vdpau WLR_NO_HARDWARE_CURSORS=1
+            export GBM_BACKEND=nvidia-drm __GLX_VENDOR_LIBRARY_NAME=nvidia WLR_NO_HARDWARE_CURSORS=1
             exec systemd-cat -t sway sway --unsupported-gpu "${@:2}"
         else
             exec systemd-cat -t sway sway "${@:2}"

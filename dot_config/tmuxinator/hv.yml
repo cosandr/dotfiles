@@ -8,7 +8,6 @@ windows:
       layout: even-vertical
       panes:
         - ssh root@theia.hlab.no
-        # TODO: Remove when aegir is back up
-        # - ssh root@aegir.hlab.no
+        - ssh root@aegir.hlab.no
         - ssh root@gerd.hlab.no
         - ssh root@ymir.hlab.no
