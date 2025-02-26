@@ -1,0 +1,31 @@
+#!/bin/bash
+
+COMMAND="$1"
+
+case "$COMMAND" in
+    on|off)
+        if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+            swaymsg -r -t get_outputs | jq -r '. | map(select(.model | ascii_downcase | contains("oled"))) | .[].name' | while read -r output; do
+                swaymsg output "$output" power "$COMMAND"
+            done
+        fi
+        ;;
+    black-show)
+        [[ ! -f ~/.black.png ]] && magick -size 3840x2160 xc:black ~/.black.png
+        if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+            swaymsg -r -t get_outputs | jq -r '. | map(select(.model | ascii_downcase | contains("oled"))) | .[].current_workspace' | while read -r ws; do
+                swaymsg workspace "$ws"
+                nohup eog -fgw ~/.black.png &>/dev/null &
+            done
+        fi
+        ;;
+    black-rm)
+        pgrep -f "eog -fgw $HOME/.black.png" | while read -r pid; do
+            kill "$pid"
+        done
+        ;;
+    *)
+        echo "Unknown or missing command"
+        exit 1
+        ;;
+esac

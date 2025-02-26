@@ -66,6 +66,7 @@ Documents/
 .local/bin/auto-lock
 .local/bin/i3*
 .local/bin/my-screenlock
+.local/bin/oled-control
 .local/bin/pavolume
 .local/bin/rofi*
 .local/bin/start-gui

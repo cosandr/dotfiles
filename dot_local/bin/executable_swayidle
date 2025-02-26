@@ -1,11 +1,12 @@
 #!/bin/sh
 
 SCREEN_ON=${SCREEN_ON:-"auto"}
-SWAYIDLE_MODE=${SWAYIDLE_MODE:-"auto"}
+NO_LOCK=${NO_LOCK:-0}
 
 [ -f ~/.config/override/swayidle ] && . ~/.config/override/swayidle
 
 IS_LAPTOP="$(swaymsg -r -t get_outputs | jq '. | map(select(.name == "eDP-1")) | length')"
+OLED_SCREENS="$(swaymsg -r -t get_outputs | jq -r '. | map(select(.model | ascii_downcase | contains("oled"))) | length')"
 
 if [ "$SCREEN_ON" = "auto" ]; then
     SCREEN_ON=0
@@ -15,9 +16,26 @@ if [ "$SCREEN_ON" = "auto" ]; then
 fi
 
 # shellcheck disable=SC2016
-if [ "$SCREEN_ON" -eq 1 ]; then
+if [ "$SCREEN_ON" -eq 1 ] && [ "$OLED_SCREENS" -eq 0 ]; then
     exec /usr/bin/swayidle -w \
         timeout 600 '${HOME}/.local/bin/my-screenlock' \
+        before-sleep '${HOME}/.local/bin/my-screenlock'
+elif [ "$SCREEN_ON" -eq 1 ] && [ "$OLED_SCREENS" -gt 0 ] && [ "$NO_LOCK" -eq 0 ]; then
+    exec /usr/bin/swayidle -w \
+        timeout 10 'if pgrep -x swaylock; then ${HOME}/.local/bin/oled-control off; fi' \
+            resume '${HOME}/.local/bin/oled-control on' \
+        timeout 120 '${HOME}/.local/bin/oled-control off' \
+            resume '${HOME}/.local/bin/oled-control on' \
+        timeout 590 '${HOME}/.local/bin/my-screenlock' \
+        timeout 10 '${HOME}/.local/bin/oled-control off' \
+            resume '${HOME}/.local/bin/oled-control on' \
+        before-sleep '${HOME}/.local/bin/my-screenlock'
+elif [ "$SCREEN_ON" -eq 1 ] && [ "$OLED_SCREENS" -gt 0 ] && [ "$NO_LOCK" -eq 1 ]; then
+    exec /usr/bin/swayidle -w \
+        timeout 10 'if pgrep -x swaylock; then ${HOME}/.local/bin/oled-control off; fi' \
+            resume '${HOME}/.local/bin/oled-control on' \
+        timeout 120 '${HOME}/.local/bin/oled-control off' \
+            resume '${HOME}/.local/bin/oled-control on' \
         before-sleep '${HOME}/.local/bin/my-screenlock'
 elif [ "$IS_LAPTOP" -eq 1 ]; then
     exec /usr/bin/swayidle -w \
@@ -32,7 +50,7 @@ elif [ "$IS_LAPTOP" -eq 1 ]; then
         timeout 600 'swaymsg output "*" power off' \
             resume 'swaymsg output "*" power on' \
         before-sleep '${HOME}/.local/bin/my-screenlock'
-elif [ "$SWAYIDLE_MODE" = "nolock" ]; then
+elif [ "$NO_LOCK" -eq 1 ]; then
     exec /usr/bin/swayidle -w \
         timeout 10 'if pgrep -x swaylock; then swaymsg output "*" power off; fi' \
             resume 'if pgrep -x swaylock; then swaymsg output "*" power on; fi' \
