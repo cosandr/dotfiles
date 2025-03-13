@@ -102,20 +102,20 @@ input type:pointer {
 }
 
 {{- if .is.laptop }}
-output $laptop scale 1.25
-output $work_main scale 1.25
-output $work_secondary scale 1.5 transform 270
+output $laptop scale 1.25 subpixel rgb
+output $work_main scale 1.25 subpixel rgb
+output $work_secondary scale 1.5 transform 270 subpixel rgb
 workspace 1 output $laptop
 workspace 2 output $work_main $home_main
 workspace 3 output $work_secondary $laptop
 workspace 4 output $laptop
 workspace 5 output $work_main $home_main
-output $home_main scale 1.25 mode 3840x2160@119.999Hz
+output $home_main scale 1.25 mode 3840x2160@119.999Hz subpixel none
 {{- else }}
-output $home_main scale 1.25 mode 3840x2160@239.990Hz
+output $home_main scale 1.25 mode 3840x2160@239.990Hz subpixel none
 {{- end }}
 
-output $home_secondary scale 1.5
+output $home_secondary scale 1.5 subpixel rgb
 
 {{- if .is.desktop }}
 output $home_tv disable
