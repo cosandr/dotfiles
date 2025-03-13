@@ -30,6 +30,7 @@ KNOWN_MONITORS = {
     "U24E850": dict(preset=Preset(day=25, night=5), selected=True,
                     min_brightness=5, max_brigtness=70),
     "Gigabyte M32U": dict(preset=Preset(day=35, night=0), selected=True),
+    "MPG321UX": dict(preset=Preset(day=40, night=0), selected=True),
 }
 
 

@@ -110,9 +110,11 @@ workspace 2 output $work_main $home_main
 workspace 3 output $work_secondary $laptop
 workspace 4 output $laptop
 workspace 5 output $work_main $home_main
+output $home_main scale 1.25 mode 3840x2160@119.999Hz
+{{- else }}
+output $home_main scale 1.25 mode 3840x2160@239.990Hz
 {{- end }}
 
-output $home_main scale 1.25 mode 3840x2160@143.999Hz
 output $home_secondary scale 1.5
 
 {{- if .is.desktop }}

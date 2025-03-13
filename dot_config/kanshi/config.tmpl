@@ -11,8 +11,10 @@
 output eDP-1 scale 1.25 alias $laptop
 output {{ .sway.monitors.work1 | quote }} scale 1.25 alias $work_main
 output {{ .sway.monitors.work2 | quote }} scale 1.5 alias $work_secondary
+output {{ .sway.monitors.home1 | quote }} scale 1.25 mode 3840x2160@119.999Hz alias $home_main
+{{- else }}
+output {{ .sway.monitors.home1 | quote }} scale 1.25 mode 3840x2160@239.990Hz alias $home_main
 {{- end }}
-output {{ .sway.monitors.home1 | quote }} scale 1.25 mode 3840x2160@143.999Hz alias $home_main
 output {{ .sway.monitors.home2 | quote }} scale 1.5 alias $home_secondary
 output {{ .sway.monitors.home3 | quote }} scale 3 alias $home_tv
 {{- if .is.laptop }}
