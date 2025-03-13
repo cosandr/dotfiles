@@ -31,11 +31,11 @@
         "format": " {percent}%",
 {% if backlight_dev %}
         "device": "{{ backlight_dev }}",
-        "on-scroll-up": "brightnessctl -d {{ backlight_dev }} set 1%+",
-        "on-scroll-down": "brightnessctl -d {{ backlight_dev }} set 1%-"
+        "on-scroll-up": "brightnessctl -q -d {{ backlight_dev }} set 1%+",
+        "on-scroll-down": "brightnessctl -q -d {{ backlight_dev }} set 1%-"
 {% else %}
-        "on-scroll-up": "brightnessctl set 1%+",
-        "on-scroll-down": "brightnessctl set 1%-"
+        "on-scroll-up": "brightnessctl -q set 1%+",
+        "on-scroll-down": "brightnessctl -q set 1%-"
 {% endif %}
     },
 

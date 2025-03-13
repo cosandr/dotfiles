@@ -39,13 +39,13 @@ elif [ "$SCREEN_ON" -eq 1 ] && [ "$OLED_SCREENS" -gt 0 ] && [ "$NO_LOCK" -eq 1 ]
         before-sleep '${HOME}/.local/bin/my-screenlock'
 elif [ "$IS_LAPTOP" -eq 1 ]; then
     exec /usr/bin/swayidle -w \
-        timeout 10 'if pgrep -x swaylock; then brightnessctl --save; brightnessctl set 5%; fi' \
-            resume 'if pgrep -x swaylock; then brightnessctl --restore; fi' \
+        timeout 10 'if pgrep -x swaylock; then brightnessctl -q --save; brightnessctl -q set 5%; fi' \
+            resume 'if pgrep -x swaylock; then brightnessctl -q --restore; fi' \
         timeout 25 'if pgrep -x swaylock; then swaymsg output "*" power off; fi' \
             resume 'if pgrep -x swaylock; then swaymsg output "*" power on; fi' \
         timeout 60 'if pgrep -x swaylock; then [ "$(cat /sys/class/power_supply/AC*/online | head)" -eq 0 ] && systemctl suspend; fi' \
-        timeout 570 'brightnessctl --save; brightnessctl set 5%' \
-            resume 'brightnessctl --restore' \
+        timeout 570 'brightnessctl -q --save; brightnessctl -q set 5%' \
+            resume 'brightnessctl -q --restore' \
         timeout 590 '${HOME}/.local/bin/my-screenlock' \
         timeout 600 'swaymsg output "*" power off' \
             resume 'swaymsg output "*" power on' \

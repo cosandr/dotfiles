@@ -167,13 +167,13 @@ bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86AudioPrev exec "playerctl --
 
 {{- if lookPath "brightnessctl"}}
 {{- if stat "/sys/class/backlight/acpi_video0/brightness" }}
-bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -d acpi_video0 set 5%+"
-bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -d acpi_video0 set 5%-"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -q -d acpi_video0 set 5%+"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -q -d acpi_video0 set 5%-"
 {{- else if stat "/sys/class/backlight/intel_backlight/brightness" }}
-bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -d intel_backlight set 5%+"
-bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -d intel_backlight set 5%-"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -q -d intel_backlight set 5%+"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -q -d intel_backlight set 5%-"
 {{- else }}
-bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl set 5%+"
-bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl set 5%-"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessUp exec "brightnessctl -q set 5%+"
+bindsym {{ if eq .wm "sway" }}--locked {{ end }}XF86MonBrightnessDown exec "brightnessctl -q set 5%-"
 {{- end }}
 {{- end }}
