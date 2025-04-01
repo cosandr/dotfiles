@@ -54,6 +54,8 @@ elif [ "$NO_LOCK" -eq 1 ]; then
     exec /usr/bin/swayidle -w \
         timeout 10 'if pgrep -x swaylock; then swaymsg output "*" power off; fi' \
             resume 'if pgrep -x swaylock; then swaymsg output "*" power on; fi' \
+        timeout 120 '${HOME}/.local/bin/oled-control off' \
+            resume '${HOME}/.local/bin/oled-control on' \
         timeout 600 'swaymsg output "*" power off' \
             resume 'swaymsg output "*" power on' \
         before-sleep '${HOME}/.local/bin/my-screenlock'
@@ -61,6 +63,8 @@ else
     exec /usr/bin/swayidle -w \
         timeout 10 'if pgrep -x swaylock; then swaymsg output "*" power off; fi' \
             resume 'if pgrep -x swaylock; then swaymsg output "*" power on; fi' \
+        timeout 120 '${HOME}/.local/bin/oled-control off' \
+            resume '${HOME}/.local/bin/oled-control on' \
         timeout 590 '${HOME}/.local/bin/my-screenlock' \
         timeout 600 'swaymsg output "*" power off' \
             resume 'swaymsg output "*" power on' \
