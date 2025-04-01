@@ -1,6 +1,6 @@
-{{- $htop_version := (index (output "htop" "--version" | splitList " ") 1) | trim -}}
+{{- $htop_version := regexFind "\\d+\\.\\d+\\.\\d+" (output "htop" "--version") -}}
 {{- if semverCompare ">=3.3" $htop_version }}
-{{- template "htoprc_3.3" dict "is" .is }}
+{{- template "htoprc_3.3" dict "is" .is "htop_version" $htop_version }}
 {{- else if semverCompare ">=3.2" $htop_version }}
 {{- template "htoprc_3.2" dict "is" .is }}
 {{- else if semverCompare ">=3.1" $htop_version }}

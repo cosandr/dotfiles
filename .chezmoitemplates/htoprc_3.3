@@ -1,6 +1,6 @@
 # Beware! This file is rewritten by htop when settings are changed in the interface.
 # The parser is also very primitive, and not human-friendly.
-htop_version=3.3.0
+htop_version={{ (index (output "htop" "--version" | splitList " ") 1) | trim }}
 config_reader_min_version=3
 fields=2 49 0 48 111 39 46 1
 hide_kernel_threads=1
@@ -27,6 +27,9 @@ show_cpu_usage=1
 show_cpu_frequency={{ if .is.mac }}0{{ else }}1{{ end }}
 show_cpu_temperature=0
 degree_fahrenheit=0
+{{- if semverCompare ">=3.4" .htop_version }}
+show_cached_memory=1
+{{- end }}
 update_process_names=0
 account_guest_in_cpu_meter=0
 color_scheme=0
