@@ -110,7 +110,9 @@
     - .local/bin/slack
 - exec: subl
   skip_root: true
-  path: .config/sublime-text
+  path:
+    - .config/sublime-text
+    - Library/Application Support/Sublime Text
 - exec: sublime_text
   skip_root: true
   path: .config/sublime-text-3
