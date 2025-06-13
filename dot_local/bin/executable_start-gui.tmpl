@@ -76,6 +76,8 @@ case "$START_CMD" in
             export GBM_BACKEND=nvidia-drm __GLX_VENDOR_LIBRARY_NAME=nvidia WLR_NO_HARDWARE_CURSORS=1
             exec systemd-cat -t sway sway --unsupported-gpu "${@:2}"
         else
+            # https://github.com/swaywm/sway/issues/8755
+            export WLR_RENDER_NO_EXPLICIT_SYNC=1
             exec systemd-cat -t sway sway "${@:2}"
         fi
         ;;
