@@ -1050,7 +1050,7 @@
 			<key>Rows</key>
 			<integer>30</integer>
 			<key>Screen</key>
-			<integer>-1</integer>
+			<integer>-2</integer>
 			<key>Scrollback Lines</key>
 			<integer>50000</integer>
 			<key>Selected Text Color</key>
@@ -1091,6 +1091,8 @@
 			<integer>0</integer>
 			<key>Silence Bell</key>
 			<false/>
+			<key>Space</key>
+			<integer>0</integer>
 			<key>Status Bar Layout</key>
 			<dict>
 				<key>advanced configuration</key>
@@ -1132,7 +1134,7 @@
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>0</integer>
+			<integer>15</integer>
 			<key>Working Directory</key>
 			<string>/Users/andrei</string>
 		</dict>
