@@ -28,14 +28,12 @@ elif [[ $MONITOR_COUNT -eq 2 ]]; then
 
     launch_app_silent awsvpnclient
     wait_app_id "aws vpn client"
-    sleep 0.2
-    wtype -k down
-    sleep 0.2
-    wtype -k down
-    sleep 0.2
-    wtype -k return
-    sleep 0.5
-    swaymsg move scratchpad
+    # Doesn't work for some reason
+    # wtype -k down
+    # sleep 0.2
+    # wtype -k return
+    # sleep 0.5
+    # swaymsg move scratchpad
 
     # swaymsg workspace 3
 
