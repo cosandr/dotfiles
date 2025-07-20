@@ -1,4 +1,3 @@
-{{- $is_pi :=  eq .chezmoi.hostname "drepi" -}}
 {{- $home := .chezmoi.homeDir -}}
 {{- $general_keys := list ".ssh/id_ed25519" ".ssh/desktop_ed25519" ".ssh/laptop_ed25519" -}}
 {{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" -}}
@@ -25,13 +24,6 @@ Host theia
     ControlPersist 10m
 {{- end }}
 
-{{ if not $is_pi -}}
-Host drepi
-    HostName drepi.hlab.no
-    User andrei
-    ForwardAgent yes
-{{- end }} {{/* {{- if not $is_pi }} */}}
-
 Host rb5009
     HostName 10.0.100.1
     User admin
@@ -49,16 +41,6 @@ Host crs309
     User admin
     PubkeyAcceptedKeyTypes ssh-rsa,rsa-sha2-256
     IdentityFile ~/.ssh/id_rsa
-
-Host webgw01
-    HostName webgw01.hlab.no
-    Port 5622
-    User andrei
-
-Host localgw01
-    HostName localgw01.hlab.no
-    Port 5622
-    User root
 
 Host romsto
     HostName {{ .romsto.domain }}
@@ -84,18 +66,6 @@ Host github.com
     PreferredAuthentications publickey
     IdentitiesOnly yes
 {{- range $k := $cosandr_keys }}
-{{- $fp := joinPath $home $k }}
-{{- if or (stat $fp) (stat (print $fp ".pub")) }}
-    IdentityFile ~/{{ $k }}
-{{- end }}
-{{- end }}
-
-Host github.com-atgb
-    HostName github.com
-    User git
-    PreferredAuthentications publickey
-    IdentitiesOnly yes
-{{- range $k := $atgb_keys }}
 {{- $fp := joinPath $home $k }}
 {{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
