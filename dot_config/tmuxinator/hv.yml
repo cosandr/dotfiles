@@ -11,3 +11,4 @@ windows:
         - ssh root@aegir.hlab.no
         - ssh root@gerd.hlab.no
         - ssh root@ymir.hlab.no
+        - ssh root@rhea.hlab.no
