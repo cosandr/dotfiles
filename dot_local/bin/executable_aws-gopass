@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+if [ $# -lt 2 ]; then
+    echo "Missing access/secret key secret names"
+    exit 1
+fi
+
+jq -n \
+  --arg access_key "$(gopass show -o "$1")" \
+  --arg secret_key "$(gopass show -o "$2")" \
+  '{Version: 1, AccessKeyId: $access_key, SecretAccessKey: $secret_key}'

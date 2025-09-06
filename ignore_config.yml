@@ -1,6 +1,11 @@
 - exec: alacritty
   skip_root: true
   path: .config/alacritty
+- exec: aws
+  skip_root: true
+  path:
+    - .aws
+    - .local/bin/aws-*
 - exec: autorandr
   skip_root: true
   path:

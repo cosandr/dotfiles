@@ -1,0 +1,9 @@
+[profile rgwroot]
+credential_process = "{{ .chezmoi.homeDir }}/.local/bin/aws-gopass" rgw/root_access_key rgw/root_secret_key
+endpoint_url = https://{{ gopass "rgw/domain" }}
+region = default
+
+[profile backblaze]
+credential_process = "{{ .chezmoi.homeDir }}/.local/bin/aws-gopass" terraform/state_backblaze_id terraform/state_backblaze_secret
+endpoint_url = https://s3.eu-central-003.backblazeb2.com
+region = eu-north-1

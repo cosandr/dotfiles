@@ -122,6 +122,9 @@ Documents/
 .ssh/config_work
 .gitconfig_work
 {{- end }}
+{{- if or .is.root .ssh.include_work }}
+.aws
+{{- end }}
 {{- if or (.is.root) (not (lookPath "radeontop")) }}
 .config/tmuxinator/hjr.yml
 {{- end }}
