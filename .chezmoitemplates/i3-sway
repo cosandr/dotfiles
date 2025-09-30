@@ -131,11 +131,9 @@ bindsym $super+{{ $i }} workspace {{ $i }}
 bindsym $super+$shift+{{ $i }} move container to workspace {{ $i }}; workspace {{ $i }}
 {{- end }}
 
-{{- if or (eq .wm "i3") (contains "wayland" (output "rofi" "-version")) }}
 # Rofi binds
 bindsym $super+d exec "$HOME/.local/bin/rofi-launch -show drun -modes drun -theme-str 'mode-switcher { enabled: false; }'"
 bindsym $alt+Tab exec $HOME/.local/bin/rofi-launch -show window
-{{- end }}
 
 # resize window
 mode "resize" {

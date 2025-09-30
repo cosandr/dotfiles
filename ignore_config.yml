@@ -132,9 +132,6 @@
   path:
     - .config/systemd/user/swayidle.service
     - .local/bin/swayidle
-- exec: swayr
-  skip_root: true
-  path: .config/swayr
 - exec: tmuxinator
   skip_root: false
   path: .config/tmuxinator
