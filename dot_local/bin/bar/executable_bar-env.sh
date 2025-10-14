@@ -31,7 +31,7 @@ for i in /sys/class/backlight/*/brightness; do
 done
 
 # Find and set default ethernet adapter
-if ! PRIMARY_ETH=$(route | grep '^default' | awk '{print $NF}' | grep -m 1 '^e'); then
+if ! PRIMARY_ETH=$(route | grep '^default' | awk '{print $NF}' | grep -m 1 -v '^w'); then
     PRIMARY_ETH=""
 fi
 export PRIMARY_ETH
