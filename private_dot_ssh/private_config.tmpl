@@ -14,6 +14,8 @@ Host *
    UseKeychain yes
    AddKeysToAgent yes
 {{- end }}
+WarnWeakCrypto no
+
 {{ if .ssh.include_servers -}}
 
 Host theia
@@ -27,20 +29,14 @@ Host theia
 Host rb5009
     HostName 10.0.100.1
     User admin
-    PubkeyAcceptedKeyTypes ssh-rsa,rsa-sha2-256
-    IdentityFile ~/.ssh/id_rsa
 
 Host crs226
     HostName crs226.man.hlab.no
     User admin
-    PubkeyAcceptedKeyTypes ssh-rsa,rsa-sha2-256
-    IdentityFile ~/.ssh/id_rsa
 
 Host crs309
     HostName crs309.man.hlab.no
     User admin
-    PubkeyAcceptedKeyTypes ssh-rsa,rsa-sha2-256
-    IdentityFile ~/.ssh/id_rsa
 
 Host romsto
     HostName {{ .romsto.domain }}
