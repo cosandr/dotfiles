@@ -140,7 +140,6 @@ alias poweroff='confirm poweroff'
 alias shutdown='confirm shutdown'
 alias cpp='rsync -avh --no-compress --progress'
 alias mvp='rsync -avh --no-compress --progress --remove-source-files'
-alias git-alt='git config user.email "{{ .git.alt_email }}" && git config user.name "{{ .git.alt_name }}"'
 alias git-main='git config user.email "{{ .git.main_email }}" && git config user.name "{{ .git.main_name }}" && git config user.signingkey "{{ .gpg.main }}"'
 alias git-work='git config user.email "{{ .work.git_email }}" && git config user.name "{{ .work.git_name }}" && git config user.signingkey "{{ .gpg.work }}"'
 alias git-sign='git config commit.gpgsign true'
@@ -155,27 +154,6 @@ alias rsync-sudo="rsync --rsync-path='sudo rsync'"
 alias rsync-sudo-nh="rsync --rsync-path='sudo rsync' -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
 alias ssh-gpg='ssh -A -o ControlMaster=auto -o ControlPath=~/.ssh/cm-gpg-%r@%h:%p -R /run/user/1000/gnupg/S.gpg-agent:{{ $gpg_path }}'
 alias tmux-ssh-sock='eval $(tmux showenv -s SSH_AUTH_SOCK)'
-{{- if and .is.linux (not .is.server) (not .is.root) (lookPath "bluetoothctl") }}
-alias bt-mx='bluetoothctl power on && bluetoothctl connect 04:5D:4B:52:86:4B'
-alias bt-buds='bluetoothctl power on && bluetoothctl connect F4:7D:EF:0C:BE:02'
-alias bt-jabra='bluetoothctl power on && bluetoothctl connect 30:50:75:11:EF:92'
-alias bt-edifier='bluetoothctl power on && bluetoothctl connect 60:F4:3A:71:1A:BA'
-alias bt-on='bluetoothctl power on'
-alias bt-off='bluetoothctl power off'
-{{- end }}
-{{- if lookPath "docker" }}
-alias dls='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t"'
-alias dports='docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Ports}}" }}"'
-alias dlog='docker logs -f'
-alias dex='docker exec -t'
-alias dsti='docker container start -i'
-{{- end }}
-{{- if lookPath "podman" }}
-alias podls='podman container ls -a --sort names --format "table {{ "{{.Names}}" }}  {{ "{{.Status}}" }}  {{ "{{.Created}}" }}"'
-alias podlog='podman logs -f'
-alias podex='podman exec -t'
-alias podsti='podman container start -i'
-{{- end }}
 {{- if and (lookPath "virsh") (not .is.root) }}
 alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'

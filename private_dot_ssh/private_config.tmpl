@@ -1,7 +1,6 @@
 {{- $home := .chezmoi.homeDir -}}
 {{- $general_keys := list ".ssh/id_ed25519" ".ssh/desktop_ed25519" ".ssh/laptop_ed25519" -}}
 {{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" -}}
-{{- $atgb_keys := list ".ssh/id_ed25519.atgb" ".ssh/desktop_ed25519.atgb" -}}
 {{- if stat (joinPath $home ".ssh/conf.d") }}
 Include conf.d/*
 {{- end }}
@@ -14,35 +13,10 @@ Host *
    UseKeychain yes
    AddKeysToAgent yes
 {{- end }}
+
+{{- if exec "ssh" "-o" "WarnWeakCrypto=no" "-V" }}
 WarnWeakCrypto no
-
-{{ if .ssh.include_servers -}}
-
-Host theia
-    HostName theia.hlab.no
-{{- if and (not .is.server) (not .is.windows) }}
-    ControlPath ~/.ssh/cm-%r@%h:%p
-    ControlMaster auto
-    ControlPersist 10m
 {{- end }}
-
-Host rb5009
-    HostName 10.0.100.1
-    User admin
-
-Host crs226
-    HostName crs226.man.hlab.no
-    User admin
-
-Host crs309
-    HostName crs309.man.hlab.no
-    User admin
-
-Host romsto
-    HostName {{ .romsto.domain }}
-    ForwardAgent yes
-
-{{- end }} {{/* {{- if .ssh.include_servers }} */}}
 
 Host gitlab.dresrv.com
     HostName gitlab.dresrv.com

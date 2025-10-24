@@ -50,14 +50,14 @@ Same structure as config file.
 
 ```json
 {
-    "data": {
-        "git": {
-            "main_email": "",
-            "main_name": "",
-            "alt_email": "",
-            "alt_name": ""
-        }
-    }
+  "git": {
+    "main_email": "",
+    "main_name": ""
+  },
+  "work": {
+    "git_name": "",
+    "git_email": ""
+  }
 }
 ```
 

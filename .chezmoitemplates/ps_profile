@@ -29,12 +29,6 @@ if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
 {{ if $is_core }}
-function git-alt {
-    echo "Setting git to atgb"
-    git config user.email "{{ .data.git.alt_email }}"
-    git config user.name "{{ .data.git.alt_name }}"
-}
-
 function git-main {
     echo "Setting git to cosandr"
     git config user.email "{{ .data.git.main_email }}"
@@ -61,12 +55,6 @@ $env:EDITOR="vim"
 # Aliases (and functions acting as aliases)
 {{ if $is_core }}
 
-{{- if lookPath "docker" }}
-function dls { docker container ls -a --format "table {{ "{{.Names}}" }}\t{{ "{{.Status}}" }}\t{{ "{{.RunningFor}}" }}\t" }
-function dlog { docker logs -f $args }
-function dex { docker exec -t $args }
-function dsti { docker container start -i $args }
-{{- end }}
 {{- end }}
 function touch ($file) { Write-Output "" >> "$file" }
 function la { Get-ChildItem -Force $args }

@@ -35,8 +35,7 @@
       "remember_window_size": "no"
     },
     "ssh": {
-      "include_work": {{ $is_laptop }},
-      "include_servers": {{ or $is_laptop $is_desktop $is_server }}
+      "include_work": {{ $is_laptop }}
     },
     "gpg": {
       "default_key": "main",
