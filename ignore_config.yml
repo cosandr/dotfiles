@@ -152,3 +152,6 @@
     - zeditor
   skip_root: true
   path: .config/zed
+- exec: steam
+  skip_root: true
+  path: .config/systemd/user/steam.service
