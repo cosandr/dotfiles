@@ -9,9 +9,11 @@ XAuthLocation "C:/Program Files/VcXsrv/xauth.exe"
 {{- else if .is.mac }}
 XAuthLocation /opt/X11/bin/xauth
 
+{{- if exec "ssh" "-o" "UseKeychain=no" "-V" }}
 Host *
    UseKeychain yes
    AddKeysToAgent yes
+{{- end }}
 {{- end }}
 
 {{- if exec "ssh" "-o" "WarnWeakCrypto=no" "-V" }}
