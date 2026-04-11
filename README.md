@@ -118,3 +118,8 @@ RUN+="/bin/chmod g+w /sys/class/backlight/acpi_video0/brightness"
 # GPU
 /sys/class/drm/card0/device/hwmon/hwmon7/freq2_input
 ```
+
+# Fonts
+
+For nerd fonts: https://www.nerdfonts.com/cheat-sheet
+Can also use `gucharmap`, glyphs are typically in the Unknown section.

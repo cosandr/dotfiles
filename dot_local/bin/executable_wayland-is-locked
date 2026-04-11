@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [[ $XDG_SESSION_TYPE != "wayland" ]]; then
+    echo "This script requires Wayland"
+    exit 123
+fi
+
+pgrep -x swaylock && exit 0
+pgrep -x hyprlock && exit 0
+loginctl show-session "$XDG_SESSION_ID" -P LockedHint | grep -q yes && exit 0
+
+exit 1

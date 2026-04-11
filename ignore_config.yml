@@ -132,6 +132,12 @@
   path:
     - .config/systemd/user/swayidle.service
     - .local/bin/swayidle
+    - .local/bin/wayland-is-locked
+- exec: hyprlock
+  skip_root: true
+  path:
+    - .config/hypr/hyprlock.conf
+    - .config/hypr/current-song.sh
 - exec: tmuxinator
   skip_root: false
   path: .config/tmuxinator

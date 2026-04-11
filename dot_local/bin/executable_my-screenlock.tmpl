@@ -48,6 +48,10 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
             WAYLAND_OPTS=${WAYLAND_OPTS:-"--init-color 0x002b36 --input-color 0x586e75 --fail-color 0x002b36"}
             waylock $WAYLAND_OPTS
             ;;
+        hyprlock)
+            WAYLAND_OPTS=${WAYLAND_OPTS:-"-q"}
+            hyprlock $WAYLAND_OPTS
+            ;;
         *)
             notify-send -u critical -a "Screen locker" "Unknown WAYLAND_LOCKER '$WAYLAND_LOCKER'"
             ;;
