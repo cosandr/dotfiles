@@ -13,13 +13,13 @@ zstyle ':prezto:load' pmodule \
   'history' \
   'spectrum' \
   'utility' \
+  'git' \
   'completion' \
   'fasd' \
   'history-substring-search' \
   'syntax-highlighting' \
   'autosuggestions' \
-  'prompt' \
-  'git'
+  'prompt'
 
 # Set the key mapping style to 'emacs' or 'vi'.
 zstyle ':prezto:module:editor' key-bindings 'vi'
@@ -35,9 +35,6 @@ zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 # Set the prompt to display the return code along with an indicator for non-zero
 # return codes. This is not supported by all prompts.
 zstyle ':prezto:module:prompt' show-return-val 'yes'
-
-# Auto switch the Python virtualenv on directory change.
-# zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
 
 zstyle ':prezto:module:syntax-highlighting' highlighters \
   'main' \
@@ -58,3 +55,5 @@ zstyle ':prezto:module:terminal:multiplexer-title' format '%s'
 
 # cp, ln, mv and rm prompt before deleting or overwriting files
 zstyle ':prezto:module:utility' safe-ops 'yes'
+
+zstyle ':prezto:module:git:alias' skip 'yes'
