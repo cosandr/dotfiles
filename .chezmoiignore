@@ -36,7 +36,7 @@ Library/Preferences/com.googlecode.iterm2.plist
 {{- end }} {{/* if not .is.mac */}}
 AppData/
 Documents/
-{{- if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) }}
+{{- if or .is.mac .is.root (and (not .is.desktop) (not .is.laptop)) }}
 # Ignore GUI app config files when not desktop or laptop
 .config/autostart
 .config/electron-flags*.conf
@@ -52,11 +52,11 @@ Documents/
 .xinitrc
 .xprofile
 .Xresources
-{{- end }} {{/* if or .is.mac .is.wsl .is.root (and (not .is.desktop) (not .is.laptop)) */}}
-{{- if or .is.wsl .is.root (not (eq .session_desktop "gnome")) }}
+{{- end }} {{/* if or .is.mac .is.root (and (not .is.desktop) (not .is.laptop)) */}}
+{{- if or .is.root (not (eq .session_desktop "gnome")) }}
 .config/environment.d
-{{- end }} {{/* if or .is.wsl (not (eq .session_desktop "gnome")) */}}
-{{- if or .is.wsl .is.server (not (eq .session_desktop "i3" "sway")) }}
+{{- end }} {{/* if or (not (eq .session_desktop "gnome")) */}}
+{{- if or .is.server (not (eq .session_desktop "i3" "sway")) }}
 .config/mimeapps.list
 .config/override
 .config/systemd/user/auto-lock.service
@@ -77,7 +77,7 @@ Documents/
 .Xresources
 {{- else }}
 .config/autostart
-{{- end }} {{/* if or .is.wsl .is.server (not (eq .session_desktop "i3" "sway")) */}}
+{{- end }} {{/* if or .is.server (not (eq .session_desktop "i3" "sway")) */}}
 {{- $is_root := .is.root -}}
 {{- range $v := $ignore_config }}
 {{- if and $is_root $v.skip_root }}
@@ -97,14 +97,14 @@ Documents/
 {{- end }} {{/* if not $found_exec */}}
 {{- end }} {{/* if and $is_root $v.skip_root */}}
 {{- end }} {{/* range $v */}}
-{{- if or (not .is.desktop) .is.wsl .is.mac }}
+{{- if or (not .is.desktop) .is.mac }}
 # Ignore desktop config on laptop and server
 .local/bin/*mount-c
 .local/bin/bar/aquaero*
-{{- end }} {{/* if or (not .is.desktop) .is.wsl .is.mac */}}
-{{- if or .is.root .is.desktop .is.laptop .is.mac .is.wsl }}
+{{- end }} {{/* if or (not .is.desktop) .is.mac */}}
+{{- if or .is.root .is.desktop .is.laptop .is.mac }}
 .ssh/*.pub
-{{- end }} {{/* if or .is.root (not (not .is.desktop)) (not (not .is.laptop)) .is.mac .is.wsl */}}
+{{- end }} {{/* if or .is.root (not (not .is.desktop)) (not (not .is.laptop)) .is.mac */}}
 {{- if .is.root }}
 .gnupg
 {{- end }} {{/* if .is.root */}}
@@ -132,9 +132,3 @@ Documents/
 .local/bin/bar
 {{- end }}
 {{- end }} {{/* if .is.windows */}}
-{{- if .is.wsl }}
-.local/bin/code
-.local/bin/discord
-.local/bin/google-chrome*
-.local/bin/slack
-{{- end }}

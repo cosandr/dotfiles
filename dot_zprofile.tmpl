@@ -91,16 +91,7 @@ if command -v pyenv &>/dev/null; then
 else
     unset PYENV_ROOT
 fi
-{{- if .is.wsl }}
-if [[ -n ${WSL_AGENT_HOME} ]]; then
-    export GNUPGHOME=${WSL_AGENT_HOME}
-    export SSH_AUTH_SOCK=${WSL_AGENT_HOME}/S.gpg-agent.ssh
-fi
-export GDK_SCALE=2
-export QT_SCREEN_SCALE_FACTORS=2
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export DISPLAY=localhost:0.0
-{{- else if .is.mac }}
+{{- if .is.mac }}
 # Fix Ansible crash
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 {{- else if not .is.root }}

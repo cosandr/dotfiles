@@ -16,8 +16,7 @@
       "mac": {{ $is_mac }},
       "root": {{ eq .chezmoi.username "root" }},
       "server": {{ $is_server }},
-      "windows": {{ $is_windows }},
-      "wsl": {{ if $is_linux }}{{ if (get .chezmoi "kernel" )}}{{ hasSuffix "Microsoft" .chezmoi.kernel.osrelease }}{{ end }}{{ else }}false{{ end }}
+      "windows": {{ $is_windows }}
     },
     "session_desktop": {{ if $is_server }}""{{ else }}{{ default "i3" (env "XDG_SESSION_DESKTOP") | quote }}{{ end }},
     "default_browser": {{ if $is_laptop }}"firefox-work.desktop"{{ else }}"firefox.desktop"{{ end }},
