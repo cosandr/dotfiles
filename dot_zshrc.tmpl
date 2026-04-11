@@ -129,6 +129,14 @@ ansible-only-changed() {
     esac
 }
 
+gr() {
+    if git rev-parse --verify main &>/dev/null; then
+        git rebase origin/main "$@"
+    else
+        git rebase origin/master "$@"
+    fi
+}
+
 # Allow scp and rsync globbing
 # https://github.com/sorin-ionescu/prezto/blob/9195b66161b196238cbd52a8a4abd027bdaf5f73/modules/utility/init.zsh#L41
 unalias rsync scp sftp
@@ -154,6 +162,12 @@ alias rsync-sudo="rsync --rsync-path='sudo rsync'"
 alias rsync-sudo-nh="rsync --rsync-path='sudo rsync' -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'"
 alias ssh-gpg='ssh -A -o ControlMaster=auto -o ControlPath=~/.ssh/cm-gpg-%r@%h:%p -R /run/user/1000/gnupg/S.gpg-agent:{{ $gpg_path }}'
 alias tmux-ssh-sock='eval $(tmux showenv -s SSH_AUTH_SOCK)'
+alias gf='git fetch --all -p'
+alias gp='git pull'
+alias grd='gr --ignore-date'
+alias gc='git checkout'
+alias gcb='git checkout -b'
+
 {{- if and (lookPath "virsh") (not .is.root) }}
 alias virsh='virsh --connect qemu:///system'
 alias virt-install='virt-install --connect qemu:///system'
