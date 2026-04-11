@@ -1,0 +1,11 @@
+[Unit]
+Description=Clipboard manager for images on Wayland
+Documentation=https://github.com/sentriz/cliphist
+BindsTo=sway-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wl-paste --type image --watch cliphist store
+
+[Install]
+WantedBy=sway-session.target

@@ -17,9 +17,12 @@
 - exec: chromium
   skip_root: true
   path: .config/chromium-flags*.conf
-- exec: clipman
+- exec: cliphist
   skip_root: true
-  path: .config/systemd/user/clipman.service
+  path:
+    - .config/systemd/user/cliphist-text.service
+    - .config/systemd/user/cliphist-img.service
+    - .local/bin/rofi-cliphist-img
 - exec: code
   skip_root: true
   path:

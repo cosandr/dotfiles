@@ -14,7 +14,7 @@ systemctl --user daemon-reload
 # Ensure services are enabled
 services=(
     "dunst" "nextcloud"
-    "kanshi" "swayidle" "waybar" "clipman"
+    "kanshi" "swayidle" "waybar" "cliphist-text" "cliphist-img"
     "auto-lock" "picom" "polybar" "redshift-gtk"
 )
 
