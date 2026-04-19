@@ -43,6 +43,7 @@ Documents/
 .config/mimeapps.list
 .config/systemd
 .config/tmuxinator/htop-journal.yml
+.config/zed
 .fonts
 .local/bin/*mount-c
 .local/bin/make-x11-wayland-links

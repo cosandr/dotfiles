@@ -139,8 +139,7 @@
 - exec: hyprlock
   skip_root: true
   path:
-    - .config/hypr/hyprlock.conf
-    - .config/hypr/current-song.sh
+    - .config/hypr
 - exec: tmuxinator
   skip_root: false
   path: .config/tmuxinator
@@ -164,3 +163,7 @@
 - exec: steam
   skip_root: true
   path: .config/systemd/user/steam-minimized.service
+- exec: spotify
+  skip_root: true
+  path:
+    - .config/spotify-*
