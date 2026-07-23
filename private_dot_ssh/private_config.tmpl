@@ -1,6 +1,5 @@
 {{- $home := .chezmoi.homeDir -}}
 {{- $general_keys := list ".ssh/id_ed25519" ".ssh/desktop_ed25519" ".ssh/laptop_ed25519" -}}
-{{- $cosandr_keys := list ".ssh/id_ed25519.cosandr" ".ssh/desktop_ed25519.cosandr" ".ssh/laptop_ed25519.cosandr" -}}
 {{- if stat (joinPath $home ".ssh/conf.d") }}
 Include conf.d/*
 {{- end }}
@@ -37,7 +36,7 @@ Host github.com
     User git
     PreferredAuthentications publickey
     IdentitiesOnly yes
-{{- range $k := $cosandr_keys }}
+{{- range $k := $general_keys }}
 {{- $fp := joinPath $home $k }}
 {{- if or (stat $fp) (stat (print $fp ".pub")) }}
     IdentityFile ~/{{ $k }}
