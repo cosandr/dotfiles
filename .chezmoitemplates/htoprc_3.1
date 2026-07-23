@@ -43,7 +43,7 @@ column_meters_0=LeftCPUs2 Memory Swap
 column_meter_modes_0=1 1 1
 column_meters_1=RightCPUs2 Tasks LoadAverage Uptime
 column_meter_modes_1=1 2 2 2
-{{- else if .is.laptop }}
+{{- else if or .is.laptop .is.mac }}
 column_meters_0=LeftCPUs2 Memory Swap Battery
 column_meter_modes_0=1 1 1 1
 column_meters_1=RightCPUs2 Tasks LoadAverage Uptime
