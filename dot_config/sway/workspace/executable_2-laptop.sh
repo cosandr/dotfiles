@@ -23,10 +23,10 @@ if [[ $MONITOR_COUNT -eq 3 ]]; then
 
     # Crashes instantly for some reason
     # launch_app_silent vscode ~/work/devops
-    # wait_app_id code-url-handler
+    # wait_app_id code
 
     # launch_app_silent vscode ~/work/customer_configuration
-    # wait_app_id code-url-handler
+    # wait_app_id code
 
     wtype_sway_cmd move_left
     wtype_sway_cmd set_tabbed

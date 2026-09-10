@@ -17,7 +17,7 @@ launch_app() {
 }
 
 launch_app_silent() {
-    launch_app "$1" &>/dev/null &
+    launch_app "$@" &>/dev/null &
 }
 
 wtype_sway_cmd() {
