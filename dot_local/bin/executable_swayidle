@@ -44,10 +44,10 @@ elif [ "$IS_LAPTOP" -eq 1 ]; then
         timeout 25 'if ${HOME}/.local/bin/wayland-is-locked; then swaymsg output "*" power off; fi' \
             resume 'if ${HOME}/.local/bin/wayland-is-locked; then swaymsg output "*" power on; fi' \
         timeout 60 'if ${HOME}/.local/bin/wayland-is-locked; then [ "$(cat /sys/class/power_supply/AC*/online | head)" -eq 0 ] && systemctl suspend; fi' \
-        timeout 570 'if ! ${HOME}/.local/bin/wayland-is-locked; then brightnessctl -q --save; fi; brightnessctl -q set 5%' \
+        timeout 270 'if ! ${HOME}/.local/bin/wayland-is-locked; then brightnessctl -q --save; fi; brightnessctl -q set 5%' \
             resume 'if ! ${HOME}/.local/bin/wayland-is-locked; then brightnessctl -q --restore; fi' \
-        timeout 590 '${HOME}/.local/bin/my-screenlock' \
-        timeout 600 'if ! ${HOME}/.local/bin/wayland-is-locked; then swaymsg output "*" power off; fi' \
+        timeout 290 '${HOME}/.local/bin/my-screenlock' \
+        timeout 300 'if ! ${HOME}/.local/bin/wayland-is-locked; then swaymsg output "*" power off; fi' \
             resume 'if ! ${HOME}/.local/bin/wayland-is-locked; then swaymsg output "*" power on; fi' \
         before-sleep '${HOME}/.local/bin/my-screenlock'
 elif [ "$NO_LOCK" -eq 1 ]; then
